@@ -1,8 +1,8 @@
 openapi: 3.0.3
 info:
-  title: MCD E-Commerce Artisanal — API
+  title: La Caverne Malagasy API
   description: |
-    Documentation OpenAPI générée à partir du MLD e-commerce.
+    Documentation OpenAPI de La Caverne Malagasy.
     Couvre l'ensemble des ressources : utilisateurs, catalogue, commandes, paiements, livraisons.
   version: 1.0.0
   contact:
