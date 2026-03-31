@@ -1,14 +1,14 @@
 openapi: 3.0.3
 info:
-  title: La Caverne Malagasy API
+  title: La Caverne Malgache API
   description: |
     Documentation OpenAPI de La Caverne Malagasy.
     Couvre l'ensemble des ressources : utilisateurs, catalogue, commandes, paiements, livraisons.
   version: 1.0.0
   contact:
-    name: Mr Kyle
+    name: Mr
 servers:
-  - url: https://api.ecommerce.local/v1
+  - url: https://api.lacaverne/v1
     description: Serveur de production
 
 # ─────────────────────────────────────────────
