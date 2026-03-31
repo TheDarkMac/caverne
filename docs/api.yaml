@@ -6,7 +6,7 @@ info:
     Couvre l'ensemble des ressources : utilisateurs, catalogue, commandes, paiements, livraisons.
   version: 1.0.0
   contact:
-    name: Numer
+    name: Mr Kyle
 servers:
   - url: https://api.ecommerce.local/v1
     description: Serveur de production

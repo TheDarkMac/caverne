@@ -1,0 +1,3010 @@
+{
+  "openapi" : "3.0.3",
+  "info" : {
+    "contact" : {
+      "name" : "Mr Kyle"
+    },
+    "description" : "Documentation OpenAPI de La Caverne Malagasy.\nCouvre l'ensemble des ressources : utilisateurs, catalogue, commandes, paiements, livraisons.\n",
+    "title" : "La Caverne Malagasy API",
+    "version" : "1.0.0"
+  },
+  "servers" : [ {
+    "description" : "Serveur de production",
+    "url" : "https://api.ecommerce.local/v1"
+  } ],
+  "security" : [ {
+    "BearerAuth" : [ ]
+  } ],
+  "tags" : [ {
+    "description" : "Inscription, connexion, JWT",
+    "name" : "Auth"
+  }, {
+    "description" : "Gestion des comptes utilisateurs",
+    "name" : "Users"
+  }, {
+    "description" : "Adresses de livraison",
+    "name" : "Addresses"
+  }, {
+    "description" : "Arborescence de catégories produits",
+    "name" : "Categories"
+  }, {
+    "description" : "Catalogue, images, prix, stock, specs, avis",
+    "name" : "Products"
+  }, {
+    "description" : "Commandes et livraisons",
+    "name" : "Orders"
+  }, {
+    "description" : "Paiements, webhooks, remboursements",
+    "name" : "Payments"
+  }, {
+    "description" : "Méthodes de paiement (Wave, Orange Money, etc.)",
+    "name" : "Payment Methods"
+  }, {
+    "description" : "Devises (MGA, EUR, USD…)",
+    "name" : "Currencies"
+  } ],
+  "paths" : {
+    "/auth/register" : {
+      "post" : {
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/RegisterRequest"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "201" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/User"
+                }
+              }
+            },
+            "description" : "Utilisateur créé"
+          },
+          "422" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Error"
+                }
+              }
+            },
+            "description" : "Données invalides"
+          }
+        },
+        "security" : [ ],
+        "summary" : "Inscription d'un nouvel utilisateur",
+        "tags" : [ "Auth" ]
+      }
+    },
+    "/auth/login" : {
+      "post" : {
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/LoginRequest"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/LoginResponse"
+                }
+              }
+            },
+            "description" : "Token JWT retourné"
+          },
+          "401" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Error"
+                }
+              }
+            },
+            "description" : "Token JWT manquant ou invalide"
+          }
+        },
+        "security" : [ ],
+        "summary" : "Connexion — obtenir un JWT",
+        "tags" : [ "Auth" ]
+      }
+    },
+    "/auth/logout" : {
+      "post" : {
+        "responses" : {
+          "204" : {
+            "description" : "Déconnexion réussie"
+          },
+          "401" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Error"
+                }
+              }
+            },
+            "description" : "Token JWT manquant ou invalide"
+          }
+        },
+        "summary" : "Invalidation du token JWT courant",
+        "tags" : [ "Auth" ]
+      }
+    },
+    "/users" : {
+      "get" : {
+        "parameters" : [ {
+          "explode" : true,
+          "in" : "query",
+          "name" : "page",
+          "required" : false,
+          "schema" : {
+            "default" : 1,
+            "type" : "integer"
+          },
+          "style" : "form"
+        }, {
+          "explode" : true,
+          "in" : "query",
+          "name" : "per_page",
+          "required" : false,
+          "schema" : {
+            "default" : 20,
+            "type" : "integer"
+          },
+          "style" : "form"
+        }, {
+          "explode" : true,
+          "in" : "query",
+          "name" : "role",
+          "required" : false,
+          "schema" : {
+            "enum" : [ "admin", "customer" ],
+            "type" : "string"
+          },
+          "style" : "form"
+        } ],
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/_users_get_200_response"
+                }
+              }
+            },
+            "description" : "Liste paginée"
+          },
+          "401" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Error"
+                }
+              }
+            },
+            "description" : "Token JWT manquant ou invalide"
+          },
+          "403" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Error"
+                }
+              }
+            },
+            "description" : "Accès refusé (rôle insuffisant)"
+          }
+        },
+        "summary" : "Liste des utilisateurs (admin)",
+        "tags" : [ "Users" ]
+      }
+    },
+    "/users/me" : {
+      "get" : {
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/User"
+                }
+              }
+            },
+            "description" : "Profil retourné"
+          },
+          "401" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Error"
+                }
+              }
+            },
+            "description" : "Token JWT manquant ou invalide"
+          }
+        },
+        "summary" : "Profil de l'utilisateur connecté",
+        "tags" : [ "Users" ]
+      },
+      "patch" : {
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/UserUpdate"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/User"
+                }
+              }
+            },
+            "description" : "Profil mis à jour"
+          },
+          "422" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Error"
+                }
+              }
+            },
+            "description" : "Données invalides"
+          }
+        },
+        "summary" : "Mise à jour du profil",
+        "tags" : [ "Users" ]
+      }
+    },
+    "/users/{id}" : {
+      "delete" : {
+        "parameters" : [ {
+          "explode" : false,
+          "in" : "path",
+          "name" : "id",
+          "required" : true,
+          "schema" : {
+            "type" : "integer"
+          },
+          "style" : "simple"
+        } ],
+        "responses" : {
+          "204" : {
+            "description" : "Supprimé"
+          },
+          "403" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Error"
+                }
+              }
+            },
+            "description" : "Accès refusé (rôle insuffisant)"
+          },
+          "404" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Error"
+                }
+              }
+            },
+            "description" : "Ressource introuvable"
+          }
+        },
+        "summary" : "Suppression d'un utilisateur (admin)",
+        "tags" : [ "Users" ]
+      },
+      "get" : {
+        "parameters" : [ {
+          "explode" : false,
+          "in" : "path",
+          "name" : "id",
+          "required" : true,
+          "schema" : {
+            "type" : "integer"
+          },
+          "style" : "simple"
+        } ],
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/User"
+                }
+              }
+            },
+            "description" : "OK"
+          },
+          "404" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Error"
+                }
+              }
+            },
+            "description" : "Ressource introuvable"
+          }
+        },
+        "summary" : "Détail d'un utilisateur (admin)",
+        "tags" : [ "Users" ]
+      }
+    },
+    "/users/me/addresses" : {
+      "get" : {
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "items" : {
+                    "$ref" : "#/components/schemas/Address"
+                  },
+                  "type" : "array"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "Liste des adresses de l'utilisateur connecté",
+        "tags" : [ "Addresses" ]
+      },
+      "post" : {
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/AddressInput"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "201" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Address"
+                }
+              }
+            },
+            "description" : "Adresse créée"
+          }
+        },
+        "summary" : "Ajouter une adresse",
+        "tags" : [ "Addresses" ]
+      }
+    },
+    "/users/me/addresses/{id}" : {
+      "delete" : {
+        "parameters" : [ {
+          "explode" : false,
+          "in" : "path",
+          "name" : "id",
+          "required" : true,
+          "schema" : {
+            "type" : "integer"
+          },
+          "style" : "simple"
+        } ],
+        "responses" : {
+          "204" : {
+            "description" : "Supprimée"
+          },
+          "404" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Error"
+                }
+              }
+            },
+            "description" : "Ressource introuvable"
+          }
+        },
+        "summary" : "Supprimer une adresse",
+        "tags" : [ "Addresses" ]
+      },
+      "put" : {
+        "parameters" : [ {
+          "explode" : false,
+          "in" : "path",
+          "name" : "id",
+          "required" : true,
+          "schema" : {
+            "type" : "integer"
+          },
+          "style" : "simple"
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/AddressInput"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Address"
+                }
+              }
+            },
+            "description" : "OK"
+          },
+          "404" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Error"
+                }
+              }
+            },
+            "description" : "Ressource introuvable"
+          }
+        },
+        "summary" : "Modifier une adresse",
+        "tags" : [ "Addresses" ]
+      }
+    },
+    "/users/me/addresses/{id}/default" : {
+      "patch" : {
+        "parameters" : [ {
+          "explode" : false,
+          "in" : "path",
+          "name" : "id",
+          "required" : true,
+          "schema" : {
+            "type" : "integer"
+          },
+          "style" : "simple"
+        } ],
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Address"
+                }
+              }
+            },
+            "description" : "Adresse définie par défaut"
+          }
+        },
+        "summary" : "Définir comme adresse par défaut",
+        "tags" : [ "Addresses" ]
+      }
+    },
+    "/categories" : {
+      "get" : {
+        "parameters" : [ {
+          "description" : "Si true, retourne une liste plate sans enfants",
+          "explode" : true,
+          "in" : "query",
+          "name" : "flat",
+          "required" : false,
+          "schema" : {
+            "type" : "boolean"
+          },
+          "style" : "form"
+        } ],
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "items" : {
+                    "$ref" : "#/components/schemas/Category"
+                  },
+                  "type" : "array"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "security" : [ ],
+        "summary" : "Liste des catégories (arbre)",
+        "tags" : [ "Categories" ]
+      },
+      "post" : {
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/CategoryInput"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "201" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Category"
+                }
+              }
+            },
+            "description" : "Créée"
+          }
+        },
+        "summary" : "Créer une catégorie (admin)",
+        "tags" : [ "Categories" ]
+      }
+    },
+    "/categories/{id}" : {
+      "delete" : {
+        "parameters" : [ {
+          "explode" : false,
+          "in" : "path",
+          "name" : "id",
+          "required" : true,
+          "schema" : {
+            "type" : "integer"
+          },
+          "style" : "simple"
+        } ],
+        "responses" : {
+          "204" : {
+            "description" : "Supprimée"
+          }
+        },
+        "summary" : "Supprimer une catégorie (admin)",
+        "tags" : [ "Categories" ]
+      },
+      "get" : {
+        "parameters" : [ {
+          "explode" : false,
+          "in" : "path",
+          "name" : "id",
+          "required" : true,
+          "schema" : {
+            "type" : "integer"
+          },
+          "style" : "simple"
+        } ],
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Category"
+                }
+              }
+            },
+            "description" : "OK"
+          },
+          "404" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Error"
+                }
+              }
+            },
+            "description" : "Ressource introuvable"
+          }
+        },
+        "security" : [ ],
+        "summary" : "Détail d'une catégorie",
+        "tags" : [ "Categories" ]
+      },
+      "put" : {
+        "parameters" : [ {
+          "explode" : false,
+          "in" : "path",
+          "name" : "id",
+          "required" : true,
+          "schema" : {
+            "type" : "integer"
+          },
+          "style" : "simple"
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/CategoryInput"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Category"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "Modifier une catégorie (admin)",
+        "tags" : [ "Categories" ]
+      }
+    },
+    "/products" : {
+      "get" : {
+        "parameters" : [ {
+          "explode" : true,
+          "in" : "query",
+          "name" : "page",
+          "required" : false,
+          "schema" : {
+            "default" : 1,
+            "type" : "integer"
+          },
+          "style" : "form"
+        }, {
+          "explode" : true,
+          "in" : "query",
+          "name" : "per_page",
+          "required" : false,
+          "schema" : {
+            "default" : 20,
+            "type" : "integer"
+          },
+          "style" : "form"
+        }, {
+          "explode" : true,
+          "in" : "query",
+          "name" : "category_id",
+          "required" : false,
+          "schema" : {
+            "type" : "integer"
+          },
+          "style" : "form"
+        }, {
+          "explode" : true,
+          "in" : "query",
+          "name" : "is_active",
+          "required" : false,
+          "schema" : {
+            "type" : "boolean"
+          },
+          "style" : "form"
+        }, {
+          "explode" : true,
+          "in" : "query",
+          "name" : "search",
+          "required" : false,
+          "schema" : {
+            "type" : "string"
+          },
+          "style" : "form"
+        }, {
+          "explode" : true,
+          "in" : "query",
+          "name" : "currency",
+          "required" : false,
+          "schema" : {
+            "example" : "MGA",
+            "type" : "string"
+          },
+          "style" : "form"
+        } ],
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/_products_get_200_response"
+                }
+              }
+            },
+            "description" : "Liste paginée"
+          }
+        },
+        "security" : [ ],
+        "summary" : "Catalogue produits",
+        "tags" : [ "Products" ]
+      },
+      "post" : {
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/ProductInput"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "201" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Product"
+                }
+              }
+            },
+            "description" : "Produit créé"
+          }
+        },
+        "summary" : "Créer un produit (admin)",
+        "tags" : [ "Products" ]
+      }
+    },
+    "/products/{id}" : {
+      "delete" : {
+        "parameters" : [ {
+          "explode" : false,
+          "in" : "path",
+          "name" : "id",
+          "required" : true,
+          "schema" : {
+            "type" : "integer"
+          },
+          "style" : "simple"
+        } ],
+        "responses" : {
+          "204" : {
+            "description" : "Supprimé"
+          }
+        },
+        "summary" : "Supprimer un produit (admin)",
+        "tags" : [ "Products" ]
+      },
+      "get" : {
+        "parameters" : [ {
+          "explode" : false,
+          "in" : "path",
+          "name" : "id",
+          "required" : true,
+          "schema" : {
+            "type" : "integer"
+          },
+          "style" : "simple"
+        } ],
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Product"
+                }
+              }
+            },
+            "description" : "OK"
+          },
+          "404" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Error"
+                }
+              }
+            },
+            "description" : "Ressource introuvable"
+          }
+        },
+        "security" : [ ],
+        "summary" : "Détail d'un produit",
+        "tags" : [ "Products" ]
+      },
+      "put" : {
+        "parameters" : [ {
+          "explode" : false,
+          "in" : "path",
+          "name" : "id",
+          "required" : true,
+          "schema" : {
+            "type" : "integer"
+          },
+          "style" : "simple"
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/ProductInput"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Product"
+                }
+              }
+            },
+            "description" : "Mis à jour"
+          }
+        },
+        "summary" : "Modifier un produit (admin)",
+        "tags" : [ "Products" ]
+      }
+    },
+    "/products/{id}/images" : {
+      "get" : {
+        "parameters" : [ {
+          "explode" : false,
+          "in" : "path",
+          "name" : "id",
+          "required" : true,
+          "schema" : {
+            "type" : "integer"
+          },
+          "style" : "simple"
+        } ],
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "items" : {
+                    "$ref" : "#/components/schemas/ProductImage"
+                  },
+                  "type" : "array"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "security" : [ ],
+        "summary" : "Images d'un produit",
+        "tags" : [ "Products" ]
+      },
+      "post" : {
+        "parameters" : [ {
+          "explode" : false,
+          "in" : "path",
+          "name" : "id",
+          "required" : true,
+          "schema" : {
+            "type" : "integer"
+          },
+          "style" : "simple"
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/ProductImageInput"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "201" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ProductImage"
+                }
+              }
+            },
+            "description" : "Créée"
+          }
+        },
+        "summary" : "Ajouter une image (admin)",
+        "tags" : [ "Products" ]
+      }
+    },
+    "/products/{id}/images/{imageId}" : {
+      "delete" : {
+        "parameters" : [ {
+          "explode" : false,
+          "in" : "path",
+          "name" : "id",
+          "required" : true,
+          "schema" : {
+            "type" : "integer"
+          },
+          "style" : "simple"
+        }, {
+          "explode" : false,
+          "in" : "path",
+          "name" : "imageId",
+          "required" : true,
+          "schema" : {
+            "type" : "integer"
+          },
+          "style" : "simple"
+        } ],
+        "responses" : {
+          "204" : {
+            "description" : "Supprimée"
+          }
+        },
+        "summary" : "Supprimer une image",
+        "tags" : [ "Products" ]
+      },
+      "patch" : {
+        "parameters" : [ {
+          "explode" : false,
+          "in" : "path",
+          "name" : "id",
+          "required" : true,
+          "schema" : {
+            "type" : "integer"
+          },
+          "style" : "simple"
+        }, {
+          "explode" : false,
+          "in" : "path",
+          "name" : "imageId",
+          "required" : true,
+          "schema" : {
+            "type" : "integer"
+          },
+          "style" : "simple"
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/ProductImageInput"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ProductImage"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "Modifier une image (définir main, etc.)",
+        "tags" : [ "Products" ]
+      }
+    },
+    "/products/{id}/prices" : {
+      "get" : {
+        "parameters" : [ {
+          "explode" : false,
+          "in" : "path",
+          "name" : "id",
+          "required" : true,
+          "schema" : {
+            "type" : "integer"
+          },
+          "style" : "simple"
+        } ],
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "items" : {
+                    "$ref" : "#/components/schemas/Price"
+                  },
+                  "type" : "array"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "security" : [ ],
+        "summary" : "Historique des prix d'un produit",
+        "tags" : [ "Products" ]
+      },
+      "post" : {
+        "parameters" : [ {
+          "explode" : false,
+          "in" : "path",
+          "name" : "id",
+          "required" : true,
+          "schema" : {
+            "type" : "integer"
+          },
+          "style" : "simple"
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/PriceInput"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "201" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Price"
+                }
+              }
+            },
+            "description" : "Créé"
+          }
+        },
+        "summary" : "Ajouter un prix (admin)",
+        "tags" : [ "Products" ]
+      }
+    },
+    "/products/{id}/stock" : {
+      "get" : {
+        "parameters" : [ {
+          "explode" : false,
+          "in" : "path",
+          "name" : "id",
+          "required" : true,
+          "schema" : {
+            "type" : "integer"
+          },
+          "style" : "simple"
+        } ],
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/StockSummary"
+                }
+              }
+            },
+            "description" : "Résumé du stock"
+          }
+        },
+        "summary" : "Stock disponible d'un produit",
+        "tags" : [ "Products" ]
+      },
+      "post" : {
+        "parameters" : [ {
+          "explode" : false,
+          "in" : "path",
+          "name" : "id",
+          "required" : true,
+          "schema" : {
+            "type" : "integer"
+          },
+          "style" : "simple"
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/StockInput"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "201" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/StockEntry"
+                }
+              }
+            },
+            "description" : "Mouvement enregistré"
+          }
+        },
+        "summary" : "Enregistrer un mouvement de stock (admin)",
+        "tags" : [ "Products" ]
+      }
+    },
+    "/products/{id}/stock/history" : {
+      "get" : {
+        "parameters" : [ {
+          "explode" : false,
+          "in" : "path",
+          "name" : "id",
+          "required" : true,
+          "schema" : {
+            "type" : "integer"
+          },
+          "style" : "simple"
+        }, {
+          "explode" : true,
+          "in" : "query",
+          "name" : "page",
+          "required" : false,
+          "schema" : {
+            "default" : 1,
+            "type" : "integer"
+          },
+          "style" : "form"
+        }, {
+          "explode" : true,
+          "in" : "query",
+          "name" : "movement_type",
+          "required" : false,
+          "schema" : {
+            "enum" : [ "in", "out", "adjustment" ],
+            "type" : "string"
+          },
+          "style" : "form"
+        } ],
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/_products__id__stock_history_get_200_response"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "Historique des mouvements de stock",
+        "tags" : [ "Products" ]
+      }
+    },
+    "/products/{id}/technical-specs" : {
+      "get" : {
+        "parameters" : [ {
+          "explode" : false,
+          "in" : "path",
+          "name" : "id",
+          "required" : true,
+          "schema" : {
+            "type" : "integer"
+          },
+          "style" : "simple"
+        } ],
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/TechnicalSpecs"
+                }
+              }
+            },
+            "description" : "OK"
+          },
+          "404" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Error"
+                }
+              }
+            },
+            "description" : "Ressource introuvable"
+          }
+        },
+        "security" : [ ],
+        "summary" : "Spécifications techniques d'un produit",
+        "tags" : [ "Products" ]
+      },
+      "put" : {
+        "parameters" : [ {
+          "explode" : false,
+          "in" : "path",
+          "name" : "id",
+          "required" : true,
+          "schema" : {
+            "type" : "integer"
+          },
+          "style" : "simple"
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/TechnicalSpecsInput"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/TechnicalSpecs"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "Créer ou remplacer les specs techniques (admin)",
+        "tags" : [ "Products" ]
+      }
+    },
+    "/products/{id}/reviews" : {
+      "get" : {
+        "parameters" : [ {
+          "explode" : false,
+          "in" : "path",
+          "name" : "id",
+          "required" : true,
+          "schema" : {
+            "type" : "integer"
+          },
+          "style" : "simple"
+        }, {
+          "explode" : true,
+          "in" : "query",
+          "name" : "page",
+          "required" : false,
+          "schema" : {
+            "default" : 1,
+            "type" : "integer"
+          },
+          "style" : "form"
+        } ],
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/_products__id__reviews_get_200_response"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "security" : [ ],
+        "summary" : "Avis clients d'un produit",
+        "tags" : [ "Products" ]
+      },
+      "post" : {
+        "parameters" : [ {
+          "explode" : false,
+          "in" : "path",
+          "name" : "id",
+          "required" : true,
+          "schema" : {
+            "type" : "integer"
+          },
+          "style" : "simple"
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/ReviewInput"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "201" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Review"
+                }
+              }
+            },
+            "description" : "Avis enregistré"
+          },
+          "422" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Error"
+                }
+              }
+            },
+            "description" : "Données invalides"
+          }
+        },
+        "summary" : "Déposer un avis (utilisateur connecté)",
+        "tags" : [ "Products" ]
+      }
+    },
+    "/orders" : {
+      "get" : {
+        "parameters" : [ {
+          "explode" : true,
+          "in" : "query",
+          "name" : "page",
+          "required" : false,
+          "schema" : {
+            "default" : 1,
+            "type" : "integer"
+          },
+          "style" : "form"
+        }, {
+          "explode" : true,
+          "in" : "query",
+          "name" : "status",
+          "required" : false,
+          "schema" : {
+            "enum" : [ "pending", "confirmed", "delivered", "cancelled" ],
+            "type" : "string"
+          },
+          "style" : "form"
+        } ],
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/_orders_get_200_response"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "Mes commandes (utilisateur connecté)",
+        "tags" : [ "Orders" ]
+      },
+      "post" : {
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/OrderInput"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "201" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Order"
+                }
+              }
+            },
+            "description" : "Commande créée"
+          },
+          "422" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Error"
+                }
+              }
+            },
+            "description" : "Données invalides"
+          }
+        },
+        "summary" : "Passer une commande",
+        "tags" : [ "Orders" ]
+      }
+    },
+    "/orders/all" : {
+      "get" : {
+        "parameters" : [ {
+          "explode" : true,
+          "in" : "query",
+          "name" : "page",
+          "required" : false,
+          "schema" : {
+            "default" : 1,
+            "type" : "integer"
+          },
+          "style" : "form"
+        }, {
+          "explode" : true,
+          "in" : "query",
+          "name" : "per_page",
+          "required" : false,
+          "schema" : {
+            "default" : 20,
+            "type" : "integer"
+          },
+          "style" : "form"
+        }, {
+          "explode" : true,
+          "in" : "query",
+          "name" : "status",
+          "required" : false,
+          "schema" : {
+            "enum" : [ "pending", "confirmed", "delivered", "cancelled" ],
+            "type" : "string"
+          },
+          "style" : "form"
+        }, {
+          "explode" : true,
+          "in" : "query",
+          "name" : "user_id",
+          "required" : false,
+          "schema" : {
+            "type" : "integer"
+          },
+          "style" : "form"
+        } ],
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/_orders_get_200_response"
+                }
+              }
+            },
+            "description" : "OK"
+          },
+          "403" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Error"
+                }
+              }
+            },
+            "description" : "Accès refusé (rôle insuffisant)"
+          }
+        },
+        "summary" : "Toutes les commandes (admin)",
+        "tags" : [ "Orders" ]
+      }
+    },
+    "/orders/{id}" : {
+      "get" : {
+        "parameters" : [ {
+          "explode" : false,
+          "in" : "path",
+          "name" : "id",
+          "required" : true,
+          "schema" : {
+            "type" : "integer"
+          },
+          "style" : "simple"
+        } ],
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Order"
+                }
+              }
+            },
+            "description" : "OK"
+          },
+          "404" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Error"
+                }
+              }
+            },
+            "description" : "Ressource introuvable"
+          }
+        },
+        "summary" : "Détail d'une commande",
+        "tags" : [ "Orders" ]
+      }
+    },
+    "/orders/{id}/status" : {
+      "patch" : {
+        "parameters" : [ {
+          "explode" : false,
+          "in" : "path",
+          "name" : "id",
+          "required" : true,
+          "schema" : {
+            "type" : "integer"
+          },
+          "style" : "simple"
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/OrderStatusUpdate"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Order"
+                }
+              }
+            },
+            "description" : "Statut mis à jour"
+          },
+          "403" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Error"
+                }
+              }
+            },
+            "description" : "Accès refusé (rôle insuffisant)"
+          }
+        },
+        "summary" : "Changer le statut d'une commande (admin)",
+        "tags" : [ "Orders" ]
+      }
+    },
+    "/orders/{id}/cancel" : {
+      "post" : {
+        "parameters" : [ {
+          "explode" : false,
+          "in" : "path",
+          "name" : "id",
+          "required" : true,
+          "schema" : {
+            "type" : "integer"
+          },
+          "style" : "simple"
+        } ],
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Order"
+                }
+              }
+            },
+            "description" : "Commande annulée"
+          }
+        },
+        "summary" : "Annuler une commande (owner ou admin)",
+        "tags" : [ "Orders" ]
+      }
+    },
+    "/orders/{id}/delivery-cost" : {
+      "get" : {
+        "parameters" : [ {
+          "explode" : false,
+          "in" : "path",
+          "name" : "id",
+          "required" : true,
+          "schema" : {
+            "type" : "integer"
+          },
+          "style" : "simple"
+        } ],
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/DeliverCost"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "Frais de livraison d'une commande",
+        "tags" : [ "Orders" ]
+      },
+      "post" : {
+        "parameters" : [ {
+          "explode" : false,
+          "in" : "path",
+          "name" : "id",
+          "required" : true,
+          "schema" : {
+            "type" : "integer"
+          },
+          "style" : "simple"
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/DeliverCostInput"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "201" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/DeliverCost"
+                }
+              }
+            },
+            "description" : "Créé"
+          }
+        },
+        "summary" : "Renseigner les frais de livraison (admin)",
+        "tags" : [ "Orders" ]
+      }
+    },
+    "/orders/{id}/payments" : {
+      "get" : {
+        "parameters" : [ {
+          "explode" : false,
+          "in" : "path",
+          "name" : "id",
+          "required" : true,
+          "schema" : {
+            "type" : "integer"
+          },
+          "style" : "simple"
+        } ],
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "items" : {
+                    "$ref" : "#/components/schemas/Payment"
+                  },
+                  "type" : "array"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "Paiements associés à une commande",
+        "tags" : [ "Payments" ]
+      },
+      "post" : {
+        "parameters" : [ {
+          "explode" : false,
+          "in" : "path",
+          "name" : "id",
+          "required" : true,
+          "schema" : {
+            "type" : "integer"
+          },
+          "style" : "simple"
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/PaymentInput"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "201" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Payment"
+                }
+              }
+            },
+            "description" : "Paiement initié"
+          },
+          "422" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Error"
+                }
+              }
+            },
+            "description" : "Données invalides"
+          }
+        },
+        "summary" : "Initier un paiement",
+        "tags" : [ "Payments" ]
+      }
+    },
+    "/payments/{id}" : {
+      "get" : {
+        "parameters" : [ {
+          "explode" : false,
+          "in" : "path",
+          "name" : "id",
+          "required" : true,
+          "schema" : {
+            "type" : "integer"
+          },
+          "style" : "simple"
+        } ],
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Payment"
+                }
+              }
+            },
+            "description" : "OK"
+          },
+          "404" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Error"
+                }
+              }
+            },
+            "description" : "Ressource introuvable"
+          }
+        },
+        "summary" : "Détail d'un paiement",
+        "tags" : [ "Payments" ]
+      }
+    },
+    "/payments/{id}/confirm" : {
+      "post" : {
+        "parameters" : [ {
+          "explode" : false,
+          "in" : "path",
+          "name" : "id",
+          "required" : true,
+          "schema" : {
+            "type" : "integer"
+          },
+          "style" : "simple"
+        } ],
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Payment"
+                }
+              }
+            },
+            "description" : "Confirmé"
+          },
+          "403" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Error"
+                }
+              }
+            },
+            "description" : "Accès refusé (rôle insuffisant)"
+          }
+        },
+        "summary" : "Confirmer manuellement un paiement (admin)",
+        "tags" : [ "Payments" ]
+      }
+    },
+    "/payments/{id}/refund" : {
+      "post" : {
+        "parameters" : [ {
+          "explode" : false,
+          "in" : "path",
+          "name" : "id",
+          "required" : true,
+          "schema" : {
+            "type" : "integer"
+          },
+          "style" : "simple"
+        } ],
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Payment"
+                }
+              }
+            },
+            "description" : "Remboursé"
+          }
+        },
+        "summary" : "Rembourser un paiement (admin)",
+        "tags" : [ "Payments" ]
+      }
+    },
+    "/payments/webhook/{provider_code}" : {
+      "post" : {
+        "parameters" : [ {
+          "explode" : false,
+          "in" : "path",
+          "name" : "provider_code",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          },
+          "style" : "simple"
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "description" : "Payload propre à chaque prestataire (Wave, Orange Money, etc.)",
+                "type" : "object"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "200" : {
+            "description" : "Reçu"
+          },
+          "400" : {
+            "description" : "Signature invalide"
+          }
+        },
+        "security" : [ ],
+        "summary" : "Webhook de confirmation de paiement (appelé par le prestataire)",
+        "tags" : [ "Payments" ]
+      }
+    },
+    "/payment-methods" : {
+      "get" : {
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "items" : {
+                    "$ref" : "#/components/schemas/PaymentMethod"
+                  },
+                  "type" : "array"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "security" : [ ],
+        "summary" : "Liste des méthodes de paiement actives",
+        "tags" : [ "Payment Methods" ]
+      },
+      "post" : {
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/PaymentMethodInput"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "201" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/PaymentMethod"
+                }
+              }
+            },
+            "description" : "Créée"
+          }
+        },
+        "summary" : "Créer une méthode de paiement (admin)",
+        "tags" : [ "Payment Methods" ]
+      }
+    },
+    "/payment-methods/{provider_code}" : {
+      "delete" : {
+        "parameters" : [ {
+          "explode" : false,
+          "in" : "path",
+          "name" : "provider_code",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          },
+          "style" : "simple"
+        } ],
+        "responses" : {
+          "204" : {
+            "description" : "Supprimée"
+          }
+        },
+        "summary" : "Supprimer une méthode de paiement (admin)",
+        "tags" : [ "Payment Methods" ]
+      },
+      "put" : {
+        "parameters" : [ {
+          "explode" : false,
+          "in" : "path",
+          "name" : "provider_code",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          },
+          "style" : "simple"
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/PaymentMethodInput"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/PaymentMethod"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "Modifier une méthode de paiement (admin)",
+        "tags" : [ "Payment Methods" ]
+      }
+    },
+    "/currencies" : {
+      "get" : {
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "items" : {
+                    "$ref" : "#/components/schemas/Currency"
+                  },
+                  "type" : "array"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "security" : [ ],
+        "summary" : "Liste des devises supportées",
+        "tags" : [ "Currencies" ]
+      },
+      "post" : {
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/Currency"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "201" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Currency"
+                }
+              }
+            },
+            "description" : "Créée"
+          }
+        },
+        "summary" : "Ajouter une devise (admin)",
+        "tags" : [ "Currencies" ]
+      }
+    },
+    "/currencies/{code_iso}" : {
+      "delete" : {
+        "parameters" : [ {
+          "explode" : false,
+          "in" : "path",
+          "name" : "code_iso",
+          "required" : true,
+          "schema" : {
+            "maxLength" : 3,
+            "type" : "string"
+          },
+          "style" : "simple"
+        } ],
+        "responses" : {
+          "204" : {
+            "description" : "Supprimée"
+          }
+        },
+        "summary" : "Supprimer une devise (admin)",
+        "tags" : [ "Currencies" ]
+      },
+      "put" : {
+        "parameters" : [ {
+          "explode" : false,
+          "in" : "path",
+          "name" : "code_iso",
+          "required" : true,
+          "schema" : {
+            "maxLength" : 3,
+            "type" : "string"
+          },
+          "style" : "simple"
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/Currency"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Currency"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "Modifier une devise (admin)",
+        "tags" : [ "Currencies" ]
+      }
+    }
+  },
+  "components" : {
+    "parameters" : {
+      "pathId" : {
+        "explode" : false,
+        "in" : "path",
+        "name" : "id",
+        "required" : true,
+        "schema" : {
+          "type" : "integer"
+        },
+        "style" : "simple"
+      },
+      "queryPage" : {
+        "explode" : true,
+        "in" : "query",
+        "name" : "page",
+        "required" : false,
+        "schema" : {
+          "default" : 1,
+          "type" : "integer"
+        },
+        "style" : "form"
+      },
+      "queryPerPage" : {
+        "explode" : true,
+        "in" : "query",
+        "name" : "per_page",
+        "required" : false,
+        "schema" : {
+          "default" : 20,
+          "type" : "integer"
+        },
+        "style" : "form"
+      }
+    },
+    "responses" : {
+      "Unauthorized" : {
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "$ref" : "#/components/schemas/Error"
+            }
+          }
+        },
+        "description" : "Token JWT manquant ou invalide"
+      },
+      "Forbidden" : {
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "$ref" : "#/components/schemas/Error"
+            }
+          }
+        },
+        "description" : "Accès refusé (rôle insuffisant)"
+      },
+      "NotFound" : {
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "$ref" : "#/components/schemas/Error"
+            }
+          }
+        },
+        "description" : "Ressource introuvable"
+      },
+      "UnprocessableEntity" : {
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "$ref" : "#/components/schemas/Error"
+            }
+          }
+        },
+        "description" : "Données invalides"
+      }
+    },
+    "schemas" : {
+      "LoginRequest" : {
+        "properties" : {
+          "email" : {
+            "format" : "email",
+            "type" : "string"
+          },
+          "password" : {
+            "format" : "password",
+            "type" : "string"
+          }
+        },
+        "required" : [ "email", "password" ],
+        "type" : "object"
+      },
+      "LoginResponse" : {
+        "properties" : {
+          "access_token" : {
+            "type" : "string"
+          },
+          "token_type" : {
+            "example" : "Bearer",
+            "type" : "string"
+          },
+          "expires_in" : {
+            "example" : 3600,
+            "type" : "integer"
+          }
+        },
+        "type" : "object"
+      },
+      "RegisterRequest" : {
+        "properties" : {
+          "firstname" : {
+            "maxLength" : 100,
+            "type" : "string"
+          },
+          "lastname" : {
+            "maxLength" : 50,
+            "type" : "string"
+          },
+          "email" : {
+            "format" : "email",
+            "type" : "string"
+          },
+          "phone" : {
+            "maxLength" : 20,
+            "type" : "string"
+          },
+          "password" : {
+            "format" : "password",
+            "type" : "string"
+          }
+        },
+        "required" : [ "email", "firstname", "lastname", "password" ],
+        "type" : "object"
+      },
+      "User" : {
+        "properties" : {
+          "id" : {
+            "type" : "integer"
+          },
+          "firstname" : {
+            "type" : "string"
+          },
+          "lastname" : {
+            "type" : "string"
+          },
+          "email" : {
+            "format" : "email",
+            "type" : "string"
+          },
+          "phone" : {
+            "type" : "string"
+          },
+          "role" : {
+            "enum" : [ "admin", "customer" ],
+            "type" : "string"
+          },
+          "status" : {
+            "type" : "string"
+          }
+        },
+        "type" : "object"
+      },
+      "UserUpdate" : {
+        "properties" : {
+          "firstname" : {
+            "type" : "string"
+          },
+          "lastname" : {
+            "type" : "string"
+          },
+          "phone" : {
+            "type" : "string"
+          }
+        },
+        "type" : "object"
+      },
+      "Address" : {
+        "properties" : {
+          "id" : {
+            "type" : "integer"
+          },
+          "user_id" : {
+            "type" : "integer"
+          },
+          "location" : {
+            "type" : "string"
+          },
+          "postal_code" : {
+            "type" : "string"
+          },
+          "country_code" : {
+            "maxLength" : 3,
+            "type" : "string"
+          },
+          "is_default" : {
+            "default" : false,
+            "type" : "boolean"
+          }
+        },
+        "type" : "object"
+      },
+      "AddressInput" : {
+        "properties" : {
+          "location" : {
+            "type" : "string"
+          },
+          "postal_code" : {
+            "type" : "string"
+          },
+          "country_code" : {
+            "maxLength" : 3,
+            "type" : "string"
+          },
+          "is_default" : {
+            "type" : "boolean"
+          }
+        },
+        "required" : [ "country_code", "location", "postal_code" ],
+        "type" : "object"
+      },
+      "Category" : {
+        "properties" : {
+          "id" : {
+            "type" : "integer"
+          },
+          "label" : {
+            "type" : "string"
+          },
+          "slug" : {
+            "type" : "string"
+          },
+          "map" : {
+            "maxLength" : 100,
+            "type" : "string"
+          },
+          "parent_id" : {
+            "nullable" : true,
+            "type" : "integer"
+          },
+          "children" : {
+            "items" : {
+              "$ref" : "#/components/schemas/Category"
+            },
+            "type" : "array"
+          }
+        },
+        "type" : "object"
+      },
+      "CategoryInput" : {
+        "properties" : {
+          "label" : {
+            "type" : "string"
+          },
+          "slug" : {
+            "type" : "string"
+          },
+          "map" : {
+            "type" : "string"
+          },
+          "parent_id" : {
+            "nullable" : true,
+            "type" : "integer"
+          }
+        },
+        "required" : [ "label", "slug" ],
+        "type" : "object"
+      },
+      "Currency" : {
+        "properties" : {
+          "code_iso" : {
+            "example" : "MGA",
+            "maxLength" : 3,
+            "type" : "string"
+          },
+          "name" : {
+            "type" : "string"
+          },
+          "symbol" : {
+            "type" : "string"
+          }
+        },
+        "type" : "object"
+      },
+      "Product" : {
+        "properties" : {
+          "id" : {
+            "type" : "integer"
+          },
+          "category_id" : {
+            "type" : "integer"
+          },
+          "label" : {
+            "maxLength" : 255,
+            "type" : "string"
+          },
+          "reference" : {
+            "maxLength" : 100,
+            "type" : "string"
+          },
+          "limit_date" : {
+            "format" : "date",
+            "nullable" : true,
+            "type" : "string"
+          },
+          "description" : {
+            "type" : "string"
+          },
+          "size" : {
+            "type" : "string"
+          },
+          "is_active" : {
+            "default" : true,
+            "type" : "boolean"
+          },
+          "images" : {
+            "items" : {
+              "$ref" : "#/components/schemas/ProductImage"
+            },
+            "type" : "array"
+          },
+          "prices" : {
+            "items" : {
+              "$ref" : "#/components/schemas/Price"
+            },
+            "type" : "array"
+          },
+          "technical_specs" : {
+            "$ref" : "#/components/schemas/TechnicalSpecs"
+          }
+        },
+        "type" : "object"
+      },
+      "ProductInput" : {
+        "properties" : {
+          "category_id" : {
+            "type" : "integer"
+          },
+          "label" : {
+            "type" : "string"
+          },
+          "reference" : {
+            "type" : "string"
+          },
+          "limit_date" : {
+            "format" : "date",
+            "type" : "string"
+          },
+          "description" : {
+            "type" : "string"
+          },
+          "size" : {
+            "type" : "string"
+          },
+          "is_active" : {
+            "type" : "boolean"
+          }
+        },
+        "required" : [ "category_id", "label", "reference" ],
+        "type" : "object"
+      },
+      "ProductImage" : {
+        "properties" : {
+          "id" : {
+            "type" : "integer"
+          },
+          "product_id" : {
+            "type" : "integer"
+          },
+          "url" : {
+            "format" : "uri",
+            "type" : "string"
+          },
+          "is_main" : {
+            "default" : false,
+            "type" : "boolean"
+          }
+        },
+        "type" : "object"
+      },
+      "ProductImageInput" : {
+        "properties" : {
+          "url" : {
+            "format" : "uri",
+            "type" : "string"
+          },
+          "is_main" : {
+            "type" : "boolean"
+          }
+        },
+        "required" : [ "url" ],
+        "type" : "object"
+      },
+      "Price" : {
+        "properties" : {
+          "id" : {
+            "type" : "integer"
+          },
+          "product_id" : {
+            "type" : "integer"
+          },
+          "currency_code" : {
+            "maxLength" : 3,
+            "type" : "string"
+          },
+          "value" : {
+            "format" : "double",
+            "type" : "number"
+          },
+          "valid_from" : {
+            "format" : "date",
+            "type" : "string"
+          },
+          "unit" : {
+            "type" : "string"
+          }
+        },
+        "type" : "object"
+      },
+      "PriceInput" : {
+        "properties" : {
+          "currency_code" : {
+            "type" : "string"
+          },
+          "value" : {
+            "format" : "double",
+            "type" : "number"
+          },
+          "valid_from" : {
+            "format" : "date",
+            "type" : "string"
+          },
+          "unit" : {
+            "type" : "string"
+          }
+        },
+        "required" : [ "currency_code", "valid_from", "value" ],
+        "type" : "object"
+      },
+      "StockEntry" : {
+        "properties" : {
+          "id" : {
+            "type" : "integer"
+          },
+          "product_id" : {
+            "type" : "integer"
+          },
+          "quantity" : {
+            "format" : "double",
+            "type" : "number"
+          },
+          "movement_type" : {
+            "enum" : [ "in", "out", "adjustment" ],
+            "type" : "string"
+          },
+          "date" : {
+            "format" : "date-time",
+            "type" : "string"
+          },
+          "unit" : {
+            "type" : "string"
+          }
+        },
+        "type" : "object"
+      },
+      "StockInput" : {
+        "properties" : {
+          "quantity" : {
+            "format" : "double",
+            "type" : "number"
+          },
+          "movement_type" : {
+            "enum" : [ "in", "out", "adjustment" ],
+            "type" : "string"
+          },
+          "unit" : {
+            "type" : "string"
+          }
+        },
+        "required" : [ "movement_type", "quantity" ],
+        "type" : "object"
+      },
+      "StockSummary" : {
+        "properties" : {
+          "product_id" : {
+            "type" : "integer"
+          },
+          "available_quantity" : {
+            "type" : "number"
+          },
+          "unit" : {
+            "type" : "string"
+          },
+          "last_updated" : {
+            "format" : "date-time",
+            "type" : "string"
+          }
+        },
+        "type" : "object"
+      },
+      "TechnicalSpecs" : {
+        "properties" : {
+          "id" : {
+            "type" : "integer"
+          },
+          "product_id" : {
+            "type" : "integer"
+          },
+          "country" : {
+            "type" : "string"
+          },
+          "region" : {
+            "type" : "string"
+          },
+          "climate" : {
+            "type" : "string"
+          },
+          "provider" : {
+            "maxLength" : 255,
+            "type" : "string"
+          }
+        },
+        "type" : "object"
+      },
+      "TechnicalSpecsInput" : {
+        "properties" : {
+          "country" : {
+            "type" : "string"
+          },
+          "region" : {
+            "type" : "string"
+          },
+          "climate" : {
+            "type" : "string"
+          },
+          "provider" : {
+            "type" : "string"
+          }
+        },
+        "type" : "object"
+      },
+      "Review" : {
+        "properties" : {
+          "id" : {
+            "type" : "integer"
+          },
+          "user_id" : {
+            "type" : "integer"
+          },
+          "product_id" : {
+            "type" : "integer"
+          },
+          "score" : {
+            "maximum" : 5,
+            "minimum" : 1,
+            "type" : "integer"
+          },
+          "comment" : {
+            "type" : "string"
+          },
+          "created_at" : {
+            "format" : "date-time",
+            "type" : "string"
+          }
+        },
+        "type" : "object"
+      },
+      "ReviewInput" : {
+        "properties" : {
+          "score" : {
+            "maximum" : 5,
+            "minimum" : 1,
+            "type" : "integer"
+          },
+          "comment" : {
+            "type" : "string"
+          }
+        },
+        "required" : [ "score" ],
+        "type" : "object"
+      },
+      "OrderItem" : {
+        "properties" : {
+          "product_id" : {
+            "type" : "integer"
+          },
+          "quantity" : {
+            "format" : "double",
+            "type" : "number"
+          },
+          "unit_price" : {
+            "format" : "double",
+            "type" : "number"
+          }
+        },
+        "type" : "object"
+      },
+      "Order" : {
+        "properties" : {
+          "id" : {
+            "type" : "integer"
+          },
+          "user_id" : {
+            "type" : "integer"
+          },
+          "address_id" : {
+            "type" : "integer"
+          },
+          "currency_code" : {
+            "type" : "string"
+          },
+          "reference" : {
+            "type" : "string"
+          },
+          "date" : {
+            "format" : "date-time",
+            "type" : "string"
+          },
+          "status" : {
+            "enum" : [ "pending", "confirmed", "delivered", "cancelled" ],
+            "type" : "string"
+          },
+          "items" : {
+            "items" : {
+              "$ref" : "#/components/schemas/OrderItem"
+            },
+            "type" : "array"
+          },
+          "provider_response" : {
+            "nullable" : true,
+            "type" : "object"
+          }
+        },
+        "type" : "object"
+      },
+      "OrderInput" : {
+        "properties" : {
+          "address_id" : {
+            "type" : "integer"
+          },
+          "currency_code" : {
+            "type" : "string"
+          },
+          "items" : {
+            "items" : {
+              "$ref" : "#/components/schemas/OrderInput_items_inner"
+            },
+            "minItems" : 1,
+            "type" : "array"
+          }
+        },
+        "required" : [ "address_id", "currency_code", "items" ],
+        "type" : "object"
+      },
+      "OrderStatusUpdate" : {
+        "properties" : {
+          "status" : {
+            "enum" : [ "pending", "confirmed", "delivered", "cancelled" ],
+            "type" : "string"
+          }
+        },
+        "required" : [ "status" ],
+        "type" : "object"
+      },
+      "DeliverCost" : {
+        "properties" : {
+          "id" : {
+            "type" : "integer"
+          },
+          "order_id" : {
+            "type" : "integer"
+          },
+          "amount" : {
+            "format" : "double",
+            "type" : "number"
+          },
+          "provider" : {
+            "type" : "string"
+          },
+          "response_provider" : {
+            "nullable" : true,
+            "type" : "object"
+          }
+        },
+        "type" : "object"
+      },
+      "DeliverCostInput" : {
+        "properties" : {
+          "amount" : {
+            "format" : "double",
+            "type" : "number"
+          },
+          "provider" : {
+            "type" : "string"
+          }
+        },
+        "required" : [ "amount", "provider" ],
+        "type" : "object"
+      },
+      "PaymentMethod" : {
+        "properties" : {
+          "provider_code" : {
+            "type" : "string"
+          },
+          "label" : {
+            "maxLength" : 100,
+            "type" : "string"
+          },
+          "is_active" : {
+            "type" : "boolean"
+          },
+          "requires_manual_check" : {
+            "type" : "boolean"
+          },
+          "integration_type" : {
+            "enum" : [ "manual", "api", "webhook" ],
+            "type" : "string"
+          }
+        },
+        "type" : "object"
+      },
+      "PaymentMethodInput" : {
+        "properties" : {
+          "provider_code" : {
+            "type" : "string"
+          },
+          "label" : {
+            "type" : "string"
+          },
+          "is_active" : {
+            "type" : "boolean"
+          },
+          "requires_manual_check" : {
+            "type" : "boolean"
+          },
+          "integration_type" : {
+            "enum" : [ "manual", "api", "webhook" ],
+            "type" : "string"
+          }
+        },
+        "required" : [ "integration_type", "label", "provider_code" ],
+        "type" : "object"
+      },
+      "Payment" : {
+        "properties" : {
+          "id" : {
+            "type" : "integer"
+          },
+          "order_id" : {
+            "type" : "integer"
+          },
+          "method_code" : {
+            "type" : "string"
+          },
+          "currency_code" : {
+            "type" : "string"
+          },
+          "amount" : {
+            "format" : "double",
+            "type" : "number"
+          },
+          "date" : {
+            "format" : "date-time",
+            "type" : "string"
+          },
+          "status" : {
+            "enum" : [ "pending", "confirmed", "failed", "refunded" ],
+            "type" : "string"
+          },
+          "internal_reference" : {
+            "type" : "string"
+          },
+          "provider_response" : {
+            "nullable" : true,
+            "type" : "object"
+          }
+        },
+        "type" : "object"
+      },
+      "PaymentInput" : {
+        "properties" : {
+          "method_code" : {
+            "type" : "string"
+          },
+          "currency_code" : {
+            "type" : "string"
+          },
+          "amount" : {
+            "format" : "double",
+            "type" : "number"
+          }
+        },
+        "required" : [ "amount", "currency_code", "method_code" ],
+        "type" : "object"
+      },
+      "PaginatedMeta" : {
+        "properties" : {
+          "total" : {
+            "type" : "integer"
+          },
+          "page" : {
+            "type" : "integer"
+          },
+          "per_page" : {
+            "type" : "integer"
+          },
+          "last_page" : {
+            "type" : "integer"
+          }
+        },
+        "type" : "object"
+      },
+      "Error" : {
+        "properties" : {
+          "code" : {
+            "type" : "integer"
+          },
+          "message" : {
+            "type" : "string"
+          }
+        },
+        "type" : "object"
+      },
+      "_users_get_200_response" : {
+        "properties" : {
+          "data" : {
+            "items" : {
+              "$ref" : "#/components/schemas/User"
+            },
+            "type" : "array"
+          },
+          "meta" : {
+            "$ref" : "#/components/schemas/PaginatedMeta"
+          }
+        },
+        "type" : "object"
+      },
+      "_products_get_200_response" : {
+        "properties" : {
+          "data" : {
+            "items" : {
+              "$ref" : "#/components/schemas/Product"
+            },
+            "type" : "array"
+          },
+          "meta" : {
+            "$ref" : "#/components/schemas/PaginatedMeta"
+          }
+        },
+        "type" : "object"
+      },
+      "_products__id__stock_history_get_200_response" : {
+        "properties" : {
+          "data" : {
+            "items" : {
+              "$ref" : "#/components/schemas/StockEntry"
+            },
+            "type" : "array"
+          },
+          "meta" : {
+            "$ref" : "#/components/schemas/PaginatedMeta"
+          }
+        },
+        "type" : "object"
+      },
+      "_products__id__reviews_get_200_response" : {
+        "properties" : {
+          "average_score" : {
+            "format" : "float",
+            "type" : "number"
+          },
+          "data" : {
+            "items" : {
+              "$ref" : "#/components/schemas/Review"
+            },
+            "type" : "array"
+          },
+          "meta" : {
+            "$ref" : "#/components/schemas/PaginatedMeta"
+          }
+        },
+        "type" : "object"
+      },
+      "_orders_get_200_response" : {
+        "properties" : {
+          "data" : {
+            "items" : {
+              "$ref" : "#/components/schemas/Order"
+            },
+            "type" : "array"
+          },
+          "meta" : {
+            "$ref" : "#/components/schemas/PaginatedMeta"
+          }
+        },
+        "type" : "object"
+      },
+      "OrderInput_items_inner" : {
+        "properties" : {
+          "product_id" : {
+            "type" : "integer"
+          },
+          "quantity" : {
+            "format" : "double",
+            "type" : "number"
+          }
+        },
+        "required" : [ "product_id", "quantity" ],
+        "type" : "object"
+      }
+    },
+    "securitySchemes" : {
+      "BearerAuth" : {
+        "bearerFormat" : "JWT",
+        "scheme" : "bearer",
+        "type" : "http"
+      }
+    }
+  }
+}
