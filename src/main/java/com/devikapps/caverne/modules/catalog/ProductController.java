@@ -12,58 +12,60 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 public class ProductController {
 
-    private final ProductService productService;
+  private final ProductService productService;
 
-    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public String listProducts(
-            @RequestParam(required = false) Long category_id,
-            @RequestParam(required = false) Boolean is_active,
-            @RequestParam(required = false) String search,
-            @RequestParam(required = false) String currency,
-            @RequestParam(defaultValue = "1") int page,
-            @RequestParam(defaultValue = "20") int per_page) {
+  @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+  public String listProducts(
+      @RequestParam(required = false) Long category_id,
+      @RequestParam(required = false) Boolean is_active,
+      @RequestParam(required = false) String search,
+      @RequestParam(required = false) String currency,
+      @RequestParam(defaultValue = "1") int page,
+      @RequestParam(defaultValue = "20") int per_page) {
 
-        var p = productService.findAll(category_id, is_active, search, currency, PageRequest.of(page - 1, per_page));
-        org.openapitools.client.model.ProductsGet200Response response = new org.openapitools.client.model.ProductsGet200Response()
-                .data(p.getContent())
-                .meta(new org.openapitools.client.model.PaginatedMeta()
-                        .total(Math.toIntExact(p.getTotalElements()))
-                        .page(p.getNumber() + 1)
-                        .perPage(p.getSize())
-                        .lastPage(p.getTotalPages()));
-        return JSON.getGson().toJson(response);
+    var p =
+        productService.findAll(
+            category_id, is_active, search, currency, PageRequest.of(page - 1, per_page));
+    org.openapitools.client.model.ProductsGet200Response response =
+        new org.openapitools.client.model.ProductsGet200Response()
+            .data(p.getContent())
+            .meta(
+                new org.openapitools.client.model.PaginatedMeta()
+                    .total(Math.toIntExact(p.getTotalElements()))
+                    .page(p.getNumber() + 1)
+                    .perPage(p.getSize())
+                    .lastPage(p.getTotalPages()));
+    return JSON.getGson().toJson(response);
+  }
+
+  @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+  @ResponseStatus(HttpStatus.CREATED)
+  public String createProduct(@RequestBody String rawBody) {
+    return JSON.getGson().toJson(productService.createProduct(parseProductInput(rawBody)));
+  }
+
+  @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+  public String getProduct(@PathVariable Long id) {
+    return JSON.getGson().toJson(productService.findResponseById(id));
+  }
+
+  @PutMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+  public String updateProduct(@PathVariable Long id, @RequestBody String rawBody) {
+    return JSON.getGson().toJson(productService.updateProduct(id, parseProductInput(rawBody)));
+  }
+
+  @DeleteMapping("/{id}")
+  @ResponseStatus(HttpStatus.NO_CONTENT)
+  public void deleteProduct(@PathVariable Long id) {
+    productService.deleteProduct(id);
+  }
+
+  private org.openapitools.client.model.ProductInput parseProductInput(String rawBody) {
+    try {
+      return org.openapitools.client.model.ProductInput.fromJson(rawBody);
+    } catch (Exception exception) {
+      throw new org.springframework.web.server.ResponseStatusException(
+          org.springframework.http.HttpStatus.UNPROCESSABLE_ENTITY, "Invalid product payload");
     }
-
-    @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    @ResponseStatus(HttpStatus.CREATED)
-    public String createProduct(@RequestBody String rawBody) {
-        return JSON.getGson().toJson(productService.createProduct(parseProductInput(rawBody)));
-    }
-
-    @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public String getProduct(@PathVariable Long id) {
-        return JSON.getGson().toJson(productService.findResponseById(id));
-    }
-
-    @PutMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public String updateProduct(@PathVariable Long id, @RequestBody String rawBody) {
-        return JSON.getGson().toJson(productService.updateProduct(id, parseProductInput(rawBody)));
-    }
-
-    @DeleteMapping("/{id}")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteProduct(@PathVariable Long id) {
-        productService.deleteProduct(id);
-    }
-
-    private org.openapitools.client.model.ProductInput parseProductInput(String rawBody) {
-        try {
-            return org.openapitools.client.model.ProductInput.fromJson(rawBody);
-        } catch (Exception exception) {
-            throw new org.springframework.web.server.ResponseStatusException(
-                    org.springframework.http.HttpStatus.UNPROCESSABLE_ENTITY,
-                    "Invalid product payload"
-            );
-        }
-    }
+  }
 }

@@ -11,14 +11,13 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class JacksonConfig {
 
-    @Bean
-    public ObjectMapper objectMapper() {
-        return JsonMapper.builder()
-                .findAndAddModules()
-                .propertyNamingStrategy(PropertyNamingStrategies.SNAKE_CASE)
-                .enable(SerializationFeature.WRITE_ENUMS_USING_TO_STRING)
-                .enable(DeserializationFeature.READ_ENUMS_USING_TO_STRING)
-                .build();
-    }
-
+  @Bean
+  public ObjectMapper objectMapper() {
+    return JsonMapper.builder()
+        .findAndAddModules()
+        .propertyNamingStrategy(PropertyNamingStrategies.SNAKE_CASE)
+        .enable(SerializationFeature.WRITE_ENUMS_USING_TO_STRING)
+        .enable(DeserializationFeature.READ_ENUMS_USING_TO_STRING)
+        .build();
+  }
 }
