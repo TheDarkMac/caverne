@@ -13,7 +13,9 @@
 
 
 
-To generate clients, you must install openapi-generator-cli in your side.
+### To generate clients, you must install openapi-generator-cli in your side.
 
-After that, run ./clients-generator.sh
+### After that:
 
+    - source ./clients-generator.sh
+    - cd ./clients
