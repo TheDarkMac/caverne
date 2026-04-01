@@ -749,7 +749,7 @@ paths:
                 $ref: '#/components/schemas/User'
         '401':
           $ref: '#/components/responses/Unauthorized'
-    patch:
+    put:
       tags: [Users]
       summary: Mise à jour du profil
       requestBody:
@@ -860,7 +860,7 @@ paths:
   /users/me/addresses/{id}/default:
     parameters:
       - $ref: '#/components/parameters/pathId'
-    patch:
+    put:
       tags: [Addresses]
       summary: Définir comme adresse par défaut
       responses:
@@ -1089,7 +1089,7 @@ paths:
         required: true
         schema:
           type: integer
-    patch:
+    put:
       tags: [Products]
       summary: Modifier une image (définir main, etc.)
       requestBody:
@@ -1380,7 +1380,7 @@ paths:
   /orders/{id}/status:
     parameters:
       - $ref: '#/components/parameters/pathId'
-    patch:
+    put:
       tags: [Orders]
       summary: Changer le statut d'une commande (admin)
       requestBody:
