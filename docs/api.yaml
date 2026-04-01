@@ -132,6 +132,25 @@ components:
         is_default:
           type: boolean
 
+    GuestAddressInput:
+      type: object
+      required: [location, postal_code, country_code, customer_name, customer_email, customer_phone]
+      properties:
+        location:
+          type: string
+        postal_code:
+          type: string
+        country_code:
+          type: string
+          maxLength: 3
+        customer_name:
+          type: string
+        customer_email:
+          type: string
+          format: email
+        customer_phone:
+          type: string
+
     # ── CATEGORY ──
     Category:
       type: object
@@ -438,16 +457,19 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/OrderItem'
+        guest_address:
+          $ref: '#/components/schemas/GuestAddressInput'
         provider_response:
           type: object
           nullable: true
 
     OrderInput:
       type: object
-      required: [address_id, currency_code, items]
+      required: [currency_code, items, guest_address]
       properties:
         address_id:
           type: integer
+          nullable: true
         currency_code:
           type: string
         items:
@@ -462,6 +484,8 @@ components:
               quantity:
                 type: number
                 format: double
+        guest_address:
+          $ref: '#/components/schemas/GuestAddressInput'
 
     OrderStatusUpdate:
       type: object
@@ -1312,6 +1336,7 @@ paths:
     post:
       tags: [Orders]
       summary: Passer une commande
+      security: []
       requestBody:
         required: true
         content:
@@ -1367,6 +1392,7 @@ paths:
     get:
       tags: [Orders]
       summary: Détail d'une commande
+      security: []
       responses:
         '200':
           description: OK
@@ -1452,6 +1478,7 @@ paths:
     get:
       tags: [Payments]
       summary: Paiements associés à une commande
+      security: []
       responses:
         '200':
           description: OK
@@ -1464,6 +1491,7 @@ paths:
     post:
       tags: [Payments]
       summary: Initier un paiement
+      security: []
       requestBody:
         required: true
         content:
