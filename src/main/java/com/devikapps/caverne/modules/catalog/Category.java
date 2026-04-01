@@ -1,25 +1,29 @@
 package com.devikapps.caverne.modules.catalog;
 
 import jakarta.persistence.*;
-import lombok.*;
 import java.util.List;
+import lombok.*;
 
 @Entity
 @Table(name = "categories")
-@Getter @Setter @NoArgsConstructor @AllArgsConstructor @Builder
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class Category {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-    
-    private String label;
-    private String slug;
-    private String map;
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "parent_id")
-    private Category parent;
+  private String label;
+  private String slug;
+  private String map;
 
-    @OneToMany(mappedBy = "parent")
-    private List<Category> children;
+  @ManyToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "parent_id")
+  private Category parent;
+
+  @OneToMany(mappedBy = "parent")
+  private List<Category> children;
 }
