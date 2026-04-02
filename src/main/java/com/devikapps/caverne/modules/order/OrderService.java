@@ -15,6 +15,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
@@ -29,6 +32,11 @@ public class OrderService {
   private final List<PaymentProvider> paymentProviders;
   private final ObjectMapper objectMapper;
   private final OrderApiMapper orderApiMapper;
+
+  @Transactional(readOnly = true)
+  public Page<org.openapitools.client.model.Order> findAll(OrderStatus status, Pageable pageable) {
+    return orderRepository.findAll(withStatus(status), pageable).map(orderApiMapper::toOrderModel);
+  }
 
   public org.openapitools.client.model.Order createOrder(
       org.openapitools.client.model.OrderInput input) {
@@ -156,6 +164,11 @@ public class OrderService {
     return orderRepository
         .findById(id)
         .orElseThrow(() -> new ResponseStatusException(NOT_FOUND, "Order not found"));
+  }
+
+  private Specification<Order> withStatus(OrderStatus status) {
+    return (root, query, builder) ->
+        status == null ? null : builder.equal(root.get("status"), status);
   }
 
   private void validateOrderInput(org.openapitools.client.model.OrderInput input) {
