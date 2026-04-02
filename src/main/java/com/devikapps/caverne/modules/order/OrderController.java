@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.openapitools.client.JSON;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
@@ -17,6 +18,30 @@ import org.springframework.web.server.ResponseStatusException;
 public class OrderController {
 
   private final OrderService orderService;
+
+  @GetMapping(value = "/orders/all", produces = MediaType.APPLICATION_JSON_VALUE)
+  public String listAllOrders(
+      @RequestParam(required = false) String status,
+      @RequestParam(required = false) Integer user_id,
+      @RequestParam(defaultValue = "1") int page,
+      @RequestParam(defaultValue = "20") int per_page) {
+    if (user_id != null) {
+      throw new ResponseStatusException(
+          UNPROCESSABLE_ENTITY, "user_id filtering is not supported in the current MVP");
+    }
+
+    var p = orderService.findAll(parseOrderStatus(status), PageRequest.of(page - 1, per_page));
+    org.openapitools.client.model.OrdersGet200Response response =
+        new org.openapitools.client.model.OrdersGet200Response()
+            .data(p.getContent())
+            .meta(
+                new org.openapitools.client.model.PaginatedMeta()
+                    .total(Math.toIntExact(p.getTotalElements()))
+                    .page(p.getNumber() + 1)
+                    .perPage(p.getSize())
+                    .lastPage(p.getTotalPages()));
+    return JSON.getGson().toJson(response);
+  }
 
   @PostMapping(value = "/orders", produces = MediaType.APPLICATION_JSON_VALUE)
   @ResponseStatus(HttpStatus.CREATED)
@@ -74,6 +99,18 @@ public class OrderController {
       return org.openapitools.client.model.OrderStatusUpdate.fromJson(rawBody);
     } catch (IOException | IllegalArgumentException exception) {
       throw new ResponseStatusException(UNPROCESSABLE_ENTITY, "Invalid order status payload");
+    }
+  }
+
+  private OrderStatus parseOrderStatus(String rawValue) {
+    if (rawValue == null || rawValue.isBlank()) {
+      return null;
+    }
+
+    try {
+      return OrderStatus.valueOf(rawValue.trim().toUpperCase());
+    } catch (IllegalArgumentException exception) {
+      throw new ResponseStatusException(UNPROCESSABLE_ENTITY, "Invalid order status filter");
     }
   }
 }

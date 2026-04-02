@@ -2,6 +2,7 @@ package com.devikapps.caverne.modules.order;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -102,6 +103,67 @@ class CheckoutApiIntegrationTest {
         .perform(get("/orders/{id}/payments", orderId))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$[0].method_code").value("MANUAL"));
+  }
+
+  @Test
+  void shouldUpdateOrderStatusUsingContractPayload() throws Exception {
+    Product product = saveProduct("Cinnamon", "CIN-001", 9000);
+    Long orderId = createOrder(product);
+
+    String payload = objectMapper.writeValueAsString(Map.of("status", "confirmed"));
+
+    mockMvc
+        .perform(
+            put("/orders/{id}/status", orderId)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(payload))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.id").value(orderId))
+        .andExpect(jsonPath("$.status").value("confirmed"));
+  }
+
+  @Test
+  void shouldListAllOrdersWithStatusFilter() throws Exception {
+    Product product = saveProduct("Vanilla", "VAN-002", 15000);
+    Long pendingOrderId = createOrder(product);
+    Long confirmedOrderId = createOrder(product);
+
+    String statusPayload = objectMapper.writeValueAsString(Map.of("status", "confirmed"));
+
+    mockMvc
+        .perform(
+            put("/orders/{id}/status", confirmedOrderId)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(statusPayload))
+        .andExpect(status().isOk());
+
+    mockMvc
+        .perform(
+            get("/orders/all")
+                .queryParam("status", "confirmed")
+                .queryParam("page", "1")
+                .queryParam("per_page", "10"))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.meta.total").value(1))
+        .andExpect(jsonPath("$.data[0].id").value(confirmedOrderId))
+        .andExpect(jsonPath("$.data[0].status").value("confirmed"));
+
+    mockMvc
+        .perform(get("/orders/{id}", pendingOrderId))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.id").value(pendingOrderId));
+  }
+
+  @Test
+  void shouldCancelOrder() throws Exception {
+    Product product = saveProduct("Ginger", "GIN-001", 7000);
+    Long orderId = createOrder(product);
+
+    mockMvc
+        .perform(post("/orders/{id}/cancel", orderId))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.id").value(orderId))
+        .andExpect(jsonPath("$.status").value("cancelled"));
   }
 
   private Product saveProduct(String label, String reference, int amount) {
