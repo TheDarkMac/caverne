@@ -130,7 +130,7 @@ paths:
         schema:
           enum:
           - admin
-          - customer
+          - simple_user
           type: string
         style: form
       responses:
@@ -1757,7 +1757,7 @@ components:
         role:
           enum:
           - admin
-          - customer
+          - simple_user
           type: string
         status:
           type: string

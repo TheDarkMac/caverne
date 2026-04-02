@@ -85,7 +85,7 @@ components:
           type: string
         role:
           type: string
-          enum: [admin, customer]
+          enum: [admin, simple_user]
         status:
           type: string
 
@@ -740,7 +740,7 @@ paths:
           in: query
           schema:
             type: string
-            enum: [admin, customer]
+            enum: [admin, simple_user]
       responses:
         '200':
           description: Liste paginée
