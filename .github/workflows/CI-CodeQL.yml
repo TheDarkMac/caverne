@@ -31,10 +31,9 @@ jobs:
           languages: java
           queries: security-extended
           debug: true
-      - name: Autobuild
-        uses: github/codeql-action/autobuild@v4
-        env:
-          JAVA_HOME_21_X64: ${{ steps.setup-java.outputs.java-home }}
+
+      - name: build project
+        run: ./gradlew build --no-daemon
 
       - name: Perform CodeQL Analysis
         uses: github/codeql-action/analyze@v4
