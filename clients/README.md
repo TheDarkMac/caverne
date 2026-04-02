@@ -2,7 +2,7 @@
 
 La Caverne Malgache API
 - API version: 1.0.0
-  - Build date: 2026-04-01T22:22:56.213623560+03:00[Indian/Antananarivo]
+  - Build date: 2026-04-02T13:45:44.499123204+03:00[Indian/Antananarivo]
   - Generator version: 7.21.0
 
 Documentation OpenAPI de La Caverne Malagasy.

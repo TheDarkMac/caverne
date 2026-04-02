@@ -60,7 +60,7 @@ public class Example {
 |------------- | ------------- | ------------- | -------------|
 | **page** | **Integer**|  | [optional] [default to 1] |
 | **perPage** | **Integer**|  | [optional] [default to 20] |
-| **role** | **String**|  | [optional] [enum: admin, customer] |
+| **role** | **String**|  | [optional] [enum: admin, simple_user] |
 
 ### Return type
 

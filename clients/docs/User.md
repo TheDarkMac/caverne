@@ -22,7 +22,7 @@
 | Name | Value |
 |---- | -----|
 | ADMIN | &quot;admin&quot; |
-| CUSTOMER | &quot;customer&quot; |
+| SIMPLE_USER | &quot;simple_user&quot; |
 
 
 
