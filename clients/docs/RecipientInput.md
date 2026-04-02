@@ -1,6 +1,6 @@
 
 
-# GuestAddressInput
+# RecipientInput
 
 
 ## Properties
@@ -10,9 +10,9 @@
 |**location** | **String** |  |  |
 |**postalCode** | **String** |  |  |
 |**countryCode** | **String** |  |  |
-|**customerName** | **String** |  |  |
-|**customerEmail** | **String** |  |  |
-|**customerPhone** | **String** |  |  |
+|**recipientName** | **String** |  |  |
+|**recipientEmail** | **String** |  |  |
+|**recipientPhone** | **String** |  |  |
 
 
 

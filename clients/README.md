@@ -2,7 +2,7 @@
 
 La Caverne Malgache API
 - API version: 1.0.0
-  - Build date: 2026-04-02T13:45:44.499123204+03:00[Indian/Antananarivo]
+  - Build date: 2026-04-02T14:34:59.816130566+03:00[Indian/Antananarivo]
   - Generator version: 7.21.0
 
 Documentation OpenAPI de La Caverne Malagasy.
@@ -132,8 +132,8 @@ Class | Method | HTTP request | Description
 *CategoriesApi* | [**categoriesGet**](docs/CategoriesApi.md#categoriesGet) | **GET** /categories | Liste des catégories (arbre)
 *CategoriesApi* | [**categoriesIdDelete**](docs/CategoriesApi.md#categoriesIdDelete) | **DELETE** /categories/{id} | Supprimer une catégorie (admin)
 *CategoriesApi* | [**categoriesIdGet**](docs/CategoriesApi.md#categoriesIdGet) | **GET** /categories/{id} | Détail d&#39;une catégorie
-*CategoriesApi* | [**categoriesIdPut**](docs/CategoriesApi.md#categoriesIdPut) | **PUT** /categories/{id} | Modifier une catégorie (admin)
-*CategoriesApi* | [**categoriesPost**](docs/CategoriesApi.md#categoriesPost) | **POST** /categories | Créer une catégorie (admin)
+*CategoriesApi* | [**categoriesIdPut**](docs/CategoriesApi.md#categoriesIdPut) | **PUT** /categories/{id} | Créer ou mettre à jour une catégorie par identifiant (admin)
+*CategoriesApi* | [**categoriesPost**](docs/CategoriesApi.md#categoriesPost) | **POST** /categories | Créer ou mettre à jour une catégorie (admin)
 *CurrenciesApi* | [**currenciesCodeIsoDelete**](docs/CurrenciesApi.md#currenciesCodeIsoDelete) | **DELETE** /currencies/{code_iso} | Supprimer une devise (admin)
 *CurrenciesApi* | [**currenciesCodeIsoPut**](docs/CurrenciesApi.md#currenciesCodeIsoPut) | **PUT** /currencies/{code_iso} | Modifier une devise (admin)
 *CurrenciesApi* | [**currenciesGet**](docs/CurrenciesApi.md#currenciesGet) | **GET** /currencies | Liste des devises supportées
@@ -191,7 +191,6 @@ Class | Method | HTTP request | Description
  - [DeliverCost](docs/DeliverCost.md)
  - [DeliverCostInput](docs/DeliverCostInput.md)
  - [Error](docs/Error.md)
- - [GuestAddressInput](docs/GuestAddressInput.md)
  - [LoginRequest](docs/LoginRequest.md)
  - [LoginResponse](docs/LoginResponse.md)
  - [Order](docs/Order.md)
@@ -214,6 +213,7 @@ Class | Method | HTTP request | Description
  - [ProductsGet200Response](docs/ProductsGet200Response.md)
  - [ProductsIdReviewsGet200Response](docs/ProductsIdReviewsGet200Response.md)
  - [ProductsIdStockHistoryGet200Response](docs/ProductsIdStockHistoryGet200Response.md)
+ - [RecipientInput](docs/RecipientInput.md)
  - [RegisterRequest](docs/RegisterRequest.md)
  - [Review](docs/Review.md)
  - [ReviewInput](docs/ReviewInput.md)

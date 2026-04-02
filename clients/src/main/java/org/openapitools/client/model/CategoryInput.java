@@ -49,8 +49,13 @@ import org.openapitools.client.JSON;
 /**
  * CategoryInput
  */
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2026-04-02T13:45:44.499123204+03:00[Indian/Antananarivo]", comments = "Generator version: 7.21.0")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2026-04-02T14:34:59.816130566+03:00[Indian/Antananarivo]", comments = "Generator version: 7.21.0")
 public class CategoryInput {
+  public static final String SERIALIZED_NAME_ID = "id";
+  @SerializedName(SERIALIZED_NAME_ID)
+  @javax.annotation.Nullable
+  private Integer id;
+
   public static final String SERIALIZED_NAME_LABEL = "label";
   @SerializedName(SERIALIZED_NAME_LABEL)
   @javax.annotation.Nonnull
@@ -73,6 +78,25 @@ public class CategoryInput {
 
   public CategoryInput() {
   }
+
+  public CategoryInput id(@javax.annotation.Nullable Integer id) {
+    this.id = id;
+    return this;
+  }
+
+  /**
+   * Get id
+   * @return id
+   */
+  @javax.annotation.Nullable
+  public Integer getId() {
+    return id;
+  }
+
+  public void setId(@javax.annotation.Nullable Integer id) {
+    this.id = id;
+  }
+
 
   public CategoryInput label(@javax.annotation.Nonnull String label) {
     this.label = label;
@@ -160,7 +184,8 @@ public class CategoryInput {
       return false;
     }
     CategoryInput categoryInput = (CategoryInput) o;
-    return Objects.equals(this.label, categoryInput.label) &&
+    return Objects.equals(this.id, categoryInput.id) &&
+        Objects.equals(this.label, categoryInput.label) &&
         Objects.equals(this.slug, categoryInput.slug) &&
         Objects.equals(this.map, categoryInput.map) &&
         Objects.equals(this.parentId, categoryInput.parentId);
@@ -172,7 +197,7 @@ public class CategoryInput {
 
   @Override
   public int hashCode() {
-    return Objects.hash(label, slug, map, parentId);
+    return Objects.hash(id, label, slug, map, parentId);
   }
 
   private static <T> int hashCodeNullable(JsonNullable<T> a) {
@@ -186,6 +211,7 @@ public class CategoryInput {
   public String toString() {
     StringBuilder sb = new StringBuilder();
     sb.append("class CategoryInput {\n");
+    sb.append("    id: ").append(toIndentedString(id)).append("\n");
     sb.append("    label: ").append(toIndentedString(label)).append("\n");
     sb.append("    slug: ").append(toIndentedString(slug)).append("\n");
     sb.append("    map: ").append(toIndentedString(map)).append("\n");
@@ -208,7 +234,7 @@ public class CategoryInput {
 
   static {
     // a set of all properties/fields (JSON key names)
-    openapiFields = new HashSet<String>(Arrays.asList("label", "slug", "map", "parent_id"));
+    openapiFields = new HashSet<String>(Arrays.asList("id", "label", "slug", "map", "parent_id"));
 
     // a set of required properties/fields (JSON key names)
     openapiRequiredFields = new HashSet<String>(Arrays.asList("label", "slug"));

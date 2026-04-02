@@ -403,6 +403,8 @@ paths:
       x-accepts:
       - application/json
     post:
+      description: |
+        Endpoint d'upsert. Si `id` est absent ou null dans le payload, une nouvelle catégorie est créée. Si `id` est fourni, la catégorie existante correspondante doit être mise à jour.
       requestBody:
         content:
           application/json:
@@ -415,8 +417,14 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Category"
-          description: Créée
-      summary: Créer une catégorie (admin)
+          description: Créée quand `id` est absent
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Category"
+          description: Mise à jour quand `id` est fourni
+      summary: Créer ou mettre à jour une catégorie (admin)
       tags:
       - Categories
       x-content-type: application/json
@@ -469,6 +477,8 @@ paths:
       x-accepts:
       - application/json
     put:
+      description: |
+        Endpoint d'upsert avec identifiant dans l'URL. Le `id` du path fait foi. Si `id` est aussi fourni dans le payload, il doit correspondre à l'identifiant du path.
       parameters:
       - explode: false
         in: path
@@ -490,7 +500,14 @@ paths:
               schema:
                 $ref: "#/components/schemas/Category"
           description: OK
-      summary: Modifier une catégorie (admin)
+        "201":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Category"
+          description: Créée si l'identifiant du path n'existe pas encore et que l'implémentation
+            choisit de créer
+      summary: Créer ou mettre à jour une catégorie par identifiant (admin)
       tags:
       - Categories
       x-content-type: application/json
@@ -1820,14 +1837,14 @@ components:
       - location
       - postal_code
       type: object
-    GuestAddressInput:
+    RecipientInput:
       example:
         country_code: country_code
-        customer_email: customer_email
-        customer_phone: customer_phone
+        recipient_email: recipient_email
         location: location
-        customer_name: customer_name
         postal_code: postal_code
+        recipient_name: recipient_name
+        recipient_phone: recipient_phone
       properties:
         location:
           type: string
@@ -1836,20 +1853,20 @@ components:
         country_code:
           maxLength: 3
           type: string
-        customer_name:
+        recipient_name:
           type: string
-        customer_email:
+        recipient_email:
           format: email
           type: string
-        customer_phone:
+        recipient_phone:
           type: string
       required:
       - country_code
-      - customer_email
-      - customer_name
-      - customer_phone
       - location
       - postal_code
+      - recipient_email
+      - recipient_name
+      - recipient_phone
       type: object
     Category:
       example:
@@ -1881,11 +1898,15 @@ components:
       type: object
     CategoryInput:
       example:
-        parent_id: 0
+        parent_id: 6
+        id: 0
         label: label
         map: map
         slug: slug
       properties:
+        id:
+          nullable: true
+          type: integer
         label:
           type: string
         slug:
@@ -2240,9 +2261,9 @@ components:
       type: object
     OrderItem:
       example:
-        quantity: 5.637376656633329
+        quantity: 2.3021358869347655
         product_id: 5
-        unit_price: 2.3021358869347655
+        unit_price: 7.061401241503109
       properties:
         product_id:
           type: integer
@@ -2257,23 +2278,24 @@ components:
       example:
         reference: reference
         date: 2000-01-23T04:56:07.000+00:00
+        delivery_cost_id: 5
         user_id: 6
-        guest_address:
-          country_code: country_code
-          customer_email: customer_email
-          customer_phone: customer_phone
-          location: location
-          customer_name: customer_name
-          postal_code: postal_code
         address_id: 1
+        recipient:
+          country_code: country_code
+          recipient_email: recipient_email
+          location: location
+          postal_code: postal_code
+          recipient_name: recipient_name
+          recipient_phone: recipient_phone
         id: 0
         items:
-        - quantity: 5.637376656633329
+        - quantity: 2.3021358869347655
           product_id: 5
-          unit_price: 2.3021358869347655
-        - quantity: 5.637376656633329
+          unit_price: 7.061401241503109
+        - quantity: 2.3021358869347655
           product_id: 5
-          unit_price: 2.3021358869347655
+          unit_price: 7.061401241503109
         currency_code: currency_code
         provider_response: "{}"
         status: pending
@@ -2298,34 +2320,41 @@ components:
           - delivered
           - cancelled
           type: string
+        delivery_cost_id:
+          nullable: true
+          type: integer
         items:
           items:
             $ref: "#/components/schemas/OrderItem"
           type: array
-        guest_address:
-          $ref: "#/components/schemas/GuestAddressInput"
+        recipient:
+          $ref: "#/components/schemas/RecipientInput"
         provider_response:
           nullable: true
           type: object
       type: object
     OrderInput:
       example:
-        guest_address:
-          country_code: country_code
-          customer_email: customer_email
-          customer_phone: customer_phone
-          location: location
-          customer_name: customer_name
-          postal_code: postal_code
+        delivery_cost_id: 6
         address_id: 0
+        recipient:
+          country_code: country_code
+          recipient_email: recipient_email
+          location: location
+          postal_code: postal_code
+          recipient_name: recipient_name
+          recipient_phone: recipient_phone
         items:
-        - quantity: 1.4658129805029452
-          product_id: 6
-        - quantity: 1.4658129805029452
-          product_id: 6
+        - quantity: 5.962133916683182
+          product_id: 1
+        - quantity: 5.962133916683182
+          product_id: 1
         currency_code: currency_code
       properties:
         address_id:
+          nullable: true
+          type: integer
+        delivery_cost_id:
           nullable: true
           type: integer
         currency_code:
@@ -2335,12 +2364,12 @@ components:
             $ref: "#/components/schemas/OrderInput_items_inner"
           minItems: 1
           type: array
-        guest_address:
-          $ref: "#/components/schemas/GuestAddressInput"
+        recipient:
+          $ref: "#/components/schemas/RecipientInput"
       required:
       - currency_code
-      - guest_address
       - items
+      - recipient
       type: object
     OrderStatusUpdate:
       example:
@@ -2710,45 +2739,47 @@ components:
         data:
         - reference: reference
           date: 2000-01-23T04:56:07.000+00:00
+          delivery_cost_id: 5
           user_id: 6
-          guest_address:
-            country_code: country_code
-            customer_email: customer_email
-            customer_phone: customer_phone
-            location: location
-            customer_name: customer_name
-            postal_code: postal_code
           address_id: 1
+          recipient:
+            country_code: country_code
+            recipient_email: recipient_email
+            location: location
+            postal_code: postal_code
+            recipient_name: recipient_name
+            recipient_phone: recipient_phone
           id: 0
           items:
-          - quantity: 5.637376656633329
+          - quantity: 2.3021358869347655
             product_id: 5
-            unit_price: 2.3021358869347655
-          - quantity: 5.637376656633329
+            unit_price: 7.061401241503109
+          - quantity: 2.3021358869347655
             product_id: 5
-            unit_price: 2.3021358869347655
+            unit_price: 7.061401241503109
           currency_code: currency_code
           provider_response: "{}"
           status: pending
         - reference: reference
           date: 2000-01-23T04:56:07.000+00:00
+          delivery_cost_id: 5
           user_id: 6
-          guest_address:
-            country_code: country_code
-            customer_email: customer_email
-            customer_phone: customer_phone
-            location: location
-            customer_name: customer_name
-            postal_code: postal_code
           address_id: 1
+          recipient:
+            country_code: country_code
+            recipient_email: recipient_email
+            location: location
+            postal_code: postal_code
+            recipient_name: recipient_name
+            recipient_phone: recipient_phone
           id: 0
           items:
-          - quantity: 5.637376656633329
+          - quantity: 2.3021358869347655
             product_id: 5
-            unit_price: 2.3021358869347655
-          - quantity: 5.637376656633329
+            unit_price: 7.061401241503109
+          - quantity: 2.3021358869347655
             product_id: 5
-            unit_price: 2.3021358869347655
+            unit_price: 7.061401241503109
           currency_code: currency_code
           provider_response: "{}"
           status: pending
@@ -2767,8 +2798,8 @@ components:
       type: object
     OrderInput_items_inner:
       example:
-        quantity: 1.4658129805029452
-        product_id: 6
+        quantity: 5.962133916683182
+        product_id: 1
       properties:
         product_id:
           type: integer

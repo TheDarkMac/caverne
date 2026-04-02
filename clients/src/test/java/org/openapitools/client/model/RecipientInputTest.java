@@ -24,17 +24,17 @@ import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 /**
- * Model tests for GuestAddressInput
+ * Model tests for RecipientInput
  */
-public class GuestAddressInputTest {
-    private final GuestAddressInput model = new GuestAddressInput();
+public class RecipientInputTest {
+    private final RecipientInput model = new RecipientInput();
 
     /**
-     * Model tests for GuestAddressInput
+     * Model tests for RecipientInput
      */
     @Test
-    public void testGuestAddressInput() {
-        // TODO: test GuestAddressInput
+    public void testRecipientInput() {
+        // TODO: test RecipientInput
     }
 
     /**
@@ -62,27 +62,27 @@ public class GuestAddressInputTest {
     }
 
     /**
-     * Test the property 'customerName'
+     * Test the property 'recipientName'
      */
     @Test
-    public void customerNameTest() {
-        // TODO: test customerName
+    public void recipientNameTest() {
+        // TODO: test recipientName
     }
 
     /**
-     * Test the property 'customerEmail'
+     * Test the property 'recipientEmail'
      */
     @Test
-    public void customerEmailTest() {
-        // TODO: test customerEmail
+    public void recipientEmailTest() {
+        // TODO: test recipientEmail
     }
 
     /**
-     * Test the property 'customerPhone'
+     * Test the property 'recipientPhone'
      */
     @Test
-    public void customerPhoneTest() {
-        // TODO: test customerPhone
+    public void recipientPhoneTest() {
+        // TODO: test recipientPhone
     }
 
 }

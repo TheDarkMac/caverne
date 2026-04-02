@@ -24,8 +24,8 @@ import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import org.openapitools.client.model.GuestAddressInput;
 import org.openapitools.client.model.OrderItem;
+import org.openapitools.client.model.RecipientInput;
 import org.openapitools.jackson.nullable.JsonNullable;
 
 import com.google.gson.Gson;
@@ -54,7 +54,7 @@ import org.openapitools.client.JSON;
 /**
  * Order
  */
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2026-04-02T13:45:44.499123204+03:00[Indian/Antananarivo]", comments = "Generator version: 7.21.0")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2026-04-02T14:34:59.816130566+03:00[Indian/Antananarivo]", comments = "Generator version: 7.21.0")
 public class Order {
   public static final String SERIALIZED_NAME_ID = "id";
   @SerializedName(SERIALIZED_NAME_ID)
@@ -147,15 +147,20 @@ public class Order {
   @javax.annotation.Nullable
   private StatusEnum status;
 
+  public static final String SERIALIZED_NAME_DELIVERY_COST_ID = "delivery_cost_id";
+  @SerializedName(SERIALIZED_NAME_DELIVERY_COST_ID)
+  @javax.annotation.Nullable
+  private Integer deliveryCostId;
+
   public static final String SERIALIZED_NAME_ITEMS = "items";
   @SerializedName(SERIALIZED_NAME_ITEMS)
   @javax.annotation.Nullable
   private List<OrderItem> items = new ArrayList<>();
 
-  public static final String SERIALIZED_NAME_GUEST_ADDRESS = "guest_address";
-  @SerializedName(SERIALIZED_NAME_GUEST_ADDRESS)
+  public static final String SERIALIZED_NAME_RECIPIENT = "recipient";
+  @SerializedName(SERIALIZED_NAME_RECIPIENT)
   @javax.annotation.Nullable
-  private GuestAddressInput guestAddress;
+  private RecipientInput recipient;
 
   public static final String SERIALIZED_NAME_PROVIDER_RESPONSE = "provider_response";
   @SerializedName(SERIALIZED_NAME_PROVIDER_RESPONSE)
@@ -298,6 +303,25 @@ public class Order {
   }
 
 
+  public Order deliveryCostId(@javax.annotation.Nullable Integer deliveryCostId) {
+    this.deliveryCostId = deliveryCostId;
+    return this;
+  }
+
+  /**
+   * Get deliveryCostId
+   * @return deliveryCostId
+   */
+  @javax.annotation.Nullable
+  public Integer getDeliveryCostId() {
+    return deliveryCostId;
+  }
+
+  public void setDeliveryCostId(@javax.annotation.Nullable Integer deliveryCostId) {
+    this.deliveryCostId = deliveryCostId;
+  }
+
+
   public Order items(@javax.annotation.Nullable List<OrderItem> items) {
     this.items = items;
     return this;
@@ -325,22 +349,22 @@ public class Order {
   }
 
 
-  public Order guestAddress(@javax.annotation.Nullable GuestAddressInput guestAddress) {
-    this.guestAddress = guestAddress;
+  public Order recipient(@javax.annotation.Nullable RecipientInput recipient) {
+    this.recipient = recipient;
     return this;
   }
 
   /**
-   * Get guestAddress
-   * @return guestAddress
+   * Get recipient
+   * @return recipient
    */
   @javax.annotation.Nullable
-  public GuestAddressInput getGuestAddress() {
-    return guestAddress;
+  public RecipientInput getRecipient() {
+    return recipient;
   }
 
-  public void setGuestAddress(@javax.annotation.Nullable GuestAddressInput guestAddress) {
-    this.guestAddress = guestAddress;
+  public void setRecipient(@javax.annotation.Nullable RecipientInput recipient) {
+    this.recipient = recipient;
   }
 
 
@@ -380,8 +404,9 @@ public class Order {
         Objects.equals(this.reference, order.reference) &&
         Objects.equals(this.date, order.date) &&
         Objects.equals(this.status, order.status) &&
+        Objects.equals(this.deliveryCostId, order.deliveryCostId) &&
         Objects.equals(this.items, order.items) &&
-        Objects.equals(this.guestAddress, order.guestAddress) &&
+        Objects.equals(this.recipient, order.recipient) &&
         Objects.equals(this.providerResponse, order.providerResponse);
   }
 
@@ -391,7 +416,7 @@ public class Order {
 
   @Override
   public int hashCode() {
-    return Objects.hash(id, userId, addressId, currencyCode, reference, date, status, items, guestAddress, providerResponse);
+    return Objects.hash(id, userId, addressId, currencyCode, reference, date, status, deliveryCostId, items, recipient, providerResponse);
   }
 
   private static <T> int hashCodeNullable(JsonNullable<T> a) {
@@ -412,8 +437,9 @@ public class Order {
     sb.append("    reference: ").append(toIndentedString(reference)).append("\n");
     sb.append("    date: ").append(toIndentedString(date)).append("\n");
     sb.append("    status: ").append(toIndentedString(status)).append("\n");
+    sb.append("    deliveryCostId: ").append(toIndentedString(deliveryCostId)).append("\n");
     sb.append("    items: ").append(toIndentedString(items)).append("\n");
-    sb.append("    guestAddress: ").append(toIndentedString(guestAddress)).append("\n");
+    sb.append("    recipient: ").append(toIndentedString(recipient)).append("\n");
     sb.append("    providerResponse: ").append(toIndentedString(providerResponse)).append("\n");
     sb.append("}");
     return sb.toString();
@@ -433,7 +459,7 @@ public class Order {
 
   static {
     // a set of all properties/fields (JSON key names)
-    openapiFields = new HashSet<String>(Arrays.asList("id", "user_id", "address_id", "currency_code", "reference", "date", "status", "items", "guest_address", "provider_response"));
+    openapiFields = new HashSet<String>(Arrays.asList("id", "user_id", "address_id", "currency_code", "reference", "date", "status", "delivery_cost_id", "items", "recipient", "provider_response"));
 
     // a set of required properties/fields (JSON key names)
     openapiRequiredFields = new HashSet<String>(0);
@@ -487,9 +513,9 @@ public class Order {
           };
         }
       }
-      // validate the optional field `guest_address`
-      if (jsonObj.get("guest_address") != null && !jsonObj.get("guest_address").isJsonNull()) {
-        GuestAddressInput.validateJsonElement(jsonObj.get("guest_address"));
+      // validate the optional field `recipient`
+      if (jsonObj.get("recipient") != null && !jsonObj.get("recipient").isJsonNull()) {
+        RecipientInput.validateJsonElement(jsonObj.get("recipient"));
       }
   }
 

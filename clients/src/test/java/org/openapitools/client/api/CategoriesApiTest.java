@@ -70,7 +70,9 @@ public class CategoriesApiTest {
     }
 
     /**
-     * Modifier une catégorie (admin)
+     * Créer ou mettre à jour une catégorie par identifiant (admin)
+     *
+     * Endpoint d&#39;upsert avec identifiant dans l&#39;URL. Le &#x60;id&#x60; du path fait foi. Si &#x60;id&#x60; est aussi fourni dans le payload, il doit correspondre à l&#39;identifiant du path. 
      *
      * @throws ApiException if the Api call fails
      */
@@ -83,7 +85,9 @@ public class CategoriesApiTest {
     }
 
     /**
-     * Créer une catégorie (admin)
+     * Créer ou mettre à jour une catégorie (admin)
+     *
+     * Endpoint d&#39;upsert. Si &#x60;id&#x60; est absent ou null dans le payload, une nouvelle catégorie est créée. Si &#x60;id&#x60; est fourni, la catégorie existante correspondante doit être mise à jour. 
      *
      * @throws ApiException if the Api call fails
      */

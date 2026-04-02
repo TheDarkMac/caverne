@@ -39,6 +39,14 @@ public class CategoryInputTest {
     }
 
     /**
+     * Test the property 'id'
+     */
+    @Test
+    public void idTest() {
+        // TODO: test id
+    }
+
+    /**
      * Test the property 'label'
      */
     @Test
