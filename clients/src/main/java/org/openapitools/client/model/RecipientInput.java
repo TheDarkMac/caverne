@@ -46,10 +46,10 @@ import java.util.Set;
 import org.openapitools.client.JSON;
 
 /**
- * GuestAddressInput
+ * RecipientInput
  */
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2026-04-02T13:45:44.499123204+03:00[Indian/Antananarivo]", comments = "Generator version: 7.21.0")
-public class GuestAddressInput {
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2026-04-02T14:34:59.816130566+03:00[Indian/Antananarivo]", comments = "Generator version: 7.21.0")
+public class RecipientInput {
   public static final String SERIALIZED_NAME_LOCATION = "location";
   @SerializedName(SERIALIZED_NAME_LOCATION)
   @javax.annotation.Nonnull
@@ -65,25 +65,25 @@ public class GuestAddressInput {
   @javax.annotation.Nonnull
   private String countryCode;
 
-  public static final String SERIALIZED_NAME_CUSTOMER_NAME = "customer_name";
-  @SerializedName(SERIALIZED_NAME_CUSTOMER_NAME)
+  public static final String SERIALIZED_NAME_RECIPIENT_NAME = "recipient_name";
+  @SerializedName(SERIALIZED_NAME_RECIPIENT_NAME)
   @javax.annotation.Nonnull
-  private String customerName;
+  private String recipientName;
 
-  public static final String SERIALIZED_NAME_CUSTOMER_EMAIL = "customer_email";
-  @SerializedName(SERIALIZED_NAME_CUSTOMER_EMAIL)
+  public static final String SERIALIZED_NAME_RECIPIENT_EMAIL = "recipient_email";
+  @SerializedName(SERIALIZED_NAME_RECIPIENT_EMAIL)
   @javax.annotation.Nonnull
-  private String customerEmail;
+  private String recipientEmail;
 
-  public static final String SERIALIZED_NAME_CUSTOMER_PHONE = "customer_phone";
-  @SerializedName(SERIALIZED_NAME_CUSTOMER_PHONE)
+  public static final String SERIALIZED_NAME_RECIPIENT_PHONE = "recipient_phone";
+  @SerializedName(SERIALIZED_NAME_RECIPIENT_PHONE)
   @javax.annotation.Nonnull
-  private String customerPhone;
+  private String recipientPhone;
 
-  public GuestAddressInput() {
+  public RecipientInput() {
   }
 
-  public GuestAddressInput location(@javax.annotation.Nonnull String location) {
+  public RecipientInput location(@javax.annotation.Nonnull String location) {
     this.location = location;
     return this;
   }
@@ -102,7 +102,7 @@ public class GuestAddressInput {
   }
 
 
-  public GuestAddressInput postalCode(@javax.annotation.Nonnull String postalCode) {
+  public RecipientInput postalCode(@javax.annotation.Nonnull String postalCode) {
     this.postalCode = postalCode;
     return this;
   }
@@ -121,7 +121,7 @@ public class GuestAddressInput {
   }
 
 
-  public GuestAddressInput countryCode(@javax.annotation.Nonnull String countryCode) {
+  public RecipientInput countryCode(@javax.annotation.Nonnull String countryCode) {
     this.countryCode = countryCode;
     return this;
   }
@@ -140,60 +140,60 @@ public class GuestAddressInput {
   }
 
 
-  public GuestAddressInput customerName(@javax.annotation.Nonnull String customerName) {
-    this.customerName = customerName;
+  public RecipientInput recipientName(@javax.annotation.Nonnull String recipientName) {
+    this.recipientName = recipientName;
     return this;
   }
 
   /**
-   * Get customerName
-   * @return customerName
+   * Get recipientName
+   * @return recipientName
    */
   @javax.annotation.Nonnull
-  public String getCustomerName() {
-    return customerName;
+  public String getRecipientName() {
+    return recipientName;
   }
 
-  public void setCustomerName(@javax.annotation.Nonnull String customerName) {
-    this.customerName = customerName;
+  public void setRecipientName(@javax.annotation.Nonnull String recipientName) {
+    this.recipientName = recipientName;
   }
 
 
-  public GuestAddressInput customerEmail(@javax.annotation.Nonnull String customerEmail) {
-    this.customerEmail = customerEmail;
+  public RecipientInput recipientEmail(@javax.annotation.Nonnull String recipientEmail) {
+    this.recipientEmail = recipientEmail;
     return this;
   }
 
   /**
-   * Get customerEmail
-   * @return customerEmail
+   * Get recipientEmail
+   * @return recipientEmail
    */
   @javax.annotation.Nonnull
-  public String getCustomerEmail() {
-    return customerEmail;
+  public String getRecipientEmail() {
+    return recipientEmail;
   }
 
-  public void setCustomerEmail(@javax.annotation.Nonnull String customerEmail) {
-    this.customerEmail = customerEmail;
+  public void setRecipientEmail(@javax.annotation.Nonnull String recipientEmail) {
+    this.recipientEmail = recipientEmail;
   }
 
 
-  public GuestAddressInput customerPhone(@javax.annotation.Nonnull String customerPhone) {
-    this.customerPhone = customerPhone;
+  public RecipientInput recipientPhone(@javax.annotation.Nonnull String recipientPhone) {
+    this.recipientPhone = recipientPhone;
     return this;
   }
 
   /**
-   * Get customerPhone
-   * @return customerPhone
+   * Get recipientPhone
+   * @return recipientPhone
    */
   @javax.annotation.Nonnull
-  public String getCustomerPhone() {
-    return customerPhone;
+  public String getRecipientPhone() {
+    return recipientPhone;
   }
 
-  public void setCustomerPhone(@javax.annotation.Nonnull String customerPhone) {
-    this.customerPhone = customerPhone;
+  public void setRecipientPhone(@javax.annotation.Nonnull String recipientPhone) {
+    this.recipientPhone = recipientPhone;
   }
 
 
@@ -206,30 +206,30 @@ public class GuestAddressInput {
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    GuestAddressInput guestAddressInput = (GuestAddressInput) o;
-    return Objects.equals(this.location, guestAddressInput.location) &&
-        Objects.equals(this.postalCode, guestAddressInput.postalCode) &&
-        Objects.equals(this.countryCode, guestAddressInput.countryCode) &&
-        Objects.equals(this.customerName, guestAddressInput.customerName) &&
-        Objects.equals(this.customerEmail, guestAddressInput.customerEmail) &&
-        Objects.equals(this.customerPhone, guestAddressInput.customerPhone);
+    RecipientInput recipientInput = (RecipientInput) o;
+    return Objects.equals(this.location, recipientInput.location) &&
+        Objects.equals(this.postalCode, recipientInput.postalCode) &&
+        Objects.equals(this.countryCode, recipientInput.countryCode) &&
+        Objects.equals(this.recipientName, recipientInput.recipientName) &&
+        Objects.equals(this.recipientEmail, recipientInput.recipientEmail) &&
+        Objects.equals(this.recipientPhone, recipientInput.recipientPhone);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(location, postalCode, countryCode, customerName, customerEmail, customerPhone);
+    return Objects.hash(location, postalCode, countryCode, recipientName, recipientEmail, recipientPhone);
   }
 
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
-    sb.append("class GuestAddressInput {\n");
+    sb.append("class RecipientInput {\n");
     sb.append("    location: ").append(toIndentedString(location)).append("\n");
     sb.append("    postalCode: ").append(toIndentedString(postalCode)).append("\n");
     sb.append("    countryCode: ").append(toIndentedString(countryCode)).append("\n");
-    sb.append("    customerName: ").append(toIndentedString(customerName)).append("\n");
-    sb.append("    customerEmail: ").append(toIndentedString(customerEmail)).append("\n");
-    sb.append("    customerPhone: ").append(toIndentedString(customerPhone)).append("\n");
+    sb.append("    recipientName: ").append(toIndentedString(recipientName)).append("\n");
+    sb.append("    recipientEmail: ").append(toIndentedString(recipientEmail)).append("\n");
+    sb.append("    recipientPhone: ").append(toIndentedString(recipientPhone)).append("\n");
     sb.append("}");
     return sb.toString();
   }
@@ -248,35 +248,35 @@ public class GuestAddressInput {
 
   static {
     // a set of all properties/fields (JSON key names)
-    openapiFields = new HashSet<String>(Arrays.asList("location", "postal_code", "country_code", "customer_name", "customer_email", "customer_phone"));
+    openapiFields = new HashSet<String>(Arrays.asList("location", "postal_code", "country_code", "recipient_name", "recipient_email", "recipient_phone"));
 
     // a set of required properties/fields (JSON key names)
-    openapiRequiredFields = new HashSet<String>(Arrays.asList("location", "postal_code", "country_code", "customer_name", "customer_email", "customer_phone"));
+    openapiRequiredFields = new HashSet<String>(Arrays.asList("location", "postal_code", "country_code", "recipient_name", "recipient_email", "recipient_phone"));
   }
 
   /**
    * Validates the JSON Element and throws an exception if issues found
    *
    * @param jsonElement JSON Element
-   * @throws IOException if the JSON Element is invalid with respect to GuestAddressInput
+   * @throws IOException if the JSON Element is invalid with respect to RecipientInput
    */
   public static void validateJsonElement(JsonElement jsonElement) throws IOException {
       if (jsonElement == null) {
-        if (!GuestAddressInput.openapiRequiredFields.isEmpty()) { // has required fields but JSON element is null
-          throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "The required field(s) %s in GuestAddressInput is not found in the empty JSON string", GuestAddressInput.openapiRequiredFields.toString()));
+        if (!RecipientInput.openapiRequiredFields.isEmpty()) { // has required fields but JSON element is null
+          throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "The required field(s) %s in RecipientInput is not found in the empty JSON string", RecipientInput.openapiRequiredFields.toString()));
         }
       }
 
       Set<Map.Entry<String, JsonElement>> entries = jsonElement.getAsJsonObject().entrySet();
       // check to see if the JSON string contains additional fields
       for (Map.Entry<String, JsonElement> entry : entries) {
-        if (!GuestAddressInput.openapiFields.contains(entry.getKey())) {
-          throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "The field `%s` in the JSON string is not defined in the `GuestAddressInput` properties. JSON: %s", entry.getKey(), jsonElement.toString()));
+        if (!RecipientInput.openapiFields.contains(entry.getKey())) {
+          throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "The field `%s` in the JSON string is not defined in the `RecipientInput` properties. JSON: %s", entry.getKey(), jsonElement.toString()));
         }
       }
 
       // check to make sure all required properties/fields are present in the JSON string
-      for (String requiredField : GuestAddressInput.openapiRequiredFields) {
+      for (String requiredField : RecipientInput.openapiRequiredFields) {
         if (jsonElement.getAsJsonObject().get(requiredField) == null) {
           throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "The required field `%s` is not found in the JSON string: %s", requiredField, jsonElement.toString()));
         }
@@ -291,14 +291,14 @@ public class GuestAddressInput {
       if (!jsonObj.get("country_code").isJsonPrimitive()) {
         throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "Expected the field `country_code` to be a primitive type in the JSON string but got `%s`", jsonObj.get("country_code").toString()));
       }
-      if (!jsonObj.get("customer_name").isJsonPrimitive()) {
-        throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "Expected the field `customer_name` to be a primitive type in the JSON string but got `%s`", jsonObj.get("customer_name").toString()));
+      if (!jsonObj.get("recipient_name").isJsonPrimitive()) {
+        throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "Expected the field `recipient_name` to be a primitive type in the JSON string but got `%s`", jsonObj.get("recipient_name").toString()));
       }
-      if (!jsonObj.get("customer_email").isJsonPrimitive()) {
-        throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "Expected the field `customer_email` to be a primitive type in the JSON string but got `%s`", jsonObj.get("customer_email").toString()));
+      if (!jsonObj.get("recipient_email").isJsonPrimitive()) {
+        throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "Expected the field `recipient_email` to be a primitive type in the JSON string but got `%s`", jsonObj.get("recipient_email").toString()));
       }
-      if (!jsonObj.get("customer_phone").isJsonPrimitive()) {
-        throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "Expected the field `customer_phone` to be a primitive type in the JSON string but got `%s`", jsonObj.get("customer_phone").toString()));
+      if (!jsonObj.get("recipient_phone").isJsonPrimitive()) {
+        throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "Expected the field `recipient_phone` to be a primitive type in the JSON string but got `%s`", jsonObj.get("recipient_phone").toString()));
       }
   }
 
@@ -306,22 +306,22 @@ public class GuestAddressInput {
     @SuppressWarnings("unchecked")
     @Override
     public <T> TypeAdapter<T> create(Gson gson, TypeToken<T> type) {
-       if (!GuestAddressInput.class.isAssignableFrom(type.getRawType())) {
-         return null; // this class only serializes 'GuestAddressInput' and its subtypes
+       if (!RecipientInput.class.isAssignableFrom(type.getRawType())) {
+         return null; // this class only serializes 'RecipientInput' and its subtypes
        }
        final TypeAdapter<JsonElement> elementAdapter = gson.getAdapter(JsonElement.class);
-       final TypeAdapter<GuestAddressInput> thisAdapter
-                        = gson.getDelegateAdapter(this, TypeToken.get(GuestAddressInput.class));
+       final TypeAdapter<RecipientInput> thisAdapter
+                        = gson.getDelegateAdapter(this, TypeToken.get(RecipientInput.class));
 
-       return (TypeAdapter<T>) new TypeAdapter<GuestAddressInput>() {
+       return (TypeAdapter<T>) new TypeAdapter<RecipientInput>() {
            @Override
-           public void write(JsonWriter out, GuestAddressInput value) throws IOException {
+           public void write(JsonWriter out, RecipientInput value) throws IOException {
              JsonObject obj = thisAdapter.toJsonTree(value).getAsJsonObject();
              elementAdapter.write(out, obj);
            }
 
            @Override
-           public GuestAddressInput read(JsonReader in) throws IOException {
+           public RecipientInput read(JsonReader in) throws IOException {
              JsonElement jsonElement = elementAdapter.read(in);
              validateJsonElement(jsonElement);
              return thisAdapter.fromJsonTree(jsonElement);
@@ -332,18 +332,18 @@ public class GuestAddressInput {
   }
 
   /**
-   * Create an instance of GuestAddressInput given an JSON string
+   * Create an instance of RecipientInput given an JSON string
    *
    * @param jsonString JSON string
-   * @return An instance of GuestAddressInput
-   * @throws IOException if the JSON string is invalid with respect to GuestAddressInput
+   * @return An instance of RecipientInput
+   * @throws IOException if the JSON string is invalid with respect to RecipientInput
    */
-  public static GuestAddressInput fromJson(String jsonString) throws IOException {
-    return JSON.getGson().fromJson(jsonString, GuestAddressInput.class);
+  public static RecipientInput fromJson(String jsonString) throws IOException {
+    return JSON.getGson().fromJson(jsonString, RecipientInput.class);
   }
 
   /**
-   * Convert an instance of GuestAddressInput to an JSON string
+   * Convert an instance of RecipientInput to an JSON string
    *
    * @return JSON string
    */

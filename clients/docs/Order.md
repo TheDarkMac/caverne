@@ -14,8 +14,9 @@
 |**reference** | **String** |  |  [optional] |
 |**date** | **OffsetDateTime** |  |  [optional] |
 |**status** | [**StatusEnum**](#StatusEnum) |  |  [optional] |
+|**deliveryCostId** | **Integer** |  |  [optional] |
 |**items** | [**List&lt;OrderItem&gt;**](OrderItem.md) |  |  [optional] |
-|**guestAddress** | [**GuestAddressInput**](GuestAddressInput.md) |  |  [optional] |
+|**recipient** | [**RecipientInput**](RecipientInput.md) |  |  [optional] |
 |**providerResponse** | **Object** |  |  [optional] |
 
 

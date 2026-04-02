@@ -49,7 +49,7 @@ import org.openapitools.client.JSON;
 /**
  * ProductImageInput
  */
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2026-04-02T13:45:44.499123204+03:00[Indian/Antananarivo]", comments = "Generator version: 7.21.0")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2026-04-02T14:34:59.816130566+03:00[Indian/Antananarivo]", comments = "Generator version: 7.21.0")
 public class ProductImageInput {
   public static final String SERIALIZED_NAME_URL = "url";
   @SerializedName(SERIALIZED_NAME_URL)

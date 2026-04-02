@@ -2,15 +2,15 @@
   "openapi" : "3.0.3",
   "info" : {
     "contact" : {
-      "name" : "Mr Kyle"
+      "name" : "Mr"
     },
     "description" : "Documentation OpenAPI de La Caverne Malagasy.\nCouvre l'ensemble des ressources : utilisateurs, catalogue, commandes, paiements, livraisons.\n",
-    "title" : "La Caverne Malagasy API",
+    "title" : "La Caverne Malgache API",
     "version" : "1.0.0"
   },
   "servers" : [ {
     "description" : "Serveur de production",
-    "url" : "https://api.ecommerce.local/v1"
+    "url" : "https://api.lacaverne/v1"
   } ],
   "security" : [ {
     "BearerAuth" : [ ]
@@ -171,7 +171,7 @@
           "name" : "role",
           "required" : false,
           "schema" : {
-            "enum" : [ "admin", "customer" ],
+            "enum" : [ "admin", "simple_user" ],
             "type" : "string"
           },
           "style" : "form"
@@ -239,7 +239,7 @@
         "summary" : "Profil de l'utilisateur connecté",
         "tags" : [ "Users" ]
       },
-      "patch" : {
+      "put" : {
         "requestBody" : {
           "content" : {
             "application/json" : {
@@ -478,7 +478,7 @@
       }
     },
     "/users/me/addresses/{id}/default" : {
-      "patch" : {
+      "put" : {
         "parameters" : [ {
           "explode" : false,
           "in" : "path",
@@ -952,7 +952,7 @@
         "summary" : "Supprimer une image",
         "tags" : [ "Products" ]
       },
-      "patch" : {
+      "put" : {
         "parameters" : [ {
           "explode" : false,
           "in" : "path",
@@ -1409,6 +1409,7 @@
             "description" : "Données invalides"
           }
         },
+        "security" : [ ],
         "summary" : "Passer une commande",
         "tags" : [ "Orders" ]
       }
@@ -1515,12 +1516,13 @@
             "description" : "Ressource introuvable"
           }
         },
+        "security" : [ ],
         "summary" : "Détail d'une commande",
         "tags" : [ "Orders" ]
       }
     },
     "/orders/{id}/status" : {
-      "patch" : {
+      "put" : {
         "parameters" : [ {
           "explode" : false,
           "in" : "path",
@@ -1686,6 +1688,7 @@
             "description" : "OK"
           }
         },
+        "security" : [ ],
         "summary" : "Paiements associés à une commande",
         "tags" : [ "Payments" ]
       },
@@ -1732,6 +1735,7 @@
             "description" : "Données invalides"
           }
         },
+        "security" : [ ],
         "summary" : "Initier un paiement",
         "tags" : [ "Payments" ]
       }
@@ -2242,7 +2246,7 @@
             "type" : "string"
           },
           "role" : {
-            "enum" : [ "admin", "customer" ],
+            "enum" : [ "admin", "simple_user" ],
             "type" : "string"
           },
           "status" : {
@@ -2307,6 +2311,32 @@
           }
         },
         "required" : [ "country_code", "location", "postal_code" ],
+        "type" : "object"
+      },
+      "GuestAddressInput" : {
+        "properties" : {
+          "location" : {
+            "type" : "string"
+          },
+          "postal_code" : {
+            "type" : "string"
+          },
+          "country_code" : {
+            "maxLength" : 3,
+            "type" : "string"
+          },
+          "customer_name" : {
+            "type" : "string"
+          },
+          "customer_email" : {
+            "format" : "email",
+            "type" : "string"
+          },
+          "customer_phone" : {
+            "type" : "string"
+          }
+        },
+        "required" : [ "country_code", "customer_email", "customer_name", "customer_phone", "location", "postal_code" ],
         "type" : "object"
       },
       "Category" : {
@@ -2716,6 +2746,9 @@
             },
             "type" : "array"
           },
+          "guest_address" : {
+            "$ref" : "#/components/schemas/GuestAddressInput"
+          },
           "provider_response" : {
             "nullable" : true,
             "type" : "object"
@@ -2726,6 +2759,7 @@
       "OrderInput" : {
         "properties" : {
           "address_id" : {
+            "nullable" : true,
             "type" : "integer"
           },
           "currency_code" : {
@@ -2737,9 +2771,12 @@
             },
             "minItems" : 1,
             "type" : "array"
+          },
+          "guest_address" : {
+            "$ref" : "#/components/schemas/GuestAddressInput"
           }
         },
-        "required" : [ "address_id", "currency_code", "items" ],
+        "required" : [ "currency_code", "guest_address", "items" ],
         "type" : "object"
       },
       "OrderStatusUpdate" : {

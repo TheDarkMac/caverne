@@ -7,8 +7,8 @@ All URIs are relative to *https://api.lacaverne/v1*
 | [**categoriesGet**](CategoriesApi.md#categoriesGet) | **GET** /categories | Liste des catégories (arbre) |
 | [**categoriesIdDelete**](CategoriesApi.md#categoriesIdDelete) | **DELETE** /categories/{id} | Supprimer une catégorie (admin) |
 | [**categoriesIdGet**](CategoriesApi.md#categoriesIdGet) | **GET** /categories/{id} | Détail d&#39;une catégorie |
-| [**categoriesIdPut**](CategoriesApi.md#categoriesIdPut) | **PUT** /categories/{id} | Modifier une catégorie (admin) |
-| [**categoriesPost**](CategoriesApi.md#categoriesPost) | **POST** /categories | Créer une catégorie (admin) |
+| [**categoriesIdPut**](CategoriesApi.md#categoriesIdPut) | **PUT** /categories/{id} | Créer ou mettre à jour une catégorie par identifiant (admin) |
+| [**categoriesPost**](CategoriesApi.md#categoriesPost) | **POST** /categories | Créer ou mettre à jour une catégorie (admin) |
 
 
 <a id="categoriesGet"></a>
@@ -200,7 +200,9 @@ No authorization required
 # **categoriesIdPut**
 > Category categoriesIdPut(id, categoryInput)
 
-Modifier une catégorie (admin)
+Créer ou mettre à jour une catégorie par identifiant (admin)
+
+Endpoint d&#39;upsert avec identifiant dans l&#39;URL. Le &#x60;id&#x60; du path fait foi. Si &#x60;id&#x60; est aussi fourni dans le payload, il doit correspondre à l&#39;identifiant du path. 
 
 ### Example
 ```java
@@ -262,12 +264,15 @@ public class Example {
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
 | **200** | OK |  -  |
+| **201** | Créée si l&#39;identifiant du path n&#39;existe pas encore et que l&#39;implémentation choisit de créer |  -  |
 
 <a id="categoriesPost"></a>
 # **categoriesPost**
 > Category categoriesPost(categoryInput)
 
-Créer une catégorie (admin)
+Créer ou mettre à jour une catégorie (admin)
+
+Endpoint d&#39;upsert. Si &#x60;id&#x60; est absent ou null dans le payload, une nouvelle catégorie est créée. Si &#x60;id&#x60; est fourni, la catégorie existante correspondante doit être mise à jour. 
 
 ### Example
 ```java
@@ -326,5 +331,6 @@ public class Example {
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
-| **201** | Créée |  -  |
+| **201** | Créée quand &#x60;id&#x60; est absent |  -  |
+| **200** | Mise à jour quand &#x60;id&#x60; est fourni |  -  |
 

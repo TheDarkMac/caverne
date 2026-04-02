@@ -23,8 +23,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import org.openapitools.client.model.GuestAddressInput;
 import org.openapitools.client.model.OrderInputItemsInner;
+import org.openapitools.client.model.RecipientInput;
 import org.openapitools.jackson.nullable.JsonNullable;
 
 import com.google.gson.Gson;
@@ -53,12 +53,17 @@ import org.openapitools.client.JSON;
 /**
  * OrderInput
  */
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2026-04-02T13:45:44.499123204+03:00[Indian/Antananarivo]", comments = "Generator version: 7.21.0")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2026-04-02T14:34:59.816130566+03:00[Indian/Antananarivo]", comments = "Generator version: 7.21.0")
 public class OrderInput {
   public static final String SERIALIZED_NAME_ADDRESS_ID = "address_id";
   @SerializedName(SERIALIZED_NAME_ADDRESS_ID)
   @javax.annotation.Nullable
   private Integer addressId;
+
+  public static final String SERIALIZED_NAME_DELIVERY_COST_ID = "delivery_cost_id";
+  @SerializedName(SERIALIZED_NAME_DELIVERY_COST_ID)
+  @javax.annotation.Nullable
+  private Integer deliveryCostId;
 
   public static final String SERIALIZED_NAME_CURRENCY_CODE = "currency_code";
   @SerializedName(SERIALIZED_NAME_CURRENCY_CODE)
@@ -70,10 +75,10 @@ public class OrderInput {
   @javax.annotation.Nonnull
   private List<OrderInputItemsInner> items = new ArrayList<>();
 
-  public static final String SERIALIZED_NAME_GUEST_ADDRESS = "guest_address";
-  @SerializedName(SERIALIZED_NAME_GUEST_ADDRESS)
+  public static final String SERIALIZED_NAME_RECIPIENT = "recipient";
+  @SerializedName(SERIALIZED_NAME_RECIPIENT)
   @javax.annotation.Nonnull
-  private GuestAddressInput guestAddress;
+  private RecipientInput recipient;
 
   public OrderInput() {
   }
@@ -94,6 +99,25 @@ public class OrderInput {
 
   public void setAddressId(@javax.annotation.Nullable Integer addressId) {
     this.addressId = addressId;
+  }
+
+
+  public OrderInput deliveryCostId(@javax.annotation.Nullable Integer deliveryCostId) {
+    this.deliveryCostId = deliveryCostId;
+    return this;
+  }
+
+  /**
+   * Get deliveryCostId
+   * @return deliveryCostId
+   */
+  @javax.annotation.Nullable
+  public Integer getDeliveryCostId() {
+    return deliveryCostId;
+  }
+
+  public void setDeliveryCostId(@javax.annotation.Nullable Integer deliveryCostId) {
+    this.deliveryCostId = deliveryCostId;
   }
 
 
@@ -143,22 +167,22 @@ public class OrderInput {
   }
 
 
-  public OrderInput guestAddress(@javax.annotation.Nonnull GuestAddressInput guestAddress) {
-    this.guestAddress = guestAddress;
+  public OrderInput recipient(@javax.annotation.Nonnull RecipientInput recipient) {
+    this.recipient = recipient;
     return this;
   }
 
   /**
-   * Get guestAddress
-   * @return guestAddress
+   * Get recipient
+   * @return recipient
    */
   @javax.annotation.Nonnull
-  public GuestAddressInput getGuestAddress() {
-    return guestAddress;
+  public RecipientInput getRecipient() {
+    return recipient;
   }
 
-  public void setGuestAddress(@javax.annotation.Nonnull GuestAddressInput guestAddress) {
-    this.guestAddress = guestAddress;
+  public void setRecipient(@javax.annotation.Nonnull RecipientInput recipient) {
+    this.recipient = recipient;
   }
 
 
@@ -173,9 +197,10 @@ public class OrderInput {
     }
     OrderInput orderInput = (OrderInput) o;
     return Objects.equals(this.addressId, orderInput.addressId) &&
+        Objects.equals(this.deliveryCostId, orderInput.deliveryCostId) &&
         Objects.equals(this.currencyCode, orderInput.currencyCode) &&
         Objects.equals(this.items, orderInput.items) &&
-        Objects.equals(this.guestAddress, orderInput.guestAddress);
+        Objects.equals(this.recipient, orderInput.recipient);
   }
 
   private static <T> boolean equalsNullable(JsonNullable<T> a, JsonNullable<T> b) {
@@ -184,7 +209,7 @@ public class OrderInput {
 
   @Override
   public int hashCode() {
-    return Objects.hash(addressId, currencyCode, items, guestAddress);
+    return Objects.hash(addressId, deliveryCostId, currencyCode, items, recipient);
   }
 
   private static <T> int hashCodeNullable(JsonNullable<T> a) {
@@ -199,9 +224,10 @@ public class OrderInput {
     StringBuilder sb = new StringBuilder();
     sb.append("class OrderInput {\n");
     sb.append("    addressId: ").append(toIndentedString(addressId)).append("\n");
+    sb.append("    deliveryCostId: ").append(toIndentedString(deliveryCostId)).append("\n");
     sb.append("    currencyCode: ").append(toIndentedString(currencyCode)).append("\n");
     sb.append("    items: ").append(toIndentedString(items)).append("\n");
-    sb.append("    guestAddress: ").append(toIndentedString(guestAddress)).append("\n");
+    sb.append("    recipient: ").append(toIndentedString(recipient)).append("\n");
     sb.append("}");
     return sb.toString();
   }
@@ -220,10 +246,10 @@ public class OrderInput {
 
   static {
     // a set of all properties/fields (JSON key names)
-    openapiFields = new HashSet<String>(Arrays.asList("address_id", "currency_code", "items", "guest_address"));
+    openapiFields = new HashSet<String>(Arrays.asList("address_id", "delivery_cost_id", "currency_code", "items", "recipient"));
 
     // a set of required properties/fields (JSON key names)
-    openapiRequiredFields = new HashSet<String>(Arrays.asList("currency_code", "items", "guest_address"));
+    openapiRequiredFields = new HashSet<String>(Arrays.asList("currency_code", "items", "recipient"));
   }
 
   /**
@@ -267,8 +293,8 @@ public class OrderInput {
           OrderInputItemsInner.validateJsonElement(jsonArrayitems.get(i));
         }
       }
-      // validate the required field `guest_address`
-      GuestAddressInput.validateJsonElement(jsonObj.get("guest_address"));
+      // validate the required field `recipient`
+      RecipientInput.validateJsonElement(jsonObj.get("recipient"));
   }
 
   public static class CustomTypeAdapterFactory implements TypeAdapterFactory {

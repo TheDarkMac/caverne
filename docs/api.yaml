@@ -132,9 +132,9 @@ components:
         is_default:
           type: boolean
 
-    GuestAddressInput:
+    RecipientInput:
       type: object
-      required: [location, postal_code, country_code, customer_name, customer_email, customer_phone]
+      required: [location, postal_code, country_code, recipient_name, recipient_email, recipient_phone]
       properties:
         location:
           type: string
@@ -143,12 +143,12 @@ components:
         country_code:
           type: string
           maxLength: 3
-        customer_name:
+        recipient_name:
           type: string
-        customer_email:
+        recipient_email:
           type: string
           format: email
-        customer_phone:
+        recipient_phone:
           type: string
 
     # ── CATEGORY ──
@@ -176,6 +176,9 @@ components:
       type: object
       required: [label, slug]
       properties:
+        id:
+          type: integer
+          nullable: true
         label:
           type: string
         slug:
@@ -453,21 +456,27 @@ components:
         status:
           type: string
           enum: [pending, confirmed, delivered, cancelled]
+        delivery_cost_id:
+          type: integer
+          nullable: true
         items:
           type: array
           items:
             $ref: '#/components/schemas/OrderItem'
-        guest_address:
-          $ref: '#/components/schemas/GuestAddressInput'
+        recipient:
+          $ref: '#/components/schemas/RecipientInput'
         provider_response:
           type: object
           nullable: true
 
     OrderInput:
       type: object
-      required: [currency_code, items, guest_address]
+      required: [currency_code, items, recipient]
       properties:
         address_id:
+          type: integer
+          nullable: true
+        delivery_cost_id:
           type: integer
           nullable: true
         currency_code:
@@ -484,8 +493,8 @@ components:
               quantity:
                 type: number
                 format: double
-        guest_address:
-          $ref: '#/components/schemas/GuestAddressInput'
+        recipient:
+          $ref: '#/components/schemas/RecipientInput'
 
     OrderStatusUpdate:
       type: object
@@ -920,7 +929,10 @@ paths:
                   $ref: '#/components/schemas/Category'
     post:
       tags: [Categories]
-      summary: Créer une catégorie (admin)
+      summary: Créer ou mettre à jour une catégorie (admin)
+      description: >
+        Endpoint d'upsert. Si `id` est absent ou null dans le payload, une nouvelle catégorie est créée.
+        Si `id` est fourni, la catégorie existante correspondante doit être mise à jour.
       requestBody:
         required: true
         content:
@@ -929,7 +941,13 @@ paths:
               $ref: '#/components/schemas/CategoryInput'
       responses:
         '201':
-          description: Créée
+          description: Créée quand `id` est absent
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Category'
+        '200':
+          description: Mise à jour quand `id` est fourni
           content:
             application/json:
               schema:
@@ -953,7 +971,10 @@ paths:
           $ref: '#/components/responses/NotFound'
     put:
       tags: [Categories]
-      summary: Modifier une catégorie (admin)
+      summary: Créer ou mettre à jour une catégorie par identifiant (admin)
+      description: >
+        Endpoint d'upsert avec identifiant dans l'URL. Le `id` du path fait foi.
+        Si `id` est aussi fourni dans le payload, il doit correspondre à l'identifiant du path.
       requestBody:
         required: true
         content:
@@ -963,6 +984,12 @@ paths:
       responses:
         '200':
           description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Category'
+        '201':
+          description: Créée si l'identifiant du path n'existe pas encore et que l'implémentation choisit de créer
           content:
             application/json:
               schema:

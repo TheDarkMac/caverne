@@ -464,6 +464,7 @@ public class CategoriesApi {
        <caption>Response Details</caption>
         <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
         <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
+        <tr><td> 201 </td><td> Créée si l&#39;identifiant du path n&#39;existe pas encore et que l&#39;implémentation choisit de créer </td><td>  -  </td></tr>
      </table>
      */
     public okhttp3.Call categoriesIdPutCall(@javax.annotation.Nonnull Integer id, @javax.annotation.Nonnull CategoryInput categoryInput, final ApiCallback _callback) throws ApiException {
@@ -529,8 +530,8 @@ public class CategoriesApi {
     }
 
     /**
-     * Modifier une catégorie (admin)
-     * 
+     * Créer ou mettre à jour une catégorie par identifiant (admin)
+     * Endpoint d&#39;upsert avec identifiant dans l&#39;URL. Le &#x60;id&#x60; du path fait foi. Si &#x60;id&#x60; est aussi fourni dans le payload, il doit correspondre à l&#39;identifiant du path. 
      * @param id  (required)
      * @param categoryInput  (required)
      * @return Category
@@ -540,6 +541,7 @@ public class CategoriesApi {
        <caption>Response Details</caption>
         <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
         <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
+        <tr><td> 201 </td><td> Créée si l&#39;identifiant du path n&#39;existe pas encore et que l&#39;implémentation choisit de créer </td><td>  -  </td></tr>
      </table>
      */
     public Category categoriesIdPut(@javax.annotation.Nonnull Integer id, @javax.annotation.Nonnull CategoryInput categoryInput) throws ApiException {
@@ -548,8 +550,8 @@ public class CategoriesApi {
     }
 
     /**
-     * Modifier une catégorie (admin)
-     * 
+     * Créer ou mettre à jour une catégorie par identifiant (admin)
+     * Endpoint d&#39;upsert avec identifiant dans l&#39;URL. Le &#x60;id&#x60; du path fait foi. Si &#x60;id&#x60; est aussi fourni dans le payload, il doit correspondre à l&#39;identifiant du path. 
      * @param id  (required)
      * @param categoryInput  (required)
      * @return ApiResponse&lt;Category&gt;
@@ -559,6 +561,7 @@ public class CategoriesApi {
        <caption>Response Details</caption>
         <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
         <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
+        <tr><td> 201 </td><td> Créée si l&#39;identifiant du path n&#39;existe pas encore et que l&#39;implémentation choisit de créer </td><td>  -  </td></tr>
      </table>
      */
     public ApiResponse<Category> categoriesIdPutWithHttpInfo(@javax.annotation.Nonnull Integer id, @javax.annotation.Nonnull CategoryInput categoryInput) throws ApiException {
@@ -568,8 +571,8 @@ public class CategoriesApi {
     }
 
     /**
-     * Modifier une catégorie (admin) (asynchronously)
-     * 
+     * Créer ou mettre à jour une catégorie par identifiant (admin) (asynchronously)
+     * Endpoint d&#39;upsert avec identifiant dans l&#39;URL. Le &#x60;id&#x60; du path fait foi. Si &#x60;id&#x60; est aussi fourni dans le payload, il doit correspondre à l&#39;identifiant du path. 
      * @param id  (required)
      * @param categoryInput  (required)
      * @param _callback The callback to be executed when the API call finishes
@@ -580,6 +583,7 @@ public class CategoriesApi {
        <caption>Response Details</caption>
         <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
         <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
+        <tr><td> 201 </td><td> Créée si l&#39;identifiant du path n&#39;existe pas encore et que l&#39;implémentation choisit de créer </td><td>  -  </td></tr>
      </table>
      */
     public okhttp3.Call categoriesIdPutAsync(@javax.annotation.Nonnull Integer id, @javax.annotation.Nonnull CategoryInput categoryInput, final ApiCallback<Category> _callback) throws ApiException {
@@ -599,7 +603,8 @@ public class CategoriesApi {
      <table border="1">
        <caption>Response Details</caption>
         <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 201 </td><td> Créée </td><td>  -  </td></tr>
+        <tr><td> 201 </td><td> Créée quand &#x60;id&#x60; est absent </td><td>  -  </td></tr>
+        <tr><td> 200 </td><td> Mise à jour quand &#x60;id&#x60; est fourni </td><td>  -  </td></tr>
      </table>
      */
     public okhttp3.Call categoriesPostCall(@javax.annotation.Nonnull CategoryInput categoryInput, final ApiCallback _callback) throws ApiException {
@@ -659,8 +664,8 @@ public class CategoriesApi {
     }
 
     /**
-     * Créer une catégorie (admin)
-     * 
+     * Créer ou mettre à jour une catégorie (admin)
+     * Endpoint d&#39;upsert. Si &#x60;id&#x60; est absent ou null dans le payload, une nouvelle catégorie est créée. Si &#x60;id&#x60; est fourni, la catégorie existante correspondante doit être mise à jour. 
      * @param categoryInput  (required)
      * @return Category
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
@@ -668,7 +673,8 @@ public class CategoriesApi {
      <table border="1">
        <caption>Response Details</caption>
         <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 201 </td><td> Créée </td><td>  -  </td></tr>
+        <tr><td> 201 </td><td> Créée quand &#x60;id&#x60; est absent </td><td>  -  </td></tr>
+        <tr><td> 200 </td><td> Mise à jour quand &#x60;id&#x60; est fourni </td><td>  -  </td></tr>
      </table>
      */
     public Category categoriesPost(@javax.annotation.Nonnull CategoryInput categoryInput) throws ApiException {
@@ -677,8 +683,8 @@ public class CategoriesApi {
     }
 
     /**
-     * Créer une catégorie (admin)
-     * 
+     * Créer ou mettre à jour une catégorie (admin)
+     * Endpoint d&#39;upsert. Si &#x60;id&#x60; est absent ou null dans le payload, une nouvelle catégorie est créée. Si &#x60;id&#x60; est fourni, la catégorie existante correspondante doit être mise à jour. 
      * @param categoryInput  (required)
      * @return ApiResponse&lt;Category&gt;
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
@@ -686,7 +692,8 @@ public class CategoriesApi {
      <table border="1">
        <caption>Response Details</caption>
         <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 201 </td><td> Créée </td><td>  -  </td></tr>
+        <tr><td> 201 </td><td> Créée quand &#x60;id&#x60; est absent </td><td>  -  </td></tr>
+        <tr><td> 200 </td><td> Mise à jour quand &#x60;id&#x60; est fourni </td><td>  -  </td></tr>
      </table>
      */
     public ApiResponse<Category> categoriesPostWithHttpInfo(@javax.annotation.Nonnull CategoryInput categoryInput) throws ApiException {
@@ -696,8 +703,8 @@ public class CategoriesApi {
     }
 
     /**
-     * Créer une catégorie (admin) (asynchronously)
-     * 
+     * Créer ou mettre à jour une catégorie (admin) (asynchronously)
+     * Endpoint d&#39;upsert. Si &#x60;id&#x60; est absent ou null dans le payload, une nouvelle catégorie est créée. Si &#x60;id&#x60; est fourni, la catégorie existante correspondante doit être mise à jour. 
      * @param categoryInput  (required)
      * @param _callback The callback to be executed when the API call finishes
      * @return The request call
@@ -706,7 +713,8 @@ public class CategoriesApi {
      <table border="1">
        <caption>Response Details</caption>
         <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 201 </td><td> Créée </td><td>  -  </td></tr>
+        <tr><td> 201 </td><td> Créée quand &#x60;id&#x60; est absent </td><td>  -  </td></tr>
+        <tr><td> 200 </td><td> Mise à jour quand &#x60;id&#x60; est fourni </td><td>  -  </td></tr>
      </table>
      */
     public okhttp3.Call categoriesPostAsync(@javax.annotation.Nonnull CategoryInput categoryInput, final ApiCallback<Category> _callback) throws ApiException {

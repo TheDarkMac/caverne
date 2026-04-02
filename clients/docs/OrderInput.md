@@ -8,9 +8,10 @@
 | Name | Type | Description | Notes |
 |------------ | ------------- | ------------- | -------------|
 |**addressId** | **Integer** |  |  [optional] |
+|**deliveryCostId** | **Integer** |  |  [optional] |
 |**currencyCode** | **String** |  |  |
 |**items** | [**List&lt;OrderInputItemsInner&gt;**](OrderInputItemsInner.md) |  |  |
-|**guestAddress** | [**GuestAddressInput**](GuestAddressInput.md) |  |  |
+|**recipient** | [**RecipientInput**](RecipientInput.md) |  |  |
 
 
 

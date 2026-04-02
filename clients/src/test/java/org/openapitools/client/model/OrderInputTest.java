@@ -22,8 +22,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import org.openapitools.client.model.GuestAddressInput;
 import org.openapitools.client.model.OrderInputItemsInner;
+import org.openapitools.client.model.RecipientInput;
 import org.openapitools.jackson.nullable.JsonNullable;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
@@ -51,6 +51,14 @@ public class OrderInputTest {
     }
 
     /**
+     * Test the property 'deliveryCostId'
+     */
+    @Test
+    public void deliveryCostIdTest() {
+        // TODO: test deliveryCostId
+    }
+
+    /**
      * Test the property 'currencyCode'
      */
     @Test
@@ -67,11 +75,11 @@ public class OrderInputTest {
     }
 
     /**
-     * Test the property 'guestAddress'
+     * Test the property 'recipient'
      */
     @Test
-    public void guestAddressTest() {
-        // TODO: test guestAddress
+    public void recipientTest() {
+        // TODO: test recipient
     }
 
 }
