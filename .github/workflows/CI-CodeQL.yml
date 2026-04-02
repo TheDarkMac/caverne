@@ -25,6 +25,17 @@ jobs:
           java-version: '21'
           distribution: 'temurin'
           cache: gradle
+
+      - name: Install OpenAPI Generator CLI
+        run: |
+          npm install @openapitools/openapi-generator-cli -g
+          openapi-generator-cli version
+
+      - name: Generate clients
+        run: |
+          chmod +x ./clients-generator.sh
+          ./clients-generator.sh
+
       - name: Initialize CodeQL
         uses: github/codeql-action/init@v4
         with:
