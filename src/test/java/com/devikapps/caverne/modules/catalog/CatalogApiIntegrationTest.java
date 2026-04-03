@@ -217,7 +217,7 @@ class CatalogApiIntegrationTest {
                 "reference", "PEP-NEW",
                 "limit_date", "2026-12-31",
                 "description", "Fresh pepper",
-                "size", "kg",
+                "size", 1,
                 "is_active", true));
 
     mockMvc
@@ -250,7 +250,7 @@ class CatalogApiIntegrationTest {
                 "reference", "TEA-001",
                 "limit_date", "2027-01-31",
                 "description", "Updated description",
-                "size", "box",
+                "size", 2,
                 "is_active", false));
 
     mockMvc
@@ -284,7 +284,7 @@ class CatalogApiIntegrationTest {
                 "reference", "PEP-002",
                 "limit_date", "2026-12-31",
                 "description", "Updated",
-                "size", "kg",
+                "size", 1,
                 "is_active", true));
 
     mockMvc
@@ -310,7 +310,7 @@ class CatalogApiIntegrationTest {
                 "reference", "NEW-001",
                 "limit_date", "2027-01-31",
                 "description", "Created by put",
-                "size", "box",
+                "size", 2,
                 "is_active", true));
 
     mockMvc
