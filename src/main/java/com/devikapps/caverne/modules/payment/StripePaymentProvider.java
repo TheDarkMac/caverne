@@ -55,10 +55,7 @@ public class StripePaymentProvider implements PaymentProvider {
   }
 
   private long convertToStripeAmount(BigDecimal amount) {
-    return amount
-        .movePointRight(2)
-        .setScale(0, BigDecimal.ROUND_HALF_UP)
-        .longValueExact();
+    return amount.movePointRight(2).setScale(0, BigDecimal.ROUND_HALF_UP).longValueExact();
   }
 
   private Map<String, String> buildMetadata(String orderReference) {
