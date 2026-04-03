@@ -21,8 +21,7 @@ public class UserAccount {
   @Column(nullable = false)
   private String lastname;
 
-  @Column(nullable = false, unique = true)
-  private String email;
+  @Column private String email;
 
   private String phone;
 

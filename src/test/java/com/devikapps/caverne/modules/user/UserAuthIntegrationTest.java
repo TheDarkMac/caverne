@@ -67,6 +67,33 @@ class UserAuthIntegrationTest {
   }
 
   @Test
+  void shouldRegisterWithPhoneOnlyAndLoginWithPhone() throws Exception {
+    String registerPayload =
+        objectMapper.writeValueAsString(
+            Map.of(
+                "firstname", "Solo",
+                "lastname", "Phone",
+                "phone", "+261341111111",
+                "password", "secret123"));
+
+    mockMvc
+        .perform(
+            post("/auth/register").contentType(MediaType.APPLICATION_JSON).content(registerPayload))
+        .andExpect(status().isCreated())
+        .andExpect(jsonPath("$.firstname").value("Solo"))
+        .andExpect(jsonPath("$.phone").value("+261341111111"))
+        .andExpect(jsonPath("$.role").value("simple_user"));
+
+    String token = loginByPhone("+261341111111", "secret123");
+
+    mockMvc
+        .perform(get("/users/me").header("Authorization", bearer(token)))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.phone").value("+261341111111"))
+        .andExpect(jsonPath("$.role").value("simple_user"));
+  }
+
+  @Test
   void shouldUpdateCurrentUserProfile() throws Exception {
     registerSimpleUser("mia@example.com", "Mia", "Ravo", "secret123");
     String token = login("mia@example.com", "secret123");
@@ -121,6 +148,34 @@ class UserAuthIntegrationTest {
   }
 
   @Test
+  void shouldAllowAdminToCreateUser() throws Exception {
+    createAdmin("creator@example.com", "secret123");
+    String adminToken = login("creator@example.com", "secret123");
+
+    String payload =
+        objectMapper.writeValueAsString(
+            Map.of(
+                "firstname", "Backoffice",
+                "lastname", "Admin",
+                "email", "backoffice@example.com",
+                "phone", "+261340001111",
+                "password", "secret123",
+                "role", "admin",
+                "status", "active"));
+
+    mockMvc
+        .perform(
+            post("/users")
+                .header("Authorization", bearer(adminToken))
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(payload))
+        .andExpect(status().isCreated())
+        .andExpect(jsonPath("$.email").value("backoffice@example.com"))
+        .andExpect(jsonPath("$.role").value("admin"))
+        .andExpect(jsonPath("$.status").value("active"));
+  }
+
+  @Test
   void shouldRejectAdminEndpointsForSimpleUser() throws Exception {
     registerSimpleUser("simple@example.com", "Simple", "User", "secret123");
     String token = login("simple@example.com", "secret123");
@@ -144,15 +199,125 @@ class UserAuthIntegrationTest {
         .andExpect(status().isUnauthorized());
   }
 
+  @Test
+  void shouldManageCurrentUserAddresses() throws Exception {
+    registerSimpleUser("address@example.com", "Address", "Owner", "secret123");
+    String token = login("address@example.com", "secret123");
+
+    String firstAddressPayload =
+        objectMapper.writeValueAsString(
+            Map.of(
+                "location", "Lot II M 12 Analakely",
+                "postal_code", "101",
+                "country_code", "MG",
+                "is_default", true));
+
+    String firstResponse =
+        mockMvc
+            .perform(
+                post("/users/me/addresses")
+                    .header("Authorization", bearer(token))
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(firstAddressPayload))
+            .andExpect(status().isCreated())
+            .andExpect(jsonPath("$.location").value("Lot II M 12 Analakely"))
+            .andExpect(jsonPath("$.is_default").value(true))
+            .andReturn()
+            .getResponse()
+            .getContentAsString();
+
+    Integer firstAddressId = org.openapitools.client.model.Address.fromJson(firstResponse).getId();
+
+    String secondAddressPayload =
+        objectMapper.writeValueAsString(
+            Map.of(
+                "location", "Lot III F 20 Itaosy",
+                "postal_code", "102",
+                "country_code", "mg",
+                "is_default", false));
+
+    String secondResponse =
+        mockMvc
+            .perform(
+                post("/users/me/addresses")
+                    .header("Authorization", bearer(token))
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(secondAddressPayload))
+            .andExpect(status().isCreated())
+            .andExpect(jsonPath("$.is_default").value(false))
+            .andReturn()
+            .getResponse()
+            .getContentAsString();
+
+    Integer secondAddressId =
+        org.openapitools.client.model.Address.fromJson(secondResponse).getId();
+
+    mockMvc
+        .perform(get("/users/me/addresses").header("Authorization", bearer(token)))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$[0].id").value(firstAddressId))
+        .andExpect(jsonPath("$[0].is_default").value(true))
+        .andExpect(jsonPath("$[1].id").value(secondAddressId))
+        .andExpect(jsonPath("$[1].country_code").value("MG"));
+
+    String updatePayload =
+        objectMapper.writeValueAsString(
+            Map.of(
+                "location", "Lot III F 21 Itaosy",
+                "postal_code", "102",
+                "country_code", "MG",
+                "is_default", false));
+
+    mockMvc
+        .perform(
+            put("/users/me/addresses/{id}", secondAddressId)
+                .header("Authorization", bearer(token))
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(updatePayload))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.location").value("Lot III F 21 Itaosy"))
+        .andExpect(jsonPath("$.is_default").value(false));
+
+    mockMvc
+        .perform(
+            put("/users/me/addresses/{id}/default", secondAddressId)
+                .header("Authorization", bearer(token)))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.id").value(secondAddressId))
+        .andExpect(jsonPath("$.is_default").value(true));
+
+    mockMvc
+        .perform(get("/users/me/addresses").header("Authorization", bearer(token)))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$[0].id").value(firstAddressId))
+        .andExpect(jsonPath("$[0].is_default").value(false))
+        .andExpect(jsonPath("$[1].id").value(secondAddressId))
+        .andExpect(jsonPath("$[1].is_default").value(true));
+
+    mockMvc
+        .perform(
+            delete("/users/me/addresses/{id}", secondAddressId)
+                .header("Authorization", bearer(token)))
+        .andExpect(status().isNoContent());
+
+    mockMvc
+        .perform(get("/users/me/addresses").header("Authorization", bearer(token)))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$[0].id").value(firstAddressId))
+        .andExpect(jsonPath("$[0].is_default").value(true));
+  }
+
   private void registerSimpleUser(String email, String firstname, String lastname, String password)
       throws Exception {
+    String generatedPhone =
+        "+26132" + String.format("%06d", Math.abs(email.hashCode()) % 1_000_000);
     String payload =
         objectMapper.writeValueAsString(
             Map.of(
                 "firstname", firstname,
                 "lastname", lastname,
                 "email", email,
-                "phone", "+261320000000",
+                "phone", generatedPhone,
                 "password", password));
 
     mockMvc
@@ -175,6 +340,20 @@ class UserAuthIntegrationTest {
 
   private String login(String email, String password) throws Exception {
     String payload = objectMapper.writeValueAsString(Map.of("email", email, "password", password));
+
+    String response =
+        mockMvc
+            .perform(post("/auth/login").contentType(MediaType.APPLICATION_JSON).content(payload))
+            .andExpect(status().isOk())
+            .andReturn()
+            .getResponse()
+            .getContentAsString();
+
+    return org.openapitools.client.model.LoginResponse.fromJson(response).getAccessToken();
+  }
+
+  private String loginByPhone(String phone, String password) throws Exception {
+    String payload = objectMapper.writeValueAsString(Map.of("phone", phone, "password", password));
 
     String response =
         mockMvc

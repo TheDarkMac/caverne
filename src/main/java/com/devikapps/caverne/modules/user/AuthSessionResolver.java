@@ -41,6 +41,14 @@ public class AuthSessionResolver {
     return user;
   }
 
+  @Transactional
+  public UserAccount resolveUserOrNull(String authorizationHeader) {
+    if (authorizationHeader == null || authorizationHeader.isBlank()) {
+      return null;
+    }
+    return requireUser(authorizationHeader);
+  }
+
   public String extractBearerToken(String authorizationHeader) {
     if (authorizationHeader == null || authorizationHeader.isBlank()) {
       throw new ResponseStatusException(UNAUTHORIZED, "Authentication required");
