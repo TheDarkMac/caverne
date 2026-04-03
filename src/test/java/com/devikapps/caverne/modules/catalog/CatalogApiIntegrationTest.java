@@ -164,6 +164,31 @@ class CatalogApiIntegrationTest {
   }
 
   @Test
+  void shouldUpdateCategoryThroughPostWhenPayloadContainsId() throws Exception {
+    Category category =
+        categoryRepository.save(Category.builder().label("Tea").slug("tea").map("TEA").build());
+
+    String payload =
+        objectMapper.writeValueAsString(
+            Map.of(
+                "id",
+                category.getId(),
+                "label",
+                "Herbal Tea",
+                "slug",
+                "herbal-tea",
+                "map",
+                "HERBAL"));
+
+    mockMvc
+        .perform(post("/categories").contentType(MediaType.APPLICATION_JSON).content(payload))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.id").value(category.getId()))
+        .andExpect(jsonPath("$.label").value("Herbal Tea"))
+        .andExpect(jsonPath("$.slug").value("herbal-tea"));
+  }
+
+  @Test
   void shouldCreateProductUsingContractPayload() throws Exception {
     Category category =
         categoryRepository.save(
