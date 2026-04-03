@@ -472,7 +472,8 @@ public class CategoriesApi {
      <table border="1">
        <caption>Response Details</caption>
         <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
+        <tr><td> 200 </td><td> Catégorie mise à jour </td><td>  -  </td></tr>
+        <tr><td> 201 </td><td> Catégorie créée </td><td>  -  </td></tr>
         <tr><td> 401 </td><td> Token JWT manquant ou invalide </td><td>  -  </td></tr>
         <tr><td> 403 </td><td> Accès refusé (rôle insuffisant) </td><td>  -  </td></tr>
         <tr><td> 404 </td><td> Ressource introuvable </td><td>  -  </td></tr>
@@ -541,8 +542,8 @@ public class CategoriesApi {
     }
 
     /**
-     * Mettre à jour une catégorie par identifiant (admin)
-     * Endpoint de mise à jour avec identifiant dans l&#39;URL. Le &#x60;id&#x60; du path fait foi. Si &#x60;id&#x60; est aussi fourni dans le payload, il doit correspondre à l&#39;identifiant du path. 
+     * Créer ou mettre à jour une catégorie par identifiant (admin)
+     * Si la catégorie existe, elle est mise à jour. Sinon, une nouvelle catégorie est créée et l&#39;identifiant retourné fait foi. Si &#x60;id&#x60; est aussi fourni dans le payload, il doit correspondre à l&#39;identifiant du path. 
      * @param id  (required)
      * @param categoryInput  (required)
      * @return Category
@@ -551,7 +552,8 @@ public class CategoriesApi {
      <table border="1">
        <caption>Response Details</caption>
         <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
+        <tr><td> 200 </td><td> Catégorie mise à jour </td><td>  -  </td></tr>
+        <tr><td> 201 </td><td> Catégorie créée </td><td>  -  </td></tr>
         <tr><td> 401 </td><td> Token JWT manquant ou invalide </td><td>  -  </td></tr>
         <tr><td> 403 </td><td> Accès refusé (rôle insuffisant) </td><td>  -  </td></tr>
         <tr><td> 404 </td><td> Ressource introuvable </td><td>  -  </td></tr>
@@ -563,8 +565,8 @@ public class CategoriesApi {
     }
 
     /**
-     * Mettre à jour une catégorie par identifiant (admin)
-     * Endpoint de mise à jour avec identifiant dans l&#39;URL. Le &#x60;id&#x60; du path fait foi. Si &#x60;id&#x60; est aussi fourni dans le payload, il doit correspondre à l&#39;identifiant du path. 
+     * Créer ou mettre à jour une catégorie par identifiant (admin)
+     * Si la catégorie existe, elle est mise à jour. Sinon, une nouvelle catégorie est créée et l&#39;identifiant retourné fait foi. Si &#x60;id&#x60; est aussi fourni dans le payload, il doit correspondre à l&#39;identifiant du path. 
      * @param id  (required)
      * @param categoryInput  (required)
      * @return ApiResponse&lt;Category&gt;
@@ -573,7 +575,8 @@ public class CategoriesApi {
      <table border="1">
        <caption>Response Details</caption>
         <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
+        <tr><td> 200 </td><td> Catégorie mise à jour </td><td>  -  </td></tr>
+        <tr><td> 201 </td><td> Catégorie créée </td><td>  -  </td></tr>
         <tr><td> 401 </td><td> Token JWT manquant ou invalide </td><td>  -  </td></tr>
         <tr><td> 403 </td><td> Accès refusé (rôle insuffisant) </td><td>  -  </td></tr>
         <tr><td> 404 </td><td> Ressource introuvable </td><td>  -  </td></tr>
@@ -586,8 +589,8 @@ public class CategoriesApi {
     }
 
     /**
-     * Mettre à jour une catégorie par identifiant (admin) (asynchronously)
-     * Endpoint de mise à jour avec identifiant dans l&#39;URL. Le &#x60;id&#x60; du path fait foi. Si &#x60;id&#x60; est aussi fourni dans le payload, il doit correspondre à l&#39;identifiant du path. 
+     * Créer ou mettre à jour une catégorie par identifiant (admin) (asynchronously)
+     * Si la catégorie existe, elle est mise à jour. Sinon, une nouvelle catégorie est créée et l&#39;identifiant retourné fait foi. Si &#x60;id&#x60; est aussi fourni dans le payload, il doit correspondre à l&#39;identifiant du path. 
      * @param id  (required)
      * @param categoryInput  (required)
      * @param _callback The callback to be executed when the API call finishes
@@ -597,7 +600,8 @@ public class CategoriesApi {
      <table border="1">
        <caption>Response Details</caption>
         <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
+        <tr><td> 200 </td><td> Catégorie mise à jour </td><td>  -  </td></tr>
+        <tr><td> 201 </td><td> Catégorie créée </td><td>  -  </td></tr>
         <tr><td> 401 </td><td> Token JWT manquant ou invalide </td><td>  -  </td></tr>
         <tr><td> 403 </td><td> Accès refusé (rôle insuffisant) </td><td>  -  </td></tr>
         <tr><td> 404 </td><td> Ressource introuvable </td><td>  -  </td></tr>

@@ -1,5 +1,6 @@
 package com.devikapps.caverne.modules.catalog;
 
+import java.math.BigDecimal;
 import java.util.Comparator;
 import java.util.List;
 import org.springframework.stereotype.Component;
@@ -34,7 +35,7 @@ public class ProductApiMapper {
         .reference(product.getReference())
         .limitDate(product.getLimitDate())
         .description(product.getDescription())
-        .size(product.getSize())
+        .size(product.getSize() == null ? null : new BigDecimal(product.getSize()))
         .isActive(product.isActive())
         .prices(prices);
   }
@@ -45,7 +46,7 @@ public class ProductApiMapper {
     product.setReference(input.getReference());
     product.setLimitDate(input.getLimitDate());
     product.setDescription(input.getDescription());
-    product.setSize(input.getSize());
+    product.setSize(input.getSize() == null ? null : input.getSize().toPlainString());
     product.setActive(Boolean.TRUE.equals(input.getIsActive()));
 
     if (input.getCategoryId() != null) {

@@ -39,9 +39,13 @@ public class ProductController {
   }
 
   @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-  @ResponseStatus(HttpStatus.CREATED)
-  public String createProduct(@RequestBody String rawBody) {
-    return JSON.getGson().toJson(productService.createProduct(parseProductInput(rawBody)));
+  public org.springframework.http.ResponseEntity<String> createProduct(
+      @RequestBody String rawBody) {
+    ProductService.UpsertProductResult result =
+        productService.createProduct(parseProductInput(rawBody));
+    return org.springframework.http.ResponseEntity.status(
+            result.created() ? HttpStatus.CREATED : HttpStatus.OK)
+        .body(JSON.getGson().toJson(result.product()));
   }
 
   @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -50,8 +54,13 @@ public class ProductController {
   }
 
   @PutMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-  public String updateProduct(@PathVariable Long id, @RequestBody String rawBody) {
-    return JSON.getGson().toJson(productService.updateProduct(id, parseProductInput(rawBody)));
+  public org.springframework.http.ResponseEntity<String> updateProduct(
+      @PathVariable Long id, @RequestBody String rawBody) {
+    ProductService.UpsertProductResult result =
+        productService.updateProduct(id, parseProductInput(rawBody));
+    return org.springframework.http.ResponseEntity.status(
+            result.created() ? HttpStatus.CREATED : HttpStatus.OK)
+        .body(JSON.getGson().toJson(result.product()));
   }
 
   @DeleteMapping("/{id}")

@@ -59,14 +59,11 @@ public class CategoryService {
           UNPROCESSABLE_ENTITY, "Category payload id does not match path id");
     }
 
-    Category existing =
-        categoryRepository
-            .findById(id)
-            .orElseThrow(() -> new ResponseStatusException(NOT_FOUND, "Category not found"));
+    Category existing = categoryRepository.findById(id).orElse(null);
     Category category = categoryApiMapper.fromInput(input, existing);
 
     return new UpsertCategoryResult(
-        categoryApiMapper.toTreeResponse(categoryRepository.save(category)), false);
+        categoryApiMapper.toTreeResponse(categoryRepository.save(category)), existing == null);
   }
 
   @Transactional

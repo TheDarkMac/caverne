@@ -1,0 +1,29 @@
+package com.devikapps.caverne.payment;
+
+import jakarta.annotation.PostConstruct;
+import com.stripe.Stripe;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.util.StringUtils;
+
+@Configuration
+@EnableConfigurationProperties(StripeProperties.class)
+public class StripeConfiguration {
+
+  private final StripeProperties properties;
+
+  public StripeConfiguration(StripeProperties properties) {
+    this.properties = properties;
+  }
+
+  @PostConstruct
+  public void init() {
+    if (!properties.isEnabled()) {
+      return;
+    }
+    if (!StringUtils.hasText(properties.getApiKey())) {
+      throw new IllegalStateException("stripe.api-key must be set when stripe.enabled=true");
+    }
+    Stripe.apiKey = properties.getApiKey();
+  }
+}

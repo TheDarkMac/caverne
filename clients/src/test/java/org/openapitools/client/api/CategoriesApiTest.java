@@ -70,9 +70,9 @@ public class CategoriesApiTest {
     }
 
     /**
-     * Mettre à jour une catégorie par identifiant (admin)
+     * Créer ou mettre à jour une catégorie par identifiant (admin)
      *
-     * Endpoint de mise à jour avec identifiant dans l&#39;URL. Le &#x60;id&#x60; du path fait foi. Si &#x60;id&#x60; est aussi fourni dans le payload, il doit correspondre à l&#39;identifiant du path. 
+     * Si la catégorie existe, elle est mise à jour. Sinon, une nouvelle catégorie est créée et l&#39;identifiant retourné fait foi. Si &#x60;id&#x60; est aussi fourni dans le payload, il doit correspondre à l&#39;identifiant du path. 
      *
      * @throws ApiException if the Api call fails
      */

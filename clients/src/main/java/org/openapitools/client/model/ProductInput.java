@@ -20,8 +20,10 @@ import com.google.gson.annotations.SerializedName;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.Arrays;
+import org.openapitools.jackson.nullable.JsonNullable;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -49,8 +51,13 @@ import org.openapitools.client.JSON;
 /**
  * ProductInput
  */
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2026-04-03T07:59:22.713363218+03:00[Indian/Antananarivo]", comments = "Generator version: 7.21.0")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2026-04-03T11:16:21.103478876+03:00[Indian/Antananarivo]", comments = "Generator version: 7.21.0")
 public class ProductInput {
+  public static final String SERIALIZED_NAME_ID = "id";
+  @SerializedName(SERIALIZED_NAME_ID)
+  @javax.annotation.Nullable
+  private Integer id;
+
   public static final String SERIALIZED_NAME_CATEGORY_ID = "category_id";
   @SerializedName(SERIALIZED_NAME_CATEGORY_ID)
   @javax.annotation.Nonnull
@@ -79,7 +86,7 @@ public class ProductInput {
   public static final String SERIALIZED_NAME_SIZE = "size";
   @SerializedName(SERIALIZED_NAME_SIZE)
   @javax.annotation.Nullable
-  private String size;
+  private BigDecimal size;
 
   public static final String SERIALIZED_NAME_IS_ACTIVE = "is_active";
   @SerializedName(SERIALIZED_NAME_IS_ACTIVE)
@@ -88,6 +95,25 @@ public class ProductInput {
 
   public ProductInput() {
   }
+
+  public ProductInput id(@javax.annotation.Nullable Integer id) {
+    this.id = id;
+    return this;
+  }
+
+  /**
+   * Get id
+   * @return id
+   */
+  @javax.annotation.Nullable
+  public Integer getId() {
+    return id;
+  }
+
+  public void setId(@javax.annotation.Nullable Integer id) {
+    this.id = id;
+  }
+
 
   public ProductInput categoryId(@javax.annotation.Nonnull Integer categoryId) {
     this.categoryId = categoryId;
@@ -184,7 +210,7 @@ public class ProductInput {
   }
 
 
-  public ProductInput size(@javax.annotation.Nullable String size) {
+  public ProductInput size(@javax.annotation.Nullable BigDecimal size) {
     this.size = size;
     return this;
   }
@@ -194,11 +220,11 @@ public class ProductInput {
    * @return size
    */
   @javax.annotation.Nullable
-  public String getSize() {
+  public BigDecimal getSize() {
     return size;
   }
 
-  public void setSize(@javax.annotation.Nullable String size) {
+  public void setSize(@javax.annotation.Nullable BigDecimal size) {
     this.size = size;
   }
 
@@ -232,7 +258,8 @@ public class ProductInput {
       return false;
     }
     ProductInput productInput = (ProductInput) o;
-    return Objects.equals(this.categoryId, productInput.categoryId) &&
+    return Objects.equals(this.id, productInput.id) &&
+        Objects.equals(this.categoryId, productInput.categoryId) &&
         Objects.equals(this.label, productInput.label) &&
         Objects.equals(this.reference, productInput.reference) &&
         Objects.equals(this.limitDate, productInput.limitDate) &&
@@ -241,15 +268,27 @@ public class ProductInput {
         Objects.equals(this.isActive, productInput.isActive);
   }
 
+  private static <T> boolean equalsNullable(JsonNullable<T> a, JsonNullable<T> b) {
+    return a == b || (a != null && b != null && a.isPresent() && b.isPresent() && Objects.deepEquals(a.get(), b.get()));
+  }
+
   @Override
   public int hashCode() {
-    return Objects.hash(categoryId, label, reference, limitDate, description, size, isActive);
+    return Objects.hash(id, categoryId, label, reference, limitDate, description, size, isActive);
+  }
+
+  private static <T> int hashCodeNullable(JsonNullable<T> a) {
+    if (a == null) {
+      return 1;
+    }
+    return a.isPresent() ? Arrays.deepHashCode(new Object[]{a.get()}) : 31;
   }
 
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
     sb.append("class ProductInput {\n");
+    sb.append("    id: ").append(toIndentedString(id)).append("\n");
     sb.append("    categoryId: ").append(toIndentedString(categoryId)).append("\n");
     sb.append("    label: ").append(toIndentedString(label)).append("\n");
     sb.append("    reference: ").append(toIndentedString(reference)).append("\n");
@@ -275,7 +314,7 @@ public class ProductInput {
 
   static {
     // a set of all properties/fields (JSON key names)
-    openapiFields = new HashSet<String>(Arrays.asList("category_id", "label", "reference", "limit_date", "description", "size", "is_active"));
+    openapiFields = new HashSet<String>(Arrays.asList("id", "category_id", "label", "reference", "limit_date", "description", "size", "is_active"));
 
     // a set of required properties/fields (JSON key names)
     openapiRequiredFields = new HashSet<String>(Arrays.asList("category_id", "label", "reference"));
@@ -317,9 +356,6 @@ public class ProductInput {
       }
       if ((jsonObj.get("description") != null && !jsonObj.get("description").isJsonNull()) && !jsonObj.get("description").isJsonPrimitive()) {
         throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "Expected the field `description` to be a primitive type in the JSON string but got `%s`", jsonObj.get("description").toString()));
-      }
-      if ((jsonObj.get("size") != null && !jsonObj.get("size").isJsonNull()) && !jsonObj.get("size").isJsonPrimitive()) {
-        throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "Expected the field `size` to be a primitive type in the JSON string but got `%s`", jsonObj.get("size").toString()));
       }
   }
 

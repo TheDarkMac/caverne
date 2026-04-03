@@ -17,6 +17,7 @@ import org.openapitools.client.ApiException;
 import org.openapitools.client.model.Error;
 import org.openapitools.client.model.Payment;
 import org.openapitools.client.model.PaymentInput;
+import org.openapitools.client.model.PaymentMethod;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
@@ -55,6 +56,17 @@ public class PaymentsApiTest {
         Integer id = null;
         PaymentInput paymentInput = null;
         Payment response = api.ordersIdPaymentsPost(id, paymentInput);
+        // TODO: test validations
+    }
+
+    /**
+     * Liste des moyens de paiement disponibles
+     *
+     * @throws ApiException if the Api call fails
+     */
+    @Test
+    public void paymentMethodsGetTest() throws ApiException {
+        List<PaymentMethod> response = api.paymentMethodsGet();
         // TODO: test validations
     }
 

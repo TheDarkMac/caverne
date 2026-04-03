@@ -49,7 +49,7 @@ import org.openapitools.client.JSON;
 /**
  * PriceInput
  */
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2026-04-03T07:59:22.713363218+03:00[Indian/Antananarivo]", comments = "Generator version: 7.21.0")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2026-04-03T11:16:21.103478876+03:00[Indian/Antananarivo]", comments = "Generator version: 7.21.0")
 public class PriceInput {
   public static final String SERIALIZED_NAME_CURRENCY_CODE = "currency_code";
   @SerializedName(SERIALIZED_NAME_CURRENCY_CODE)

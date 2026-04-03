@@ -7,7 +7,7 @@ All URIs are relative to *https://api.lacaverne/v1*
 | [**categoriesGet**](CategoriesApi.md#categoriesGet) | **GET** /categories | Liste des catégories (arbre) |
 | [**categoriesIdDelete**](CategoriesApi.md#categoriesIdDelete) | **DELETE** /categories/{id} | Supprimer une catégorie (admin) |
 | [**categoriesIdGet**](CategoriesApi.md#categoriesIdGet) | **GET** /categories/{id} | Détail d&#39;une catégorie |
-| [**categoriesIdPut**](CategoriesApi.md#categoriesIdPut) | **PUT** /categories/{id} | Mettre à jour une catégorie par identifiant (admin) |
+| [**categoriesIdPut**](CategoriesApi.md#categoriesIdPut) | **PUT** /categories/{id} | Créer ou mettre à jour une catégorie par identifiant (admin) |
 | [**categoriesPost**](CategoriesApi.md#categoriesPost) | **POST** /categories | Créer ou mettre à jour une catégorie (admin) |
 
 
@@ -202,9 +202,9 @@ No authorization required
 # **categoriesIdPut**
 > Category categoriesIdPut(id, categoryInput)
 
-Mettre à jour une catégorie par identifiant (admin)
+Créer ou mettre à jour une catégorie par identifiant (admin)
 
-Endpoint de mise à jour avec identifiant dans l&#39;URL. Le &#x60;id&#x60; du path fait foi. Si &#x60;id&#x60; est aussi fourni dans le payload, il doit correspondre à l&#39;identifiant du path. 
+Si la catégorie existe, elle est mise à jour. Sinon, une nouvelle catégorie est créée et l&#39;identifiant retourné fait foi. Si &#x60;id&#x60; est aussi fourni dans le payload, il doit correspondre à l&#39;identifiant du path. 
 
 ### Example
 ```java
@@ -265,7 +265,8 @@ public class Example {
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
-| **200** | OK |  -  |
+| **200** | Catégorie mise à jour |  -  |
+| **201** | Catégorie créée |  -  |
 | **401** | Token JWT manquant ou invalide |  -  |
 | **403** | Accès refusé (rôle insuffisant) |  -  |
 | **404** | Ressource introuvable |  -  |

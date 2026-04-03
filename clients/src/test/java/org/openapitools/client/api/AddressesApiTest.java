@@ -69,7 +69,9 @@ public class AddressesApiTest {
     }
 
     /**
-     * Modifier une adresse
+     * Créer ou mettre à jour une adresse par identifiant
+     *
+     * Si l&#39;adresse existe pour l&#39;utilisateur connecté, elle est mise à jour. Sinon, une nouvelle adresse est créée et l&#39;identifiant retourné fait foi. 
      *
      * @throws ApiException if the Api call fails
      */
@@ -82,7 +84,9 @@ public class AddressesApiTest {
     }
 
     /**
-     * Ajouter une adresse
+     * Créer ou mettre à jour une adresse
+     *
+     * Endpoint d&#39;upsert. Si &#x60;id&#x60; est absent ou null dans le payload, une nouvelle adresse est créée. Si &#x60;id&#x60; est fourni et qu&#39;une adresse appartenant à l&#39;utilisateur existe, elle est mise à jour. Sinon, une nouvelle adresse est créée. 
      *
      * @throws ApiException if the Api call fails
      */
