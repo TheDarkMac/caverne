@@ -7,8 +7,8 @@ All URIs are relative to *https://api.lacaverne/v1*
 | [**usersMeAddressesGet**](AddressesApi.md#usersMeAddressesGet) | **GET** /users/me/addresses | Liste des adresses de l&#39;utilisateur connecté |
 | [**usersMeAddressesIdDefaultPut**](AddressesApi.md#usersMeAddressesIdDefaultPut) | **PUT** /users/me/addresses/{id}/default | Définir comme adresse par défaut |
 | [**usersMeAddressesIdDelete**](AddressesApi.md#usersMeAddressesIdDelete) | **DELETE** /users/me/addresses/{id} | Supprimer une adresse |
-| [**usersMeAddressesIdPut**](AddressesApi.md#usersMeAddressesIdPut) | **PUT** /users/me/addresses/{id} | Modifier une adresse |
-| [**usersMeAddressesPost**](AddressesApi.md#usersMeAddressesPost) | **POST** /users/me/addresses | Ajouter une adresse |
+| [**usersMeAddressesIdPut**](AddressesApi.md#usersMeAddressesIdPut) | **PUT** /users/me/addresses/{id} | Créer ou mettre à jour une adresse par identifiant |
+| [**usersMeAddressesPost**](AddressesApi.md#usersMeAddressesPost) | **POST** /users/me/addresses | Créer ou mettre à jour une adresse |
 
 
 <a id="usersMeAddressesGet"></a>
@@ -209,7 +209,9 @@ null (empty response body)
 # **usersMeAddressesIdPut**
 > Address usersMeAddressesIdPut(id, addressInput)
 
-Modifier une adresse
+Créer ou mettre à jour une adresse par identifiant
+
+Si l&#39;adresse existe pour l&#39;utilisateur connecté, elle est mise à jour. Sinon, une nouvelle adresse est créée et l&#39;identifiant retourné fait foi. 
 
 ### Example
 ```java
@@ -270,7 +272,8 @@ public class Example {
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
-| **200** | OK |  -  |
+| **200** | Adresse mise à jour |  -  |
+| **201** | Adresse créée |  -  |
 | **401** | Token JWT manquant ou invalide |  -  |
 | **404** | Ressource introuvable |  -  |
 
@@ -278,7 +281,9 @@ public class Example {
 # **usersMeAddressesPost**
 > Address usersMeAddressesPost(addressInput)
 
-Ajouter une adresse
+Créer ou mettre à jour une adresse
+
+Endpoint d&#39;upsert. Si &#x60;id&#x60; est absent ou null dans le payload, une nouvelle adresse est créée. Si &#x60;id&#x60; est fourni et qu&#39;une adresse appartenant à l&#39;utilisateur existe, elle est mise à jour. Sinon, une nouvelle adresse est créée. 
 
 ### Example
 ```java
@@ -338,5 +343,6 @@ public class Example {
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
 | **201** | Adresse créée |  -  |
+| **200** | Adresse mise à jour |  -  |
 | **401** | Token JWT manquant ou invalide |  -  |
 

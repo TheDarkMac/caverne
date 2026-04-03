@@ -28,20 +28,14 @@
     "description" : "Arborescence de catégories produits",
     "name" : "Categories"
   }, {
-    "description" : "Catalogue, images, prix, stock, specs, avis",
+    "description" : "Catalogue produits",
     "name" : "Products"
   }, {
-    "description" : "Commandes et livraisons",
+    "description" : "Commandes",
     "name" : "Orders"
   }, {
-    "description" : "Paiements, webhooks, remboursements",
+    "description" : "Paiements initiés depuis une commande",
     "name" : "Payments"
-  }, {
-    "description" : "Méthodes de paiement (Wave, Orange Money, etc.)",
-    "name" : "Payment Methods"
-  }, {
-    "description" : "Devises (MGA, EUR, USD…)",
-    "name" : "Currencies"
   } ],
   "paths" : {
     "/auth/register" : {
@@ -210,6 +204,62 @@
         },
         "summary" : "Liste des utilisateurs (admin)",
         "tags" : [ "Users" ]
+      },
+      "post" : {
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/UserCreateInput"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "201" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/User"
+                }
+              }
+            },
+            "description" : "Utilisateur créé"
+          },
+          "401" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Error"
+                }
+              }
+            },
+            "description" : "Token JWT manquant ou invalide"
+          },
+          "403" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Error"
+                }
+              }
+            },
+            "description" : "Accès refusé (rôle insuffisant)"
+          },
+          "422" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Error"
+                }
+              }
+            },
+            "description" : "Données invalides"
+          }
+        },
+        "summary" : "Créer un utilisateur (admin)",
+        "tags" : [ "Users" ]
       }
     },
     "/users/me" : {
@@ -260,6 +310,16 @@
               }
             },
             "description" : "Profil mis à jour"
+          },
+          "401" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Error"
+                }
+              }
+            },
+            "description" : "Token JWT manquant ou invalide"
           },
           "422" : {
             "content" : {
@@ -368,12 +428,23 @@
               }
             },
             "description" : "OK"
+          },
+          "401" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Error"
+                }
+              }
+            },
+            "description" : "Token JWT manquant ou invalide"
           }
         },
         "summary" : "Liste des adresses de l'utilisateur connecté",
         "tags" : [ "Addresses" ]
       },
       "post" : {
+        "description" : "Endpoint d'upsert. Si `id` est absent ou null dans le payload, une nouvelle adresse est créée. Si `id` est fourni et qu'une adresse appartenant à l'utilisateur existe, elle est mise à jour. Sinon, une nouvelle adresse est créée.\n",
         "requestBody" : {
           "content" : {
             "application/json" : {
@@ -394,9 +465,29 @@
               }
             },
             "description" : "Adresse créée"
+          },
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Address"
+                }
+              }
+            },
+            "description" : "Adresse mise à jour"
+          },
+          "401" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Error"
+                }
+              }
+            },
+            "description" : "Token JWT manquant ou invalide"
           }
         },
-        "summary" : "Ajouter une adresse",
+        "summary" : "Créer ou mettre à jour une adresse",
         "tags" : [ "Addresses" ]
       }
     },
@@ -416,6 +507,16 @@
           "204" : {
             "description" : "Supprimée"
           },
+          "401" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Error"
+                }
+              }
+            },
+            "description" : "Token JWT manquant ou invalide"
+          },
           "404" : {
             "content" : {
               "application/json" : {
@@ -431,6 +532,7 @@
         "tags" : [ "Addresses" ]
       },
       "put" : {
+        "description" : "Si l'adresse existe pour l'utilisateur connecté, elle est mise à jour. Sinon, une nouvelle adresse est créée et l'identifiant retourné fait foi.\n",
         "parameters" : [ {
           "explode" : false,
           "in" : "path",
@@ -460,7 +562,27 @@
                 }
               }
             },
-            "description" : "OK"
+            "description" : "Adresse mise à jour"
+          },
+          "201" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Address"
+                }
+              }
+            },
+            "description" : "Adresse créée"
+          },
+          "401" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Error"
+                }
+              }
+            },
+            "description" : "Token JWT manquant ou invalide"
           },
           "404" : {
             "content" : {
@@ -473,7 +595,7 @@
             "description" : "Ressource introuvable"
           }
         },
-        "summary" : "Modifier une adresse",
+        "summary" : "Créer ou mettre à jour une adresse par identifiant",
         "tags" : [ "Addresses" ]
       }
     },
@@ -499,6 +621,16 @@
               }
             },
             "description" : "Adresse définie par défaut"
+          },
+          "401" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Error"
+                }
+              }
+            },
+            "description" : "Token JWT manquant ou invalide"
           }
         },
         "summary" : "Définir comme adresse par défaut",
@@ -538,6 +670,7 @@
         "tags" : [ "Categories" ]
       },
       "post" : {
+        "description" : "Endpoint d'upsert. Si `id` est absent ou null dans le payload, une nouvelle catégorie est créée. Si `id` est fourni, la catégorie existante correspondante doit être mise à jour.\n",
         "requestBody" : {
           "content" : {
             "application/json" : {
@@ -557,10 +690,40 @@
                 }
               }
             },
-            "description" : "Créée"
+            "description" : "Créée quand `id` est absent"
+          },
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Category"
+                }
+              }
+            },
+            "description" : "Mise à jour quand `id` est fourni"
+          },
+          "401" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Error"
+                }
+              }
+            },
+            "description" : "Token JWT manquant ou invalide"
+          },
+          "403" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Error"
+                }
+              }
+            },
+            "description" : "Accès refusé (rôle insuffisant)"
           }
         },
-        "summary" : "Créer une catégorie (admin)",
+        "summary" : "Créer ou mettre à jour une catégorie (admin)",
         "tags" : [ "Categories" ]
       }
     },
@@ -579,6 +742,26 @@
         "responses" : {
           "204" : {
             "description" : "Supprimée"
+          },
+          "401" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Error"
+                }
+              }
+            },
+            "description" : "Token JWT manquant ou invalide"
+          },
+          "403" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Error"
+                }
+              }
+            },
+            "description" : "Accès refusé (rôle insuffisant)"
           }
         },
         "summary" : "Supprimer une catégorie (admin)",
@@ -622,6 +805,7 @@
         "tags" : [ "Categories" ]
       },
       "put" : {
+        "description" : "Si la catégorie existe, elle est mise à jour. Sinon, une nouvelle catégorie est créée et l'identifiant retourné fait foi. Si `id` est aussi fourni dans le payload, il doit correspondre à l'identifiant du path.\n",
         "parameters" : [ {
           "explode" : false,
           "in" : "path",
@@ -651,10 +835,50 @@
                 }
               }
             },
-            "description" : "OK"
+            "description" : "Catégorie mise à jour"
+          },
+          "201" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Category"
+                }
+              }
+            },
+            "description" : "Catégorie créée"
+          },
+          "401" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Error"
+                }
+              }
+            },
+            "description" : "Token JWT manquant ou invalide"
+          },
+          "403" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Error"
+                }
+              }
+            },
+            "description" : "Accès refusé (rôle insuffisant)"
+          },
+          "404" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Error"
+                }
+              }
+            },
+            "description" : "Ressource introuvable"
           }
         },
-        "summary" : "Modifier une catégorie (admin)",
+        "summary" : "Créer ou mettre à jour une catégorie par identifiant (admin)",
         "tags" : [ "Categories" ]
       }
     },
@@ -735,6 +959,7 @@
         "tags" : [ "Products" ]
       },
       "post" : {
+        "description" : "Endpoint d'upsert. Si `id` est absent ou null dans le payload, un nouveau produit est créé. Si `id` est fourni et qu'un produit existe, il est mis à jour. Sinon, un nouveau produit est créé.\n",
         "requestBody" : {
           "content" : {
             "application/json" : {
@@ -755,9 +980,39 @@
               }
             },
             "description" : "Produit créé"
+          },
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Product"
+                }
+              }
+            },
+            "description" : "Produit mis à jour"
+          },
+          "401" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Error"
+                }
+              }
+            },
+            "description" : "Token JWT manquant ou invalide"
+          },
+          "403" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Error"
+                }
+              }
+            },
+            "description" : "Accès refusé (rôle insuffisant)"
           }
         },
-        "summary" : "Créer un produit (admin)",
+        "summary" : "Créer ou mettre à jour un produit (admin)",
         "tags" : [ "Products" ]
       }
     },
@@ -776,6 +1031,26 @@
         "responses" : {
           "204" : {
             "description" : "Supprimé"
+          },
+          "401" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Error"
+                }
+              }
+            },
+            "description" : "Token JWT manquant ou invalide"
+          },
+          "403" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Error"
+                }
+              }
+            },
+            "description" : "Accès refusé (rôle insuffisant)"
           }
         },
         "summary" : "Supprimer un produit (admin)",
@@ -819,6 +1094,7 @@
         "tags" : [ "Products" ]
       },
       "put" : {
+        "description" : "Si le produit existe, il est mis à jour. Sinon, un nouveau produit est créé et l'identifiant retourné fait foi. Si `id` est aussi fourni dans le payload, il doit correspondre à l'identifiant du path.\n",
         "parameters" : [ {
           "explode" : false,
           "in" : "path",
@@ -848,360 +1124,19 @@
                 }
               }
             },
-            "description" : "Mis à jour"
-          }
-        },
-        "summary" : "Modifier un produit (admin)",
-        "tags" : [ "Products" ]
-      }
-    },
-    "/products/{id}/images" : {
-      "get" : {
-        "parameters" : [ {
-          "explode" : false,
-          "in" : "path",
-          "name" : "id",
-          "required" : true,
-          "schema" : {
-            "type" : "integer"
+            "description" : "Produit mis à jour"
           },
-          "style" : "simple"
-        } ],
-        "responses" : {
-          "200" : {
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "items" : {
-                    "$ref" : "#/components/schemas/ProductImage"
-                  },
-                  "type" : "array"
-                }
-              }
-            },
-            "description" : "OK"
-          }
-        },
-        "security" : [ ],
-        "summary" : "Images d'un produit",
-        "tags" : [ "Products" ]
-      },
-      "post" : {
-        "parameters" : [ {
-          "explode" : false,
-          "in" : "path",
-          "name" : "id",
-          "required" : true,
-          "schema" : {
-            "type" : "integer"
-          },
-          "style" : "simple"
-        } ],
-        "requestBody" : {
-          "content" : {
-            "application/json" : {
-              "schema" : {
-                "$ref" : "#/components/schemas/ProductImageInput"
-              }
-            }
-          },
-          "required" : true
-        },
-        "responses" : {
           "201" : {
             "content" : {
               "application/json" : {
                 "schema" : {
-                  "$ref" : "#/components/schemas/ProductImage"
+                  "$ref" : "#/components/schemas/Product"
                 }
               }
             },
-            "description" : "Créée"
-          }
-        },
-        "summary" : "Ajouter une image (admin)",
-        "tags" : [ "Products" ]
-      }
-    },
-    "/products/{id}/images/{imageId}" : {
-      "delete" : {
-        "parameters" : [ {
-          "explode" : false,
-          "in" : "path",
-          "name" : "id",
-          "required" : true,
-          "schema" : {
-            "type" : "integer"
+            "description" : "Produit créé"
           },
-          "style" : "simple"
-        }, {
-          "explode" : false,
-          "in" : "path",
-          "name" : "imageId",
-          "required" : true,
-          "schema" : {
-            "type" : "integer"
-          },
-          "style" : "simple"
-        } ],
-        "responses" : {
-          "204" : {
-            "description" : "Supprimée"
-          }
-        },
-        "summary" : "Supprimer une image",
-        "tags" : [ "Products" ]
-      },
-      "put" : {
-        "parameters" : [ {
-          "explode" : false,
-          "in" : "path",
-          "name" : "id",
-          "required" : true,
-          "schema" : {
-            "type" : "integer"
-          },
-          "style" : "simple"
-        }, {
-          "explode" : false,
-          "in" : "path",
-          "name" : "imageId",
-          "required" : true,
-          "schema" : {
-            "type" : "integer"
-          },
-          "style" : "simple"
-        } ],
-        "requestBody" : {
-          "content" : {
-            "application/json" : {
-              "schema" : {
-                "$ref" : "#/components/schemas/ProductImageInput"
-              }
-            }
-          },
-          "required" : true
-        },
-        "responses" : {
-          "200" : {
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/ProductImage"
-                }
-              }
-            },
-            "description" : "OK"
-          }
-        },
-        "summary" : "Modifier une image (définir main, etc.)",
-        "tags" : [ "Products" ]
-      }
-    },
-    "/products/{id}/prices" : {
-      "get" : {
-        "parameters" : [ {
-          "explode" : false,
-          "in" : "path",
-          "name" : "id",
-          "required" : true,
-          "schema" : {
-            "type" : "integer"
-          },
-          "style" : "simple"
-        } ],
-        "responses" : {
-          "200" : {
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "items" : {
-                    "$ref" : "#/components/schemas/Price"
-                  },
-                  "type" : "array"
-                }
-              }
-            },
-            "description" : "OK"
-          }
-        },
-        "security" : [ ],
-        "summary" : "Historique des prix d'un produit",
-        "tags" : [ "Products" ]
-      },
-      "post" : {
-        "parameters" : [ {
-          "explode" : false,
-          "in" : "path",
-          "name" : "id",
-          "required" : true,
-          "schema" : {
-            "type" : "integer"
-          },
-          "style" : "simple"
-        } ],
-        "requestBody" : {
-          "content" : {
-            "application/json" : {
-              "schema" : {
-                "$ref" : "#/components/schemas/PriceInput"
-              }
-            }
-          },
-          "required" : true
-        },
-        "responses" : {
-          "201" : {
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/Price"
-                }
-              }
-            },
-            "description" : "Créé"
-          }
-        },
-        "summary" : "Ajouter un prix (admin)",
-        "tags" : [ "Products" ]
-      }
-    },
-    "/products/{id}/stock" : {
-      "get" : {
-        "parameters" : [ {
-          "explode" : false,
-          "in" : "path",
-          "name" : "id",
-          "required" : true,
-          "schema" : {
-            "type" : "integer"
-          },
-          "style" : "simple"
-        } ],
-        "responses" : {
-          "200" : {
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/StockSummary"
-                }
-              }
-            },
-            "description" : "Résumé du stock"
-          }
-        },
-        "summary" : "Stock disponible d'un produit",
-        "tags" : [ "Products" ]
-      },
-      "post" : {
-        "parameters" : [ {
-          "explode" : false,
-          "in" : "path",
-          "name" : "id",
-          "required" : true,
-          "schema" : {
-            "type" : "integer"
-          },
-          "style" : "simple"
-        } ],
-        "requestBody" : {
-          "content" : {
-            "application/json" : {
-              "schema" : {
-                "$ref" : "#/components/schemas/StockInput"
-              }
-            }
-          },
-          "required" : true
-        },
-        "responses" : {
-          "201" : {
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/StockEntry"
-                }
-              }
-            },
-            "description" : "Mouvement enregistré"
-          }
-        },
-        "summary" : "Enregistrer un mouvement de stock (admin)",
-        "tags" : [ "Products" ]
-      }
-    },
-    "/products/{id}/stock/history" : {
-      "get" : {
-        "parameters" : [ {
-          "explode" : false,
-          "in" : "path",
-          "name" : "id",
-          "required" : true,
-          "schema" : {
-            "type" : "integer"
-          },
-          "style" : "simple"
-        }, {
-          "explode" : true,
-          "in" : "query",
-          "name" : "page",
-          "required" : false,
-          "schema" : {
-            "default" : 1,
-            "type" : "integer"
-          },
-          "style" : "form"
-        }, {
-          "explode" : true,
-          "in" : "query",
-          "name" : "movement_type",
-          "required" : false,
-          "schema" : {
-            "enum" : [ "in", "out", "adjustment" ],
-            "type" : "string"
-          },
-          "style" : "form"
-        } ],
-        "responses" : {
-          "200" : {
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/_products__id__stock_history_get_200_response"
-                }
-              }
-            },
-            "description" : "OK"
-          }
-        },
-        "summary" : "Historique des mouvements de stock",
-        "tags" : [ "Products" ]
-      }
-    },
-    "/products/{id}/technical-specs" : {
-      "get" : {
-        "parameters" : [ {
-          "explode" : false,
-          "in" : "path",
-          "name" : "id",
-          "required" : true,
-          "schema" : {
-            "type" : "integer"
-          },
-          "style" : "simple"
-        } ],
-        "responses" : {
-          "200" : {
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/TechnicalSpecs"
-                }
-              }
-            },
-            "description" : "OK"
-          },
-          "404" : {
+          "401" : {
             "content" : {
               "application/json" : {
                 "schema" : {
@@ -1209,121 +1144,9 @@
                 }
               }
             },
-            "description" : "Ressource introuvable"
-          }
-        },
-        "security" : [ ],
-        "summary" : "Spécifications techniques d'un produit",
-        "tags" : [ "Products" ]
-      },
-      "put" : {
-        "parameters" : [ {
-          "explode" : false,
-          "in" : "path",
-          "name" : "id",
-          "required" : true,
-          "schema" : {
-            "type" : "integer"
+            "description" : "Token JWT manquant ou invalide"
           },
-          "style" : "simple"
-        } ],
-        "requestBody" : {
-          "content" : {
-            "application/json" : {
-              "schema" : {
-                "$ref" : "#/components/schemas/TechnicalSpecsInput"
-              }
-            }
-          },
-          "required" : true
-        },
-        "responses" : {
-          "200" : {
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/TechnicalSpecs"
-                }
-              }
-            },
-            "description" : "OK"
-          }
-        },
-        "summary" : "Créer ou remplacer les specs techniques (admin)",
-        "tags" : [ "Products" ]
-      }
-    },
-    "/products/{id}/reviews" : {
-      "get" : {
-        "parameters" : [ {
-          "explode" : false,
-          "in" : "path",
-          "name" : "id",
-          "required" : true,
-          "schema" : {
-            "type" : "integer"
-          },
-          "style" : "simple"
-        }, {
-          "explode" : true,
-          "in" : "query",
-          "name" : "page",
-          "required" : false,
-          "schema" : {
-            "default" : 1,
-            "type" : "integer"
-          },
-          "style" : "form"
-        } ],
-        "responses" : {
-          "200" : {
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/_products__id__reviews_get_200_response"
-                }
-              }
-            },
-            "description" : "OK"
-          }
-        },
-        "security" : [ ],
-        "summary" : "Avis clients d'un produit",
-        "tags" : [ "Products" ]
-      },
-      "post" : {
-        "parameters" : [ {
-          "explode" : false,
-          "in" : "path",
-          "name" : "id",
-          "required" : true,
-          "schema" : {
-            "type" : "integer"
-          },
-          "style" : "simple"
-        } ],
-        "requestBody" : {
-          "content" : {
-            "application/json" : {
-              "schema" : {
-                "$ref" : "#/components/schemas/ReviewInput"
-              }
-            }
-          },
-          "required" : true
-        },
-        "responses" : {
-          "201" : {
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/Review"
-                }
-              }
-            },
-            "description" : "Avis enregistré"
-          },
-          "422" : {
+          "403" : {
             "content" : {
               "application/json" : {
                 "schema" : {
@@ -1331,10 +1154,10 @@
                 }
               }
             },
-            "description" : "Données invalides"
+            "description" : "Accès refusé (rôle insuffisant)"
           }
         },
-        "summary" : "Déposer un avis (utilisateur connecté)",
+        "summary" : "Créer ou mettre à jour un produit par identifiant (admin)",
         "tags" : [ "Products" ]
       }
     },
@@ -1467,6 +1290,16 @@
             },
             "description" : "OK"
           },
+          "401" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Error"
+                }
+              }
+            },
+            "description" : "Token JWT manquant ou invalide"
+          },
           "403" : {
             "content" : {
               "application/json" : {
@@ -1484,6 +1317,7 @@
     },
     "/orders/{id}" : {
       "get" : {
+        "description" : "Les commandes invitées peuvent être consultées sans authentification. Les commandes liées à un utilisateur nécessitent que l'acteur soit le propriétaire ou un admin.\n",
         "parameters" : [ {
           "explode" : false,
           "in" : "path",
@@ -1504,6 +1338,16 @@
               }
             },
             "description" : "OK"
+          },
+          "403" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Error"
+                }
+              }
+            },
+            "description" : "Accès refusé (rôle insuffisant)"
           },
           "404" : {
             "content" : {
@@ -1554,6 +1398,16 @@
             },
             "description" : "Statut mis à jour"
           },
+          "401" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Error"
+                }
+              }
+            },
+            "description" : "Token JWT manquant ou invalide"
+          },
           "403" : {
             "content" : {
               "application/json" : {
@@ -1591,74 +1445,43 @@
               }
             },
             "description" : "Commande annulée"
+          },
+          "403" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Error"
+                }
+              }
+            },
+            "description" : "Accès refusé (rôle insuffisant)"
           }
         },
+        "security" : [ ],
         "summary" : "Annuler une commande (owner ou admin)",
         "tags" : [ "Orders" ]
       }
     },
-    "/orders/{id}/delivery-cost" : {
+    "/payment-methods" : {
       "get" : {
-        "parameters" : [ {
-          "explode" : false,
-          "in" : "path",
-          "name" : "id",
-          "required" : true,
-          "schema" : {
-            "type" : "integer"
-          },
-          "style" : "simple"
-        } ],
         "responses" : {
           "200" : {
             "content" : {
               "application/json" : {
                 "schema" : {
-                  "$ref" : "#/components/schemas/DeliverCost"
+                  "items" : {
+                    "$ref" : "#/components/schemas/PaymentMethod"
+                  },
+                  "type" : "array"
                 }
               }
             },
-            "description" : "OK"
+            "description" : "Moyens disponibles"
           }
         },
-        "summary" : "Frais de livraison d'une commande",
-        "tags" : [ "Orders" ]
-      },
-      "post" : {
-        "parameters" : [ {
-          "explode" : false,
-          "in" : "path",
-          "name" : "id",
-          "required" : true,
-          "schema" : {
-            "type" : "integer"
-          },
-          "style" : "simple"
-        } ],
-        "requestBody" : {
-          "content" : {
-            "application/json" : {
-              "schema" : {
-                "$ref" : "#/components/schemas/DeliverCostInput"
-              }
-            }
-          },
-          "required" : true
-        },
-        "responses" : {
-          "201" : {
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/DeliverCost"
-                }
-              }
-            },
-            "description" : "Créé"
-          }
-        },
-        "summary" : "Renseigner les frais de livraison (admin)",
-        "tags" : [ "Orders" ]
+        "security" : [ ],
+        "summary" : "Liste des moyens de paiement disponibles",
+        "tags" : [ "Payments" ]
       }
     },
     "/orders/{id}/payments" : {
@@ -1738,358 +1561,6 @@
         "security" : [ ],
         "summary" : "Initier un paiement",
         "tags" : [ "Payments" ]
-      }
-    },
-    "/payments/{id}" : {
-      "get" : {
-        "parameters" : [ {
-          "explode" : false,
-          "in" : "path",
-          "name" : "id",
-          "required" : true,
-          "schema" : {
-            "type" : "integer"
-          },
-          "style" : "simple"
-        } ],
-        "responses" : {
-          "200" : {
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/Payment"
-                }
-              }
-            },
-            "description" : "OK"
-          },
-          "404" : {
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/Error"
-                }
-              }
-            },
-            "description" : "Ressource introuvable"
-          }
-        },
-        "summary" : "Détail d'un paiement",
-        "tags" : [ "Payments" ]
-      }
-    },
-    "/payments/{id}/confirm" : {
-      "post" : {
-        "parameters" : [ {
-          "explode" : false,
-          "in" : "path",
-          "name" : "id",
-          "required" : true,
-          "schema" : {
-            "type" : "integer"
-          },
-          "style" : "simple"
-        } ],
-        "responses" : {
-          "200" : {
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/Payment"
-                }
-              }
-            },
-            "description" : "Confirmé"
-          },
-          "403" : {
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/Error"
-                }
-              }
-            },
-            "description" : "Accès refusé (rôle insuffisant)"
-          }
-        },
-        "summary" : "Confirmer manuellement un paiement (admin)",
-        "tags" : [ "Payments" ]
-      }
-    },
-    "/payments/{id}/refund" : {
-      "post" : {
-        "parameters" : [ {
-          "explode" : false,
-          "in" : "path",
-          "name" : "id",
-          "required" : true,
-          "schema" : {
-            "type" : "integer"
-          },
-          "style" : "simple"
-        } ],
-        "responses" : {
-          "200" : {
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/Payment"
-                }
-              }
-            },
-            "description" : "Remboursé"
-          }
-        },
-        "summary" : "Rembourser un paiement (admin)",
-        "tags" : [ "Payments" ]
-      }
-    },
-    "/payments/webhook/{provider_code}" : {
-      "post" : {
-        "parameters" : [ {
-          "explode" : false,
-          "in" : "path",
-          "name" : "provider_code",
-          "required" : true,
-          "schema" : {
-            "type" : "string"
-          },
-          "style" : "simple"
-        } ],
-        "requestBody" : {
-          "content" : {
-            "application/json" : {
-              "schema" : {
-                "description" : "Payload propre à chaque prestataire (Wave, Orange Money, etc.)",
-                "type" : "object"
-              }
-            }
-          },
-          "required" : true
-        },
-        "responses" : {
-          "200" : {
-            "description" : "Reçu"
-          },
-          "400" : {
-            "description" : "Signature invalide"
-          }
-        },
-        "security" : [ ],
-        "summary" : "Webhook de confirmation de paiement (appelé par le prestataire)",
-        "tags" : [ "Payments" ]
-      }
-    },
-    "/payment-methods" : {
-      "get" : {
-        "responses" : {
-          "200" : {
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "items" : {
-                    "$ref" : "#/components/schemas/PaymentMethod"
-                  },
-                  "type" : "array"
-                }
-              }
-            },
-            "description" : "OK"
-          }
-        },
-        "security" : [ ],
-        "summary" : "Liste des méthodes de paiement actives",
-        "tags" : [ "Payment Methods" ]
-      },
-      "post" : {
-        "requestBody" : {
-          "content" : {
-            "application/json" : {
-              "schema" : {
-                "$ref" : "#/components/schemas/PaymentMethodInput"
-              }
-            }
-          },
-          "required" : true
-        },
-        "responses" : {
-          "201" : {
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/PaymentMethod"
-                }
-              }
-            },
-            "description" : "Créée"
-          }
-        },
-        "summary" : "Créer une méthode de paiement (admin)",
-        "tags" : [ "Payment Methods" ]
-      }
-    },
-    "/payment-methods/{provider_code}" : {
-      "delete" : {
-        "parameters" : [ {
-          "explode" : false,
-          "in" : "path",
-          "name" : "provider_code",
-          "required" : true,
-          "schema" : {
-            "type" : "string"
-          },
-          "style" : "simple"
-        } ],
-        "responses" : {
-          "204" : {
-            "description" : "Supprimée"
-          }
-        },
-        "summary" : "Supprimer une méthode de paiement (admin)",
-        "tags" : [ "Payment Methods" ]
-      },
-      "put" : {
-        "parameters" : [ {
-          "explode" : false,
-          "in" : "path",
-          "name" : "provider_code",
-          "required" : true,
-          "schema" : {
-            "type" : "string"
-          },
-          "style" : "simple"
-        } ],
-        "requestBody" : {
-          "content" : {
-            "application/json" : {
-              "schema" : {
-                "$ref" : "#/components/schemas/PaymentMethodInput"
-              }
-            }
-          },
-          "required" : true
-        },
-        "responses" : {
-          "200" : {
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/PaymentMethod"
-                }
-              }
-            },
-            "description" : "OK"
-          }
-        },
-        "summary" : "Modifier une méthode de paiement (admin)",
-        "tags" : [ "Payment Methods" ]
-      }
-    },
-    "/currencies" : {
-      "get" : {
-        "responses" : {
-          "200" : {
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "items" : {
-                    "$ref" : "#/components/schemas/Currency"
-                  },
-                  "type" : "array"
-                }
-              }
-            },
-            "description" : "OK"
-          }
-        },
-        "security" : [ ],
-        "summary" : "Liste des devises supportées",
-        "tags" : [ "Currencies" ]
-      },
-      "post" : {
-        "requestBody" : {
-          "content" : {
-            "application/json" : {
-              "schema" : {
-                "$ref" : "#/components/schemas/Currency"
-              }
-            }
-          },
-          "required" : true
-        },
-        "responses" : {
-          "201" : {
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/Currency"
-                }
-              }
-            },
-            "description" : "Créée"
-          }
-        },
-        "summary" : "Ajouter une devise (admin)",
-        "tags" : [ "Currencies" ]
-      }
-    },
-    "/currencies/{code_iso}" : {
-      "delete" : {
-        "parameters" : [ {
-          "explode" : false,
-          "in" : "path",
-          "name" : "code_iso",
-          "required" : true,
-          "schema" : {
-            "maxLength" : 3,
-            "type" : "string"
-          },
-          "style" : "simple"
-        } ],
-        "responses" : {
-          "204" : {
-            "description" : "Supprimée"
-          }
-        },
-        "summary" : "Supprimer une devise (admin)",
-        "tags" : [ "Currencies" ]
-      },
-      "put" : {
-        "parameters" : [ {
-          "explode" : false,
-          "in" : "path",
-          "name" : "code_iso",
-          "required" : true,
-          "schema" : {
-            "maxLength" : 3,
-            "type" : "string"
-          },
-          "style" : "simple"
-        } ],
-        "requestBody" : {
-          "content" : {
-            "application/json" : {
-              "schema" : {
-                "$ref" : "#/components/schemas/Currency"
-              }
-            }
-          },
-          "required" : true
-        },
-        "responses" : {
-          "200" : {
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/Currency"
-                }
-              }
-            },
-            "description" : "OK"
-          }
-        },
-        "summary" : "Modifier une devise (admin)",
-        "tags" : [ "Currencies" ]
       }
     }
   },
@@ -2172,9 +1643,15 @@
     },
     "schemas" : {
       "LoginRequest" : {
+        "description" : "Fournir `email` ou `phone`, ou les deux.",
         "properties" : {
           "email" : {
             "format" : "email",
+            "nullable" : true,
+            "type" : "string"
+          },
+          "phone" : {
+            "nullable" : true,
             "type" : "string"
           },
           "password" : {
@@ -2182,7 +1659,7 @@
             "type" : "string"
           }
         },
-        "required" : [ "email", "password" ],
+        "required" : [ "password" ],
         "type" : "object"
       },
       "LoginResponse" : {
@@ -2202,6 +1679,7 @@
         "type" : "object"
       },
       "RegisterRequest" : {
+        "description" : "Fournir `email` ou `phone`, ou les deux.",
         "properties" : {
           "firstname" : {
             "maxLength" : 100,
@@ -2213,10 +1691,12 @@
           },
           "email" : {
             "format" : "email",
+            "nullable" : true,
             "type" : "string"
           },
           "phone" : {
             "maxLength" : 20,
+            "nullable" : true,
             "type" : "string"
           },
           "password" : {
@@ -2224,7 +1704,7 @@
             "type" : "string"
           }
         },
-        "required" : [ "email", "firstname", "lastname", "password" ],
+        "required" : [ "firstname", "lastname", "password" ],
         "type" : "object"
       },
       "User" : {
@@ -2240,9 +1720,11 @@
           },
           "email" : {
             "format" : "email",
+            "nullable" : true,
             "type" : "string"
           },
           "phone" : {
+            "nullable" : true,
             "type" : "string"
           },
           "role" : {
@@ -2267,6 +1749,39 @@
             "type" : "string"
           }
         },
+        "type" : "object"
+      },
+      "UserCreateInput" : {
+        "description" : "Fournir `email` ou `phone`, ou les deux.",
+        "properties" : {
+          "firstname" : {
+            "type" : "string"
+          },
+          "lastname" : {
+            "type" : "string"
+          },
+          "email" : {
+            "format" : "email",
+            "nullable" : true,
+            "type" : "string"
+          },
+          "phone" : {
+            "nullable" : true,
+            "type" : "string"
+          },
+          "password" : {
+            "format" : "password",
+            "type" : "string"
+          },
+          "role" : {
+            "enum" : [ "admin", "simple_user" ],
+            "type" : "string"
+          },
+          "status" : {
+            "type" : "string"
+          }
+        },
+        "required" : [ "firstname", "lastname", "password" ],
         "type" : "object"
       },
       "Address" : {
@@ -2296,6 +1811,10 @@
       },
       "AddressInput" : {
         "properties" : {
+          "id" : {
+            "nullable" : true,
+            "type" : "integer"
+          },
           "location" : {
             "type" : "string"
           },
@@ -2313,7 +1832,7 @@
         "required" : [ "country_code", "location", "postal_code" ],
         "type" : "object"
       },
-      "GuestAddressInput" : {
+      "RecipientInput" : {
         "properties" : {
           "location" : {
             "type" : "string"
@@ -2325,18 +1844,18 @@
             "maxLength" : 3,
             "type" : "string"
           },
-          "customer_name" : {
+          "recipient_name" : {
             "type" : "string"
           },
-          "customer_email" : {
+          "recipient_email" : {
             "format" : "email",
             "type" : "string"
           },
-          "customer_phone" : {
+          "recipient_phone" : {
             "type" : "string"
           }
         },
-        "required" : [ "country_code", "customer_email", "customer_name", "customer_phone", "location", "postal_code" ],
+        "required" : [ "country_code", "location", "postal_code", "recipient_email", "recipient_name", "recipient_phone" ],
         "type" : "object"
       },
       "Category" : {
@@ -2369,6 +1888,10 @@
       },
       "CategoryInput" : {
         "properties" : {
+          "id" : {
+            "nullable" : true,
+            "type" : "integer"
+          },
           "label" : {
             "type" : "string"
           },
@@ -2427,7 +1950,7 @@
             "type" : "string"
           },
           "size" : {
-            "type" : "string"
+            "type" : "number"
           },
           "is_active" : {
             "default" : true,
@@ -2453,6 +1976,10 @@
       },
       "ProductInput" : {
         "properties" : {
+          "id" : {
+            "nullable" : true,
+            "type" : "integer"
+          },
           "category_id" : {
             "type" : "integer"
           },
@@ -2470,7 +1997,7 @@
             "type" : "string"
           },
           "size" : {
-            "type" : "string"
+            "type" : "number"
           },
           "is_active" : {
             "type" : "boolean"
@@ -2740,14 +2267,18 @@
             "enum" : [ "pending", "confirmed", "delivered", "cancelled" ],
             "type" : "string"
           },
+          "delivery_cost_id" : {
+            "nullable" : true,
+            "type" : "integer"
+          },
           "items" : {
             "items" : {
               "$ref" : "#/components/schemas/OrderItem"
             },
             "type" : "array"
           },
-          "guest_address" : {
-            "$ref" : "#/components/schemas/GuestAddressInput"
+          "recipient" : {
+            "$ref" : "#/components/schemas/RecipientInput"
           },
           "provider_response" : {
             "nullable" : true,
@@ -2762,6 +2293,10 @@
             "nullable" : true,
             "type" : "integer"
           },
+          "delivery_cost_id" : {
+            "nullable" : true,
+            "type" : "integer"
+          },
           "currency_code" : {
             "type" : "string"
           },
@@ -2772,11 +2307,11 @@
             "minItems" : 1,
             "type" : "array"
           },
-          "guest_address" : {
-            "$ref" : "#/components/schemas/GuestAddressInput"
+          "recipient" : {
+            "$ref" : "#/components/schemas/RecipientInput"
           }
         },
-        "required" : [ "currency_code", "guest_address", "items" ],
+        "required" : [ "currency_code", "items", "recipient" ],
         "type" : "object"
       },
       "OrderStatusUpdate" : {
@@ -2905,6 +2440,7 @@
         "type" : "object"
       },
       "PaymentInput" : {
+        "description" : "Le `method_code` doit correspondre à un `provider_code` retourné par `/payment-methods` (ex : MANUAL, STRIPE).\n",
         "properties" : {
           "method_code" : {
             "type" : "string"
@@ -2967,38 +2503,6 @@
           "data" : {
             "items" : {
               "$ref" : "#/components/schemas/Product"
-            },
-            "type" : "array"
-          },
-          "meta" : {
-            "$ref" : "#/components/schemas/PaginatedMeta"
-          }
-        },
-        "type" : "object"
-      },
-      "_products__id__stock_history_get_200_response" : {
-        "properties" : {
-          "data" : {
-            "items" : {
-              "$ref" : "#/components/schemas/StockEntry"
-            },
-            "type" : "array"
-          },
-          "meta" : {
-            "$ref" : "#/components/schemas/PaginatedMeta"
-          }
-        },
-        "type" : "object"
-      },
-      "_products__id__reviews_get_200_response" : {
-        "properties" : {
-          "average_score" : {
-            "format" : "float",
-            "type" : "number"
-          },
-          "data" : {
-            "items" : {
-              "$ref" : "#/components/schemas/Review"
             },
             "type" : "array"
           },

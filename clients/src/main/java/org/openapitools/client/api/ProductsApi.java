@@ -513,7 +513,8 @@ public class ProductsApi {
      <table border="1">
        <caption>Response Details</caption>
         <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Mis à jour </td><td>  -  </td></tr>
+        <tr><td> 200 </td><td> Produit mis à jour </td><td>  -  </td></tr>
+        <tr><td> 201 </td><td> Produit créé </td><td>  -  </td></tr>
         <tr><td> 401 </td><td> Token JWT manquant ou invalide </td><td>  -  </td></tr>
         <tr><td> 403 </td><td> Accès refusé (rôle insuffisant) </td><td>  -  </td></tr>
      </table>
@@ -581,8 +582,8 @@ public class ProductsApi {
     }
 
     /**
-     * Modifier un produit (admin)
-     * 
+     * Créer ou mettre à jour un produit par identifiant (admin)
+     * Si le produit existe, il est mis à jour. Sinon, un nouveau produit est créé et l&#39;identifiant retourné fait foi. Si &#x60;id&#x60; est aussi fourni dans le payload, il doit correspondre à l&#39;identifiant du path. 
      * @param id  (required)
      * @param productInput  (required)
      * @return Product
@@ -591,7 +592,8 @@ public class ProductsApi {
      <table border="1">
        <caption>Response Details</caption>
         <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Mis à jour </td><td>  -  </td></tr>
+        <tr><td> 200 </td><td> Produit mis à jour </td><td>  -  </td></tr>
+        <tr><td> 201 </td><td> Produit créé </td><td>  -  </td></tr>
         <tr><td> 401 </td><td> Token JWT manquant ou invalide </td><td>  -  </td></tr>
         <tr><td> 403 </td><td> Accès refusé (rôle insuffisant) </td><td>  -  </td></tr>
      </table>
@@ -602,8 +604,8 @@ public class ProductsApi {
     }
 
     /**
-     * Modifier un produit (admin)
-     * 
+     * Créer ou mettre à jour un produit par identifiant (admin)
+     * Si le produit existe, il est mis à jour. Sinon, un nouveau produit est créé et l&#39;identifiant retourné fait foi. Si &#x60;id&#x60; est aussi fourni dans le payload, il doit correspondre à l&#39;identifiant du path. 
      * @param id  (required)
      * @param productInput  (required)
      * @return ApiResponse&lt;Product&gt;
@@ -612,7 +614,8 @@ public class ProductsApi {
      <table border="1">
        <caption>Response Details</caption>
         <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Mis à jour </td><td>  -  </td></tr>
+        <tr><td> 200 </td><td> Produit mis à jour </td><td>  -  </td></tr>
+        <tr><td> 201 </td><td> Produit créé </td><td>  -  </td></tr>
         <tr><td> 401 </td><td> Token JWT manquant ou invalide </td><td>  -  </td></tr>
         <tr><td> 403 </td><td> Accès refusé (rôle insuffisant) </td><td>  -  </td></tr>
      </table>
@@ -624,8 +627,8 @@ public class ProductsApi {
     }
 
     /**
-     * Modifier un produit (admin) (asynchronously)
-     * 
+     * Créer ou mettre à jour un produit par identifiant (admin) (asynchronously)
+     * Si le produit existe, il est mis à jour. Sinon, un nouveau produit est créé et l&#39;identifiant retourné fait foi. Si &#x60;id&#x60; est aussi fourni dans le payload, il doit correspondre à l&#39;identifiant du path. 
      * @param id  (required)
      * @param productInput  (required)
      * @param _callback The callback to be executed when the API call finishes
@@ -635,7 +638,8 @@ public class ProductsApi {
      <table border="1">
        <caption>Response Details</caption>
         <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Mis à jour </td><td>  -  </td></tr>
+        <tr><td> 200 </td><td> Produit mis à jour </td><td>  -  </td></tr>
+        <tr><td> 201 </td><td> Produit créé </td><td>  -  </td></tr>
         <tr><td> 401 </td><td> Token JWT manquant ou invalide </td><td>  -  </td></tr>
         <tr><td> 403 </td><td> Accès refusé (rôle insuffisant) </td><td>  -  </td></tr>
      </table>
@@ -658,6 +662,7 @@ public class ProductsApi {
        <caption>Response Details</caption>
         <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
         <tr><td> 201 </td><td> Produit créé </td><td>  -  </td></tr>
+        <tr><td> 200 </td><td> Produit mis à jour </td><td>  -  </td></tr>
         <tr><td> 401 </td><td> Token JWT manquant ou invalide </td><td>  -  </td></tr>
         <tr><td> 403 </td><td> Accès refusé (rôle insuffisant) </td><td>  -  </td></tr>
      </table>
@@ -719,8 +724,8 @@ public class ProductsApi {
     }
 
     /**
-     * Créer un produit (admin)
-     * 
+     * Créer ou mettre à jour un produit (admin)
+     * Endpoint d&#39;upsert. Si &#x60;id&#x60; est absent ou null dans le payload, un nouveau produit est créé. Si &#x60;id&#x60; est fourni et qu&#39;un produit existe, il est mis à jour. Sinon, un nouveau produit est créé. 
      * @param productInput  (required)
      * @return Product
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
@@ -729,6 +734,7 @@ public class ProductsApi {
        <caption>Response Details</caption>
         <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
         <tr><td> 201 </td><td> Produit créé </td><td>  -  </td></tr>
+        <tr><td> 200 </td><td> Produit mis à jour </td><td>  -  </td></tr>
         <tr><td> 401 </td><td> Token JWT manquant ou invalide </td><td>  -  </td></tr>
         <tr><td> 403 </td><td> Accès refusé (rôle insuffisant) </td><td>  -  </td></tr>
      </table>
@@ -739,8 +745,8 @@ public class ProductsApi {
     }
 
     /**
-     * Créer un produit (admin)
-     * 
+     * Créer ou mettre à jour un produit (admin)
+     * Endpoint d&#39;upsert. Si &#x60;id&#x60; est absent ou null dans le payload, un nouveau produit est créé. Si &#x60;id&#x60; est fourni et qu&#39;un produit existe, il est mis à jour. Sinon, un nouveau produit est créé. 
      * @param productInput  (required)
      * @return ApiResponse&lt;Product&gt;
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
@@ -749,6 +755,7 @@ public class ProductsApi {
        <caption>Response Details</caption>
         <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
         <tr><td> 201 </td><td> Produit créé </td><td>  -  </td></tr>
+        <tr><td> 200 </td><td> Produit mis à jour </td><td>  -  </td></tr>
         <tr><td> 401 </td><td> Token JWT manquant ou invalide </td><td>  -  </td></tr>
         <tr><td> 403 </td><td> Accès refusé (rôle insuffisant) </td><td>  -  </td></tr>
      </table>
@@ -760,8 +767,8 @@ public class ProductsApi {
     }
 
     /**
-     * Créer un produit (admin) (asynchronously)
-     * 
+     * Créer ou mettre à jour un produit (admin) (asynchronously)
+     * Endpoint d&#39;upsert. Si &#x60;id&#x60; est absent ou null dans le payload, un nouveau produit est créé. Si &#x60;id&#x60; est fourni et qu&#39;un produit existe, il est mis à jour. Sinon, un nouveau produit est créé. 
      * @param productInput  (required)
      * @param _callback The callback to be executed when the API call finishes
      * @return The request call
@@ -771,6 +778,7 @@ public class ProductsApi {
        <caption>Response Details</caption>
         <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
         <tr><td> 201 </td><td> Produit créé </td><td>  -  </td></tr>
+        <tr><td> 200 </td><td> Produit mis à jour </td><td>  -  </td></tr>
         <tr><td> 401 </td><td> Token JWT manquant ou invalide </td><td>  -  </td></tr>
         <tr><td> 403 </td><td> Accès refusé (rôle insuffisant) </td><td>  -  </td></tr>
      </table>

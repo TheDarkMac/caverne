@@ -2,7 +2,7 @@
 
 La Caverne Malgache API
 - API version: 1.0.0
-  - Build date: 2026-04-03T07:59:22.713363218+03:00[Indian/Antananarivo]
+  - Build date: 2026-04-03T11:16:21.103478876+03:00[Indian/Antananarivo]
   - Generator version: 7.21.0
 
 Documentation OpenAPI de La Caverne Malagasy.
@@ -124,15 +124,15 @@ Class | Method | HTTP request | Description
 *AddressesApi* | [**usersMeAddressesGet**](docs/AddressesApi.md#usersMeAddressesGet) | **GET** /users/me/addresses | Liste des adresses de l&#39;utilisateur connecté
 *AddressesApi* | [**usersMeAddressesIdDefaultPut**](docs/AddressesApi.md#usersMeAddressesIdDefaultPut) | **PUT** /users/me/addresses/{id}/default | Définir comme adresse par défaut
 *AddressesApi* | [**usersMeAddressesIdDelete**](docs/AddressesApi.md#usersMeAddressesIdDelete) | **DELETE** /users/me/addresses/{id} | Supprimer une adresse
-*AddressesApi* | [**usersMeAddressesIdPut**](docs/AddressesApi.md#usersMeAddressesIdPut) | **PUT** /users/me/addresses/{id} | Modifier une adresse
-*AddressesApi* | [**usersMeAddressesPost**](docs/AddressesApi.md#usersMeAddressesPost) | **POST** /users/me/addresses | Ajouter une adresse
+*AddressesApi* | [**usersMeAddressesIdPut**](docs/AddressesApi.md#usersMeAddressesIdPut) | **PUT** /users/me/addresses/{id} | Créer ou mettre à jour une adresse par identifiant
+*AddressesApi* | [**usersMeAddressesPost**](docs/AddressesApi.md#usersMeAddressesPost) | **POST** /users/me/addresses | Créer ou mettre à jour une adresse
 *AuthApi* | [**authLoginPost**](docs/AuthApi.md#authLoginPost) | **POST** /auth/login | Connexion — obtenir un JWT
 *AuthApi* | [**authLogoutPost**](docs/AuthApi.md#authLogoutPost) | **POST** /auth/logout | Invalidation du token JWT courant
 *AuthApi* | [**authRegisterPost**](docs/AuthApi.md#authRegisterPost) | **POST** /auth/register | Inscription d&#39;un nouvel utilisateur
 *CategoriesApi* | [**categoriesGet**](docs/CategoriesApi.md#categoriesGet) | **GET** /categories | Liste des catégories (arbre)
 *CategoriesApi* | [**categoriesIdDelete**](docs/CategoriesApi.md#categoriesIdDelete) | **DELETE** /categories/{id} | Supprimer une catégorie (admin)
 *CategoriesApi* | [**categoriesIdGet**](docs/CategoriesApi.md#categoriesIdGet) | **GET** /categories/{id} | Détail d&#39;une catégorie
-*CategoriesApi* | [**categoriesIdPut**](docs/CategoriesApi.md#categoriesIdPut) | **PUT** /categories/{id} | Mettre à jour une catégorie par identifiant (admin)
+*CategoriesApi* | [**categoriesIdPut**](docs/CategoriesApi.md#categoriesIdPut) | **PUT** /categories/{id} | Créer ou mettre à jour une catégorie par identifiant (admin)
 *CategoriesApi* | [**categoriesPost**](docs/CategoriesApi.md#categoriesPost) | **POST** /categories | Créer ou mettre à jour une catégorie (admin)
 *OrdersApi* | [**ordersAllGet**](docs/OrdersApi.md#ordersAllGet) | **GET** /orders/all | Toutes les commandes (admin)
 *OrdersApi* | [**ordersGet**](docs/OrdersApi.md#ordersGet) | **GET** /orders | Mes commandes (utilisateur connecté)
@@ -142,11 +142,12 @@ Class | Method | HTTP request | Description
 *OrdersApi* | [**ordersPost**](docs/OrdersApi.md#ordersPost) | **POST** /orders | Passer une commande
 *PaymentsApi* | [**ordersIdPaymentsGet**](docs/PaymentsApi.md#ordersIdPaymentsGet) | **GET** /orders/{id}/payments | Paiements associés à une commande
 *PaymentsApi* | [**ordersIdPaymentsPost**](docs/PaymentsApi.md#ordersIdPaymentsPost) | **POST** /orders/{id}/payments | Initier un paiement
+*PaymentsApi* | [**paymentMethodsGet**](docs/PaymentsApi.md#paymentMethodsGet) | **GET** /payment-methods | Liste des moyens de paiement disponibles
 *ProductsApi* | [**productsGet**](docs/ProductsApi.md#productsGet) | **GET** /products | Catalogue produits
 *ProductsApi* | [**productsIdDelete**](docs/ProductsApi.md#productsIdDelete) | **DELETE** /products/{id} | Supprimer un produit (admin)
 *ProductsApi* | [**productsIdGet**](docs/ProductsApi.md#productsIdGet) | **GET** /products/{id} | Détail d&#39;un produit
-*ProductsApi* | [**productsIdPut**](docs/ProductsApi.md#productsIdPut) | **PUT** /products/{id} | Modifier un produit (admin)
-*ProductsApi* | [**productsPost**](docs/ProductsApi.md#productsPost) | **POST** /products | Créer un produit (admin)
+*ProductsApi* | [**productsIdPut**](docs/ProductsApi.md#productsIdPut) | **PUT** /products/{id} | Créer ou mettre à jour un produit par identifiant (admin)
+*ProductsApi* | [**productsPost**](docs/ProductsApi.md#productsPost) | **POST** /products | Créer ou mettre à jour un produit (admin)
 *UsersApi* | [**usersGet**](docs/UsersApi.md#usersGet) | **GET** /users | Liste des utilisateurs (admin)
 *UsersApi* | [**usersIdDelete**](docs/UsersApi.md#usersIdDelete) | **DELETE** /users/{id} | Suppression d&#39;un utilisateur (admin)
 *UsersApi* | [**usersIdGet**](docs/UsersApi.md#usersIdGet) | **GET** /users/{id} | Détail d&#39;un utilisateur (admin)

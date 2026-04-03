@@ -20,6 +20,7 @@ import com.google.gson.annotations.SerializedName;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -55,7 +56,7 @@ import org.openapitools.client.JSON;
 /**
  * Product
  */
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2026-04-03T07:59:22.713363218+03:00[Indian/Antananarivo]", comments = "Generator version: 7.21.0")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2026-04-03T11:16:21.103478876+03:00[Indian/Antananarivo]", comments = "Generator version: 7.21.0")
 public class Product {
   public static final String SERIALIZED_NAME_ID = "id";
   @SerializedName(SERIALIZED_NAME_ID)
@@ -90,7 +91,7 @@ public class Product {
   public static final String SERIALIZED_NAME_SIZE = "size";
   @SerializedName(SERIALIZED_NAME_SIZE)
   @javax.annotation.Nullable
-  private String size;
+  private BigDecimal size;
 
   public static final String SERIALIZED_NAME_IS_ACTIVE = "is_active";
   @SerializedName(SERIALIZED_NAME_IS_ACTIVE)
@@ -229,7 +230,7 @@ public class Product {
   }
 
 
-  public Product size(@javax.annotation.Nullable String size) {
+  public Product size(@javax.annotation.Nullable BigDecimal size) {
     this.size = size;
     return this;
   }
@@ -239,11 +240,11 @@ public class Product {
    * @return size
    */
   @javax.annotation.Nullable
-  public String getSize() {
+  public BigDecimal getSize() {
     return size;
   }
 
-  public void setSize(@javax.annotation.Nullable String size) {
+  public void setSize(@javax.annotation.Nullable BigDecimal size) {
     this.size = size;
   }
 
@@ -447,9 +448,6 @@ public class Product {
       }
       if ((jsonObj.get("description") != null && !jsonObj.get("description").isJsonNull()) && !jsonObj.get("description").isJsonPrimitive()) {
         throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "Expected the field `description` to be a primitive type in the JSON string but got `%s`", jsonObj.get("description").toString()));
-      }
-      if ((jsonObj.get("size") != null && !jsonObj.get("size").isJsonNull()) && !jsonObj.get("size").isJsonPrimitive()) {
-        throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "Expected the field `size` to be a primitive type in the JSON string but got `%s`", jsonObj.get("size").toString()));
       }
       if (jsonObj.get("images") != null && !jsonObj.get("images").isJsonNull()) {
         JsonArray jsonArrayimages = jsonObj.getAsJsonArray("images");

@@ -7,8 +7,8 @@ All URIs are relative to *https://api.lacaverne/v1*
 | [**productsGet**](ProductsApi.md#productsGet) | **GET** /products | Catalogue produits |
 | [**productsIdDelete**](ProductsApi.md#productsIdDelete) | **DELETE** /products/{id} | Supprimer un produit (admin) |
 | [**productsIdGet**](ProductsApi.md#productsIdGet) | **GET** /products/{id} | Détail d&#39;un produit |
-| [**productsIdPut**](ProductsApi.md#productsIdPut) | **PUT** /products/{id} | Modifier un produit (admin) |
-| [**productsPost**](ProductsApi.md#productsPost) | **POST** /products | Créer un produit (admin) |
+| [**productsIdPut**](ProductsApi.md#productsIdPut) | **PUT** /products/{id} | Créer ou mettre à jour un produit par identifiant (admin) |
+| [**productsPost**](ProductsApi.md#productsPost) | **POST** /products | Créer ou mettre à jour un produit (admin) |
 
 
 <a id="productsGet"></a>
@@ -212,7 +212,9 @@ No authorization required
 # **productsIdPut**
 > Product productsIdPut(id, productInput)
 
-Modifier un produit (admin)
+Créer ou mettre à jour un produit par identifiant (admin)
+
+Si le produit existe, il est mis à jour. Sinon, un nouveau produit est créé et l&#39;identifiant retourné fait foi. Si &#x60;id&#x60; est aussi fourni dans le payload, il doit correspondre à l&#39;identifiant du path. 
 
 ### Example
 ```java
@@ -273,7 +275,8 @@ public class Example {
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
-| **200** | Mis à jour |  -  |
+| **200** | Produit mis à jour |  -  |
+| **201** | Produit créé |  -  |
 | **401** | Token JWT manquant ou invalide |  -  |
 | **403** | Accès refusé (rôle insuffisant) |  -  |
 
@@ -281,7 +284,9 @@ public class Example {
 # **productsPost**
 > Product productsPost(productInput)
 
-Créer un produit (admin)
+Créer ou mettre à jour un produit (admin)
+
+Endpoint d&#39;upsert. Si &#x60;id&#x60; est absent ou null dans le payload, un nouveau produit est créé. Si &#x60;id&#x60; est fourni et qu&#39;un produit existe, il est mis à jour. Sinon, un nouveau produit est créé. 
 
 ### Example
 ```java
@@ -341,6 +346,7 @@ public class Example {
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
 | **201** | Produit créé |  -  |
+| **200** | Produit mis à jour |  -  |
 | **401** | Token JWT manquant ou invalide |  -  |
 | **403** | Accès refusé (rôle insuffisant) |  -  |
 
