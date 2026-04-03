@@ -21,16 +21,12 @@ tags:
   name: Addresses
 - description: Arborescence de catégories produits
   name: Categories
-- description: "Catalogue, images, prix, stock, specs, avis"
+- description: Catalogue produits
   name: Products
-- description: Commandes et livraisons
+- description: Commandes
   name: Orders
-- description: "Paiements, webhooks, remboursements"
+- description: Paiements initiés depuis une commande
   name: Payments
-- description: "Méthodes de paiement (Wave, Orange Money, etc.)"
-  name: Payment Methods
-- description: "Devises (MGA, EUR, USD…)"
-  name: Currencies
 paths:
   /auth/register:
     post:
@@ -157,6 +153,44 @@ paths:
       - Users
       x-accepts:
       - application/json
+    post:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UserCreateInput"
+        required: true
+      responses:
+        "201":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/User"
+          description: Utilisateur créé
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+          description: Token JWT manquant ou invalide
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+          description: Accès refusé (rôle insuffisant)
+        "422":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+          description: Données invalides
+      summary: Créer un utilisateur (admin)
+      tags:
+      - Users
+      x-content-type: application/json
+      x-accepts:
+      - application/json
   /users/me:
     get:
       responses:
@@ -191,6 +225,12 @@ paths:
               schema:
                 $ref: "#/components/schemas/User"
           description: Profil mis à jour
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+          description: Token JWT manquant ou invalide
         "422":
           content:
             application/json:
@@ -271,6 +311,12 @@ paths:
                   $ref: "#/components/schemas/Address"
                 type: array
           description: OK
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+          description: Token JWT manquant ou invalide
       summary: Liste des adresses de l'utilisateur connecté
       tags:
       - Addresses
@@ -290,6 +336,12 @@ paths:
               schema:
                 $ref: "#/components/schemas/Address"
           description: Adresse créée
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+          description: Token JWT manquant ou invalide
       summary: Ajouter une adresse
       tags:
       - Addresses
@@ -309,6 +361,12 @@ paths:
       responses:
         "204":
           description: Supprimée
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+          description: Token JWT manquant ou invalide
         "404":
           content:
             application/json:
@@ -342,6 +400,12 @@ paths:
               schema:
                 $ref: "#/components/schemas/Address"
           description: OK
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+          description: Token JWT manquant ou invalide
         "404":
           content:
             application/json:
@@ -371,6 +435,12 @@ paths:
               schema:
                 $ref: "#/components/schemas/Address"
           description: Adresse définie par défaut
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+          description: Token JWT manquant ou invalide
       summary: Définir comme adresse par défaut
       tags:
       - Addresses
@@ -424,6 +494,18 @@ paths:
               schema:
                 $ref: "#/components/schemas/Category"
           description: Mise à jour quand `id` est fourni
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+          description: Token JWT manquant ou invalide
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+          description: Accès refusé (rôle insuffisant)
       summary: Créer ou mettre à jour une catégorie (admin)
       tags:
       - Categories
@@ -443,6 +525,18 @@ paths:
       responses:
         "204":
           description: Supprimée
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+          description: Token JWT manquant ou invalide
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+          description: Accès refusé (rôle insuffisant)
       summary: Supprimer une catégorie (admin)
       tags:
       - Categories
@@ -478,7 +572,7 @@ paths:
       - application/json
     put:
       description: |
-        Endpoint d'upsert avec identifiant dans l'URL. Le `id` du path fait foi. Si `id` est aussi fourni dans le payload, il doit correspondre à l'identifiant du path.
+        Endpoint de mise à jour avec identifiant dans l'URL. Le `id` du path fait foi. Si `id` est aussi fourni dans le payload, il doit correspondre à l'identifiant du path.
       parameters:
       - explode: false
         in: path
@@ -500,14 +594,25 @@ paths:
               schema:
                 $ref: "#/components/schemas/Category"
           description: OK
-        "201":
+        "401":
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Category"
-          description: Créée si l'identifiant du path n'existe pas encore et que l'implémentation
-            choisit de créer
-      summary: Créer ou mettre à jour une catégorie par identifiant (admin)
+                $ref: "#/components/schemas/Error"
+          description: Token JWT manquant ou invalide
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+          description: Accès refusé (rôle insuffisant)
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+          description: Ressource introuvable
+      summary: Mettre à jour une catégorie par identifiant (admin)
       tags:
       - Categories
       x-content-type: application/json
@@ -588,6 +693,18 @@ paths:
               schema:
                 $ref: "#/components/schemas/Product"
           description: Produit créé
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+          description: Token JWT manquant ou invalide
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+          description: Accès refusé (rôle insuffisant)
       summary: Créer un produit (admin)
       tags:
       - Products
@@ -607,6 +724,18 @@ paths:
       responses:
         "204":
           description: Supprimé
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+          description: Token JWT manquant ou invalide
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+          description: Accès refusé (rôle insuffisant)
       summary: Supprimer un produit (admin)
       tags:
       - Products
@@ -662,386 +791,19 @@ paths:
               schema:
                 $ref: "#/components/schemas/Product"
           description: Mis à jour
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+          description: Token JWT manquant ou invalide
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+          description: Accès refusé (rôle insuffisant)
       summary: Modifier un produit (admin)
-      tags:
-      - Products
-      x-content-type: application/json
-      x-accepts:
-      - application/json
-  /products/{id}/images:
-    get:
-      parameters:
-      - explode: false
-        in: path
-        name: id
-        required: true
-        schema:
-          type: integer
-        style: simple
-      responses:
-        "200":
-          content:
-            application/json:
-              schema:
-                items:
-                  $ref: "#/components/schemas/ProductImage"
-                type: array
-          description: OK
-      security: []
-      summary: Images d'un produit
-      tags:
-      - Products
-      x-accepts:
-      - application/json
-    post:
-      parameters:
-      - explode: false
-        in: path
-        name: id
-        required: true
-        schema:
-          type: integer
-        style: simple
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/ProductImageInput"
-        required: true
-      responses:
-        "201":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ProductImage"
-          description: Créée
-      summary: Ajouter une image (admin)
-      tags:
-      - Products
-      x-content-type: application/json
-      x-accepts:
-      - application/json
-  /products/{id}/images/{imageId}:
-    delete:
-      parameters:
-      - explode: false
-        in: path
-        name: id
-        required: true
-        schema:
-          type: integer
-        style: simple
-      - explode: false
-        in: path
-        name: imageId
-        required: true
-        schema:
-          type: integer
-        style: simple
-      responses:
-        "204":
-          description: Supprimée
-      summary: Supprimer une image
-      tags:
-      - Products
-      x-accepts:
-      - application/json
-    put:
-      parameters:
-      - explode: false
-        in: path
-        name: id
-        required: true
-        schema:
-          type: integer
-        style: simple
-      - explode: false
-        in: path
-        name: imageId
-        required: true
-        schema:
-          type: integer
-        style: simple
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/ProductImageInput"
-        required: true
-      responses:
-        "200":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ProductImage"
-          description: OK
-      summary: "Modifier une image (définir main, etc.)"
-      tags:
-      - Products
-      x-content-type: application/json
-      x-accepts:
-      - application/json
-  /products/{id}/prices:
-    get:
-      parameters:
-      - explode: false
-        in: path
-        name: id
-        required: true
-        schema:
-          type: integer
-        style: simple
-      responses:
-        "200":
-          content:
-            application/json:
-              schema:
-                items:
-                  $ref: "#/components/schemas/Price"
-                type: array
-          description: OK
-      security: []
-      summary: Historique des prix d'un produit
-      tags:
-      - Products
-      x-accepts:
-      - application/json
-    post:
-      parameters:
-      - explode: false
-        in: path
-        name: id
-        required: true
-        schema:
-          type: integer
-        style: simple
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/PriceInput"
-        required: true
-      responses:
-        "201":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Price"
-          description: Créé
-      summary: Ajouter un prix (admin)
-      tags:
-      - Products
-      x-content-type: application/json
-      x-accepts:
-      - application/json
-  /products/{id}/stock:
-    get:
-      parameters:
-      - explode: false
-        in: path
-        name: id
-        required: true
-        schema:
-          type: integer
-        style: simple
-      responses:
-        "200":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/StockSummary"
-          description: Résumé du stock
-      summary: Stock disponible d'un produit
-      tags:
-      - Products
-      x-accepts:
-      - application/json
-    post:
-      parameters:
-      - explode: false
-        in: path
-        name: id
-        required: true
-        schema:
-          type: integer
-        style: simple
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/StockInput"
-        required: true
-      responses:
-        "201":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/StockEntry"
-          description: Mouvement enregistré
-      summary: Enregistrer un mouvement de stock (admin)
-      tags:
-      - Products
-      x-content-type: application/json
-      x-accepts:
-      - application/json
-  /products/{id}/stock/history:
-    get:
-      parameters:
-      - explode: false
-        in: path
-        name: id
-        required: true
-        schema:
-          type: integer
-        style: simple
-      - explode: true
-        in: query
-        name: page
-        required: false
-        schema:
-          default: 1
-          type: integer
-        style: form
-      - explode: true
-        in: query
-        name: movement_type
-        required: false
-        schema:
-          enum:
-          - in
-          - out
-          - adjustment
-          type: string
-        style: form
-      responses:
-        "200":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/_products__id__stock_history_get_200_response"
-          description: OK
-      summary: Historique des mouvements de stock
-      tags:
-      - Products
-      x-accepts:
-      - application/json
-  /products/{id}/technical-specs:
-    get:
-      parameters:
-      - explode: false
-        in: path
-        name: id
-        required: true
-        schema:
-          type: integer
-        style: simple
-      responses:
-        "200":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/TechnicalSpecs"
-          description: OK
-        "404":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Error"
-          description: Ressource introuvable
-      security: []
-      summary: Spécifications techniques d'un produit
-      tags:
-      - Products
-      x-accepts:
-      - application/json
-    put:
-      parameters:
-      - explode: false
-        in: path
-        name: id
-        required: true
-        schema:
-          type: integer
-        style: simple
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/TechnicalSpecsInput"
-        required: true
-      responses:
-        "200":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/TechnicalSpecs"
-          description: OK
-      summary: Créer ou remplacer les specs techniques (admin)
-      tags:
-      - Products
-      x-content-type: application/json
-      x-accepts:
-      - application/json
-  /products/{id}/reviews:
-    get:
-      parameters:
-      - explode: false
-        in: path
-        name: id
-        required: true
-        schema:
-          type: integer
-        style: simple
-      - explode: true
-        in: query
-        name: page
-        required: false
-        schema:
-          default: 1
-          type: integer
-        style: form
-      responses:
-        "200":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/_products__id__reviews_get_200_response"
-          description: OK
-      security: []
-      summary: Avis clients d'un produit
-      tags:
-      - Products
-      x-accepts:
-      - application/json
-    post:
-      parameters:
-      - explode: false
-        in: path
-        name: id
-        required: true
-        schema:
-          type: integer
-        style: simple
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/ReviewInput"
-        required: true
-      responses:
-        "201":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Review"
-          description: Avis enregistré
-        "422":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Error"
-          description: Données invalides
-      summary: Déposer un avis (utilisateur connecté)
       tags:
       - Products
       x-content-type: application/json
@@ -1154,6 +916,12 @@ paths:
               schema:
                 $ref: "#/components/schemas/_orders_get_200_response"
           description: OK
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+          description: Token JWT manquant ou invalide
         "403":
           content:
             application/json:
@@ -1167,6 +935,8 @@ paths:
       - application/json
   /orders/{id}:
     get:
+      description: |
+        Les commandes invitées peuvent être consultées sans authentification. Les commandes liées à un utilisateur nécessitent que l'acteur soit le propriétaire ou un admin.
       parameters:
       - explode: false
         in: path
@@ -1182,6 +952,12 @@ paths:
               schema:
                 $ref: "#/components/schemas/Order"
           description: OK
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+          description: Accès refusé (rôle insuffisant)
         "404":
           content:
             application/json:
@@ -1217,6 +993,12 @@ paths:
               schema:
                 $ref: "#/components/schemas/Order"
           description: Statut mis à jour
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+          description: Token JWT manquant ou invalide
         "403":
           content:
             application/json:
@@ -1246,59 +1028,16 @@ paths:
               schema:
                 $ref: "#/components/schemas/Order"
           description: Commande annulée
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+          description: Accès refusé (rôle insuffisant)
+      security: []
       summary: Annuler une commande (owner ou admin)
       tags:
       - Orders
-      x-accepts:
-      - application/json
-  /orders/{id}/delivery-cost:
-    get:
-      parameters:
-      - explode: false
-        in: path
-        name: id
-        required: true
-        schema:
-          type: integer
-        style: simple
-      responses:
-        "200":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/DeliverCost"
-          description: OK
-      summary: Frais de livraison d'une commande
-      tags:
-      - Orders
-      x-accepts:
-      - application/json
-    post:
-      parameters:
-      - explode: false
-        in: path
-        name: id
-        required: true
-        schema:
-          type: integer
-        style: simple
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/DeliverCostInput"
-        required: true
-      responses:
-        "201":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/DeliverCost"
-          description: Créé
-      summary: Renseigner les frais de livraison (admin)
-      tags:
-      - Orders
-      x-content-type: application/json
       x-accepts:
       - application/json
   /orders/{id}/payments:
@@ -1361,282 +1100,6 @@ paths:
       x-content-type: application/json
       x-accepts:
       - application/json
-  /payments/{id}:
-    get:
-      parameters:
-      - explode: false
-        in: path
-        name: id
-        required: true
-        schema:
-          type: integer
-        style: simple
-      responses:
-        "200":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Payment"
-          description: OK
-        "404":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Error"
-          description: Ressource introuvable
-      summary: Détail d'un paiement
-      tags:
-      - Payments
-      x-accepts:
-      - application/json
-  /payments/{id}/confirm:
-    post:
-      parameters:
-      - explode: false
-        in: path
-        name: id
-        required: true
-        schema:
-          type: integer
-        style: simple
-      responses:
-        "200":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Payment"
-          description: Confirmé
-        "403":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Error"
-          description: Accès refusé (rôle insuffisant)
-      summary: Confirmer manuellement un paiement (admin)
-      tags:
-      - Payments
-      x-accepts:
-      - application/json
-  /payments/{id}/refund:
-    post:
-      parameters:
-      - explode: false
-        in: path
-        name: id
-        required: true
-        schema:
-          type: integer
-        style: simple
-      responses:
-        "200":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Payment"
-          description: Remboursé
-      summary: Rembourser un paiement (admin)
-      tags:
-      - Payments
-      x-accepts:
-      - application/json
-  /payments/webhook/{provider_code}:
-    post:
-      parameters:
-      - explode: false
-        in: path
-        name: provider_code
-        required: true
-        schema:
-          type: string
-        style: simple
-      requestBody:
-        content:
-          application/json:
-            schema:
-              description: "Payload propre à chaque prestataire (Wave, Orange Money,\
-                \ etc.)"
-              type: object
-        required: true
-      responses:
-        "200":
-          description: Reçu
-        "400":
-          description: Signature invalide
-      security: []
-      summary: Webhook de confirmation de paiement (appelé par le prestataire)
-      tags:
-      - Payments
-      x-content-type: application/json
-      x-accepts:
-      - application/json
-  /payment-methods:
-    get:
-      responses:
-        "200":
-          content:
-            application/json:
-              schema:
-                items:
-                  $ref: "#/components/schemas/PaymentMethod"
-                type: array
-          description: OK
-      security: []
-      summary: Liste des méthodes de paiement actives
-      tags:
-      - Payment Methods
-      x-accepts:
-      - application/json
-    post:
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/PaymentMethodInput"
-        required: true
-      responses:
-        "201":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/PaymentMethod"
-          description: Créée
-      summary: Créer une méthode de paiement (admin)
-      tags:
-      - Payment Methods
-      x-content-type: application/json
-      x-accepts:
-      - application/json
-  /payment-methods/{provider_code}:
-    delete:
-      parameters:
-      - explode: false
-        in: path
-        name: provider_code
-        required: true
-        schema:
-          type: string
-        style: simple
-      responses:
-        "204":
-          description: Supprimée
-      summary: Supprimer une méthode de paiement (admin)
-      tags:
-      - Payment Methods
-      x-accepts:
-      - application/json
-    put:
-      parameters:
-      - explode: false
-        in: path
-        name: provider_code
-        required: true
-        schema:
-          type: string
-        style: simple
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/PaymentMethodInput"
-        required: true
-      responses:
-        "200":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/PaymentMethod"
-          description: OK
-      summary: Modifier une méthode de paiement (admin)
-      tags:
-      - Payment Methods
-      x-content-type: application/json
-      x-accepts:
-      - application/json
-  /currencies:
-    get:
-      responses:
-        "200":
-          content:
-            application/json:
-              schema:
-                items:
-                  $ref: "#/components/schemas/Currency"
-                type: array
-          description: OK
-      security: []
-      summary: Liste des devises supportées
-      tags:
-      - Currencies
-      x-accepts:
-      - application/json
-    post:
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/Currency"
-        required: true
-      responses:
-        "201":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Currency"
-          description: Créée
-      summary: Ajouter une devise (admin)
-      tags:
-      - Currencies
-      x-content-type: application/json
-      x-accepts:
-      - application/json
-  /currencies/{code_iso}:
-    delete:
-      parameters:
-      - explode: false
-        in: path
-        name: code_iso
-        required: true
-        schema:
-          maxLength: 3
-          type: string
-        style: simple
-      responses:
-        "204":
-          description: Supprimée
-      summary: Supprimer une devise (admin)
-      tags:
-      - Currencies
-      x-accepts:
-      - application/json
-    put:
-      parameters:
-      - explode: false
-        in: path
-        name: code_iso
-        required: true
-        schema:
-          maxLength: 3
-          type: string
-        style: simple
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/Currency"
-        required: true
-      responses:
-        "200":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Currency"
-          description: OK
-      summary: Modifier une devise (admin)
-      tags:
-      - Currencies
-      x-content-type: application/json
-      x-accepts:
-      - application/json
 components:
   parameters:
     pathId:
@@ -1692,18 +1155,23 @@ components:
       description: Données invalides
   schemas:
     LoginRequest:
+      description: "Fournir `email` ou `phone`, ou les deux."
       example:
         password: password
+        phone: phone
         email: email
       properties:
         email:
           format: email
+          nullable: true
+          type: string
+        phone:
+          nullable: true
           type: string
         password:
           format: password
           type: string
       required:
-      - email
       - password
       type: object
     LoginResponse:
@@ -1722,6 +1190,7 @@ components:
           type: integer
       type: object
     RegisterRequest:
+      description: "Fournir `email` ou `phone`, ou les deux."
       example:
         firstname: firstname
         password: password
@@ -1737,15 +1206,16 @@ components:
           type: string
         email:
           format: email
+          nullable: true
           type: string
         phone:
           maxLength: 20
+          nullable: true
           type: string
         password:
           format: password
           type: string
       required:
-      - email
       - firstname
       - lastname
       - password
@@ -1768,8 +1238,10 @@ components:
           type: string
         email:
           format: email
+          nullable: true
           type: string
         phone:
+          nullable: true
           type: string
         role:
           enum:
@@ -1791,6 +1263,43 @@ components:
           type: string
         phone:
           type: string
+      type: object
+    UserCreateInput:
+      description: "Fournir `email` ou `phone`, ou les deux."
+      example:
+        firstname: firstname
+        password: password
+        role: admin
+        phone: phone
+        email: email
+        lastname: lastname
+        status: status
+      properties:
+        firstname:
+          type: string
+        lastname:
+          type: string
+        email:
+          format: email
+          nullable: true
+          type: string
+        phone:
+          nullable: true
+          type: string
+        password:
+          format: password
+          type: string
+        role:
+          enum:
+          - admin
+          - simple_user
+          type: string
+        status:
+          type: string
+      required:
+      - firstname
+      - lastname
+      - password
       type: object
     Address:
       example:
@@ -1921,10 +1430,6 @@ components:
       - slug
       type: object
     Currency:
-      example:
-        symbol: symbol
-        name: name
-        code_iso: MGA
       properties:
         code_iso:
           example: MGA
@@ -2056,9 +1561,6 @@ components:
           type: boolean
       type: object
     ProductImageInput:
-      example:
-        is_main: true
-        url: https://openapi-generator.tech
       properties:
         url:
           format: uri
@@ -2094,11 +1596,6 @@ components:
           type: string
       type: object
     PriceInput:
-      example:
-        unit: unit
-        valid_from: 2000-01-23
-        value: 0.8008281904610115
-        currency_code: currency_code
       properties:
         currency_code:
           type: string
@@ -2116,13 +1613,6 @@ components:
       - value
       type: object
     StockEntry:
-      example:
-        date: 2000-01-23T04:56:07.000+00:00
-        unit: unit
-        quantity: 1.4658129805029452
-        movement_type: in
-        product_id: 6
-        id: 0
       properties:
         id:
           type: integer
@@ -2144,10 +1634,6 @@ components:
           type: string
       type: object
     StockInput:
-      example:
-        unit: unit
-        quantity: 0.8008281904610115
-        movement_type: in
       properties:
         quantity:
           format: double
@@ -2165,11 +1651,6 @@ components:
       - quantity
       type: object
     StockSummary:
-      example:
-        available_quantity: 6.027456183070403
-        unit: unit
-        last_updated: 2000-01-23T04:56:07.000+00:00
-        product_id: 0
       properties:
         product_id:
           type: integer
@@ -2205,11 +1686,6 @@ components:
           type: string
       type: object
     TechnicalSpecsInput:
-      example:
-        country: country
-        provider: provider
-        climate: climate
-        region: region
       properties:
         country:
           type: string
@@ -2221,13 +1697,6 @@ components:
           type: string
       type: object
     Review:
-      example:
-        score: 3
-        user_id: 1
-        product_id: 5
-        created_at: 2000-01-23T04:56:07.000+00:00
-        comment: comment
-        id: 6
       properties:
         id:
           type: integer
@@ -2246,9 +1715,6 @@ components:
           type: string
       type: object
     ReviewInput:
-      example:
-        score: 1
-        comment: comment
       properties:
         score:
           maximum: 5
@@ -2386,12 +1852,6 @@ components:
       - status
       type: object
     DeliverCost:
-      example:
-        response_provider: "{}"
-        amount: 1.4658129805029452
-        provider: provider
-        id: 0
-        order_id: 6
       properties:
         id:
           type: integer
@@ -2407,9 +1867,6 @@ components:
           type: object
       type: object
     DeliverCostInput:
-      example:
-        amount: 0.8008281904610115
-        provider: provider
       properties:
         amount:
           format: double
@@ -2421,12 +1878,6 @@ components:
       - provider
       type: object
     PaymentMethod:
-      example:
-        is_active: true
-        provider_code: provider_code
-        label: label
-        integration_type: manual
-        requires_manual_check: true
       properties:
         provider_code:
           type: string
@@ -2445,12 +1896,6 @@ components:
           type: string
       type: object
     PaymentMethodInput:
-      example:
-        is_active: true
-        provider_code: provider_code
-        label: label
-        integration_type: manual
-        requires_manual_check: true
       properties:
         provider_code:
           type: string
@@ -2670,66 +2115,6 @@ components:
         data:
           items:
             $ref: "#/components/schemas/Product"
-          type: array
-        meta:
-          $ref: "#/components/schemas/PaginatedMeta"
-      type: object
-    _products__id__stock_history_get_200_response:
-      example:
-        data:
-        - date: 2000-01-23T04:56:07.000+00:00
-          unit: unit
-          quantity: 1.4658129805029452
-          movement_type: in
-          product_id: 6
-          id: 0
-        - date: 2000-01-23T04:56:07.000+00:00
-          unit: unit
-          quantity: 1.4658129805029452
-          movement_type: in
-          product_id: 6
-          id: 0
-        meta:
-          per_page: 1
-          total: 0
-          last_page: 5
-          page: 6
-      properties:
-        data:
-          items:
-            $ref: "#/components/schemas/StockEntry"
-          type: array
-        meta:
-          $ref: "#/components/schemas/PaginatedMeta"
-      type: object
-    _products__id__reviews_get_200_response:
-      example:
-        average_score: 0.8008282
-        data:
-        - score: 3
-          user_id: 1
-          product_id: 5
-          created_at: 2000-01-23T04:56:07.000+00:00
-          comment: comment
-          id: 6
-        - score: 3
-          user_id: 1
-          product_id: 5
-          created_at: 2000-01-23T04:56:07.000+00:00
-          comment: comment
-          id: 6
-        meta:
-          per_page: 1
-          total: 0
-          last_page: 5
-          page: 6
-      properties:
-        average_score:
-          format: float
-          type: number
-        data:
-          items:
-            $ref: "#/components/schemas/Review"
           type: array
         meta:
           $ref: "#/components/schemas/PaginatedMeta"

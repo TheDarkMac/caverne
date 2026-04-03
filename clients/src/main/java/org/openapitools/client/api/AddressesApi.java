@@ -84,6 +84,7 @@ public class AddressesApi {
        <caption>Response Details</caption>
         <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
         <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
+        <tr><td> 401 </td><td> Token JWT manquant ou invalide </td><td>  -  </td></tr>
      </table>
      */
     public okhttp3.Call usersMeAddressesGetCall(final ApiCallback _callback) throws ApiException {
@@ -146,6 +147,7 @@ public class AddressesApi {
        <caption>Response Details</caption>
         <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
         <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
+        <tr><td> 401 </td><td> Token JWT manquant ou invalide </td><td>  -  </td></tr>
      </table>
      */
     public List<Address> usersMeAddressesGet() throws ApiException {
@@ -163,6 +165,7 @@ public class AddressesApi {
        <caption>Response Details</caption>
         <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
         <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
+        <tr><td> 401 </td><td> Token JWT manquant ou invalide </td><td>  -  </td></tr>
      </table>
      */
     public ApiResponse<List<Address>> usersMeAddressesGetWithHttpInfo() throws ApiException {
@@ -182,6 +185,7 @@ public class AddressesApi {
        <caption>Response Details</caption>
         <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
         <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
+        <tr><td> 401 </td><td> Token JWT manquant ou invalide </td><td>  -  </td></tr>
      </table>
      */
     public okhttp3.Call usersMeAddressesGetAsync(final ApiCallback<List<Address>> _callback) throws ApiException {
@@ -202,6 +206,7 @@ public class AddressesApi {
        <caption>Response Details</caption>
         <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
         <tr><td> 200 </td><td> Adresse définie par défaut </td><td>  -  </td></tr>
+        <tr><td> 401 </td><td> Token JWT manquant ou invalide </td><td>  -  </td></tr>
      </table>
      */
     public okhttp3.Call usersMeAddressesIdDefaultPutCall(@javax.annotation.Nonnull Integer id, final ApiCallback _callback) throws ApiException {
@@ -271,6 +276,7 @@ public class AddressesApi {
        <caption>Response Details</caption>
         <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
         <tr><td> 200 </td><td> Adresse définie par défaut </td><td>  -  </td></tr>
+        <tr><td> 401 </td><td> Token JWT manquant ou invalide </td><td>  -  </td></tr>
      </table>
      */
     public Address usersMeAddressesIdDefaultPut(@javax.annotation.Nonnull Integer id) throws ApiException {
@@ -289,6 +295,7 @@ public class AddressesApi {
        <caption>Response Details</caption>
         <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
         <tr><td> 200 </td><td> Adresse définie par défaut </td><td>  -  </td></tr>
+        <tr><td> 401 </td><td> Token JWT manquant ou invalide </td><td>  -  </td></tr>
      </table>
      */
     public ApiResponse<Address> usersMeAddressesIdDefaultPutWithHttpInfo(@javax.annotation.Nonnull Integer id) throws ApiException {
@@ -309,6 +316,7 @@ public class AddressesApi {
        <caption>Response Details</caption>
         <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
         <tr><td> 200 </td><td> Adresse définie par défaut </td><td>  -  </td></tr>
+        <tr><td> 401 </td><td> Token JWT manquant ou invalide </td><td>  -  </td></tr>
      </table>
      */
     public okhttp3.Call usersMeAddressesIdDefaultPutAsync(@javax.annotation.Nonnull Integer id, final ApiCallback<Address> _callback) throws ApiException {
@@ -329,6 +337,7 @@ public class AddressesApi {
        <caption>Response Details</caption>
         <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
         <tr><td> 204 </td><td> Supprimée </td><td>  -  </td></tr>
+        <tr><td> 401 </td><td> Token JWT manquant ou invalide </td><td>  -  </td></tr>
         <tr><td> 404 </td><td> Ressource introuvable </td><td>  -  </td></tr>
      </table>
      */
@@ -398,6 +407,7 @@ public class AddressesApi {
        <caption>Response Details</caption>
         <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
         <tr><td> 204 </td><td> Supprimée </td><td>  -  </td></tr>
+        <tr><td> 401 </td><td> Token JWT manquant ou invalide </td><td>  -  </td></tr>
         <tr><td> 404 </td><td> Ressource introuvable </td><td>  -  </td></tr>
      </table>
      */
@@ -416,6 +426,7 @@ public class AddressesApi {
        <caption>Response Details</caption>
         <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
         <tr><td> 204 </td><td> Supprimée </td><td>  -  </td></tr>
+        <tr><td> 401 </td><td> Token JWT manquant ou invalide </td><td>  -  </td></tr>
         <tr><td> 404 </td><td> Ressource introuvable </td><td>  -  </td></tr>
      </table>
      */
@@ -436,6 +447,7 @@ public class AddressesApi {
        <caption>Response Details</caption>
         <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
         <tr><td> 204 </td><td> Supprimée </td><td>  -  </td></tr>
+        <tr><td> 401 </td><td> Token JWT manquant ou invalide </td><td>  -  </td></tr>
         <tr><td> 404 </td><td> Ressource introuvable </td><td>  -  </td></tr>
      </table>
      */
@@ -457,6 +469,7 @@ public class AddressesApi {
        <caption>Response Details</caption>
         <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
         <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
+        <tr><td> 401 </td><td> Token JWT manquant ou invalide </td><td>  -  </td></tr>
         <tr><td> 404 </td><td> Ressource introuvable </td><td>  -  </td></tr>
      </table>
      */
@@ -534,6 +547,7 @@ public class AddressesApi {
        <caption>Response Details</caption>
         <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
         <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
+        <tr><td> 401 </td><td> Token JWT manquant ou invalide </td><td>  -  </td></tr>
         <tr><td> 404 </td><td> Ressource introuvable </td><td>  -  </td></tr>
      </table>
      */
@@ -554,6 +568,7 @@ public class AddressesApi {
        <caption>Response Details</caption>
         <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
         <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
+        <tr><td> 401 </td><td> Token JWT manquant ou invalide </td><td>  -  </td></tr>
         <tr><td> 404 </td><td> Ressource introuvable </td><td>  -  </td></tr>
      </table>
      */
@@ -576,6 +591,7 @@ public class AddressesApi {
        <caption>Response Details</caption>
         <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
         <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
+        <tr><td> 401 </td><td> Token JWT manquant ou invalide </td><td>  -  </td></tr>
         <tr><td> 404 </td><td> Ressource introuvable </td><td>  -  </td></tr>
      </table>
      */
@@ -597,6 +613,7 @@ public class AddressesApi {
        <caption>Response Details</caption>
         <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
         <tr><td> 201 </td><td> Adresse créée </td><td>  -  </td></tr>
+        <tr><td> 401 </td><td> Token JWT manquant ou invalide </td><td>  -  </td></tr>
      </table>
      */
     public okhttp3.Call usersMeAddressesPostCall(@javax.annotation.Nonnull AddressInput addressInput, final ApiCallback _callback) throws ApiException {
@@ -666,6 +683,7 @@ public class AddressesApi {
        <caption>Response Details</caption>
         <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
         <tr><td> 201 </td><td> Adresse créée </td><td>  -  </td></tr>
+        <tr><td> 401 </td><td> Token JWT manquant ou invalide </td><td>  -  </td></tr>
      </table>
      */
     public Address usersMeAddressesPost(@javax.annotation.Nonnull AddressInput addressInput) throws ApiException {
@@ -684,6 +702,7 @@ public class AddressesApi {
        <caption>Response Details</caption>
         <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
         <tr><td> 201 </td><td> Adresse créée </td><td>  -  </td></tr>
+        <tr><td> 401 </td><td> Token JWT manquant ou invalide </td><td>  -  </td></tr>
      </table>
      */
     public ApiResponse<Address> usersMeAddressesPostWithHttpInfo(@javax.annotation.Nonnull AddressInput addressInput) throws ApiException {
@@ -704,6 +723,7 @@ public class AddressesApi {
        <caption>Response Details</caption>
         <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
         <tr><td> 201 </td><td> Adresse créée </td><td>  -  </td></tr>
+        <tr><td> 401 </td><td> Token JWT manquant ou invalide </td><td>  -  </td></tr>
      </table>
      */
     public okhttp3.Call usersMeAddressesPostAsync(@javax.annotation.Nonnull AddressInput addressInput, final ApiCallback<Address> _callback) throws ApiException {

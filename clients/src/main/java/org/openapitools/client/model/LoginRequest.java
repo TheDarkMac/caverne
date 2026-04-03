@@ -21,6 +21,7 @@ import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
 import java.io.IOException;
 import java.util.Arrays;
+import org.openapitools.jackson.nullable.JsonNullable;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -46,14 +47,19 @@ import java.util.Set;
 import org.openapitools.client.JSON;
 
 /**
- * LoginRequest
+ * Fournir &#x60;email&#x60; ou &#x60;phone&#x60;, ou les deux.
  */
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2026-04-02T14:34:59.816130566+03:00[Indian/Antananarivo]", comments = "Generator version: 7.21.0")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2026-04-03T07:59:22.713363218+03:00[Indian/Antananarivo]", comments = "Generator version: 7.21.0")
 public class LoginRequest {
   public static final String SERIALIZED_NAME_EMAIL = "email";
   @SerializedName(SERIALIZED_NAME_EMAIL)
-  @javax.annotation.Nonnull
+  @javax.annotation.Nullable
   private String email;
+
+  public static final String SERIALIZED_NAME_PHONE = "phone";
+  @SerializedName(SERIALIZED_NAME_PHONE)
+  @javax.annotation.Nullable
+  private String phone;
 
   public static final String SERIALIZED_NAME_PASSWORD = "password";
   @SerializedName(SERIALIZED_NAME_PASSWORD)
@@ -63,7 +69,7 @@ public class LoginRequest {
   public LoginRequest() {
   }
 
-  public LoginRequest email(@javax.annotation.Nonnull String email) {
+  public LoginRequest email(@javax.annotation.Nullable String email) {
     this.email = email;
     return this;
   }
@@ -72,13 +78,32 @@ public class LoginRequest {
    * Get email
    * @return email
    */
-  @javax.annotation.Nonnull
+  @javax.annotation.Nullable
   public String getEmail() {
     return email;
   }
 
-  public void setEmail(@javax.annotation.Nonnull String email) {
+  public void setEmail(@javax.annotation.Nullable String email) {
     this.email = email;
+  }
+
+
+  public LoginRequest phone(@javax.annotation.Nullable String phone) {
+    this.phone = phone;
+    return this;
+  }
+
+  /**
+   * Get phone
+   * @return phone
+   */
+  @javax.annotation.Nullable
+  public String getPhone() {
+    return phone;
+  }
+
+  public void setPhone(@javax.annotation.Nullable String phone) {
+    this.phone = phone;
   }
 
 
@@ -112,12 +137,24 @@ public class LoginRequest {
     }
     LoginRequest loginRequest = (LoginRequest) o;
     return Objects.equals(this.email, loginRequest.email) &&
+        Objects.equals(this.phone, loginRequest.phone) &&
         Objects.equals(this.password, loginRequest.password);
+  }
+
+  private static <T> boolean equalsNullable(JsonNullable<T> a, JsonNullable<T> b) {
+    return a == b || (a != null && b != null && a.isPresent() && b.isPresent() && Objects.deepEquals(a.get(), b.get()));
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(email, password);
+    return Objects.hash(email, phone, password);
+  }
+
+  private static <T> int hashCodeNullable(JsonNullable<T> a) {
+    if (a == null) {
+      return 1;
+    }
+    return a.isPresent() ? Arrays.deepHashCode(new Object[]{a.get()}) : 31;
   }
 
   @Override
@@ -125,6 +162,7 @@ public class LoginRequest {
     StringBuilder sb = new StringBuilder();
     sb.append("class LoginRequest {\n");
     sb.append("    email: ").append(toIndentedString(email)).append("\n");
+    sb.append("    phone: ").append(toIndentedString(phone)).append("\n");
     sb.append("    password: ").append("*").append("\n");
     sb.append("}");
     return sb.toString();
@@ -144,10 +182,10 @@ public class LoginRequest {
 
   static {
     // a set of all properties/fields (JSON key names)
-    openapiFields = new HashSet<String>(Arrays.asList("email", "password"));
+    openapiFields = new HashSet<String>(Arrays.asList("email", "phone", "password"));
 
     // a set of required properties/fields (JSON key names)
-    openapiRequiredFields = new HashSet<String>(Arrays.asList("email", "password"));
+    openapiRequiredFields = new HashSet<String>(Arrays.asList("password"));
   }
 
   /**
@@ -178,8 +216,11 @@ public class LoginRequest {
         }
       }
         JsonObject jsonObj = jsonElement.getAsJsonObject();
-      if (!jsonObj.get("email").isJsonPrimitive()) {
+      if ((jsonObj.get("email") != null && !jsonObj.get("email").isJsonNull()) && !jsonObj.get("email").isJsonPrimitive()) {
         throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "Expected the field `email` to be a primitive type in the JSON string but got `%s`", jsonObj.get("email").toString()));
+      }
+      if ((jsonObj.get("phone") != null && !jsonObj.get("phone").isJsonNull()) && !jsonObj.get("phone").isJsonPrimitive()) {
+        throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "Expected the field `phone` to be a primitive type in the JSON string but got `%s`", jsonObj.get("phone").toString()));
       }
       if (!jsonObj.get("password").isJsonPrimitive()) {
         throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "Expected the field `password` to be a primitive type in the JSON string but got `%s`", jsonObj.get("password").toString()));

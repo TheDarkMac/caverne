@@ -210,6 +210,8 @@ public class CategoriesApi {
        <caption>Response Details</caption>
         <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
         <tr><td> 204 </td><td> Supprimée </td><td>  -  </td></tr>
+        <tr><td> 401 </td><td> Token JWT manquant ou invalide </td><td>  -  </td></tr>
+        <tr><td> 403 </td><td> Accès refusé (rôle insuffisant) </td><td>  -  </td></tr>
      </table>
      */
     public okhttp3.Call categoriesIdDeleteCall(@javax.annotation.Nonnull Integer id, final ApiCallback _callback) throws ApiException {
@@ -239,6 +241,7 @@ public class CategoriesApi {
         Map<String, Object> localVarFormParams = new HashMap<String, Object>();
 
         final String[] localVarAccepts = {
+            "application/json"
         };
         final String localVarAccept = localVarApiClient.selectHeaderAccept(localVarAccepts);
         if (localVarAccept != null) {
@@ -277,6 +280,8 @@ public class CategoriesApi {
        <caption>Response Details</caption>
         <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
         <tr><td> 204 </td><td> Supprimée </td><td>  -  </td></tr>
+        <tr><td> 401 </td><td> Token JWT manquant ou invalide </td><td>  -  </td></tr>
+        <tr><td> 403 </td><td> Accès refusé (rôle insuffisant) </td><td>  -  </td></tr>
      </table>
      */
     public void categoriesIdDelete(@javax.annotation.Nonnull Integer id) throws ApiException {
@@ -294,6 +299,8 @@ public class CategoriesApi {
        <caption>Response Details</caption>
         <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
         <tr><td> 204 </td><td> Supprimée </td><td>  -  </td></tr>
+        <tr><td> 401 </td><td> Token JWT manquant ou invalide </td><td>  -  </td></tr>
+        <tr><td> 403 </td><td> Accès refusé (rôle insuffisant) </td><td>  -  </td></tr>
      </table>
      */
     public ApiResponse<Void> categoriesIdDeleteWithHttpInfo(@javax.annotation.Nonnull Integer id) throws ApiException {
@@ -313,6 +320,8 @@ public class CategoriesApi {
        <caption>Response Details</caption>
         <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
         <tr><td> 204 </td><td> Supprimée </td><td>  -  </td></tr>
+        <tr><td> 401 </td><td> Token JWT manquant ou invalide </td><td>  -  </td></tr>
+        <tr><td> 403 </td><td> Accès refusé (rôle insuffisant) </td><td>  -  </td></tr>
      </table>
      */
     public okhttp3.Call categoriesIdDeleteAsync(@javax.annotation.Nonnull Integer id, final ApiCallback<Void> _callback) throws ApiException {
@@ -464,7 +473,9 @@ public class CategoriesApi {
        <caption>Response Details</caption>
         <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
         <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 201 </td><td> Créée si l&#39;identifiant du path n&#39;existe pas encore et que l&#39;implémentation choisit de créer </td><td>  -  </td></tr>
+        <tr><td> 401 </td><td> Token JWT manquant ou invalide </td><td>  -  </td></tr>
+        <tr><td> 403 </td><td> Accès refusé (rôle insuffisant) </td><td>  -  </td></tr>
+        <tr><td> 404 </td><td> Ressource introuvable </td><td>  -  </td></tr>
      </table>
      */
     public okhttp3.Call categoriesIdPutCall(@javax.annotation.Nonnull Integer id, @javax.annotation.Nonnull CategoryInput categoryInput, final ApiCallback _callback) throws ApiException {
@@ -530,8 +541,8 @@ public class CategoriesApi {
     }
 
     /**
-     * Créer ou mettre à jour une catégorie par identifiant (admin)
-     * Endpoint d&#39;upsert avec identifiant dans l&#39;URL. Le &#x60;id&#x60; du path fait foi. Si &#x60;id&#x60; est aussi fourni dans le payload, il doit correspondre à l&#39;identifiant du path. 
+     * Mettre à jour une catégorie par identifiant (admin)
+     * Endpoint de mise à jour avec identifiant dans l&#39;URL. Le &#x60;id&#x60; du path fait foi. Si &#x60;id&#x60; est aussi fourni dans le payload, il doit correspondre à l&#39;identifiant du path. 
      * @param id  (required)
      * @param categoryInput  (required)
      * @return Category
@@ -541,7 +552,9 @@ public class CategoriesApi {
        <caption>Response Details</caption>
         <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
         <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 201 </td><td> Créée si l&#39;identifiant du path n&#39;existe pas encore et que l&#39;implémentation choisit de créer </td><td>  -  </td></tr>
+        <tr><td> 401 </td><td> Token JWT manquant ou invalide </td><td>  -  </td></tr>
+        <tr><td> 403 </td><td> Accès refusé (rôle insuffisant) </td><td>  -  </td></tr>
+        <tr><td> 404 </td><td> Ressource introuvable </td><td>  -  </td></tr>
      </table>
      */
     public Category categoriesIdPut(@javax.annotation.Nonnull Integer id, @javax.annotation.Nonnull CategoryInput categoryInput) throws ApiException {
@@ -550,8 +563,8 @@ public class CategoriesApi {
     }
 
     /**
-     * Créer ou mettre à jour une catégorie par identifiant (admin)
-     * Endpoint d&#39;upsert avec identifiant dans l&#39;URL. Le &#x60;id&#x60; du path fait foi. Si &#x60;id&#x60; est aussi fourni dans le payload, il doit correspondre à l&#39;identifiant du path. 
+     * Mettre à jour une catégorie par identifiant (admin)
+     * Endpoint de mise à jour avec identifiant dans l&#39;URL. Le &#x60;id&#x60; du path fait foi. Si &#x60;id&#x60; est aussi fourni dans le payload, il doit correspondre à l&#39;identifiant du path. 
      * @param id  (required)
      * @param categoryInput  (required)
      * @return ApiResponse&lt;Category&gt;
@@ -561,7 +574,9 @@ public class CategoriesApi {
        <caption>Response Details</caption>
         <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
         <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 201 </td><td> Créée si l&#39;identifiant du path n&#39;existe pas encore et que l&#39;implémentation choisit de créer </td><td>  -  </td></tr>
+        <tr><td> 401 </td><td> Token JWT manquant ou invalide </td><td>  -  </td></tr>
+        <tr><td> 403 </td><td> Accès refusé (rôle insuffisant) </td><td>  -  </td></tr>
+        <tr><td> 404 </td><td> Ressource introuvable </td><td>  -  </td></tr>
      </table>
      */
     public ApiResponse<Category> categoriesIdPutWithHttpInfo(@javax.annotation.Nonnull Integer id, @javax.annotation.Nonnull CategoryInput categoryInput) throws ApiException {
@@ -571,8 +586,8 @@ public class CategoriesApi {
     }
 
     /**
-     * Créer ou mettre à jour une catégorie par identifiant (admin) (asynchronously)
-     * Endpoint d&#39;upsert avec identifiant dans l&#39;URL. Le &#x60;id&#x60; du path fait foi. Si &#x60;id&#x60; est aussi fourni dans le payload, il doit correspondre à l&#39;identifiant du path. 
+     * Mettre à jour une catégorie par identifiant (admin) (asynchronously)
+     * Endpoint de mise à jour avec identifiant dans l&#39;URL. Le &#x60;id&#x60; du path fait foi. Si &#x60;id&#x60; est aussi fourni dans le payload, il doit correspondre à l&#39;identifiant du path. 
      * @param id  (required)
      * @param categoryInput  (required)
      * @param _callback The callback to be executed when the API call finishes
@@ -583,7 +598,9 @@ public class CategoriesApi {
        <caption>Response Details</caption>
         <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
         <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-        <tr><td> 201 </td><td> Créée si l&#39;identifiant du path n&#39;existe pas encore et que l&#39;implémentation choisit de créer </td><td>  -  </td></tr>
+        <tr><td> 401 </td><td> Token JWT manquant ou invalide </td><td>  -  </td></tr>
+        <tr><td> 403 </td><td> Accès refusé (rôle insuffisant) </td><td>  -  </td></tr>
+        <tr><td> 404 </td><td> Ressource introuvable </td><td>  -  </td></tr>
      </table>
      */
     public okhttp3.Call categoriesIdPutAsync(@javax.annotation.Nonnull Integer id, @javax.annotation.Nonnull CategoryInput categoryInput, final ApiCallback<Category> _callback) throws ApiException {
@@ -605,6 +622,8 @@ public class CategoriesApi {
         <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
         <tr><td> 201 </td><td> Créée quand &#x60;id&#x60; est absent </td><td>  -  </td></tr>
         <tr><td> 200 </td><td> Mise à jour quand &#x60;id&#x60; est fourni </td><td>  -  </td></tr>
+        <tr><td> 401 </td><td> Token JWT manquant ou invalide </td><td>  -  </td></tr>
+        <tr><td> 403 </td><td> Accès refusé (rôle insuffisant) </td><td>  -  </td></tr>
      </table>
      */
     public okhttp3.Call categoriesPostCall(@javax.annotation.Nonnull CategoryInput categoryInput, final ApiCallback _callback) throws ApiException {
@@ -675,6 +694,8 @@ public class CategoriesApi {
         <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
         <tr><td> 201 </td><td> Créée quand &#x60;id&#x60; est absent </td><td>  -  </td></tr>
         <tr><td> 200 </td><td> Mise à jour quand &#x60;id&#x60; est fourni </td><td>  -  </td></tr>
+        <tr><td> 401 </td><td> Token JWT manquant ou invalide </td><td>  -  </td></tr>
+        <tr><td> 403 </td><td> Accès refusé (rôle insuffisant) </td><td>  -  </td></tr>
      </table>
      */
     public Category categoriesPost(@javax.annotation.Nonnull CategoryInput categoryInput) throws ApiException {
@@ -694,6 +715,8 @@ public class CategoriesApi {
         <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
         <tr><td> 201 </td><td> Créée quand &#x60;id&#x60; est absent </td><td>  -  </td></tr>
         <tr><td> 200 </td><td> Mise à jour quand &#x60;id&#x60; est fourni </td><td>  -  </td></tr>
+        <tr><td> 401 </td><td> Token JWT manquant ou invalide </td><td>  -  </td></tr>
+        <tr><td> 403 </td><td> Accès refusé (rôle insuffisant) </td><td>  -  </td></tr>
      </table>
      */
     public ApiResponse<Category> categoriesPostWithHttpInfo(@javax.annotation.Nonnull CategoryInput categoryInput) throws ApiException {
@@ -715,6 +738,8 @@ public class CategoriesApi {
         <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
         <tr><td> 201 </td><td> Créée quand &#x60;id&#x60; est absent </td><td>  -  </td></tr>
         <tr><td> 200 </td><td> Mise à jour quand &#x60;id&#x60; est fourni </td><td>  -  </td></tr>
+        <tr><td> 401 </td><td> Token JWT manquant ou invalide </td><td>  -  </td></tr>
+        <tr><td> 403 </td><td> Accès refusé (rôle insuffisant) </td><td>  -  </td></tr>
      </table>
      */
     public okhttp3.Call categoriesPostAsync(@javax.annotation.Nonnull CategoryInput categoryInput, final ApiCallback<Category> _callback) throws ApiException {

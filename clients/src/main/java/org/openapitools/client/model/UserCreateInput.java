@@ -50,7 +50,7 @@ import org.openapitools.client.JSON;
  * Fournir &#x60;email&#x60; ou &#x60;phone&#x60;, ou les deux.
  */
 @javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2026-04-03T07:59:22.713363218+03:00[Indian/Antananarivo]", comments = "Generator version: 7.21.0")
-public class RegisterRequest {
+public class UserCreateInput {
   public static final String SERIALIZED_NAME_FIRSTNAME = "firstname";
   @SerializedName(SERIALIZED_NAME_FIRSTNAME)
   @javax.annotation.Nonnull
@@ -76,10 +76,72 @@ public class RegisterRequest {
   @javax.annotation.Nonnull
   private String password;
 
-  public RegisterRequest() {
+  /**
+   * Gets or Sets role
+   */
+  @JsonAdapter(RoleEnum.Adapter.class)
+  public enum RoleEnum {
+    ADMIN("admin"),
+    
+    SIMPLE_USER("simple_user");
+
+    private String value;
+
+    RoleEnum(String value) {
+      this.value = value;
+    }
+
+    public String getValue() {
+      return value;
+    }
+
+    @Override
+    public String toString() {
+      return String.valueOf(value);
+    }
+
+    public static RoleEnum fromValue(String value) {
+      for (RoleEnum b : RoleEnum.values()) {
+        if (b.value.equals(value)) {
+          return b;
+        }
+      }
+      throw new IllegalArgumentException("Unexpected value '" + value + "'");
+    }
+
+    public static class Adapter extends TypeAdapter<RoleEnum> {
+      @Override
+      public void write(final JsonWriter jsonWriter, final RoleEnum enumeration) throws IOException {
+        jsonWriter.value(enumeration.getValue());
+      }
+
+      @Override
+      public RoleEnum read(final JsonReader jsonReader) throws IOException {
+        String value =  jsonReader.nextString();
+        return RoleEnum.fromValue(value);
+      }
+    }
+
+    public static void validateJsonElement(JsonElement jsonElement) throws IOException {
+      String value = jsonElement.getAsString();
+      RoleEnum.fromValue(value);
+    }
   }
 
-  public RegisterRequest firstname(@javax.annotation.Nonnull String firstname) {
+  public static final String SERIALIZED_NAME_ROLE = "role";
+  @SerializedName(SERIALIZED_NAME_ROLE)
+  @javax.annotation.Nullable
+  private RoleEnum role;
+
+  public static final String SERIALIZED_NAME_STATUS = "status";
+  @SerializedName(SERIALIZED_NAME_STATUS)
+  @javax.annotation.Nullable
+  private String status;
+
+  public UserCreateInput() {
+  }
+
+  public UserCreateInput firstname(@javax.annotation.Nonnull String firstname) {
     this.firstname = firstname;
     return this;
   }
@@ -98,7 +160,7 @@ public class RegisterRequest {
   }
 
 
-  public RegisterRequest lastname(@javax.annotation.Nonnull String lastname) {
+  public UserCreateInput lastname(@javax.annotation.Nonnull String lastname) {
     this.lastname = lastname;
     return this;
   }
@@ -117,7 +179,7 @@ public class RegisterRequest {
   }
 
 
-  public RegisterRequest email(@javax.annotation.Nullable String email) {
+  public UserCreateInput email(@javax.annotation.Nullable String email) {
     this.email = email;
     return this;
   }
@@ -136,7 +198,7 @@ public class RegisterRequest {
   }
 
 
-  public RegisterRequest phone(@javax.annotation.Nullable String phone) {
+  public UserCreateInput phone(@javax.annotation.Nullable String phone) {
     this.phone = phone;
     return this;
   }
@@ -155,7 +217,7 @@ public class RegisterRequest {
   }
 
 
-  public RegisterRequest password(@javax.annotation.Nonnull String password) {
+  public UserCreateInput password(@javax.annotation.Nonnull String password) {
     this.password = password;
     return this;
   }
@@ -174,6 +236,44 @@ public class RegisterRequest {
   }
 
 
+  public UserCreateInput role(@javax.annotation.Nullable RoleEnum role) {
+    this.role = role;
+    return this;
+  }
+
+  /**
+   * Get role
+   * @return role
+   */
+  @javax.annotation.Nullable
+  public RoleEnum getRole() {
+    return role;
+  }
+
+  public void setRole(@javax.annotation.Nullable RoleEnum role) {
+    this.role = role;
+  }
+
+
+  public UserCreateInput status(@javax.annotation.Nullable String status) {
+    this.status = status;
+    return this;
+  }
+
+  /**
+   * Get status
+   * @return status
+   */
+  @javax.annotation.Nullable
+  public String getStatus() {
+    return status;
+  }
+
+  public void setStatus(@javax.annotation.Nullable String status) {
+    this.status = status;
+  }
+
+
 
   @Override
   public boolean equals(Object o) {
@@ -183,12 +283,14 @@ public class RegisterRequest {
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    RegisterRequest registerRequest = (RegisterRequest) o;
-    return Objects.equals(this.firstname, registerRequest.firstname) &&
-        Objects.equals(this.lastname, registerRequest.lastname) &&
-        Objects.equals(this.email, registerRequest.email) &&
-        Objects.equals(this.phone, registerRequest.phone) &&
-        Objects.equals(this.password, registerRequest.password);
+    UserCreateInput userCreateInput = (UserCreateInput) o;
+    return Objects.equals(this.firstname, userCreateInput.firstname) &&
+        Objects.equals(this.lastname, userCreateInput.lastname) &&
+        Objects.equals(this.email, userCreateInput.email) &&
+        Objects.equals(this.phone, userCreateInput.phone) &&
+        Objects.equals(this.password, userCreateInput.password) &&
+        Objects.equals(this.role, userCreateInput.role) &&
+        Objects.equals(this.status, userCreateInput.status);
   }
 
   private static <T> boolean equalsNullable(JsonNullable<T> a, JsonNullable<T> b) {
@@ -197,7 +299,7 @@ public class RegisterRequest {
 
   @Override
   public int hashCode() {
-    return Objects.hash(firstname, lastname, email, phone, password);
+    return Objects.hash(firstname, lastname, email, phone, password, role, status);
   }
 
   private static <T> int hashCodeNullable(JsonNullable<T> a) {
@@ -210,12 +312,14 @@ public class RegisterRequest {
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
-    sb.append("class RegisterRequest {\n");
+    sb.append("class UserCreateInput {\n");
     sb.append("    firstname: ").append(toIndentedString(firstname)).append("\n");
     sb.append("    lastname: ").append(toIndentedString(lastname)).append("\n");
     sb.append("    email: ").append(toIndentedString(email)).append("\n");
     sb.append("    phone: ").append(toIndentedString(phone)).append("\n");
     sb.append("    password: ").append("*").append("\n");
+    sb.append("    role: ").append(toIndentedString(role)).append("\n");
+    sb.append("    status: ").append(toIndentedString(status)).append("\n");
     sb.append("}");
     return sb.toString();
   }
@@ -234,7 +338,7 @@ public class RegisterRequest {
 
   static {
     // a set of all properties/fields (JSON key names)
-    openapiFields = new HashSet<String>(Arrays.asList("firstname", "lastname", "email", "phone", "password"));
+    openapiFields = new HashSet<String>(Arrays.asList("firstname", "lastname", "email", "phone", "password", "role", "status"));
 
     // a set of required properties/fields (JSON key names)
     openapiRequiredFields = new HashSet<String>(Arrays.asList("firstname", "lastname", "password"));
@@ -244,25 +348,25 @@ public class RegisterRequest {
    * Validates the JSON Element and throws an exception if issues found
    *
    * @param jsonElement JSON Element
-   * @throws IOException if the JSON Element is invalid with respect to RegisterRequest
+   * @throws IOException if the JSON Element is invalid with respect to UserCreateInput
    */
   public static void validateJsonElement(JsonElement jsonElement) throws IOException {
       if (jsonElement == null) {
-        if (!RegisterRequest.openapiRequiredFields.isEmpty()) { // has required fields but JSON element is null
-          throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "The required field(s) %s in RegisterRequest is not found in the empty JSON string", RegisterRequest.openapiRequiredFields.toString()));
+        if (!UserCreateInput.openapiRequiredFields.isEmpty()) { // has required fields but JSON element is null
+          throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "The required field(s) %s in UserCreateInput is not found in the empty JSON string", UserCreateInput.openapiRequiredFields.toString()));
         }
       }
 
       Set<Map.Entry<String, JsonElement>> entries = jsonElement.getAsJsonObject().entrySet();
       // check to see if the JSON string contains additional fields
       for (Map.Entry<String, JsonElement> entry : entries) {
-        if (!RegisterRequest.openapiFields.contains(entry.getKey())) {
-          throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "The field `%s` in the JSON string is not defined in the `RegisterRequest` properties. JSON: %s", entry.getKey(), jsonElement.toString()));
+        if (!UserCreateInput.openapiFields.contains(entry.getKey())) {
+          throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "The field `%s` in the JSON string is not defined in the `UserCreateInput` properties. JSON: %s", entry.getKey(), jsonElement.toString()));
         }
       }
 
       // check to make sure all required properties/fields are present in the JSON string
-      for (String requiredField : RegisterRequest.openapiRequiredFields) {
+      for (String requiredField : UserCreateInput.openapiRequiredFields) {
         if (jsonElement.getAsJsonObject().get(requiredField) == null) {
           throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "The required field `%s` is not found in the JSON string: %s", requiredField, jsonElement.toString()));
         }
@@ -283,28 +387,38 @@ public class RegisterRequest {
       if (!jsonObj.get("password").isJsonPrimitive()) {
         throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "Expected the field `password` to be a primitive type in the JSON string but got `%s`", jsonObj.get("password").toString()));
       }
+      if ((jsonObj.get("role") != null && !jsonObj.get("role").isJsonNull()) && !jsonObj.get("role").isJsonPrimitive()) {
+        throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "Expected the field `role` to be a primitive type in the JSON string but got `%s`", jsonObj.get("role").toString()));
+      }
+      // validate the optional field `role`
+      if (jsonObj.get("role") != null && !jsonObj.get("role").isJsonNull()) {
+        RoleEnum.validateJsonElement(jsonObj.get("role"));
+      }
+      if ((jsonObj.get("status") != null && !jsonObj.get("status").isJsonNull()) && !jsonObj.get("status").isJsonPrimitive()) {
+        throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "Expected the field `status` to be a primitive type in the JSON string but got `%s`", jsonObj.get("status").toString()));
+      }
   }
 
   public static class CustomTypeAdapterFactory implements TypeAdapterFactory {
     @SuppressWarnings("unchecked")
     @Override
     public <T> TypeAdapter<T> create(Gson gson, TypeToken<T> type) {
-       if (!RegisterRequest.class.isAssignableFrom(type.getRawType())) {
-         return null; // this class only serializes 'RegisterRequest' and its subtypes
+       if (!UserCreateInput.class.isAssignableFrom(type.getRawType())) {
+         return null; // this class only serializes 'UserCreateInput' and its subtypes
        }
        final TypeAdapter<JsonElement> elementAdapter = gson.getAdapter(JsonElement.class);
-       final TypeAdapter<RegisterRequest> thisAdapter
-                        = gson.getDelegateAdapter(this, TypeToken.get(RegisterRequest.class));
+       final TypeAdapter<UserCreateInput> thisAdapter
+                        = gson.getDelegateAdapter(this, TypeToken.get(UserCreateInput.class));
 
-       return (TypeAdapter<T>) new TypeAdapter<RegisterRequest>() {
+       return (TypeAdapter<T>) new TypeAdapter<UserCreateInput>() {
            @Override
-           public void write(JsonWriter out, RegisterRequest value) throws IOException {
+           public void write(JsonWriter out, UserCreateInput value) throws IOException {
              JsonObject obj = thisAdapter.toJsonTree(value).getAsJsonObject();
              elementAdapter.write(out, obj);
            }
 
            @Override
-           public RegisterRequest read(JsonReader in) throws IOException {
+           public UserCreateInput read(JsonReader in) throws IOException {
              JsonElement jsonElement = elementAdapter.read(in);
              validateJsonElement(jsonElement);
              return thisAdapter.fromJsonTree(jsonElement);
@@ -315,18 +429,18 @@ public class RegisterRequest {
   }
 
   /**
-   * Create an instance of RegisterRequest given an JSON string
+   * Create an instance of UserCreateInput given an JSON string
    *
    * @param jsonString JSON string
-   * @return An instance of RegisterRequest
-   * @throws IOException if the JSON string is invalid with respect to RegisterRequest
+   * @return An instance of UserCreateInput
+   * @throws IOException if the JSON string is invalid with respect to UserCreateInput
    */
-  public static RegisterRequest fromJson(String jsonString) throws IOException {
-    return JSON.getGson().fromJson(jsonString, RegisterRequest.class);
+  public static UserCreateInput fromJson(String jsonString) throws IOException {
+    return JSON.getGson().fromJson(jsonString, UserCreateInput.class);
   }
 
   /**
-   * Convert an instance of RegisterRequest to an JSON string
+   * Convert an instance of UserCreateInput to an JSON string
    *
    * @return JSON string
    */

@@ -11,6 +11,9 @@ servers:
   - url: https://api.lacaverne/v1
     description: Serveur de production
 
+security:
+  - BearerAuth: []
+
 # ─────────────────────────────────────────────
 # SECURITY
 # ─────────────────────────────────────────────
@@ -27,11 +30,16 @@ components:
     # ── AUTH ──
     LoginRequest:
       type: object
-      required: [email, password]
+      required: [password]
+      description: Fournir `email` ou `phone`, ou les deux.
       properties:
         email:
           type: string
           format: email
+          nullable: true
+        phone:
+          type: string
+          nullable: true
         password:
           type: string
           format: password
@@ -50,7 +58,8 @@ components:
 
     RegisterRequest:
       type: object
-      required: [firstname, lastname, email, password]
+      required: [firstname, lastname, password]
+      description: Fournir `email` ou `phone`, ou les deux.
       properties:
         firstname:
           type: string
@@ -61,9 +70,11 @@ components:
         email:
           type: string
           format: email
+          nullable: true
         phone:
           type: string
           maxLength: 20
+          nullable: true
         password:
           type: string
           format: password
@@ -81,8 +92,10 @@ components:
         email:
           type: string
           format: email
+          nullable: true
         phone:
           type: string
+          nullable: true
         role:
           type: string
           enum: [admin, simple_user]
@@ -97,6 +110,31 @@ components:
         lastname:
           type: string
         phone:
+          type: string
+
+    UserCreateInput:
+      type: object
+      required: [firstname, lastname, password]
+      description: Fournir `email` ou `phone`, ou les deux.
+      properties:
+        firstname:
+          type: string
+        lastname:
+          type: string
+        email:
+          type: string
+          format: email
+          nullable: true
+        phone:
+          type: string
+          nullable: true
+        password:
+          type: string
+          format: password
+        role:
+          type: string
+          enum: [admin, simple_user]
+        status:
           type: string
 
     # ── ADDRESS ──
@@ -672,9 +710,6 @@ components:
         type: integer
         default: 20
 
-security:
-  - BearerAuth: []
-
 # ─────────────────────────────────────────────
 # PATHS
 # ─────────────────────────────────────────────
@@ -739,6 +774,28 @@ paths:
   # USERS
   # ═══════════════════════════
   /users:
+    post:
+      tags: [Users]
+      summary: Créer un utilisateur (admin)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserCreateInput'
+      responses:
+        '201':
+          description: Utilisateur créé
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '422':
+          $ref: '#/components/responses/UnprocessableEntity'
     get:
       tags: [Users]
       summary: Liste des utilisateurs (admin)
@@ -798,6 +855,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/User'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
         '422':
           $ref: '#/components/responses/UnprocessableEntity'
 
@@ -843,6 +902,8 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/Address'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
     post:
       tags: [Addresses]
       summary: Ajouter une adresse
@@ -859,6 +920,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Address'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
 
   /users/me/addresses/{id}:
     parameters:
@@ -879,6 +942,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Address'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
         '404':
           $ref: '#/components/responses/NotFound'
     delete:
@@ -887,6 +952,8 @@ paths:
       responses:
         '204':
           description: Supprimée
+        '401':
+          $ref: '#/components/responses/Unauthorized'
         '404':
           $ref: '#/components/responses/NotFound'
 
@@ -903,6 +970,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Address'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
 
   # ═══════════════════════════
   # CATEGORIES
@@ -952,6 +1021,10 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Category'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
 
   /categories/{id}:
     parameters:
@@ -971,9 +1044,9 @@ paths:
           $ref: '#/components/responses/NotFound'
     put:
       tags: [Categories]
-      summary: Créer ou mettre à jour une catégorie par identifiant (admin)
+      summary: Mettre à jour une catégorie par identifiant (admin)
       description: >
-        Endpoint d'upsert avec identifiant dans l'URL. Le `id` du path fait foi.
+        Endpoint de mise à jour avec identifiant dans l'URL. Le `id` du path fait foi.
         Si `id` est aussi fourni dans le payload, il doit correspondre à l'identifiant du path.
       requestBody:
         required: true
@@ -988,18 +1061,22 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Category'
-        '201':
-          description: Créée si l'identifiant du path n'existe pas encore et que l'implémentation choisit de créer
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Category'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
     delete:
       tags: [Categories]
       summary: Supprimer une catégorie (admin)
       responses:
         '204':
           description: Supprimée
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
 
   # ═══════════════════════════
   # PRODUCTS
@@ -1059,6 +1136,10 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Product'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
 
   /products/{id}:
     parameters:
@@ -1092,245 +1173,20 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Product'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
     delete:
       tags: [Products]
       summary: Supprimer un produit (admin)
       responses:
         '204':
           description: Supprimé
-
-  /products/{id}/images:
-    parameters:
-      - $ref: '#/components/parameters/pathId'
-    get:
-      tags: [Products]
-      summary: Images d'un produit
-      security: []
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/ProductImage'
-    post:
-      tags: [Products]
-      summary: Ajouter une image (admin)
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/ProductImageInput'
-      responses:
-        '201':
-          description: Créée
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ProductImage'
-
-  /products/{id}/images/{imageId}:
-    parameters:
-      - $ref: '#/components/parameters/pathId'
-      - name: imageId
-        in: path
-        required: true
-        schema:
-          type: integer
-    put:
-      tags: [Products]
-      summary: Modifier une image (définir main, etc.)
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/ProductImageInput'
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ProductImage'
-    delete:
-      tags: [Products]
-      summary: Supprimer une image
-      responses:
-        '204':
-          description: Supprimée
-
-  /products/{id}/prices:
-    parameters:
-      - $ref: '#/components/parameters/pathId'
-    get:
-      tags: [Products]
-      summary: Historique des prix d'un produit
-      security: []
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Price'
-    post:
-      tags: [Products]
-      summary: Ajouter un prix (admin)
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/PriceInput'
-      responses:
-        '201':
-          description: Créé
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Price'
-
-  /products/{id}/stock:
-    parameters:
-      - $ref: '#/components/parameters/pathId'
-    get:
-      tags: [Products]
-      summary: Stock disponible d'un produit
-      responses:
-        '200':
-          description: Résumé du stock
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/StockSummary'
-    post:
-      tags: [Products]
-      summary: Enregistrer un mouvement de stock (admin)
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/StockInput'
-      responses:
-        '201':
-          description: Mouvement enregistré
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/StockEntry'
-
-  /products/{id}/stock/history:
-    parameters:
-      - $ref: '#/components/parameters/pathId'
-    get:
-      tags: [Products]
-      summary: Historique des mouvements de stock
-      parameters:
-        - $ref: '#/components/parameters/queryPage'
-        - name: movement_type
-          in: query
-          schema:
-            type: string
-            enum: [in, out, adjustment]
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  data:
-                    type: array
-                    items:
-                      $ref: '#/components/schemas/StockEntry'
-                  meta:
-                    $ref: '#/components/schemas/PaginatedMeta'
-
-  /products/{id}/technical-specs:
-    parameters:
-      - $ref: '#/components/parameters/pathId'
-    get:
-      tags: [Products]
-      summary: Spécifications techniques d'un produit
-      security: []
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/TechnicalSpecs'
-        '404':
-          $ref: '#/components/responses/NotFound'
-    put:
-      tags: [Products]
-      summary: Créer ou remplacer les specs techniques (admin)
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/TechnicalSpecsInput'
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/TechnicalSpecs'
-
-  /products/{id}/reviews:
-    parameters:
-      - $ref: '#/components/parameters/pathId'
-    get:
-      tags: [Products]
-      summary: Avis clients d'un produit
-      security: []
-      parameters:
-        - $ref: '#/components/parameters/queryPage'
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  average_score:
-                    type: number
-                    format: float
-                  data:
-                    type: array
-                    items:
-                      $ref: '#/components/schemas/Review'
-                  meta:
-                    $ref: '#/components/schemas/PaginatedMeta'
-    post:
-      tags: [Products]
-      summary: Déposer un avis (utilisateur connecté)
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/ReviewInput'
-      responses:
-        '201':
-          description: Avis enregistré
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Review'
-        '422':
-          $ref: '#/components/responses/UnprocessableEntity'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
 
   # ═══════════════════════════
   # ORDERS
@@ -1410,6 +1266,8 @@ paths:
                       $ref: '#/components/schemas/Order'
                   meta:
                     $ref: '#/components/schemas/PaginatedMeta'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
         '403':
           $ref: '#/components/responses/Forbidden'
 
@@ -1420,6 +1278,9 @@ paths:
       tags: [Orders]
       summary: Détail d'une commande
       security: []
+      description: >
+        Les commandes invitées peuvent être consultées sans authentification.
+        Les commandes liées à un utilisateur nécessitent que l'acteur soit le propriétaire ou un admin.
       responses:
         '200':
           description: OK
@@ -1427,6 +1288,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Order'
+        '403':
+          $ref: '#/components/responses/Forbidden'
         '404':
           $ref: '#/components/responses/NotFound'
 
@@ -1449,6 +1312,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Order'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
         '403':
           $ref: '#/components/responses/Forbidden'
 
@@ -1458,6 +1323,7 @@ paths:
     post:
       tags: [Orders]
       summary: Annuler une commande (owner ou admin)
+      security: []
       responses:
         '200':
           description: Commande annulée
@@ -1465,36 +1331,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Order'
-
-  /orders/{id}/delivery-cost:
-    parameters:
-      - $ref: '#/components/parameters/pathId'
-    get:
-      tags: [Orders]
-      summary: Frais de livraison d'une commande
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/DeliverCost'
-    post:
-      tags: [Orders]
-      summary: Renseigner les frais de livraison (admin)
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/DeliverCostInput'
-      responses:
-        '201':
-          description: Créé
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/DeliverCost'
+        '403':
+          $ref: '#/components/responses/Forbidden'
 
   # ═══════════════════════════
   # PAYMENTS
@@ -1535,205 +1373,6 @@ paths:
         '422':
           $ref: '#/components/responses/UnprocessableEntity'
 
-  /payments/{id}:
-    parameters:
-      - $ref: '#/components/parameters/pathId'
-    get:
-      tags: [Payments]
-      summary: Détail d'un paiement
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Payment'
-        '404':
-          $ref: '#/components/responses/NotFound'
-
-  /payments/{id}/confirm:
-    parameters:
-      - $ref: '#/components/parameters/pathId'
-    post:
-      tags: [Payments]
-      summary: Confirmer manuellement un paiement (admin)
-      responses:
-        '200':
-          description: Confirmé
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Payment'
-        '403':
-          $ref: '#/components/responses/Forbidden'
-
-  /payments/{id}/refund:
-    parameters:
-      - $ref: '#/components/parameters/pathId'
-    post:
-      tags: [Payments]
-      summary: Rembourser un paiement (admin)
-      responses:
-        '200':
-          description: Remboursé
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Payment'
-
-  /payments/webhook/{provider_code}:
-    parameters:
-      - name: provider_code
-        in: path
-        required: true
-        schema:
-          type: string
-    post:
-      tags: [Payments]
-      summary: Webhook de confirmation de paiement (appelé par le prestataire)
-      security: []
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              description: Payload propre à chaque prestataire (Wave, Orange Money, etc.)
-      responses:
-        '200':
-          description: Reçu
-        '400':
-          description: Signature invalide
-
-  # ═══════════════════════════
-  # PAYMENT METHODS
-  # ═══════════════════════════
-  /payment-methods:
-    get:
-      tags: [Payment Methods]
-      summary: Liste des méthodes de paiement actives
-      security: []
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/PaymentMethod'
-    post:
-      tags: [Payment Methods]
-      summary: Créer une méthode de paiement (admin)
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/PaymentMethodInput'
-      responses:
-        '201':
-          description: Créée
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/PaymentMethod'
-
-  /payment-methods/{provider_code}:
-    parameters:
-      - name: provider_code
-        in: path
-        required: true
-        schema:
-          type: string
-    put:
-      tags: [Payment Methods]
-      summary: Modifier une méthode de paiement (admin)
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/PaymentMethodInput'
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/PaymentMethod'
-    delete:
-      tags: [Payment Methods]
-      summary: Supprimer une méthode de paiement (admin)
-      responses:
-        '204':
-          description: Supprimée
-
-  # ═══════════════════════════
-  # CURRENCIES
-  # ═══════════════════════════
-  /currencies:
-    get:
-      tags: [Currencies]
-      summary: Liste des devises supportées
-      security: []
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Currency'
-    post:
-      tags: [Currencies]
-      summary: Ajouter une devise (admin)
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/Currency'
-      responses:
-        '201':
-          description: Créée
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Currency'
-
-  /currencies/{code_iso}:
-    parameters:
-      - name: code_iso
-        in: path
-        required: true
-        schema:
-          type: string
-          maxLength: 3
-    put:
-      tags: [Currencies]
-      summary: Modifier une devise (admin)
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/Currency'
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Currency'
-    delete:
-      tags: [Currencies]
-      summary: Supprimer une devise (admin)
-      responses:
-        '204':
-          description: Supprimée
-
 tags:
   - name: Auth
     description: Inscription, connexion, JWT
@@ -1744,12 +1383,8 @@ tags:
   - name: Categories
     description: Arborescence de catégories produits
   - name: Products
-    description: Catalogue, images, prix, stock, specs, avis
+    description: Catalogue produits
   - name: Orders
-    description: Commandes et livraisons
+    description: Commandes
   - name: Payments
-    description: Paiements, webhooks, remboursements
-  - name: Payment Methods
-    description: Méthodes de paiement (Wave, Orange Money, etc.)
-  - name: Currencies
-    description: Devises (MGA, EUR, USD…)
+    description: Paiements initiés depuis une commande

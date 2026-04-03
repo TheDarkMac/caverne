@@ -16,6 +16,7 @@ package org.openapitools.client.api;
 import org.openapitools.client.ApiException;
 import org.openapitools.client.model.Error;
 import org.openapitools.client.model.User;
+import org.openapitools.client.model.UserCreateInput;
 import org.openapitools.client.model.UserUpdate;
 import org.openapitools.client.model.UsersGet200Response;
 import org.junit.jupiter.api.Disabled;
@@ -92,6 +93,18 @@ public class UsersApiTest {
     public void usersMePutTest() throws ApiException {
         UserUpdate userUpdate = null;
         User response = api.usersMePut(userUpdate);
+        // TODO: test validations
+    }
+
+    /**
+     * Créer un utilisateur (admin)
+     *
+     * @throws ApiException if the Api call fails
+     */
+    @Test
+    public void usersPostTest() throws ApiException {
+        UserCreateInput userCreateInput = null;
+        User response = api.usersPost(userCreateInput);
         // TODO: test validations
     }
 

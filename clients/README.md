@@ -2,7 +2,7 @@
 
 La Caverne Malgache API
 - API version: 1.0.0
-  - Build date: 2026-04-02T14:34:59.816130566+03:00[Indian/Antananarivo]
+  - Build date: 2026-04-03T07:59:22.713363218+03:00[Indian/Antananarivo]
   - Generator version: 7.21.0
 
 Documentation OpenAPI de La Caverne Malagasy.
@@ -132,53 +132,27 @@ Class | Method | HTTP request | Description
 *CategoriesApi* | [**categoriesGet**](docs/CategoriesApi.md#categoriesGet) | **GET** /categories | Liste des catégories (arbre)
 *CategoriesApi* | [**categoriesIdDelete**](docs/CategoriesApi.md#categoriesIdDelete) | **DELETE** /categories/{id} | Supprimer une catégorie (admin)
 *CategoriesApi* | [**categoriesIdGet**](docs/CategoriesApi.md#categoriesIdGet) | **GET** /categories/{id} | Détail d&#39;une catégorie
-*CategoriesApi* | [**categoriesIdPut**](docs/CategoriesApi.md#categoriesIdPut) | **PUT** /categories/{id} | Créer ou mettre à jour une catégorie par identifiant (admin)
+*CategoriesApi* | [**categoriesIdPut**](docs/CategoriesApi.md#categoriesIdPut) | **PUT** /categories/{id} | Mettre à jour une catégorie par identifiant (admin)
 *CategoriesApi* | [**categoriesPost**](docs/CategoriesApi.md#categoriesPost) | **POST** /categories | Créer ou mettre à jour une catégorie (admin)
-*CurrenciesApi* | [**currenciesCodeIsoDelete**](docs/CurrenciesApi.md#currenciesCodeIsoDelete) | **DELETE** /currencies/{code_iso} | Supprimer une devise (admin)
-*CurrenciesApi* | [**currenciesCodeIsoPut**](docs/CurrenciesApi.md#currenciesCodeIsoPut) | **PUT** /currencies/{code_iso} | Modifier une devise (admin)
-*CurrenciesApi* | [**currenciesGet**](docs/CurrenciesApi.md#currenciesGet) | **GET** /currencies | Liste des devises supportées
-*CurrenciesApi* | [**currenciesPost**](docs/CurrenciesApi.md#currenciesPost) | **POST** /currencies | Ajouter une devise (admin)
 *OrdersApi* | [**ordersAllGet**](docs/OrdersApi.md#ordersAllGet) | **GET** /orders/all | Toutes les commandes (admin)
 *OrdersApi* | [**ordersGet**](docs/OrdersApi.md#ordersGet) | **GET** /orders | Mes commandes (utilisateur connecté)
 *OrdersApi* | [**ordersIdCancelPost**](docs/OrdersApi.md#ordersIdCancelPost) | **POST** /orders/{id}/cancel | Annuler une commande (owner ou admin)
-*OrdersApi* | [**ordersIdDeliveryCostGet**](docs/OrdersApi.md#ordersIdDeliveryCostGet) | **GET** /orders/{id}/delivery-cost | Frais de livraison d&#39;une commande
-*OrdersApi* | [**ordersIdDeliveryCostPost**](docs/OrdersApi.md#ordersIdDeliveryCostPost) | **POST** /orders/{id}/delivery-cost | Renseigner les frais de livraison (admin)
 *OrdersApi* | [**ordersIdGet**](docs/OrdersApi.md#ordersIdGet) | **GET** /orders/{id} | Détail d&#39;une commande
 *OrdersApi* | [**ordersIdStatusPut**](docs/OrdersApi.md#ordersIdStatusPut) | **PUT** /orders/{id}/status | Changer le statut d&#39;une commande (admin)
 *OrdersApi* | [**ordersPost**](docs/OrdersApi.md#ordersPost) | **POST** /orders | Passer une commande
-*PaymentMethodsApi* | [**paymentMethodsGet**](docs/PaymentMethodsApi.md#paymentMethodsGet) | **GET** /payment-methods | Liste des méthodes de paiement actives
-*PaymentMethodsApi* | [**paymentMethodsPost**](docs/PaymentMethodsApi.md#paymentMethodsPost) | **POST** /payment-methods | Créer une méthode de paiement (admin)
-*PaymentMethodsApi* | [**paymentMethodsProviderCodeDelete**](docs/PaymentMethodsApi.md#paymentMethodsProviderCodeDelete) | **DELETE** /payment-methods/{provider_code} | Supprimer une méthode de paiement (admin)
-*PaymentMethodsApi* | [**paymentMethodsProviderCodePut**](docs/PaymentMethodsApi.md#paymentMethodsProviderCodePut) | **PUT** /payment-methods/{provider_code} | Modifier une méthode de paiement (admin)
 *PaymentsApi* | [**ordersIdPaymentsGet**](docs/PaymentsApi.md#ordersIdPaymentsGet) | **GET** /orders/{id}/payments | Paiements associés à une commande
 *PaymentsApi* | [**ordersIdPaymentsPost**](docs/PaymentsApi.md#ordersIdPaymentsPost) | **POST** /orders/{id}/payments | Initier un paiement
-*PaymentsApi* | [**paymentsIdConfirmPost**](docs/PaymentsApi.md#paymentsIdConfirmPost) | **POST** /payments/{id}/confirm | Confirmer manuellement un paiement (admin)
-*PaymentsApi* | [**paymentsIdGet**](docs/PaymentsApi.md#paymentsIdGet) | **GET** /payments/{id} | Détail d&#39;un paiement
-*PaymentsApi* | [**paymentsIdRefundPost**](docs/PaymentsApi.md#paymentsIdRefundPost) | **POST** /payments/{id}/refund | Rembourser un paiement (admin)
-*PaymentsApi* | [**paymentsWebhookProviderCodePost**](docs/PaymentsApi.md#paymentsWebhookProviderCodePost) | **POST** /payments/webhook/{provider_code} | Webhook de confirmation de paiement (appelé par le prestataire)
 *ProductsApi* | [**productsGet**](docs/ProductsApi.md#productsGet) | **GET** /products | Catalogue produits
 *ProductsApi* | [**productsIdDelete**](docs/ProductsApi.md#productsIdDelete) | **DELETE** /products/{id} | Supprimer un produit (admin)
 *ProductsApi* | [**productsIdGet**](docs/ProductsApi.md#productsIdGet) | **GET** /products/{id} | Détail d&#39;un produit
-*ProductsApi* | [**productsIdImagesGet**](docs/ProductsApi.md#productsIdImagesGet) | **GET** /products/{id}/images | Images d&#39;un produit
-*ProductsApi* | [**productsIdImagesImageIdDelete**](docs/ProductsApi.md#productsIdImagesImageIdDelete) | **DELETE** /products/{id}/images/{imageId} | Supprimer une image
-*ProductsApi* | [**productsIdImagesImageIdPut**](docs/ProductsApi.md#productsIdImagesImageIdPut) | **PUT** /products/{id}/images/{imageId} | Modifier une image (définir main, etc.)
-*ProductsApi* | [**productsIdImagesPost**](docs/ProductsApi.md#productsIdImagesPost) | **POST** /products/{id}/images | Ajouter une image (admin)
-*ProductsApi* | [**productsIdPricesGet**](docs/ProductsApi.md#productsIdPricesGet) | **GET** /products/{id}/prices | Historique des prix d&#39;un produit
-*ProductsApi* | [**productsIdPricesPost**](docs/ProductsApi.md#productsIdPricesPost) | **POST** /products/{id}/prices | Ajouter un prix (admin)
 *ProductsApi* | [**productsIdPut**](docs/ProductsApi.md#productsIdPut) | **PUT** /products/{id} | Modifier un produit (admin)
-*ProductsApi* | [**productsIdReviewsGet**](docs/ProductsApi.md#productsIdReviewsGet) | **GET** /products/{id}/reviews | Avis clients d&#39;un produit
-*ProductsApi* | [**productsIdReviewsPost**](docs/ProductsApi.md#productsIdReviewsPost) | **POST** /products/{id}/reviews | Déposer un avis (utilisateur connecté)
-*ProductsApi* | [**productsIdStockGet**](docs/ProductsApi.md#productsIdStockGet) | **GET** /products/{id}/stock | Stock disponible d&#39;un produit
-*ProductsApi* | [**productsIdStockHistoryGet**](docs/ProductsApi.md#productsIdStockHistoryGet) | **GET** /products/{id}/stock/history | Historique des mouvements de stock
-*ProductsApi* | [**productsIdStockPost**](docs/ProductsApi.md#productsIdStockPost) | **POST** /products/{id}/stock | Enregistrer un mouvement de stock (admin)
-*ProductsApi* | [**productsIdTechnicalSpecsGet**](docs/ProductsApi.md#productsIdTechnicalSpecsGet) | **GET** /products/{id}/technical-specs | Spécifications techniques d&#39;un produit
-*ProductsApi* | [**productsIdTechnicalSpecsPut**](docs/ProductsApi.md#productsIdTechnicalSpecsPut) | **PUT** /products/{id}/technical-specs | Créer ou remplacer les specs techniques (admin)
 *ProductsApi* | [**productsPost**](docs/ProductsApi.md#productsPost) | **POST** /products | Créer un produit (admin)
 *UsersApi* | [**usersGet**](docs/UsersApi.md#usersGet) | **GET** /users | Liste des utilisateurs (admin)
 *UsersApi* | [**usersIdDelete**](docs/UsersApi.md#usersIdDelete) | **DELETE** /users/{id} | Suppression d&#39;un utilisateur (admin)
 *UsersApi* | [**usersIdGet**](docs/UsersApi.md#usersIdGet) | **GET** /users/{id} | Détail d&#39;un utilisateur (admin)
 *UsersApi* | [**usersMeGet**](docs/UsersApi.md#usersMeGet) | **GET** /users/me | Profil de l&#39;utilisateur connecté
 *UsersApi* | [**usersMePut**](docs/UsersApi.md#usersMePut) | **PUT** /users/me | Mise à jour du profil
+*UsersApi* | [**usersPost**](docs/UsersApi.md#usersPost) | **POST** /users | Créer un utilisateur (admin)
 
 
 ## Documentation for Models
@@ -211,8 +185,6 @@ Class | Method | HTTP request | Description
  - [ProductImageInput](docs/ProductImageInput.md)
  - [ProductInput](docs/ProductInput.md)
  - [ProductsGet200Response](docs/ProductsGet200Response.md)
- - [ProductsIdReviewsGet200Response](docs/ProductsIdReviewsGet200Response.md)
- - [ProductsIdStockHistoryGet200Response](docs/ProductsIdStockHistoryGet200Response.md)
  - [RecipientInput](docs/RecipientInput.md)
  - [RegisterRequest](docs/RegisterRequest.md)
  - [Review](docs/Review.md)
@@ -223,6 +195,7 @@ Class | Method | HTTP request | Description
  - [TechnicalSpecs](docs/TechnicalSpecs.md)
  - [TechnicalSpecsInput](docs/TechnicalSpecsInput.md)
  - [User](docs/User.md)
+ - [UserCreateInput](docs/UserCreateInput.md)
  - [UserUpdate](docs/UserUpdate.md)
  - [UsersGet200Response](docs/UsersGet200Response.md)
 

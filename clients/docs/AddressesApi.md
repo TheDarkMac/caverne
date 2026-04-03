@@ -71,6 +71,7 @@ This endpoint does not need any parameter.
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
 | **200** | OK |  -  |
+| **401** | Token JWT manquant ou invalide |  -  |
 
 <a id="usersMeAddressesIdDefaultPut"></a>
 # **usersMeAddressesIdDefaultPut**
@@ -136,6 +137,7 @@ public class Example {
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
 | **200** | Adresse définie par défaut |  -  |
+| **401** | Token JWT manquant ou invalide |  -  |
 
 <a id="usersMeAddressesIdDelete"></a>
 # **usersMeAddressesIdDelete**
@@ -200,6 +202,7 @@ null (empty response body)
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
 | **204** | Supprimée |  -  |
+| **401** | Token JWT manquant ou invalide |  -  |
 | **404** | Ressource introuvable |  -  |
 
 <a id="usersMeAddressesIdPut"></a>
@@ -268,6 +271,7 @@ public class Example {
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
 | **200** | OK |  -  |
+| **401** | Token JWT manquant ou invalide |  -  |
 | **404** | Ressource introuvable |  -  |
 
 <a id="usersMeAddressesPost"></a>
@@ -334,4 +338,5 @@ public class Example {
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
 | **201** | Adresse créée |  -  |
+| **401** | Token JWT manquant ou invalide |  -  |
 

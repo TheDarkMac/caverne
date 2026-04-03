@@ -7,8 +7,6 @@ All URIs are relative to *https://api.lacaverne/v1*
 | [**ordersAllGet**](OrdersApi.md#ordersAllGet) | **GET** /orders/all | Toutes les commandes (admin) |
 | [**ordersGet**](OrdersApi.md#ordersGet) | **GET** /orders | Mes commandes (utilisateur connecté) |
 | [**ordersIdCancelPost**](OrdersApi.md#ordersIdCancelPost) | **POST** /orders/{id}/cancel | Annuler une commande (owner ou admin) |
-| [**ordersIdDeliveryCostGet**](OrdersApi.md#ordersIdDeliveryCostGet) | **GET** /orders/{id}/delivery-cost | Frais de livraison d&#39;une commande |
-| [**ordersIdDeliveryCostPost**](OrdersApi.md#ordersIdDeliveryCostPost) | **POST** /orders/{id}/delivery-cost | Renseigner les frais de livraison (admin) |
 | [**ordersIdGet**](OrdersApi.md#ordersIdGet) | **GET** /orders/{id} | Détail d&#39;une commande |
 | [**ordersIdStatusPut**](OrdersApi.md#ordersIdStatusPut) | **PUT** /orders/{id}/status | Changer le statut d&#39;une commande (admin) |
 | [**ordersPost**](OrdersApi.md#ordersPost) | **POST** /orders | Passer une commande |
@@ -84,6 +82,7 @@ public class Example {
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
 | **200** | OK |  -  |
+| **401** | Token JWT manquant ou invalide |  -  |
 | **403** | Accès refusé (rôle insuffisant) |  -  |
 
 <a id="ordersGet"></a>
@@ -165,7 +164,6 @@ Annuler une commande (owner ou admin)
 import org.openapitools.client.ApiClient;
 import org.openapitools.client.ApiException;
 import org.openapitools.client.Configuration;
-import org.openapitools.client.auth.*;
 import org.openapitools.client.models.*;
 import org.openapitools.client.api.OrdersApi;
 
@@ -173,10 +171,6 @@ public class Example {
   public static void main(String[] args) {
     ApiClient defaultClient = Configuration.getDefaultApiClient();
     defaultClient.setBasePath("https://api.lacaverne/v1");
-    
-    // Configure HTTP bearer authorization: BearerAuth
-    HttpBearerAuth BearerAuth = (HttpBearerAuth) defaultClient.getAuthentication("BearerAuth");
-    BearerAuth.setBearerToken("BEARER TOKEN");
 
     OrdersApi apiInstance = new OrdersApi(defaultClient);
     Integer id = 56; // Integer | 
@@ -206,7 +200,7 @@ public class Example {
 
 ### Authorization
 
-[BearerAuth](../README.md#BearerAuth)
+No authorization required
 
 ### HTTP request headers
 
@@ -217,144 +211,15 @@ public class Example {
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
 | **200** | Commande annulée |  -  |
-
-<a id="ordersIdDeliveryCostGet"></a>
-# **ordersIdDeliveryCostGet**
-> DeliverCost ordersIdDeliveryCostGet(id)
-
-Frais de livraison d&#39;une commande
-
-### Example
-```java
-// Import classes:
-import org.openapitools.client.ApiClient;
-import org.openapitools.client.ApiException;
-import org.openapitools.client.Configuration;
-import org.openapitools.client.auth.*;
-import org.openapitools.client.models.*;
-import org.openapitools.client.api.OrdersApi;
-
-public class Example {
-  public static void main(String[] args) {
-    ApiClient defaultClient = Configuration.getDefaultApiClient();
-    defaultClient.setBasePath("https://api.lacaverne/v1");
-    
-    // Configure HTTP bearer authorization: BearerAuth
-    HttpBearerAuth BearerAuth = (HttpBearerAuth) defaultClient.getAuthentication("BearerAuth");
-    BearerAuth.setBearerToken("BEARER TOKEN");
-
-    OrdersApi apiInstance = new OrdersApi(defaultClient);
-    Integer id = 56; // Integer | 
-    try {
-      DeliverCost result = apiInstance.ordersIdDeliveryCostGet(id);
-      System.out.println(result);
-    } catch (ApiException e) {
-      System.err.println("Exception when calling OrdersApi#ordersIdDeliveryCostGet");
-      System.err.println("Status code: " + e.getCode());
-      System.err.println("Reason: " + e.getResponseBody());
-      System.err.println("Response headers: " + e.getResponseHeaders());
-      e.printStackTrace();
-    }
-  }
-}
-```
-
-### Parameters
-
-| Name | Type | Description  | Notes |
-|------------- | ------------- | ------------- | -------------|
-| **id** | **Integer**|  | |
-
-### Return type
-
-[**DeliverCost**](DeliverCost.md)
-
-### Authorization
-
-[BearerAuth](../README.md#BearerAuth)
-
-### HTTP request headers
-
- - **Content-Type**: Not defined
- - **Accept**: application/json
-
-### HTTP response details
-| Status code | Description | Response headers |
-|-------------|-------------|------------------|
-| **200** | OK |  -  |
-
-<a id="ordersIdDeliveryCostPost"></a>
-# **ordersIdDeliveryCostPost**
-> DeliverCost ordersIdDeliveryCostPost(id, deliverCostInput)
-
-Renseigner les frais de livraison (admin)
-
-### Example
-```java
-// Import classes:
-import org.openapitools.client.ApiClient;
-import org.openapitools.client.ApiException;
-import org.openapitools.client.Configuration;
-import org.openapitools.client.auth.*;
-import org.openapitools.client.models.*;
-import org.openapitools.client.api.OrdersApi;
-
-public class Example {
-  public static void main(String[] args) {
-    ApiClient defaultClient = Configuration.getDefaultApiClient();
-    defaultClient.setBasePath("https://api.lacaverne/v1");
-    
-    // Configure HTTP bearer authorization: BearerAuth
-    HttpBearerAuth BearerAuth = (HttpBearerAuth) defaultClient.getAuthentication("BearerAuth");
-    BearerAuth.setBearerToken("BEARER TOKEN");
-
-    OrdersApi apiInstance = new OrdersApi(defaultClient);
-    Integer id = 56; // Integer | 
-    DeliverCostInput deliverCostInput = new DeliverCostInput(); // DeliverCostInput | 
-    try {
-      DeliverCost result = apiInstance.ordersIdDeliveryCostPost(id, deliverCostInput);
-      System.out.println(result);
-    } catch (ApiException e) {
-      System.err.println("Exception when calling OrdersApi#ordersIdDeliveryCostPost");
-      System.err.println("Status code: " + e.getCode());
-      System.err.println("Reason: " + e.getResponseBody());
-      System.err.println("Response headers: " + e.getResponseHeaders());
-      e.printStackTrace();
-    }
-  }
-}
-```
-
-### Parameters
-
-| Name | Type | Description  | Notes |
-|------------- | ------------- | ------------- | -------------|
-| **id** | **Integer**|  | |
-| **deliverCostInput** | [**DeliverCostInput**](DeliverCostInput.md)|  | |
-
-### Return type
-
-[**DeliverCost**](DeliverCost.md)
-
-### Authorization
-
-[BearerAuth](../README.md#BearerAuth)
-
-### HTTP request headers
-
- - **Content-Type**: application/json
- - **Accept**: application/json
-
-### HTTP response details
-| Status code | Description | Response headers |
-|-------------|-------------|------------------|
-| **201** | Créé |  -  |
+| **403** | Accès refusé (rôle insuffisant) |  -  |
 
 <a id="ordersIdGet"></a>
 # **ordersIdGet**
 > Order ordersIdGet(id)
 
 Détail d&#39;une commande
+
+Les commandes invitées peuvent être consultées sans authentification. Les commandes liées à un utilisateur nécessitent que l&#39;acteur soit le propriétaire ou un admin. 
 
 ### Example
 ```java
@@ -409,6 +274,7 @@ No authorization required
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
 | **200** | OK |  -  |
+| **403** | Accès refusé (rôle insuffisant) |  -  |
 | **404** | Ressource introuvable |  -  |
 
 <a id="ordersIdStatusPut"></a>
@@ -477,6 +343,7 @@ public class Example {
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
 | **200** | Statut mis à jour |  -  |
+| **401** | Token JWT manquant ou invalide |  -  |
 | **403** | Accès refusé (rôle insuffisant) |  -  |
 
 <a id="ordersPost"></a>

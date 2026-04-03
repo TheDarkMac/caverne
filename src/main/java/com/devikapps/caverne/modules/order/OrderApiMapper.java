@@ -17,12 +17,15 @@ public class OrderApiMapper {
   public org.openapitools.client.model.Order toOrderModel(Order order) {
     return new org.openapitools.client.model.Order()
         .id(order.getId().intValue())
+        .userId(order.getUser() == null ? null : order.getUser().getId().intValue())
         .currencyCode(order.getCurrencyCode())
         .reference(order.getReference())
         .date(order.getDate().atOffset(OffsetDateTime.now().getOffset()))
         .status(
             org.openapitools.client.model.Order.StatusEnum.fromValue(
                 order.getStatus().name().toLowerCase()))
+        .deliveryCostId(
+            order.getDeliveryCostId() == null ? null : order.getDeliveryCostId().intValue())
         .items(
             order.getItems().stream()
                 .map(
@@ -32,14 +35,14 @@ public class OrderApiMapper {
                             .quantity(item.getQuantity().doubleValue())
                             .unitPrice(item.getUnitPrice().doubleValue()))
                 .toList())
-        .guestAddress(
-            new org.openapitools.client.model.GuestAddressInput()
+        .recipient(
+            new org.openapitools.client.model.RecipientInput()
                 .location(order.getShippingLocation())
                 .postalCode(order.getPostalCode())
                 .countryCode(order.getCountryCode())
-                .customerName(order.getCustomerName())
-                .customerEmail(order.getCustomerEmail())
-                .customerPhone(order.getCustomerPhone()));
+                .recipientName(order.getRecipientName())
+                .recipientEmail(order.getRecipientEmail())
+                .recipientPhone(order.getRecipientPhone()));
   }
 
   public org.openapitools.client.model.Payment toPaymentModel(Order order, OrderPayment payment) {

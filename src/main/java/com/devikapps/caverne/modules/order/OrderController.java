@@ -2,6 +2,8 @@ package com.devikapps.caverne.modules.order;
 
 import static org.springframework.http.HttpStatus.UNPROCESSABLE_ENTITY;
 
+import com.devikapps.caverne.modules.user.AuthSessionResolver;
+import com.devikapps.caverne.modules.user.UserAccount;
 import java.io.IOException;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -18,19 +20,44 @@ import org.springframework.web.server.ResponseStatusException;
 public class OrderController {
 
   private final OrderService orderService;
+  private final AuthSessionResolver authSessionResolver;
+
+  @GetMapping(value = "/orders", produces = MediaType.APPLICATION_JSON_VALUE)
+  public String listMyOrders(
+      @RequestHeader("Authorization") String authorizationHeader,
+      @RequestParam(required = false) String status,
+      @RequestParam(defaultValue = "1") int page,
+      @RequestParam(defaultValue = "20") int per_page) {
+    UserAccount currentUser = authSessionResolver.requireUser(authorizationHeader);
+    var p =
+        orderService.findAllForUser(
+            currentUser, parseOrderStatus(status), PageRequest.of(page - 1, per_page));
+    org.openapitools.client.model.OrdersGet200Response response =
+        new org.openapitools.client.model.OrdersGet200Response()
+            .data(p.getContent())
+            .meta(
+                new org.openapitools.client.model.PaginatedMeta()
+                    .total(Math.toIntExact(p.getTotalElements()))
+                    .page(p.getNumber() + 1)
+                    .perPage(p.getSize())
+                    .lastPage(p.getTotalPages()));
+    return JSON.getGson().toJson(response);
+  }
 
   @GetMapping(value = "/orders/all", produces = MediaType.APPLICATION_JSON_VALUE)
   public String listAllOrders(
+      @RequestHeader("Authorization") String authorizationHeader,
       @RequestParam(required = false) String status,
       @RequestParam(required = false) Integer user_id,
       @RequestParam(defaultValue = "1") int page,
       @RequestParam(defaultValue = "20") int per_page) {
-    if (user_id != null) {
-      throw new ResponseStatusException(
-          UNPROCESSABLE_ENTITY, "user_id filtering is not supported in the current MVP");
-    }
+    authSessionResolver.requireAdmin(authorizationHeader);
 
-    var p = orderService.findAll(parseOrderStatus(status), PageRequest.of(page - 1, per_page));
+    var p =
+        orderService.findAll(
+            parseOrderStatus(status),
+            user_id == null ? null : user_id.longValue(),
+            PageRequest.of(page - 1, per_page));
     org.openapitools.client.model.OrdersGet200Response response =
         new org.openapitools.client.model.OrdersGet200Response()
             .data(p.getContent())
@@ -45,25 +72,45 @@ public class OrderController {
 
   @PostMapping(value = "/orders", produces = MediaType.APPLICATION_JSON_VALUE)
   @ResponseStatus(HttpStatus.CREATED)
-  public String createOrder(@RequestBody String rawBody) {
-    return JSON.getGson().toJson(orderService.createOrder(parseOrderInput(rawBody)));
+  public String createOrder(
+      @RequestHeader(value = "Authorization", required = false) String authorizationHeader,
+      @RequestBody String rawBody) {
+    return JSON.getGson()
+        .toJson(
+            orderService.createOrder(
+                parseOrderInput(rawBody),
+                authSessionResolver.resolveUserOrNull(authorizationHeader)));
   }
 
   @GetMapping(value = "/orders/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-  public String getOrder(@PathVariable Long id) {
-    return JSON.getGson().toJson(orderService.getOrder(id));
+  public String getOrder(
+      @RequestHeader(value = "Authorization", required = false) String authorizationHeader,
+      @PathVariable Long id) {
+    return JSON.getGson()
+        .toJson(
+            orderService.getOrderForActor(
+                id, authSessionResolver.resolveUserOrNull(authorizationHeader)));
   }
 
   @PutMapping(value = "/orders/{id}/status", produces = MediaType.APPLICATION_JSON_VALUE)
-  public String updateStatus(@PathVariable Long id, @RequestBody String rawBody) {
+  public String updateStatus(
+      @RequestHeader("Authorization") String authorizationHeader,
+      @PathVariable Long id,
+      @RequestBody String rawBody) {
+    authSessionResolver.requireAdmin(authorizationHeader);
     org.openapitools.client.model.OrderStatusUpdate input = parseOrderStatusUpdate(rawBody);
     return JSON.getGson()
         .toJson(orderService.updateStatus(id, OrderStatus.valueOf(input.getStatus().name())));
   }
 
   @PostMapping(value = "/orders/{id}/cancel", produces = MediaType.APPLICATION_JSON_VALUE)
-  public String cancelOrder(@PathVariable Long id) {
-    return JSON.getGson().toJson(orderService.updateStatus(id, OrderStatus.CANCELLED));
+  public String cancelOrder(
+      @RequestHeader(value = "Authorization", required = false) String authorizationHeader,
+      @PathVariable Long id) {
+    return JSON.getGson()
+        .toJson(
+            orderService.cancelOrder(
+                id, authSessionResolver.resolveUserOrNull(authorizationHeader)));
   }
 
   @GetMapping(value = "/orders/{id}/payments", produces = MediaType.APPLICATION_JSON_VALUE)
