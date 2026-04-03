@@ -1,5 +1,6 @@
 package com.devikapps.caverne.modules.order;
 
+import com.devikapps.caverne.modules.user.UserAccount;
 import jakarta.persistence.*;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -27,13 +28,25 @@ public class Order {
 
   private String currencyCode;
 
-  // V1 Anonymous customer info
-  private String customerName;
-  private String customerEmail;
-  private String customerPhone;
+  private Long deliveryCostId;
+
+  // Recipient info stored in the existing order contact columns.
+  @Column(name = "customer_name")
+  private String recipientName;
+
+  @Column(name = "customer_email")
+  private String recipientEmail;
+
+  @Column(name = "customer_phone")
+  private String recipientPhone;
+
   private String shippingLocation;
   private String postalCode;
   private String countryCode;
+
+  @ManyToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "user_id")
+  private UserAccount user;
 
   @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
   @Builder.Default

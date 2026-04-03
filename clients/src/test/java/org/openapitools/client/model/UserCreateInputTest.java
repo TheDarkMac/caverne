@@ -25,25 +25,17 @@ import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 /**
- * Model tests for User
+ * Model tests for UserCreateInput
  */
-public class UserTest {
-    private final User model = new User();
+public class UserCreateInputTest {
+    private final UserCreateInput model = new UserCreateInput();
 
     /**
-     * Model tests for User
+     * Model tests for UserCreateInput
      */
     @Test
-    public void testUser() {
-        // TODO: test User
-    }
-
-    /**
-     * Test the property 'id'
-     */
-    @Test
-    public void idTest() {
-        // TODO: test id
+    public void testUserCreateInput() {
+        // TODO: test UserCreateInput
     }
 
     /**
@@ -76,6 +68,14 @@ public class UserTest {
     @Test
     public void phoneTest() {
         // TODO: test phone
+    }
+
+    /**
+     * Test the property 'password'
+     */
+    @Test
+    public void passwordTest() {
+        // TODO: test password
     }
 
     /**

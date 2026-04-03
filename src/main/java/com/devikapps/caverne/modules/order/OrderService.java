@@ -1,5 +1,6 @@
 package com.devikapps.caverne.modules.order;
 
+import static org.springframework.http.HttpStatus.FORBIDDEN;
 import static org.springframework.http.HttpStatus.NOT_FOUND;
 import static org.springframework.http.HttpStatus.UNPROCESSABLE_ENTITY;
 
@@ -7,6 +8,8 @@ import com.devikapps.caverne.modules.catalog.Product;
 import com.devikapps.caverne.modules.catalog.ProductService;
 import com.devikapps.caverne.modules.payment.PaymentProvider;
 import com.devikapps.caverne.modules.payment.PaymentResponse;
+import com.devikapps.caverne.modules.user.UserAccount;
+import com.devikapps.caverne.modules.user.UserRole;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.math.BigDecimal;
@@ -34,12 +37,23 @@ public class OrderService {
   private final OrderApiMapper orderApiMapper;
 
   @Transactional(readOnly = true)
-  public Page<org.openapitools.client.model.Order> findAll(OrderStatus status, Pageable pageable) {
-    return orderRepository.findAll(withStatus(status), pageable).map(orderApiMapper::toOrderModel);
+  public Page<org.openapitools.client.model.Order> findAll(
+      OrderStatus status, Long userId, Pageable pageable) {
+    return orderRepository
+        .findAll(withStatus(status).and(withUserId(userId)), pageable)
+        .map(orderApiMapper::toOrderModel);
+  }
+
+  @Transactional(readOnly = true)
+  public Page<org.openapitools.client.model.Order> findAllForUser(
+      UserAccount user, OrderStatus status, Pageable pageable) {
+    return orderRepository
+        .findAll(withOwner(user).and(withStatus(status)), pageable)
+        .map(orderApiMapper::toOrderModel);
   }
 
   public org.openapitools.client.model.Order createOrder(
-      org.openapitools.client.model.OrderInput input) {
+      org.openapitools.client.model.OrderInput input, UserAccount owner) {
     validateOrderInput(input);
 
     Order order =
@@ -48,12 +62,15 @@ public class OrderService {
             .date(LocalDateTime.now())
             .status(OrderStatus.PENDING)
             .currencyCode(input.getCurrencyCode())
-            .customerName(input.getGuestAddress().getCustomerName())
-            .customerEmail(input.getGuestAddress().getCustomerEmail())
-            .customerPhone(input.getGuestAddress().getCustomerPhone())
-            .shippingLocation(input.getGuestAddress().getLocation())
-            .postalCode(input.getGuestAddress().getPostalCode())
-            .countryCode(input.getGuestAddress().getCountryCode())
+            .deliveryCostId(
+                input.getDeliveryCostId() == null ? null : input.getDeliveryCostId().longValue())
+            .recipientName(input.getRecipient().getRecipientName())
+            .recipientEmail(input.getRecipient().getRecipientEmail())
+            .recipientPhone(input.getRecipient().getRecipientPhone())
+            .shippingLocation(input.getRecipient().getLocation())
+            .postalCode(input.getRecipient().getPostalCode())
+            .countryCode(input.getRecipient().getCountryCode())
+            .user(owner)
             .totalAmount(BigDecimal.ZERO)
             .build();
 
@@ -153,10 +170,22 @@ public class OrderService {
     return orderApiMapper.toOrderModel(findOrder(id));
   }
 
+  @Transactional(readOnly = true)
+  public org.openapitools.client.model.Order getOrderForActor(Long id, UserAccount actor) {
+    return orderApiMapper.toOrderModel(requireOrderAccess(findOrder(id), actor));
+  }
+
   @Transactional
   public org.openapitools.client.model.Order updateStatus(Long id, OrderStatus status) {
     Order order = findOrder(id);
     order.setStatus(status);
+    return orderApiMapper.toOrderModel(orderRepository.save(order));
+  }
+
+  @Transactional
+  public org.openapitools.client.model.Order cancelOrder(Long id, UserAccount actor) {
+    Order order = requireOrderAccess(findOrder(id), actor);
+    order.setStatus(OrderStatus.CANCELLED);
     return orderApiMapper.toOrderModel(orderRepository.save(order));
   }
 
@@ -171,6 +200,34 @@ public class OrderService {
         status == null ? null : builder.equal(root.get("status"), status);
   }
 
+  private Specification<Order> withOwner(UserAccount user) {
+    return (root, query, builder) -> builder.equal(root.get("user").get("id"), user.getId());
+  }
+
+  private Specification<Order> withUserId(Long userId) {
+    return (root, query, builder) ->
+        userId == null ? null : builder.equal(root.get("user").get("id"), userId);
+  }
+
+  private Order requireOrderAccess(Order order, UserAccount actor) {
+    if (order.getUser() == null) {
+      if (actor == null) {
+        return order;
+      }
+      if (actor.getRole() == UserRole.ADMIN) {
+        return order;
+      }
+      throw new ResponseStatusException(FORBIDDEN, "Access to this order is forbidden");
+    }
+    if (actor == null) {
+      throw new ResponseStatusException(FORBIDDEN, "Authentication required for this order");
+    }
+    if (actor.getRole() == UserRole.ADMIN || order.getUser().getId().equals(actor.getId())) {
+      return order;
+    }
+    throw new ResponseStatusException(FORBIDDEN, "Access to this order is forbidden");
+  }
+
   private void validateOrderInput(org.openapitools.client.model.OrderInput input) {
     if (input == null || input.getCurrencyCode() == null || input.getCurrencyCode().isBlank()) {
       throw new ResponseStatusException(UNPROCESSABLE_ENTITY, "currency_code is required");
@@ -178,16 +235,16 @@ public class OrderService {
     if (input.getItems() == null || input.getItems().isEmpty()) {
       throw new ResponseStatusException(UNPROCESSABLE_ENTITY, "items is required");
     }
-    if (input.getGuestAddress() == null) {
-      throw new ResponseStatusException(UNPROCESSABLE_ENTITY, "guest_address is required");
+    if (input.getRecipient() == null) {
+      throw new ResponseStatusException(UNPROCESSABLE_ENTITY, "recipient is required");
     }
-    if (isBlank(input.getGuestAddress().getLocation())
-        || isBlank(input.getGuestAddress().getPostalCode())
-        || isBlank(input.getGuestAddress().getCountryCode())
-        || isBlank(input.getGuestAddress().getCustomerName())
-        || isBlank(input.getGuestAddress().getCustomerEmail())
-        || isBlank(input.getGuestAddress().getCustomerPhone())) {
-      throw new ResponseStatusException(UNPROCESSABLE_ENTITY, "guest_address is incomplete");
+    if (isBlank(input.getRecipient().getLocation())
+        || isBlank(input.getRecipient().getPostalCode())
+        || isBlank(input.getRecipient().getCountryCode())
+        || isBlank(input.getRecipient().getRecipientName())
+        || isBlank(input.getRecipient().getRecipientEmail())
+        || isBlank(input.getRecipient().getRecipientPhone())) {
+      throw new ResponseStatusException(UNPROCESSABLE_ENTITY, "recipient is incomplete");
     }
     boolean invalidItem =
         input.getItems().stream()

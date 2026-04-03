@@ -10,5 +10,5 @@ public record OrderView(
     LocalDateTime date,
     String status,
     List<OrderItemResponse> items,
-    CheckoutAddressRequest guest_address,
+    RecipientRequest recipient,
     List<PaymentView> payments) {}

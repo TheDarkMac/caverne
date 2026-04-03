@@ -27,8 +27,6 @@ import com.google.gson.reflect.TypeToken;
 import java.io.IOException;
 
 
-import org.openapitools.client.model.DeliverCost;
-import org.openapitools.client.model.DeliverCostInput;
 import org.openapitools.client.model.Error;
 import org.openapitools.client.model.Order;
 import org.openapitools.client.model.OrderInput;
@@ -92,6 +90,7 @@ public class OrdersApi {
        <caption>Response Details</caption>
         <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
         <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
+        <tr><td> 401 </td><td> Token JWT manquant ou invalide </td><td>  -  </td></tr>
         <tr><td> 403 </td><td> Accès refusé (rôle insuffisant) </td><td>  -  </td></tr>
      </table>
      */
@@ -175,6 +174,7 @@ public class OrdersApi {
        <caption>Response Details</caption>
         <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
         <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
+        <tr><td> 401 </td><td> Token JWT manquant ou invalide </td><td>  -  </td></tr>
         <tr><td> 403 </td><td> Accès refusé (rôle insuffisant) </td><td>  -  </td></tr>
      </table>
      */
@@ -197,6 +197,7 @@ public class OrdersApi {
        <caption>Response Details</caption>
         <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
         <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
+        <tr><td> 401 </td><td> Token JWT manquant ou invalide </td><td>  -  </td></tr>
         <tr><td> 403 </td><td> Accès refusé (rôle insuffisant) </td><td>  -  </td></tr>
      </table>
      */
@@ -221,6 +222,7 @@ public class OrdersApi {
        <caption>Response Details</caption>
         <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
         <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
+        <tr><td> 401 </td><td> Token JWT manquant ou invalide </td><td>  -  </td></tr>
         <tr><td> 403 </td><td> Accès refusé (rôle insuffisant) </td><td>  -  </td></tr>
      </table>
      */
@@ -375,6 +377,7 @@ public class OrdersApi {
        <caption>Response Details</caption>
         <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
         <tr><td> 200 </td><td> Commande annulée </td><td>  -  </td></tr>
+        <tr><td> 403 </td><td> Accès refusé (rôle insuffisant) </td><td>  -  </td></tr>
      </table>
      */
     public okhttp3.Call ordersIdCancelPostCall(@javax.annotation.Nonnull Integer id, final ApiCallback _callback) throws ApiException {
@@ -418,7 +421,7 @@ public class OrdersApi {
             localVarHeaderParams.put("Content-Type", localVarContentType);
         }
 
-        String[] localVarAuthNames = new String[] { "BearerAuth" };
+        String[] localVarAuthNames = new String[] {  };
         return localVarApiClient.buildCall(basePath, localVarPath, "POST", localVarQueryParams, localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams, localVarCookieParams, localVarFormParams, localVarAuthNames, _callback);
     }
 
@@ -444,6 +447,7 @@ public class OrdersApi {
        <caption>Response Details</caption>
         <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
         <tr><td> 200 </td><td> Commande annulée </td><td>  -  </td></tr>
+        <tr><td> 403 </td><td> Accès refusé (rôle insuffisant) </td><td>  -  </td></tr>
      </table>
      */
     public Order ordersIdCancelPost(@javax.annotation.Nonnull Integer id) throws ApiException {
@@ -462,6 +466,7 @@ public class OrdersApi {
        <caption>Response Details</caption>
         <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
         <tr><td> 200 </td><td> Commande annulée </td><td>  -  </td></tr>
+        <tr><td> 403 </td><td> Accès refusé (rôle insuffisant) </td><td>  -  </td></tr>
      </table>
      */
     public ApiResponse<Order> ordersIdCancelPostWithHttpInfo(@javax.annotation.Nonnull Integer id) throws ApiException {
@@ -482,276 +487,13 @@ public class OrdersApi {
        <caption>Response Details</caption>
         <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
         <tr><td> 200 </td><td> Commande annulée </td><td>  -  </td></tr>
+        <tr><td> 403 </td><td> Accès refusé (rôle insuffisant) </td><td>  -  </td></tr>
      </table>
      */
     public okhttp3.Call ordersIdCancelPostAsync(@javax.annotation.Nonnull Integer id, final ApiCallback<Order> _callback) throws ApiException {
 
         okhttp3.Call localVarCall = ordersIdCancelPostValidateBeforeCall(id, _callback);
         Type localVarReturnType = new TypeToken<Order>(){}.getType();
-        localVarApiClient.executeAsync(localVarCall, localVarReturnType, _callback);
-        return localVarCall;
-    }
-    /**
-     * Build call for ordersIdDeliveryCostGet
-     * @param id  (required)
-     * @param _callback Callback for upload/download progress
-     * @return Call to execute
-     * @throws ApiException If fail to serialize the request body object
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-     </table>
-     */
-    public okhttp3.Call ordersIdDeliveryCostGetCall(@javax.annotation.Nonnull Integer id, final ApiCallback _callback) throws ApiException {
-        String basePath = null;
-        // Operation Servers
-        String[] localBasePaths = new String[] {  };
-
-        // Determine Base Path to Use
-        if (localCustomBaseUrl != null){
-            basePath = localCustomBaseUrl;
-        } else if ( localBasePaths.length > 0 ) {
-            basePath = localBasePaths[localHostIndex];
-        } else {
-            basePath = null;
-        }
-
-        Object localVarPostBody = null;
-
-        // create path and map variables
-        String localVarPath = "/orders/{id}/delivery-cost"
-            .replace("{" + "id" + "}", localVarApiClient.escapeString(id.toString()));
-
-        List<Pair> localVarQueryParams = new ArrayList<Pair>();
-        List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
-        Map<String, String> localVarHeaderParams = new HashMap<String, String>();
-        Map<String, String> localVarCookieParams = new HashMap<String, String>();
-        Map<String, Object> localVarFormParams = new HashMap<String, Object>();
-
-        final String[] localVarAccepts = {
-            "application/json"
-        };
-        final String localVarAccept = localVarApiClient.selectHeaderAccept(localVarAccepts);
-        if (localVarAccept != null) {
-            localVarHeaderParams.put("Accept", localVarAccept);
-        }
-
-        final String[] localVarContentTypes = {
-        };
-        final String localVarContentType = localVarApiClient.selectHeaderContentType(localVarContentTypes);
-        if (localVarContentType != null) {
-            localVarHeaderParams.put("Content-Type", localVarContentType);
-        }
-
-        String[] localVarAuthNames = new String[] { "BearerAuth" };
-        return localVarApiClient.buildCall(basePath, localVarPath, "GET", localVarQueryParams, localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams, localVarCookieParams, localVarFormParams, localVarAuthNames, _callback);
-    }
-
-    @SuppressWarnings("rawtypes")
-    private okhttp3.Call ordersIdDeliveryCostGetValidateBeforeCall(@javax.annotation.Nonnull Integer id, final ApiCallback _callback) throws ApiException {
-        // verify the required parameter 'id' is set
-        if (id == null) {
-            throw new ApiException("Missing the required parameter 'id' when calling ordersIdDeliveryCostGet(Async)");
-        }
-
-        return ordersIdDeliveryCostGetCall(id, _callback);
-
-    }
-
-    /**
-     * Frais de livraison d&#39;une commande
-     * 
-     * @param id  (required)
-     * @return DeliverCost
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-     </table>
-     */
-    public DeliverCost ordersIdDeliveryCostGet(@javax.annotation.Nonnull Integer id) throws ApiException {
-        ApiResponse<DeliverCost> localVarResp = ordersIdDeliveryCostGetWithHttpInfo(id);
-        return localVarResp.getData();
-    }
-
-    /**
-     * Frais de livraison d&#39;une commande
-     * 
-     * @param id  (required)
-     * @return ApiResponse&lt;DeliverCost&gt;
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-     </table>
-     */
-    public ApiResponse<DeliverCost> ordersIdDeliveryCostGetWithHttpInfo(@javax.annotation.Nonnull Integer id) throws ApiException {
-        okhttp3.Call localVarCall = ordersIdDeliveryCostGetValidateBeforeCall(id, null);
-        Type localVarReturnType = new TypeToken<DeliverCost>(){}.getType();
-        return localVarApiClient.execute(localVarCall, localVarReturnType);
-    }
-
-    /**
-     * Frais de livraison d&#39;une commande (asynchronously)
-     * 
-     * @param id  (required)
-     * @param _callback The callback to be executed when the API call finishes
-     * @return The request call
-     * @throws ApiException If fail to process the API call, e.g. serializing the request body object
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
-     </table>
-     */
-    public okhttp3.Call ordersIdDeliveryCostGetAsync(@javax.annotation.Nonnull Integer id, final ApiCallback<DeliverCost> _callback) throws ApiException {
-
-        okhttp3.Call localVarCall = ordersIdDeliveryCostGetValidateBeforeCall(id, _callback);
-        Type localVarReturnType = new TypeToken<DeliverCost>(){}.getType();
-        localVarApiClient.executeAsync(localVarCall, localVarReturnType, _callback);
-        return localVarCall;
-    }
-    /**
-     * Build call for ordersIdDeliveryCostPost
-     * @param id  (required)
-     * @param deliverCostInput  (required)
-     * @param _callback Callback for upload/download progress
-     * @return Call to execute
-     * @throws ApiException If fail to serialize the request body object
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 201 </td><td> Créé </td><td>  -  </td></tr>
-     </table>
-     */
-    public okhttp3.Call ordersIdDeliveryCostPostCall(@javax.annotation.Nonnull Integer id, @javax.annotation.Nonnull DeliverCostInput deliverCostInput, final ApiCallback _callback) throws ApiException {
-        String basePath = null;
-        // Operation Servers
-        String[] localBasePaths = new String[] {  };
-
-        // Determine Base Path to Use
-        if (localCustomBaseUrl != null){
-            basePath = localCustomBaseUrl;
-        } else if ( localBasePaths.length > 0 ) {
-            basePath = localBasePaths[localHostIndex];
-        } else {
-            basePath = null;
-        }
-
-        Object localVarPostBody = deliverCostInput;
-
-        // create path and map variables
-        String localVarPath = "/orders/{id}/delivery-cost"
-            .replace("{" + "id" + "}", localVarApiClient.escapeString(id.toString()));
-
-        List<Pair> localVarQueryParams = new ArrayList<Pair>();
-        List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
-        Map<String, String> localVarHeaderParams = new HashMap<String, String>();
-        Map<String, String> localVarCookieParams = new HashMap<String, String>();
-        Map<String, Object> localVarFormParams = new HashMap<String, Object>();
-
-        final String[] localVarAccepts = {
-            "application/json"
-        };
-        final String localVarAccept = localVarApiClient.selectHeaderAccept(localVarAccepts);
-        if (localVarAccept != null) {
-            localVarHeaderParams.put("Accept", localVarAccept);
-        }
-
-        final String[] localVarContentTypes = {
-            "application/json"
-        };
-        final String localVarContentType = localVarApiClient.selectHeaderContentType(localVarContentTypes);
-        if (localVarContentType != null) {
-            localVarHeaderParams.put("Content-Type", localVarContentType);
-        }
-
-        String[] localVarAuthNames = new String[] { "BearerAuth" };
-        return localVarApiClient.buildCall(basePath, localVarPath, "POST", localVarQueryParams, localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams, localVarCookieParams, localVarFormParams, localVarAuthNames, _callback);
-    }
-
-    @SuppressWarnings("rawtypes")
-    private okhttp3.Call ordersIdDeliveryCostPostValidateBeforeCall(@javax.annotation.Nonnull Integer id, @javax.annotation.Nonnull DeliverCostInput deliverCostInput, final ApiCallback _callback) throws ApiException {
-        // verify the required parameter 'id' is set
-        if (id == null) {
-            throw new ApiException("Missing the required parameter 'id' when calling ordersIdDeliveryCostPost(Async)");
-        }
-
-        // verify the required parameter 'deliverCostInput' is set
-        if (deliverCostInput == null) {
-            throw new ApiException("Missing the required parameter 'deliverCostInput' when calling ordersIdDeliveryCostPost(Async)");
-        }
-
-        return ordersIdDeliveryCostPostCall(id, deliverCostInput, _callback);
-
-    }
-
-    /**
-     * Renseigner les frais de livraison (admin)
-     * 
-     * @param id  (required)
-     * @param deliverCostInput  (required)
-     * @return DeliverCost
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 201 </td><td> Créé </td><td>  -  </td></tr>
-     </table>
-     */
-    public DeliverCost ordersIdDeliveryCostPost(@javax.annotation.Nonnull Integer id, @javax.annotation.Nonnull DeliverCostInput deliverCostInput) throws ApiException {
-        ApiResponse<DeliverCost> localVarResp = ordersIdDeliveryCostPostWithHttpInfo(id, deliverCostInput);
-        return localVarResp.getData();
-    }
-
-    /**
-     * Renseigner les frais de livraison (admin)
-     * 
-     * @param id  (required)
-     * @param deliverCostInput  (required)
-     * @return ApiResponse&lt;DeliverCost&gt;
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 201 </td><td> Créé </td><td>  -  </td></tr>
-     </table>
-     */
-    public ApiResponse<DeliverCost> ordersIdDeliveryCostPostWithHttpInfo(@javax.annotation.Nonnull Integer id, @javax.annotation.Nonnull DeliverCostInput deliverCostInput) throws ApiException {
-        okhttp3.Call localVarCall = ordersIdDeliveryCostPostValidateBeforeCall(id, deliverCostInput, null);
-        Type localVarReturnType = new TypeToken<DeliverCost>(){}.getType();
-        return localVarApiClient.execute(localVarCall, localVarReturnType);
-    }
-
-    /**
-     * Renseigner les frais de livraison (admin) (asynchronously)
-     * 
-     * @param id  (required)
-     * @param deliverCostInput  (required)
-     * @param _callback The callback to be executed when the API call finishes
-     * @return The request call
-     * @throws ApiException If fail to process the API call, e.g. serializing the request body object
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 201 </td><td> Créé </td><td>  -  </td></tr>
-     </table>
-     */
-    public okhttp3.Call ordersIdDeliveryCostPostAsync(@javax.annotation.Nonnull Integer id, @javax.annotation.Nonnull DeliverCostInput deliverCostInput, final ApiCallback<DeliverCost> _callback) throws ApiException {
-
-        okhttp3.Call localVarCall = ordersIdDeliveryCostPostValidateBeforeCall(id, deliverCostInput, _callback);
-        Type localVarReturnType = new TypeToken<DeliverCost>(){}.getType();
         localVarApiClient.executeAsync(localVarCall, localVarReturnType, _callback);
         return localVarCall;
     }
@@ -766,6 +508,7 @@ public class OrdersApi {
        <caption>Response Details</caption>
         <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
         <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
+        <tr><td> 403 </td><td> Accès refusé (rôle insuffisant) </td><td>  -  </td></tr>
         <tr><td> 404 </td><td> Ressource introuvable </td><td>  -  </td></tr>
      </table>
      */
@@ -827,7 +570,7 @@ public class OrdersApi {
 
     /**
      * Détail d&#39;une commande
-     * 
+     * Les commandes invitées peuvent être consultées sans authentification. Les commandes liées à un utilisateur nécessitent que l&#39;acteur soit le propriétaire ou un admin. 
      * @param id  (required)
      * @return Order
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
@@ -836,6 +579,7 @@ public class OrdersApi {
        <caption>Response Details</caption>
         <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
         <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
+        <tr><td> 403 </td><td> Accès refusé (rôle insuffisant) </td><td>  -  </td></tr>
         <tr><td> 404 </td><td> Ressource introuvable </td><td>  -  </td></tr>
      </table>
      */
@@ -846,7 +590,7 @@ public class OrdersApi {
 
     /**
      * Détail d&#39;une commande
-     * 
+     * Les commandes invitées peuvent être consultées sans authentification. Les commandes liées à un utilisateur nécessitent que l&#39;acteur soit le propriétaire ou un admin. 
      * @param id  (required)
      * @return ApiResponse&lt;Order&gt;
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
@@ -855,6 +599,7 @@ public class OrdersApi {
        <caption>Response Details</caption>
         <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
         <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
+        <tr><td> 403 </td><td> Accès refusé (rôle insuffisant) </td><td>  -  </td></tr>
         <tr><td> 404 </td><td> Ressource introuvable </td><td>  -  </td></tr>
      </table>
      */
@@ -866,7 +611,7 @@ public class OrdersApi {
 
     /**
      * Détail d&#39;une commande (asynchronously)
-     * 
+     * Les commandes invitées peuvent être consultées sans authentification. Les commandes liées à un utilisateur nécessitent que l&#39;acteur soit le propriétaire ou un admin. 
      * @param id  (required)
      * @param _callback The callback to be executed when the API call finishes
      * @return The request call
@@ -876,6 +621,7 @@ public class OrdersApi {
        <caption>Response Details</caption>
         <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
         <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
+        <tr><td> 403 </td><td> Accès refusé (rôle insuffisant) </td><td>  -  </td></tr>
         <tr><td> 404 </td><td> Ressource introuvable </td><td>  -  </td></tr>
      </table>
      */
@@ -898,6 +644,7 @@ public class OrdersApi {
        <caption>Response Details</caption>
         <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
         <tr><td> 200 </td><td> Statut mis à jour </td><td>  -  </td></tr>
+        <tr><td> 401 </td><td> Token JWT manquant ou invalide </td><td>  -  </td></tr>
         <tr><td> 403 </td><td> Accès refusé (rôle insuffisant) </td><td>  -  </td></tr>
      </table>
      */
@@ -975,6 +722,7 @@ public class OrdersApi {
        <caption>Response Details</caption>
         <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
         <tr><td> 200 </td><td> Statut mis à jour </td><td>  -  </td></tr>
+        <tr><td> 401 </td><td> Token JWT manquant ou invalide </td><td>  -  </td></tr>
         <tr><td> 403 </td><td> Accès refusé (rôle insuffisant) </td><td>  -  </td></tr>
      </table>
      */
@@ -995,6 +743,7 @@ public class OrdersApi {
        <caption>Response Details</caption>
         <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
         <tr><td> 200 </td><td> Statut mis à jour </td><td>  -  </td></tr>
+        <tr><td> 401 </td><td> Token JWT manquant ou invalide </td><td>  -  </td></tr>
         <tr><td> 403 </td><td> Accès refusé (rôle insuffisant) </td><td>  -  </td></tr>
      </table>
      */
@@ -1017,6 +766,7 @@ public class OrdersApi {
        <caption>Response Details</caption>
         <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
         <tr><td> 200 </td><td> Statut mis à jour </td><td>  -  </td></tr>
+        <tr><td> 401 </td><td> Token JWT manquant ou invalide </td><td>  -  </td></tr>
         <tr><td> 403 </td><td> Accès refusé (rôle insuffisant) </td><td>  -  </td></tr>
      </table>
      */

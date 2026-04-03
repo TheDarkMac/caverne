@@ -1,6 +1,6 @@
 
 
-# RegisterRequest
+# UserCreateInput
 
 Fournir `email` ou `phone`, ou les deux.
 
@@ -13,6 +13,17 @@ Fournir `email` ou `phone`, ou les deux.
 |**email** | **String** |  |  [optional] |
 |**phone** | **String** |  |  [optional] |
 |**password** | **String** |  |  |
+|**role** | [**RoleEnum**](#RoleEnum) |  |  [optional] |
+|**status** | **String** |  |  [optional] |
+
+
+
+## Enum: RoleEnum
+
+| Name | Value |
+|---- | -----|
+| ADMIN | &quot;admin&quot; |
+| SIMPLE_USER | &quot;simple_user&quot; |
 
 
 

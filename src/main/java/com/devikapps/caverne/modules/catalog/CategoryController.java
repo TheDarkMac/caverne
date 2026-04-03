@@ -22,9 +22,13 @@ public class CategoryController {
   }
 
   @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-  @ResponseStatus(HttpStatus.CREATED)
-  public String createCategory(@RequestBody String rawBody) {
-    return JSON.getGson().toJson(categoryService.createCategory(parseCategoryInput(rawBody)));
+  public org.springframework.http.ResponseEntity<String> createCategory(
+      @RequestBody String rawBody) {
+    CategoryService.UpsertCategoryResult result =
+        categoryService.createCategory(parseCategoryInput(rawBody));
+    return org.springframework.http.ResponseEntity.status(
+            result.created() ? HttpStatus.CREATED : HttpStatus.OK)
+        .body(JSON.getGson().toJson(result.category()));
   }
 
   @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -33,8 +37,13 @@ public class CategoryController {
   }
 
   @PutMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-  public String updateCategory(@PathVariable Long id, @RequestBody String rawBody) {
-    return JSON.getGson().toJson(categoryService.updateCategory(id, parseCategoryInput(rawBody)));
+  public org.springframework.http.ResponseEntity<String> updateCategory(
+      @PathVariable Long id, @RequestBody String rawBody) {
+    CategoryService.UpsertCategoryResult result =
+        categoryService.updateCategory(id, parseCategoryInput(rawBody));
+    return org.springframework.http.ResponseEntity.status(
+            result.created() ? HttpStatus.CREATED : HttpStatus.OK)
+        .body(JSON.getGson().toJson(result.category()));
   }
 
   @DeleteMapping("/{id}")

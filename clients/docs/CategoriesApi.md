@@ -7,7 +7,7 @@ All URIs are relative to *https://api.lacaverne/v1*
 | [**categoriesGet**](CategoriesApi.md#categoriesGet) | **GET** /categories | Liste des catégories (arbre) |
 | [**categoriesIdDelete**](CategoriesApi.md#categoriesIdDelete) | **DELETE** /categories/{id} | Supprimer une catégorie (admin) |
 | [**categoriesIdGet**](CategoriesApi.md#categoriesIdGet) | **GET** /categories/{id} | Détail d&#39;une catégorie |
-| [**categoriesIdPut**](CategoriesApi.md#categoriesIdPut) | **PUT** /categories/{id} | Créer ou mettre à jour une catégorie par identifiant (admin) |
+| [**categoriesIdPut**](CategoriesApi.md#categoriesIdPut) | **PUT** /categories/{id} | Mettre à jour une catégorie par identifiant (admin) |
 | [**categoriesPost**](CategoriesApi.md#categoriesPost) | **POST** /categories | Créer ou mettre à jour une catégorie (admin) |
 
 
@@ -128,12 +128,14 @@ null (empty response body)
 ### HTTP request headers
 
  - **Content-Type**: Not defined
- - **Accept**: Not defined
+ - **Accept**: application/json
 
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
 | **204** | Supprimée |  -  |
+| **401** | Token JWT manquant ou invalide |  -  |
+| **403** | Accès refusé (rôle insuffisant) |  -  |
 
 <a id="categoriesIdGet"></a>
 # **categoriesIdGet**
@@ -200,9 +202,9 @@ No authorization required
 # **categoriesIdPut**
 > Category categoriesIdPut(id, categoryInput)
 
-Créer ou mettre à jour une catégorie par identifiant (admin)
+Mettre à jour une catégorie par identifiant (admin)
 
-Endpoint d&#39;upsert avec identifiant dans l&#39;URL. Le &#x60;id&#x60; du path fait foi. Si &#x60;id&#x60; est aussi fourni dans le payload, il doit correspondre à l&#39;identifiant du path. 
+Endpoint de mise à jour avec identifiant dans l&#39;URL. Le &#x60;id&#x60; du path fait foi. Si &#x60;id&#x60; est aussi fourni dans le payload, il doit correspondre à l&#39;identifiant du path. 
 
 ### Example
 ```java
@@ -264,7 +266,9 @@ public class Example {
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
 | **200** | OK |  -  |
-| **201** | Créée si l&#39;identifiant du path n&#39;existe pas encore et que l&#39;implémentation choisit de créer |  -  |
+| **401** | Token JWT manquant ou invalide |  -  |
+| **403** | Accès refusé (rôle insuffisant) |  -  |
+| **404** | Ressource introuvable |  -  |
 
 <a id="categoriesPost"></a>
 # **categoriesPost**
@@ -333,4 +337,6 @@ public class Example {
 |-------------|-------------|------------------|
 | **201** | Créée quand &#x60;id&#x60; est absent |  -  |
 | **200** | Mise à jour quand &#x60;id&#x60; est fourni |  -  |
+| **401** | Token JWT manquant ou invalide |  -  |
+| **403** | Accès refusé (rôle insuffisant) |  -  |
 

@@ -9,6 +9,7 @@ All URIs are relative to *https://api.lacaverne/v1*
 | [**usersIdGet**](UsersApi.md#usersIdGet) | **GET** /users/{id} | Détail d&#39;un utilisateur (admin) |
 | [**usersMeGet**](UsersApi.md#usersMeGet) | **GET** /users/me | Profil de l&#39;utilisateur connecté |
 | [**usersMePut**](UsersApi.md#usersMePut) | **PUT** /users/me | Mise à jour du profil |
+| [**usersPost**](UsersApi.md#usersPost) | **POST** /users | Créer un utilisateur (admin) |
 
 
 <a id="usersGet"></a>
@@ -340,5 +341,74 @@ public class Example {
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
 | **200** | Profil mis à jour |  -  |
+| **401** | Token JWT manquant ou invalide |  -  |
+| **422** | Données invalides |  -  |
+
+<a id="usersPost"></a>
+# **usersPost**
+> User usersPost(userCreateInput)
+
+Créer un utilisateur (admin)
+
+### Example
+```java
+// Import classes:
+import org.openapitools.client.ApiClient;
+import org.openapitools.client.ApiException;
+import org.openapitools.client.Configuration;
+import org.openapitools.client.auth.*;
+import org.openapitools.client.models.*;
+import org.openapitools.client.api.UsersApi;
+
+public class Example {
+  public static void main(String[] args) {
+    ApiClient defaultClient = Configuration.getDefaultApiClient();
+    defaultClient.setBasePath("https://api.lacaverne/v1");
+    
+    // Configure HTTP bearer authorization: BearerAuth
+    HttpBearerAuth BearerAuth = (HttpBearerAuth) defaultClient.getAuthentication("BearerAuth");
+    BearerAuth.setBearerToken("BEARER TOKEN");
+
+    UsersApi apiInstance = new UsersApi(defaultClient);
+    UserCreateInput userCreateInput = new UserCreateInput(); // UserCreateInput | 
+    try {
+      User result = apiInstance.usersPost(userCreateInput);
+      System.out.println(result);
+    } catch (ApiException e) {
+      System.err.println("Exception when calling UsersApi#usersPost");
+      System.err.println("Status code: " + e.getCode());
+      System.err.println("Reason: " + e.getResponseBody());
+      System.err.println("Response headers: " + e.getResponseHeaders());
+      e.printStackTrace();
+    }
+  }
+}
+```
+
+### Parameters
+
+| Name | Type | Description  | Notes |
+|------------- | ------------- | ------------- | -------------|
+| **userCreateInput** | [**UserCreateInput**](UserCreateInput.md)|  | |
+
+### Return type
+
+[**User**](User.md)
+
+### Authorization
+
+[BearerAuth](../README.md#BearerAuth)
+
+### HTTP request headers
+
+ - **Content-Type**: application/json
+ - **Accept**: application/json
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **201** | Utilisateur créé |  -  |
+| **401** | Token JWT manquant ou invalide |  -  |
+| **403** | Accès refusé (rôle insuffisant) |  -  |
 | **422** | Données invalides |  -  |
 

@@ -9,4 +9,4 @@ import java.util.List;
 public record OrderRequest(
     @NotBlank String currency_code,
     @NotEmpty List<@Valid OrderItemRequest> items,
-    @NotNull @Valid CheckoutAddressRequest guest_address) {}
+    @NotNull @Valid RecipientRequest recipient) {}

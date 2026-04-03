@@ -14,8 +14,6 @@
 package org.openapitools.client.api;
 
 import org.openapitools.client.ApiException;
-import org.openapitools.client.model.DeliverCost;
-import org.openapitools.client.model.DeliverCostInput;
 import org.openapitools.client.model.Error;
 import org.openapitools.client.model.Order;
 import org.openapitools.client.model.OrderInput;
@@ -78,32 +76,9 @@ public class OrdersApiTest {
     }
 
     /**
-     * Frais de livraison d&#39;une commande
-     *
-     * @throws ApiException if the Api call fails
-     */
-    @Test
-    public void ordersIdDeliveryCostGetTest() throws ApiException {
-        Integer id = null;
-        DeliverCost response = api.ordersIdDeliveryCostGet(id);
-        // TODO: test validations
-    }
-
-    /**
-     * Renseigner les frais de livraison (admin)
-     *
-     * @throws ApiException if the Api call fails
-     */
-    @Test
-    public void ordersIdDeliveryCostPostTest() throws ApiException {
-        Integer id = null;
-        DeliverCostInput deliverCostInput = null;
-        DeliverCost response = api.ordersIdDeliveryCostPost(id, deliverCostInput);
-        // TODO: test validations
-    }
-
-    /**
      * Détail d&#39;une commande
+     *
+     * Les commandes invitées peuvent être consultées sans authentification. Les commandes liées à un utilisateur nécessitent que l&#39;acteur soit le propriétaire ou un admin. 
      *
      * @throws ApiException if the Api call fails
      */
