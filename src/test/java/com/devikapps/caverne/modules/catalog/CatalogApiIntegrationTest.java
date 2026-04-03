@@ -278,14 +278,22 @@ class CatalogApiIntegrationTest {
     String payload =
         objectMapper.writeValueAsString(
             Map.of(
-                "id", product.getId(),
-                "category_id", category.getId(),
-                "label", "Updated Pepper",
-                "reference", "PEP-002",
-                "limit_date", "2026-12-31",
-                "description", "Updated",
-                "size", 1,
-                "is_active", true));
+                "id",
+                product.getId(),
+                "category_id",
+                category.getId(),
+                "label",
+                "Updated Pepper",
+                "reference",
+                "PEP-002",
+                "limit_date",
+                "2026-12-31",
+                "description",
+                "Updated",
+                "size",
+                1,
+                "is_active",
+                true));
 
     mockMvc
         .perform(post("/products").contentType(MediaType.APPLICATION_JSON).content(payload))
@@ -304,14 +312,22 @@ class CatalogApiIntegrationTest {
     String payload =
         objectMapper.writeValueAsString(
             Map.of(
-                "id", 7777,
-                "category_id", category.getId(),
-                "label", "New Product",
-                "reference", "NEW-001",
-                "limit_date", "2027-01-31",
-                "description", "Created by put",
-                "size", 2,
-                "is_active", true));
+                "id",
+                7777,
+                "category_id",
+                category.getId(),
+                "label",
+                "New Product",
+                "reference",
+                "NEW-001",
+                "limit_date",
+                "2027-01-31",
+                "description",
+                "Created by put",
+                "size",
+                2,
+                "is_active",
+                true));
 
     mockMvc
         .perform(
