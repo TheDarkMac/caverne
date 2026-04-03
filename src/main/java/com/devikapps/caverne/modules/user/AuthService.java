@@ -28,16 +28,23 @@ public class AuthService {
       org.openapitools.client.model.RegisterRequest input) {
     validateRegistration(input);
 
-    if (userRepository.findByEmailIgnoreCase(input.getEmail()).isPresent()) {
+    String normalizedEmail = normalizeEmail(input.getEmail());
+    String normalizedPhone = normalizePhone(input.getPhone());
+
+    if (normalizedEmail != null
+        && userRepository.findByEmailIgnoreCase(normalizedEmail).isPresent()) {
       throw new ResponseStatusException(UNPROCESSABLE_ENTITY, "email is already registered");
+    }
+    if (normalizedPhone != null && userRepository.findByPhone(normalizedPhone).isPresent()) {
+      throw new ResponseStatusException(UNPROCESSABLE_ENTITY, "phone is already registered");
     }
 
     UserAccount user =
         UserAccount.builder()
             .firstname(input.getFirstname().trim())
             .lastname(input.getLastname().trim())
-            .email(input.getEmail().trim().toLowerCase())
-            .phone(input.getPhone())
+            .email(normalizedEmail)
+            .phone(normalizedPhone)
             .passwordHash(passwordEncoder.encode(input.getPassword()))
             .role(UserRole.SIMPLE_USER)
             .status("active")
@@ -48,14 +55,14 @@ public class AuthService {
 
   public org.openapitools.client.model.LoginResponse login(
       org.openapitools.client.model.LoginRequest input) {
-    if (input == null || isBlank(input.getEmail()) || isBlank(input.getPassword())) {
-      throw new ResponseStatusException(UNPROCESSABLE_ENTITY, "email and password are required");
+    if (input == null
+        || isBlank(input.getPassword())
+        || (isBlank(input.getEmail()) && isBlank(input.getPhone()))) {
+      throw new ResponseStatusException(
+          UNPROCESSABLE_ENTITY, "password and either email or phone are required");
     }
 
-    UserAccount user =
-        userRepository
-            .findByEmailIgnoreCase(input.getEmail().trim())
-            .orElseThrow(() -> new ResponseStatusException(UNAUTHORIZED, "Invalid credentials"));
+    UserAccount user = resolveLoginUser(input);
 
     if (!passwordEncoder.matches(input.getPassword(), user.getPasswordHash())) {
       throw new ResponseStatusException(UNAUTHORIZED, "Invalid credentials");
@@ -87,11 +94,49 @@ public class AuthService {
     if (input == null
         || isBlank(input.getFirstname())
         || isBlank(input.getLastname())
-        || isBlank(input.getEmail())
-        || isBlank(input.getPassword())) {
+        || isBlank(input.getPassword())
+        || (isBlank(input.getEmail()) && isBlank(input.getPhone()))) {
       throw new ResponseStatusException(
-          UNPROCESSABLE_ENTITY, "firstname, lastname, email, and password are required");
+          UNPROCESSABLE_ENTITY,
+          "firstname, lastname, password, and either email or phone are required");
     }
+  }
+
+  private UserAccount resolveLoginUser(org.openapitools.client.model.LoginRequest input) {
+    String normalizedEmail = normalizeEmail(input.getEmail());
+    String normalizedPhone = normalizePhone(input.getPhone());
+
+    UserAccount emailUser =
+        normalizedEmail == null
+            ? null
+            : userRepository.findByEmailIgnoreCase(normalizedEmail).orElse(null);
+    UserAccount phoneUser =
+        normalizedPhone == null ? null : userRepository.findByPhone(normalizedPhone).orElse(null);
+
+    if (emailUser != null && phoneUser != null && !emailUser.getId().equals(phoneUser.getId())) {
+      throw new ResponseStatusException(UNAUTHORIZED, "Invalid credentials");
+    }
+    if (emailUser != null) {
+      return emailUser;
+    }
+    if (phoneUser != null) {
+      return phoneUser;
+    }
+    throw new ResponseStatusException(UNAUTHORIZED, "Invalid credentials");
+  }
+
+  private String normalizeEmail(String value) {
+    if (isBlank(value)) {
+      return null;
+    }
+    return value.trim().toLowerCase();
+  }
+
+  private String normalizePhone(String value) {
+    if (isBlank(value)) {
+      return null;
+    }
+    return value.trim();
   }
 
   private boolean isBlank(String value) {
