@@ -189,6 +189,21 @@ class CatalogApiIntegrationTest {
   }
 
   @Test
+  void shouldCreateCategoryThroughPutWhenIdDoesNotExist() throws Exception {
+    String payload =
+        objectMapper.writeValueAsString(
+            Map.of("id", 9999, "label", "Coffee", "slug", "coffee", "map", "COFFEE"));
+
+    mockMvc
+        .perform(
+            put("/categories/{id}", 9999).contentType(MediaType.APPLICATION_JSON).content(payload))
+        .andExpect(status().isCreated())
+        .andExpect(jsonPath("$.id").isNumber())
+        .andExpect(jsonPath("$.label").value("Coffee"))
+        .andExpect(jsonPath("$.slug").value("coffee"));
+  }
+
+  @Test
   void shouldCreateProductUsingContractPayload() throws Exception {
     Category category =
         categoryRepository.save(
@@ -249,6 +264,62 @@ class CatalogApiIntegrationTest {
         .andExpect(jsonPath("$.label").value("Smoked Tea"))
         .andExpect(jsonPath("$.reference").value("TEA-001"))
         .andExpect(jsonPath("$.is_active").value(false));
+  }
+
+  @Test
+  void shouldUpdateProductThroughPostWhenPayloadContainsId() throws Exception {
+    Category category =
+        categoryRepository.save(
+            Category.builder().label("Spices").slug("spices").map("SPICES").build());
+    Product product =
+        productRepository.save(
+            product("Wild Pepper", "PEP-001", true, "Hot spice", category, "MGA", "kg", 12000));
+
+    String payload =
+        objectMapper.writeValueAsString(
+            Map.of(
+                "id", product.getId(),
+                "category_id", category.getId(),
+                "label", "Updated Pepper",
+                "reference", "PEP-002",
+                "limit_date", "2026-12-31",
+                "description", "Updated",
+                "size", "kg",
+                "is_active", true));
+
+    mockMvc
+        .perform(post("/products").contentType(MediaType.APPLICATION_JSON).content(payload))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.id").value(product.getId()))
+        .andExpect(jsonPath("$.label").value("Updated Pepper"))
+        .andExpect(jsonPath("$.reference").value("PEP-002"));
+  }
+
+  @Test
+  void shouldCreateProductThroughPutWhenIdDoesNotExist() throws Exception {
+    Category category =
+        categoryRepository.save(
+            Category.builder().label("Spices").slug("spices").map("SPICES").build());
+
+    String payload =
+        objectMapper.writeValueAsString(
+            Map.of(
+                "id", 7777,
+                "category_id", category.getId(),
+                "label", "New Product",
+                "reference", "NEW-001",
+                "limit_date", "2027-01-31",
+                "description", "Created by put",
+                "size", "box",
+                "is_active", true));
+
+    mockMvc
+        .perform(
+            put("/products/{id}", 7777).contentType(MediaType.APPLICATION_JSON).content(payload))
+        .andExpect(status().isCreated())
+        .andExpect(jsonPath("$.id").isNumber())
+        .andExpect(jsonPath("$.label").value("New Product"))
+        .andExpect(jsonPath("$.reference").value("NEW-001"));
   }
 
   private Product product(

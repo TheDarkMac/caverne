@@ -468,7 +468,8 @@ public class AddressesApi {
      <table border="1">
        <caption>Response Details</caption>
         <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
+        <tr><td> 200 </td><td> Adresse mise à jour </td><td>  -  </td></tr>
+        <tr><td> 201 </td><td> Adresse créée </td><td>  -  </td></tr>
         <tr><td> 401 </td><td> Token JWT manquant ou invalide </td><td>  -  </td></tr>
         <tr><td> 404 </td><td> Ressource introuvable </td><td>  -  </td></tr>
      </table>
@@ -536,8 +537,8 @@ public class AddressesApi {
     }
 
     /**
-     * Modifier une adresse
-     * 
+     * Créer ou mettre à jour une adresse par identifiant
+     * Si l&#39;adresse existe pour l&#39;utilisateur connecté, elle est mise à jour. Sinon, une nouvelle adresse est créée et l&#39;identifiant retourné fait foi. 
      * @param id  (required)
      * @param addressInput  (required)
      * @return Address
@@ -546,7 +547,8 @@ public class AddressesApi {
      <table border="1">
        <caption>Response Details</caption>
         <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
+        <tr><td> 200 </td><td> Adresse mise à jour </td><td>  -  </td></tr>
+        <tr><td> 201 </td><td> Adresse créée </td><td>  -  </td></tr>
         <tr><td> 401 </td><td> Token JWT manquant ou invalide </td><td>  -  </td></tr>
         <tr><td> 404 </td><td> Ressource introuvable </td><td>  -  </td></tr>
      </table>
@@ -557,8 +559,8 @@ public class AddressesApi {
     }
 
     /**
-     * Modifier une adresse
-     * 
+     * Créer ou mettre à jour une adresse par identifiant
+     * Si l&#39;adresse existe pour l&#39;utilisateur connecté, elle est mise à jour. Sinon, une nouvelle adresse est créée et l&#39;identifiant retourné fait foi. 
      * @param id  (required)
      * @param addressInput  (required)
      * @return ApiResponse&lt;Address&gt;
@@ -567,7 +569,8 @@ public class AddressesApi {
      <table border="1">
        <caption>Response Details</caption>
         <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
+        <tr><td> 200 </td><td> Adresse mise à jour </td><td>  -  </td></tr>
+        <tr><td> 201 </td><td> Adresse créée </td><td>  -  </td></tr>
         <tr><td> 401 </td><td> Token JWT manquant ou invalide </td><td>  -  </td></tr>
         <tr><td> 404 </td><td> Ressource introuvable </td><td>  -  </td></tr>
      </table>
@@ -579,8 +582,8 @@ public class AddressesApi {
     }
 
     /**
-     * Modifier une adresse (asynchronously)
-     * 
+     * Créer ou mettre à jour une adresse par identifiant (asynchronously)
+     * Si l&#39;adresse existe pour l&#39;utilisateur connecté, elle est mise à jour. Sinon, une nouvelle adresse est créée et l&#39;identifiant retourné fait foi. 
      * @param id  (required)
      * @param addressInput  (required)
      * @param _callback The callback to be executed when the API call finishes
@@ -590,7 +593,8 @@ public class AddressesApi {
      <table border="1">
        <caption>Response Details</caption>
         <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
+        <tr><td> 200 </td><td> Adresse mise à jour </td><td>  -  </td></tr>
+        <tr><td> 201 </td><td> Adresse créée </td><td>  -  </td></tr>
         <tr><td> 401 </td><td> Token JWT manquant ou invalide </td><td>  -  </td></tr>
         <tr><td> 404 </td><td> Ressource introuvable </td><td>  -  </td></tr>
      </table>
@@ -613,6 +617,7 @@ public class AddressesApi {
        <caption>Response Details</caption>
         <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
         <tr><td> 201 </td><td> Adresse créée </td><td>  -  </td></tr>
+        <tr><td> 200 </td><td> Adresse mise à jour </td><td>  -  </td></tr>
         <tr><td> 401 </td><td> Token JWT manquant ou invalide </td><td>  -  </td></tr>
      </table>
      */
@@ -673,8 +678,8 @@ public class AddressesApi {
     }
 
     /**
-     * Ajouter une adresse
-     * 
+     * Créer ou mettre à jour une adresse
+     * Endpoint d&#39;upsert. Si &#x60;id&#x60; est absent ou null dans le payload, une nouvelle adresse est créée. Si &#x60;id&#x60; est fourni et qu&#39;une adresse appartenant à l&#39;utilisateur existe, elle est mise à jour. Sinon, une nouvelle adresse est créée. 
      * @param addressInput  (required)
      * @return Address
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
@@ -683,6 +688,7 @@ public class AddressesApi {
        <caption>Response Details</caption>
         <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
         <tr><td> 201 </td><td> Adresse créée </td><td>  -  </td></tr>
+        <tr><td> 200 </td><td> Adresse mise à jour </td><td>  -  </td></tr>
         <tr><td> 401 </td><td> Token JWT manquant ou invalide </td><td>  -  </td></tr>
      </table>
      */
@@ -692,8 +698,8 @@ public class AddressesApi {
     }
 
     /**
-     * Ajouter une adresse
-     * 
+     * Créer ou mettre à jour une adresse
+     * Endpoint d&#39;upsert. Si &#x60;id&#x60; est absent ou null dans le payload, une nouvelle adresse est créée. Si &#x60;id&#x60; est fourni et qu&#39;une adresse appartenant à l&#39;utilisateur existe, elle est mise à jour. Sinon, une nouvelle adresse est créée. 
      * @param addressInput  (required)
      * @return ApiResponse&lt;Address&gt;
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
@@ -702,6 +708,7 @@ public class AddressesApi {
        <caption>Response Details</caption>
         <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
         <tr><td> 201 </td><td> Adresse créée </td><td>  -  </td></tr>
+        <tr><td> 200 </td><td> Adresse mise à jour </td><td>  -  </td></tr>
         <tr><td> 401 </td><td> Token JWT manquant ou invalide </td><td>  -  </td></tr>
      </table>
      */
@@ -712,8 +719,8 @@ public class AddressesApi {
     }
 
     /**
-     * Ajouter une adresse (asynchronously)
-     * 
+     * Créer ou mettre à jour une adresse (asynchronously)
+     * Endpoint d&#39;upsert. Si &#x60;id&#x60; est absent ou null dans le payload, une nouvelle adresse est créée. Si &#x60;id&#x60; est fourni et qu&#39;une adresse appartenant à l&#39;utilisateur existe, elle est mise à jour. Sinon, une nouvelle adresse est créée. 
      * @param addressInput  (required)
      * @param _callback The callback to be executed when the API call finishes
      * @return The request call
@@ -723,6 +730,7 @@ public class AddressesApi {
        <caption>Response Details</caption>
         <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
         <tr><td> 201 </td><td> Adresse créée </td><td>  -  </td></tr>
+        <tr><td> 200 </td><td> Adresse mise à jour </td><td>  -  </td></tr>
         <tr><td> 401 </td><td> Token JWT manquant ou invalide </td><td>  -  </td></tr>
      </table>
      */

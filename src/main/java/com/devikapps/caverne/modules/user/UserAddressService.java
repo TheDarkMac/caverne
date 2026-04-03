@@ -24,39 +24,45 @@ public class UserAddressService {
         .toList();
   }
 
-  public org.openapitools.client.model.Address createForUser(
+  public UpsertAddressResult createOrUpdateForUser(
       UserAccount user, org.openapitools.client.model.AddressInput input) {
-    validate(input);
-    boolean makeDefault =
-        Boolean.TRUE.equals(input.getIsDefault())
-            || userAddressRepository.findAllByUserIdOrderByIdAsc(user.getId()).isEmpty();
-    if (makeDefault) {
-      userAddressRepository.clearDefaultForUser(user.getId());
-    }
-    UserAddress address =
-        UserAddress.builder()
-            .user(user)
-            .location(input.getLocation().trim())
-            .postalCode(input.getPostalCode().trim())
-            .countryCode(input.getCountryCode().trim().toUpperCase())
-            .isDefault(makeDefault)
-            .build();
-    return userAddressApiMapper.toResponse(userAddressRepository.save(address));
+    return createOrUpdateForUser(
+        user, input, input.getId() == null ? null : input.getId().longValue());
   }
 
-  public org.openapitools.client.model.Address updateForUser(
-      UserAccount user, Long id, org.openapitools.client.model.AddressInput input) {
+  public UpsertAddressResult createOrUpdateForUser(
+      UserAccount user, org.openapitools.client.model.AddressInput input, Long requestedId) {
     validate(input);
-    UserAddress address = findOwnedAddress(user, id);
-    boolean makeDefault = Boolean.TRUE.equals(input.getIsDefault());
+    UserAddress address =
+        requestedId == null
+            ? null
+            : userAddressRepository.findByIdAndUserId(requestedId, user.getId()).orElse(null);
+    boolean created = address == null;
+    if (address == null) {
+      address = UserAddress.builder().user(user).build();
+    }
+    boolean makeDefault =
+        Boolean.TRUE.equals(input.getIsDefault())
+            || (created
+                && userAddressRepository.findAllByUserIdOrderByIdAsc(user.getId()).isEmpty());
     if (makeDefault) {
       userAddressRepository.clearDefaultForUser(user.getId());
     }
     address.setLocation(input.getLocation().trim());
     address.setPostalCode(input.getPostalCode().trim());
     address.setCountryCode(input.getCountryCode().trim().toUpperCase());
-    address.setDefault(makeDefault || address.isDefault());
-    return userAddressApiMapper.toResponse(userAddressRepository.save(address));
+    address.setDefault(makeDefault || (!created && address.isDefault()));
+    return new UpsertAddressResult(
+        userAddressApiMapper.toResponse(userAddressRepository.save(address)), created);
+  }
+
+  public UpsertAddressResult updateForUser(
+      UserAccount user, Long id, org.openapitools.client.model.AddressInput input) {
+    if (input.getId() != null && !id.equals(input.getId().longValue())) {
+      throw new ResponseStatusException(
+          UNPROCESSABLE_ENTITY, "Address payload id does not match path id");
+    }
+    return createOrUpdateForUser(user, input, id);
   }
 
   public void deleteForUser(UserAccount user, Long id) {
@@ -104,4 +110,7 @@ public class UserAddressService {
   private boolean isBlank(String value) {
     return value == null || value.isBlank();
   }
+
+  public record UpsertAddressResult(
+      org.openapitools.client.model.Address address, boolean created) {}
 }

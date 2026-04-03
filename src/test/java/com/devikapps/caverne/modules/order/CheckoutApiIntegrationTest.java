@@ -16,6 +16,8 @@ import com.devikapps.caverne.modules.user.AuthSessionRepository;
 import com.devikapps.caverne.modules.user.UserAccount;
 import com.devikapps.caverne.modules.user.UserRepository;
 import com.devikapps.caverne.modules.user.UserRole;
+import com.devikapps.caverne.modules.payment.PaymentProvider;
+import com.devikapps.caverne.modules.payment.MockStripePaymentProvider;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -26,6 +28,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc;
+import org.springframework.boot.test.context.TestConfiguration;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -33,7 +37,7 @@ import org.springframework.test.web.servlet.MockMvc;
 
 @SpringBootTest
 @AutoConfigureMockMvc
-@Import(TestcontainersConfiguration.class)
+@Import({TestcontainersConfiguration.class, CheckoutApiIntegrationTest.StripeTestConfig.class})
 class CheckoutApiIntegrationTest {
 
   @Autowired private MockMvc mockMvc;
@@ -121,6 +125,28 @@ class CheckoutApiIntegrationTest {
         .perform(get("/orders/{id}/payments", orderId))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$[0].method_code").value("MANUAL"));
+  }
+
+  @Test
+  void shouldInitiatePaymentWithMockStripeProvider() throws Exception {
+    Product product = saveProduct("Lavender", "LAV-001", 8000);
+    Long orderId = createOrder(product);
+
+    String payload =
+        objectMapper.writeValueAsString(
+            Map.of("method_code", "STRIPE", "currency_code", "MGA", "amount", 8000));
+
+    mockMvc
+        .perform(
+            post("/orders/{id}/payments", orderId)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(payload))
+        .andExpect(status().isCreated())
+        .andExpect(jsonPath("$.method_code").value("STRIPE"))
+        .andExpect(jsonPath("$.currency_code").value("MGA"))
+        .andExpect(jsonPath("$.status").value("pending"))
+        .andExpect(jsonPath("$.provider_response.client_secret").value("mock-client-secret"))
+        .andExpect(jsonPath("$.provider_response.order_reference").exists());
   }
 
   @Test
@@ -375,5 +401,14 @@ class CheckoutApiIntegrationTest {
 
   private String bearer(String token) {
     return "Bearer " + token;
+  }
+
+  @TestConfiguration
+  static class StripeTestConfig {
+
+    @Bean
+    PaymentProvider stripePaymentProvider() {
+      return new MockStripePaymentProvider();
+    }
   }
 }

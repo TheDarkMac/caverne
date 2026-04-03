@@ -1,6 +1,7 @@
 package com.devikapps.caverne.modules.catalog;
 
 import static org.springframework.http.HttpStatus.NOT_FOUND;
+import static org.springframework.http.HttpStatus.UNPROCESSABLE_ENTITY;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -32,18 +33,31 @@ public class ProductService {
   }
 
   @Transactional
-  public org.openapitools.client.model.Product createProduct(
-      org.openapitools.client.model.ProductInput input) {
+  public UpsertProductResult createProduct(org.openapitools.client.model.ProductInput input) {
+    if (input.getId() != null) {
+      Product existing = productRepository.findById(input.getId().longValue()).orElse(null);
+      Product product = productApiMapper.fromInput(input, existing);
+      return new UpsertProductResult(
+          productApiMapper.toResponse(productRepository.save(product), null), existing == null);
+    }
+
     Product product = productApiMapper.fromInput(input, null);
-    return productApiMapper.toResponse(productRepository.save(product), null);
+    return new UpsertProductResult(
+        productApiMapper.toResponse(productRepository.save(product), null), true);
   }
 
   @Transactional
-  public org.openapitools.client.model.Product updateProduct(
+  public UpsertProductResult updateProduct(
       Long id, org.openapitools.client.model.ProductInput input) {
-    Product existing = findById(id);
+    if (input.getId() != null && !id.equals(input.getId().longValue())) {
+      throw new ResponseStatusException(
+          UNPROCESSABLE_ENTITY, "Product payload id does not match path id");
+    }
+
+    Product existing = productRepository.findById(id).orElse(null);
     Product product = productApiMapper.fromInput(input, existing);
-    return productApiMapper.toResponse(productRepository.save(product), null);
+    return new UpsertProductResult(
+        productApiMapper.toResponse(productRepository.save(product), null), existing == null);
   }
 
   public Product findById(Long id) {
@@ -95,4 +109,7 @@ public class ProductService {
       return builder.equal(root.join("prices").get("currencyCode"), currency);
     };
   }
+
+  public record UpsertProductResult(
+      org.openapitools.client.model.Product product, boolean created) {}
 }

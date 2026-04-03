@@ -86,26 +86,27 @@ public class UserController {
   }
 
   @PostMapping(value = "/me/addresses", produces = MediaType.APPLICATION_JSON_VALUE)
-  @ResponseStatus(HttpStatus.CREATED)
-  public String createMyAddress(
+  public org.springframework.http.ResponseEntity<String> createMyAddress(
       @RequestHeader("Authorization") String authorizationHeader, @RequestBody String rawBody) {
-    return JSON.getGson()
-        .toJson(
-            userAddressService.createForUser(
-                authSessionResolver.requireUser(authorizationHeader), parseAddressInput(rawBody)));
+    UserAddressService.UpsertAddressResult result =
+        userAddressService.createOrUpdateForUser(
+            authSessionResolver.requireUser(authorizationHeader), parseAddressInput(rawBody));
+    return org.springframework.http.ResponseEntity.status(
+            result.created() ? HttpStatus.CREATED : HttpStatus.OK)
+        .body(JSON.getGson().toJson(result.address()));
   }
 
   @PutMapping(value = "/me/addresses/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-  public String updateMyAddress(
+  public org.springframework.http.ResponseEntity<String> updateMyAddress(
       @RequestHeader("Authorization") String authorizationHeader,
       @PathVariable Long id,
       @RequestBody String rawBody) {
-    return JSON.getGson()
-        .toJson(
-            userAddressService.updateForUser(
-                authSessionResolver.requireUser(authorizationHeader),
-                id,
-                parseAddressInput(rawBody)));
+    UserAddressService.UpsertAddressResult result =
+        userAddressService.updateForUser(
+            authSessionResolver.requireUser(authorizationHeader), id, parseAddressInput(rawBody));
+    return org.springframework.http.ResponseEntity.status(
+            result.created() ? HttpStatus.CREATED : HttpStatus.OK)
+        .body(JSON.getGson().toJson(result.address()));
   }
 
   @DeleteMapping("/me/addresses/{id}")

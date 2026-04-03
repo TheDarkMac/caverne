@@ -294,6 +294,44 @@ class UserAuthIntegrationTest {
         .andExpect(jsonPath("$[1].id").value(secondAddressId))
         .andExpect(jsonPath("$[1].is_default").value(true));
 
+    String postUpdatePayload =
+        objectMapper.writeValueAsString(
+            Map.of(
+                "id", firstAddressId,
+                "location", "Lot II M 99 Analakely",
+                "postal_code", "101",
+                "country_code", "MG",
+                "is_default", false));
+
+    mockMvc
+        .perform(
+            post("/users/me/addresses")
+                .header("Authorization", bearer(token))
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(postUpdatePayload))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.id").value(firstAddressId))
+        .andExpect(jsonPath("$.location").value("Lot II M 99 Analakely"));
+
+    String putCreatePayload =
+        objectMapper.writeValueAsString(
+            Map.of(
+                "id", 9999,
+                "location", "Lot IV A 40 Ivandry",
+                "postal_code", "103",
+                "country_code", "MG",
+                "is_default", false));
+
+    mockMvc
+        .perform(
+            put("/users/me/addresses/{id}", 9999)
+                .header("Authorization", bearer(token))
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(putCreatePayload))
+        .andExpect(status().isCreated())
+        .andExpect(jsonPath("$.id").isNumber())
+        .andExpect(jsonPath("$.location").value("Lot IV A 40 Ivandry"));
+
     mockMvc
         .perform(
             delete("/users/me/addresses/{id}", secondAddressId)
