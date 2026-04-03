@@ -25,18 +25,5 @@ jobs:
           java-version: '21'
           distribution: 'corretto'
 
-      - name: Check code formatting (Unix)
-        if: runner.os != 'Windows'
+      - name: Check code formatting
         run: make ci-format
-
-      - name: Check code formatting (Windows)
-        if: runner.os == 'Windows'
-        shell: cmd
-        run: make ci-format
-
-      - name: Verify format scripts exist
-        if: runner.os == 'Windows'
-        shell: cmd
-        run: |
-          if exist format.bat (echo format.bat found) else (echo Warning: format.bat not found)
-          if exist format.sh (echo format.sh found) else (echo Warning: format.sh not found)

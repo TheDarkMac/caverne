@@ -25,10 +25,7 @@ public class PaymentMethodService {
               PaymentMethod.IntegrationTypeEnum.MANUAL),
           "STRIPE",
           new PaymentMethodDescriptor(
-              "STRIPE",
-              "Carte bancaire (Stripe)",
-              false,
-              PaymentMethod.IntegrationTypeEnum.API));
+              "STRIPE", "Carte bancaire (Stripe)", false, PaymentMethod.IntegrationTypeEnum.API));
 
   public List<PaymentMethod> listAll() {
     return paymentProviders.stream()
