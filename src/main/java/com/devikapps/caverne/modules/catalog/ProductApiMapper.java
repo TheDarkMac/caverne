@@ -35,7 +35,7 @@ public class ProductApiMapper {
         .reference(product.getReference())
         .limitDate(product.getLimitDate())
         .description(product.getDescription())
-        .size(product.getSize() == null ? null : new BigDecimal(product.getSize()))
+        .size(parseSize(product.getSize()))
         .isActive(product.isActive())
         .prices(prices);
   }
@@ -58,5 +58,16 @@ public class ProductApiMapper {
     }
 
     return product;
+  }
+
+  private BigDecimal parseSize(String size) {
+    if (size == null || size.isBlank()) {
+      return null;
+    }
+    try {
+      return new BigDecimal(size);
+    } catch (NumberFormatException exception) {
+      return null;
+    }
   }
 }
