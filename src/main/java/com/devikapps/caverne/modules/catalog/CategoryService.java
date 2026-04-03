@@ -1,6 +1,7 @@
 package com.devikapps.caverne.modules.catalog;
 
 import static org.springframework.http.HttpStatus.NOT_FOUND;
+import static org.springframework.http.HttpStatus.UNPROCESSABLE_ENTITY;
 
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -34,25 +35,45 @@ public class CategoryService {
   }
 
   @Transactional
-  public org.openapitools.client.model.Category createCategory(
-      org.openapitools.client.model.CategoryInput input) {
+  public UpsertCategoryResult createCategory(org.openapitools.client.model.CategoryInput input) {
+    if (input.getId() != null) {
+      Category existing =
+          categoryRepository
+              .findById(input.getId().longValue())
+              .orElseThrow(() -> new ResponseStatusException(NOT_FOUND, "Category not found"));
+      Category category = categoryApiMapper.fromInput(input, existing);
+      return new UpsertCategoryResult(
+          categoryApiMapper.toTreeResponse(categoryRepository.save(category)), false);
+    }
+
     Category category = categoryApiMapper.fromInput(input, null);
-    return categoryApiMapper.toTreeResponse(categoryRepository.save(category));
+    return new UpsertCategoryResult(
+        categoryApiMapper.toTreeResponse(categoryRepository.save(category)), true);
   }
 
   @Transactional
-  public org.openapitools.client.model.Category updateCategory(
+  public UpsertCategoryResult updateCategory(
       Long id, org.openapitools.client.model.CategoryInput input) {
+    if (input.getId() != null && !id.equals(input.getId().longValue())) {
+      throw new ResponseStatusException(
+          UNPROCESSABLE_ENTITY, "Category payload id does not match path id");
+    }
+
     Category existing =
         categoryRepository
             .findById(id)
             .orElseThrow(() -> new ResponseStatusException(NOT_FOUND, "Category not found"));
     Category category = categoryApiMapper.fromInput(input, existing);
-    return categoryApiMapper.toTreeResponse(categoryRepository.save(category));
+
+    return new UpsertCategoryResult(
+        categoryApiMapper.toTreeResponse(categoryRepository.save(category)), false);
   }
 
   @Transactional
   public void delete(Long id) {
     categoryRepository.deleteById(id);
   }
+
+  public record UpsertCategoryResult(
+      org.openapitools.client.model.Category category, boolean created) {}
 }
