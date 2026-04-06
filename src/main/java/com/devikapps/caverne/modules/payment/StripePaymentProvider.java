@@ -6,6 +6,7 @@ import com.stripe.model.PaymentIntent;
 import com.stripe.net.RequestOptions;
 import com.stripe.param.PaymentIntentCreateParams;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.HashMap;
 import java.util.Map;
 import lombok.RequiredArgsConstructor;
@@ -38,10 +39,16 @@ public class StripePaymentProvider implements PaymentProvider {
 
     RequestOptions.RequestOptionsBuilder builder =
         RequestOptions.builder().setIdempotencyKey("order-" + orderReference);
-    RequestOptions requestOptions =
-        RequestOptions.RequestOptionsBuilder.unsafeSetStripeVersionOverride(
-                builder, stripeProperties.getApiVersion())
-            .build();
+    RequestOptions requestOptions;
+    if (stripeProperties.getApiVersion() != null
+        && !stripeProperties.getApiVersion().isBlank()) {
+      requestOptions =
+          RequestOptions.RequestOptionsBuilder.unsafeSetStripeVersionOverride(
+                  builder, stripeProperties.getApiVersion())
+              .build();
+    } else {
+      requestOptions = builder.build();
+    }
 
     try {
       PaymentIntent intent = PaymentIntent.create(params, requestOptions);
@@ -55,7 +62,7 @@ public class StripePaymentProvider implements PaymentProvider {
   }
 
   private long convertToStripeAmount(BigDecimal amount) {
-    return amount.movePointRight(2).setScale(0, BigDecimal.ROUND_HALF_UP).longValueExact();
+    return amount.movePointRight(2).setScale(0, RoundingMode.HALF_UP).longValueExact();
   }
 
   private Map<String, String> buildMetadata(String orderReference) {
