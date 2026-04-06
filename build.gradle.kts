@@ -47,7 +47,7 @@ dependencies {
 	implementation("jakarta.ws.rs:jakarta.ws.rs-api:2.1.6")
 	implementation("org.openapitools:jackson-databind-nullable:0.2.9")
 	implementation("org.apache.commons:commons-lang3:3.18.0")
-	implementation("com.stripe:stripe-java:22.21.0")
+	implementation("com.stripe:stripe-java:32.0.0")
 	implementation("org.flywaydb:flyway-database-postgresql")
 	compileOnly("org.projectlombok:lombok")
 	compileOnly("javax.annotation:javax.annotation-api:1.3.2")
