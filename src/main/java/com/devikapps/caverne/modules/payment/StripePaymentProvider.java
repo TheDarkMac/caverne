@@ -22,22 +22,8 @@ public class StripePaymentProvider implements PaymentProvider {
 
   private static final Set<String> ZERO_DECIMAL_CURRENCIES =
       Set.of(
-          "BIF",
-          "CLP",
-          "DJF",
-          "GNF",
-          "JPY",
-          "KMF",
-          "KRW",
-          "MGA",
-          "PYG",
-          "RWF",
-          "UGX",
-          "VND",
-          "VUV",
-          "XAF",
-          "XOF",
-          "XPF");
+          "BIF", "CLP", "DJF", "GNF", "JPY", "KMF", "KRW", "MGA", "PYG", "RWF", "UGX", "VND", "VUV",
+          "XAF", "XOF", "XPF");
 
   private final StripeProperties stripeProperties;
 

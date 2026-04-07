@@ -149,7 +149,9 @@ class CheckoutApiIntegrationTest {
         .andExpect(jsonPath("$.status").value("pending"))
         .andExpect(
             jsonPath("$.provider_response.checkout_url")
-                .value(org.hamcrest.Matchers.startsWith("https://checkout.stripe.test/session/mock-ORD-")))
+                .value(
+                    org.hamcrest.Matchers.startsWith(
+                        "https://checkout.stripe.test/session/mock-ORD-")))
         .andExpect(jsonPath("$.provider_response.checkout_session_id").exists())
         .andExpect(jsonPath("$.provider_response.order_reference").exists());
   }

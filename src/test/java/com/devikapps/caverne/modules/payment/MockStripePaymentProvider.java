@@ -18,12 +18,19 @@ public class MockStripePaymentProvider implements PaymentProvider {
         "pending",
         "https://checkout.stripe.test/session/mock-" + orderReference,
         Map.of(
-            "checkout_url", "https://checkout.stripe.test/session/mock-" + orderReference,
-            "checkout_session_id", "cs_test_mock_" + orderReference,
-            "checkout_status", "open",
-            "payment_status", "unpaid",
-            "order_reference", orderReference,
-            "currency", currency,
-            "amount", amount));
+            "checkout_url",
+            "https://checkout.stripe.test/session/mock-" + orderReference,
+            "checkout_session_id",
+            "cs_test_mock_" + orderReference,
+            "checkout_status",
+            "open",
+            "payment_status",
+            "unpaid",
+            "order_reference",
+            orderReference,
+            "currency",
+            currency,
+            "amount",
+            amount));
   }
 }
