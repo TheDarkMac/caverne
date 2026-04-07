@@ -81,7 +81,9 @@ class RealStripePaymentIntegrationTest {
         .andExpect(
             jsonPath("$.provider_response.checkout_url")
                 .value(org.hamcrest.Matchers.startsWith("https://checkout.stripe.com/")))
-        .andExpect(jsonPath("$.provider_response.checkout_session_id").value(org.hamcrest.Matchers.startsWith("cs_")))
+        .andExpect(
+            jsonPath("$.provider_response.checkout_session_id")
+                .value(org.hamcrest.Matchers.startsWith("cs_")))
         .andExpect(jsonPath("$.provider_response.payment_status").exists());
   }
 
