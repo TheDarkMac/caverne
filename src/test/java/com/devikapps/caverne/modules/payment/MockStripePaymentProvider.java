@@ -16,9 +16,12 @@ public class MockStripePaymentProvider implements PaymentProvider {
     return new PaymentResponse(
         "MOCK-" + orderReference,
         "pending",
-        null,
+        "https://checkout.stripe.test/session/mock-" + orderReference,
         Map.of(
-            "client_secret", "mock-client-secret",
+            "checkout_url", "https://checkout.stripe.test/session/mock-" + orderReference,
+            "checkout_session_id", "cs_test_mock_" + orderReference,
+            "checkout_status", "open",
+            "payment_status", "unpaid",
             "order_reference", orderReference,
             "currency", currency,
             "amount", amount));

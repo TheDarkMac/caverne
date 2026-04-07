@@ -11,4 +11,6 @@ public class StripeProperties {
   private boolean enabled;
   private String apiKey;
   private String apiVersion;
+  private String checkoutSuccessUrl;
+  private String checkoutCancelUrl;
 }
