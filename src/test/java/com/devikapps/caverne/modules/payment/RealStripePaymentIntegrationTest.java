@@ -19,13 +19,13 @@ import org.junit.jupiter.api.Assumptions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc;
 import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.beans.factory.annotation.Value;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -37,6 +37,7 @@ class RealStripePaymentIntegrationTest {
   @Autowired private ObjectMapper objectMapper;
   @Autowired private CategoryRepository categoryRepository;
   @Autowired private ProductRepository productRepository;
+
   @Value("${RUN_REAL_STRIPE_TEST:false}")
   private boolean runRealStripeTest;
 
@@ -49,8 +50,7 @@ class RealStripePaymentIntegrationTest {
         runRealStripeTest,
         "Set RUN_REAL_STRIPE_TEST=true to execute the real Stripe integration test.");
     Assumptions.assumeTrue(
-        stripeApiKey != null
-            && !stripeApiKey.isBlank(),
+        stripeApiKey != null && !stripeApiKey.isBlank(),
         "Set STRIPE_API_KEY in .env before running the real Stripe integration test.");
     productRepository.deleteAll();
     categoryRepository.deleteAll();
