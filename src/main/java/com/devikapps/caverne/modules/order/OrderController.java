@@ -122,9 +122,6 @@ public class OrderController {
   @PostMapping(value = "/orders/{id}/payments", produces = MediaType.APPLICATION_JSON_VALUE)
   @ResponseStatus(HttpStatus.CREATED)
   public String initiatePayment(@PathVariable Long id, @RequestBody String rawBody) {
-    System.out.println("post return : ");
-    System.out.println(JSON.getGson().toJson(orderService.processPayment(id, parsePaymentInput(rawBody))));
-    System.out.println("----------------");
     return JSON.getGson().toJson(orderService.processPayment(id, parsePaymentInput(rawBody)));
   }
 
