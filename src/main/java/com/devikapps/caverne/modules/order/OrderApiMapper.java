@@ -67,11 +67,12 @@ public class OrderApiMapper {
 
     return switch (rawStatus.trim().toLowerCase()) {
       case "pending",
-          "requires_payment_method",
-          "requires_confirmation",
-          "requires_action",
-          "processing",
-          "requires_capture" -> "pending";
+              "requires_payment_method",
+              "requires_confirmation",
+              "requires_action",
+              "processing",
+              "requires_capture" ->
+          "pending";
       case "confirmed", "succeeded" -> "confirmed";
       case "failed", "canceled", "cancelled" -> "failed";
       case "refunded" -> "refunded";

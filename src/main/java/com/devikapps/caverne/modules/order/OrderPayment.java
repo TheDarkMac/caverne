@@ -4,7 +4,6 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
-
 import lombok.*;
 
 @Embeddable
