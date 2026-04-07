@@ -147,7 +147,10 @@ class CheckoutApiIntegrationTest {
         .andExpect(jsonPath("$.method_code").value("STRIPE"))
         .andExpect(jsonPath("$.currency_code").value("MGA"))
         .andExpect(jsonPath("$.status").value("pending"))
-        .andExpect(jsonPath("$.provider_response.client_secret").value("mock-client-secret"))
+        .andExpect(
+            jsonPath("$.provider_response.checkout_url")
+                .value(org.hamcrest.Matchers.startsWith("https://checkout.stripe.test/session/mock-ORD-")))
+        .andExpect(jsonPath("$.provider_response.checkout_session_id").exists())
         .andExpect(jsonPath("$.provider_response.order_reference").exists());
   }
 

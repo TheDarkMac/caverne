@@ -24,6 +24,14 @@ public class StripeConfiguration {
     if (!StringUtils.hasText(properties.getApiKey())) {
       throw new IllegalStateException("stripe.api-key must be set when stripe.enabled=true");
     }
+    if (!StringUtils.hasText(properties.getCheckoutSuccessUrl())) {
+      throw new IllegalStateException(
+          "stripe.checkout-success-url must be set when stripe.enabled=true");
+    }
+    if (!StringUtils.hasText(properties.getCheckoutCancelUrl())) {
+      throw new IllegalStateException(
+          "stripe.checkout-cancel-url must be set when stripe.enabled=true");
+    }
     Stripe.apiKey = properties.getApiKey();
   }
 }
