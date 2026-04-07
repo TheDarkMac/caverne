@@ -55,9 +55,28 @@ public class OrderApiMapper {
         .date(payment.getDate().atOffset(OffsetDateTime.now().getOffset()))
         .status(
             org.openapitools.client.model.Payment.StatusEnum.fromValue(
-                payment.getStatus().toLowerCase()))
+                normalizePaymentStatus(payment.getStatus())))
         .internalReference(payment.getInternalReference())
         .providerResponse(readProviderResponse(payment.getProviderResponse()));
+  }
+
+  private String normalizePaymentStatus(String rawStatus) {
+    if (rawStatus == null || rawStatus.isBlank()) {
+      return "pending";
+    }
+
+    return switch (rawStatus.trim().toLowerCase()) {
+      case "pending",
+          "requires_payment_method",
+          "requires_confirmation",
+          "requires_action",
+          "processing",
+          "requires_capture" -> "pending";
+      case "confirmed", "succeeded" -> "confirmed";
+      case "failed", "canceled", "cancelled" -> "failed";
+      case "refunded" -> "refunded";
+      default -> "pending";
+    };
   }
 
   private Map<String, Object> readProviderResponse(String rawProviderResponse) {

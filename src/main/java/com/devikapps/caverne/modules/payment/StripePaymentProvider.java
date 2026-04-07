@@ -64,8 +64,4 @@ public class StripePaymentProvider implements PaymentProvider {
   private long convertToStripeAmount(BigDecimal amount) {
     return amount.movePointRight(2).setScale(0, RoundingMode.HALF_UP).longValueExact();
   }
-
-  private Map<String, String> buildMetadata(String orderReference) {
-    return Map.of("order_reference", orderReference);
-  }
 }
