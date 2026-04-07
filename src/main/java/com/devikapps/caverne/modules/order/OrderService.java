@@ -162,7 +162,6 @@ public class OrderService {
                 .providerResponse(writeProviderResponse(response.providerData()))
                 .build());
     orderRepository.save(order);
-
     return orderApiMapper.toPaymentModel(order, order.getPayments().getLast());
   }
 
