@@ -15,10 +15,7 @@ public class DotenvEnvironmentPostProcessor implements EnvironmentPostProcessor 
   public void postProcessEnvironment(
       ConfigurableEnvironment environment, SpringApplication application) {
     Dotenv dotenv =
-        Dotenv.configure()
-            .directory(System.getProperty("user.dir"))
-            .ignoreIfMissing()
-            .load();
+        Dotenv.configure().directory(System.getProperty("user.dir")).ignoreIfMissing().load();
 
     if (dotenv.entries().isEmpty()) {
       return;
@@ -30,9 +27,12 @@ public class DotenvEnvironmentPostProcessor implements EnvironmentPostProcessor 
     SystemEnvironmentPropertySource propertySource =
         new SystemEnvironmentPropertySource("dotenv", properties);
 
-    if (environment.getPropertySources().contains(StandardEnvironment.SYSTEM_ENVIRONMENT_PROPERTY_SOURCE_NAME)) {
-      environment.getPropertySources().addAfter(
-          StandardEnvironment.SYSTEM_ENVIRONMENT_PROPERTY_SOURCE_NAME, propertySource);
+    if (environment
+        .getPropertySources()
+        .contains(StandardEnvironment.SYSTEM_ENVIRONMENT_PROPERTY_SOURCE_NAME)) {
+      environment
+          .getPropertySources()
+          .addAfter(StandardEnvironment.SYSTEM_ENVIRONMENT_PROPERTY_SOURCE_NAME, propertySource);
     } else {
       environment.getPropertySources().addLast(propertySource);
     }

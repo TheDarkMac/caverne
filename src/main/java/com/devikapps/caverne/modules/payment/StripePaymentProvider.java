@@ -40,8 +40,7 @@ public class StripePaymentProvider implements PaymentProvider {
     RequestOptions.RequestOptionsBuilder builder =
         RequestOptions.builder().setIdempotencyKey("order-" + orderReference);
     RequestOptions requestOptions;
-    if (stripeProperties.getApiVersion() != null
-        && !stripeProperties.getApiVersion().isBlank()) {
+    if (stripeProperties.getApiVersion() != null && !stripeProperties.getApiVersion().isBlank()) {
       requestOptions =
           RequestOptions.RequestOptionsBuilder.unsafeSetStripeVersionOverride(
                   builder, stripeProperties.getApiVersion())
