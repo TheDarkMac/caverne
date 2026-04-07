@@ -19,6 +19,9 @@ configurations {
 	compileOnly {
 		extendsFrom(configurations.annotationProcessor.get())
 	}
+	create("mockitoAgent") {
+		isTransitive = false
+	}
 }
 
 sourceSets {
@@ -47,6 +50,7 @@ dependencies {
 	implementation("jakarta.ws.rs:jakarta.ws.rs-api:2.1.6")
 	implementation("org.openapitools:jackson-databind-nullable:0.2.9")
 	implementation("org.apache.commons:commons-lang3:3.18.0")
+	implementation("io.github.cdimascio:dotenv-java:3.0.0")
 	implementation("com.stripe:stripe-java:32.0.0")
 	implementation("org.flywaydb:flyway-database-postgresql")
 	compileOnly("org.projectlombok:lombok")
@@ -64,10 +68,12 @@ dependencies {
 	testImplementation("org.springframework.boot:spring-boot-testcontainers")
 	testImplementation("org.testcontainers:testcontainers-junit-jupiter")
 	testImplementation("org.testcontainers:testcontainers-postgresql")
+	"mockitoAgent"("org.mockito:mockito-core")
 	testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 
 }
 
 tasks.withType<Test> {
 	useJUnitPlatform()
+	jvmArgs("-javaagent:${configurations["mockitoAgent"].singleFile}")
 }

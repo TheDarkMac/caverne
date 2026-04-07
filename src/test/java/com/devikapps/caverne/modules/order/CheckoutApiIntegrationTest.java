@@ -32,12 +32,14 @@ import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
+import org.springframework.test.context.TestPropertySource;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.test.web.servlet.MockMvc;
 
 @SpringBootTest
 @AutoConfigureMockMvc
 @Import({TestcontainersConfiguration.class, CheckoutApiIntegrationTest.StripeTestConfig.class})
+@TestPropertySource(properties = "stripe.enabled=false")
 class CheckoutApiIntegrationTest {
 
   @Autowired private MockMvc mockMvc;
