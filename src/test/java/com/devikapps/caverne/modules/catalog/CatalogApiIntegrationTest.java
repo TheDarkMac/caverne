@@ -7,6 +7,10 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.devikapps.caverne.TestcontainersConfiguration;
+import com.devikapps.caverne.modules.user.AuthSessionRepository;
+import com.devikapps.caverne.modules.user.UserAccount;
+import com.devikapps.caverne.modules.user.UserRepository;
+import com.devikapps.caverne.modules.user.UserRole;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -20,6 +24,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc;
 import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.test.web.servlet.MockMvc;
 
 @SpringBootTest
@@ -34,8 +39,16 @@ class CatalogApiIntegrationTest {
 
   @Autowired private ProductRepository productRepository;
 
+  @Autowired private UserRepository userRepository;
+
+  @Autowired private AuthSessionRepository authSessionRepository;
+
+  private final BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+
   @BeforeEach
   void setUp() {
+    authSessionRepository.deleteAll();
+    userRepository.deleteAll();
     productRepository.deleteAll();
     categoryRepository.deleteAll();
   }
@@ -113,6 +126,8 @@ class CatalogApiIntegrationTest {
 
   @Test
   void shouldCreateCategoryUsingContractPayload() throws Exception {
+    String adminToken = loginAsAdmin("catalog-admin-category-create@example.com", "secret123");
+
     Map<String, Object> payloadMap = new LinkedHashMap<>();
     payloadMap.put("label", "Tea");
     payloadMap.put("slug", "tea");
@@ -121,7 +136,11 @@ class CatalogApiIntegrationTest {
     String payload = objectMapper.writeValueAsString(payloadMap);
 
     mockMvc
-        .perform(post("/categories").contentType(MediaType.APPLICATION_JSON).content(payload))
+        .perform(
+            post("/categories")
+                .header("Authorization", bearer(adminToken))
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(payload))
         .andExpect(status().isCreated())
         .andExpect(jsonPath("$.id").isNumber())
         .andExpect(jsonPath("$.label").value("Tea"))
@@ -132,6 +151,8 @@ class CatalogApiIntegrationTest {
 
   @Test
   void shouldUpdateCategoryUsingContractPayload() throws Exception {
+    String adminToken = loginAsAdmin("catalog-admin-category-update@example.com", "secret123");
+
     Category root =
         categoryRepository.save(Category.builder().label("Tea").slug("tea").map("TEA").build());
     Category child =
@@ -154,6 +175,7 @@ class CatalogApiIntegrationTest {
     mockMvc
         .perform(
             put("/categories/{id}", child.getId())
+                .header("Authorization", bearer(adminToken))
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(payload))
         .andExpect(status().isOk())
@@ -165,6 +187,8 @@ class CatalogApiIntegrationTest {
 
   @Test
   void shouldUpdateCategoryThroughPostWhenPayloadContainsId() throws Exception {
+    String adminToken = loginAsAdmin("catalog-admin-category-post@example.com", "secret123");
+
     Category category =
         categoryRepository.save(Category.builder().label("Tea").slug("tea").map("TEA").build());
 
@@ -181,7 +205,11 @@ class CatalogApiIntegrationTest {
                 "HERBAL"));
 
     mockMvc
-        .perform(post("/categories").contentType(MediaType.APPLICATION_JSON).content(payload))
+        .perform(
+            post("/categories")
+                .header("Authorization", bearer(adminToken))
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(payload))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.id").value(category.getId()))
         .andExpect(jsonPath("$.label").value("Herbal Tea"))
@@ -190,13 +218,18 @@ class CatalogApiIntegrationTest {
 
   @Test
   void shouldCreateCategoryThroughPutWhenIdDoesNotExist() throws Exception {
+    String adminToken = loginAsAdmin("catalog-admin-category-put@example.com", "secret123");
+
     String payload =
         objectMapper.writeValueAsString(
             Map.of("id", 9999, "label", "Coffee", "slug", "coffee", "map", "COFFEE"));
 
     mockMvc
         .perform(
-            put("/categories/{id}", 9999).contentType(MediaType.APPLICATION_JSON).content(payload))
+            put("/categories/{id}", 9999)
+                .header("Authorization", bearer(adminToken))
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(payload))
         .andExpect(status().isCreated())
         .andExpect(jsonPath("$.id").isNumber())
         .andExpect(jsonPath("$.label").value("Coffee"))
@@ -205,6 +238,8 @@ class CatalogApiIntegrationTest {
 
   @Test
   void shouldCreateProductUsingContractPayload() throws Exception {
+    String adminToken = loginAsAdmin("catalog-admin-product-create@example.com", "secret123");
+
     Category category =
         categoryRepository.save(
             Category.builder().label("Spices").slug("spices").map("SPICES").build());
@@ -221,7 +256,11 @@ class CatalogApiIntegrationTest {
                 "is_active", true));
 
     mockMvc
-        .perform(post("/products").contentType(MediaType.APPLICATION_JSON).content(payload))
+        .perform(
+            post("/products")
+                .header("Authorization", bearer(adminToken))
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(payload))
         .andExpect(status().isCreated())
         .andExpect(jsonPath("$.id").isNumber())
         .andExpect(jsonPath("$.category_id").value(category.getId()))
@@ -232,6 +271,8 @@ class CatalogApiIntegrationTest {
 
   @Test
   void shouldUpdateProductUsingContractPayload() throws Exception {
+    String adminToken = loginAsAdmin("catalog-admin-product-update@example.com", "secret123");
+
     Category initialCategory =
         categoryRepository.save(
             Category.builder().label("Spices").slug("spices").map("SPICES").build());
@@ -256,6 +297,7 @@ class CatalogApiIntegrationTest {
     mockMvc
         .perform(
             put("/products/{id}", product.getId())
+                .header("Authorization", bearer(adminToken))
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(payload))
         .andExpect(status().isOk())
@@ -268,6 +310,8 @@ class CatalogApiIntegrationTest {
 
   @Test
   void shouldUpdateProductThroughPostWhenPayloadContainsId() throws Exception {
+    String adminToken = loginAsAdmin("catalog-admin-product-post@example.com", "secret123");
+
     Category category =
         categoryRepository.save(
             Category.builder().label("Spices").slug("spices").map("SPICES").build());
@@ -296,7 +340,11 @@ class CatalogApiIntegrationTest {
                 true));
 
     mockMvc
-        .perform(post("/products").contentType(MediaType.APPLICATION_JSON).content(payload))
+        .perform(
+            post("/products")
+                .header("Authorization", bearer(adminToken))
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(payload))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.id").value(product.getId()))
         .andExpect(jsonPath("$.label").value("Updated Pepper"))
@@ -305,6 +353,8 @@ class CatalogApiIntegrationTest {
 
   @Test
   void shouldCreateProductThroughPutWhenIdDoesNotExist() throws Exception {
+    String adminToken = loginAsAdmin("catalog-admin-product-put@example.com", "secret123");
+
     Category category =
         categoryRepository.save(
             Category.builder().label("Spices").slug("spices").map("SPICES").build());
@@ -331,11 +381,145 @@ class CatalogApiIntegrationTest {
 
     mockMvc
         .perform(
-            put("/products/{id}", 7777).contentType(MediaType.APPLICATION_JSON).content(payload))
+            put("/products/{id}", 7777)
+                .header("Authorization", bearer(adminToken))
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(payload))
         .andExpect(status().isCreated())
         .andExpect(jsonPath("$.id").isNumber())
         .andExpect(jsonPath("$.label").value("New Product"))
         .andExpect(jsonPath("$.reference").value("NEW-001"));
+  }
+
+  @Test
+  void shouldRequireAuthenticationForCatalogWrites() throws Exception {
+    Category category =
+        categoryRepository.save(
+            Category.builder().label("Spices").slug("spices").map("SPICES").build());
+
+    String categoryPayload =
+        objectMapper.writeValueAsString(Map.of("label", "Tea", "slug", "tea", "map", "TEA"));
+    String productPayload =
+        objectMapper.writeValueAsString(
+            Map.of(
+                "category_id", category.getId(),
+                "label", "Wild Pepper",
+                "reference", "PEP-NEW",
+                "limit_date", "2026-12-31",
+                "description", "Fresh pepper",
+                "size", 1,
+                "is_active", true));
+
+    mockMvc
+        .perform(post("/categories").contentType(MediaType.APPLICATION_JSON).content(categoryPayload))
+        .andExpect(status().isUnauthorized());
+
+    mockMvc
+        .perform(
+            put("/categories/{id}", 9999)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(categoryPayload))
+        .andExpect(status().isUnauthorized());
+
+    mockMvc
+        .perform(post("/products").contentType(MediaType.APPLICATION_JSON).content(productPayload))
+        .andExpect(status().isUnauthorized());
+
+    mockMvc
+        .perform(
+            put("/products/{id}", 7777)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(productPayload))
+        .andExpect(status().isUnauthorized());
+  }
+
+  @Test
+  void shouldRejectNonAdminCatalogWrites() throws Exception {
+    Category category =
+        categoryRepository.save(
+            Category.builder().label("Spices").slug("spices").map("SPICES").build());
+    String userToken = loginAsSimpleUser("catalog-user@example.com", "secret123");
+
+    String categoryPayload =
+        objectMapper.writeValueAsString(Map.of("label", "Tea", "slug", "tea", "map", "TEA"));
+    String productPayload =
+        objectMapper.writeValueAsString(
+            Map.of(
+                "category_id", category.getId(),
+                "label", "Wild Pepper",
+                "reference", "PEP-NEW",
+                "limit_date", "2026-12-31",
+                "description", "Fresh pepper",
+                "size", 1,
+                "is_active", true));
+
+    mockMvc
+        .perform(
+            post("/categories")
+                .header("Authorization", bearer(userToken))
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(categoryPayload))
+        .andExpect(status().isForbidden());
+
+    mockMvc
+        .perform(
+            post("/products")
+                .header("Authorization", bearer(userToken))
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(productPayload))
+        .andExpect(status().isForbidden());
+  }
+
+  private String loginAsAdmin(String email, String password) throws Exception {
+    createAdmin(email, password);
+    return login(email, password);
+  }
+
+  private String loginAsSimpleUser(String email, String password) throws Exception {
+    createSimpleUser(email, password);
+    return login(email, password);
+  }
+
+  private String login(String email, String password) throws Exception {
+    String payload = objectMapper.writeValueAsString(Map.of("email", email, "password", password));
+    String response =
+        mockMvc
+            .perform(post("/auth/login").contentType(MediaType.APPLICATION_JSON).content(payload))
+            .andExpect(status().isOk())
+            .andReturn()
+            .getResponse()
+            .getContentAsString();
+    return org.openapitools.client.model.LoginResponse.fromJson(response).getAccessToken();
+  }
+
+  private UserAccount createAdmin(String email, String password) {
+    return userRepository.save(
+        UserAccount.builder()
+            .firstname("Catalog")
+            .lastname("Admin")
+            .email(email)
+            .phone("+26134" + String.format("%06d", Math.abs(email.hashCode()) % 1_000_000))
+            .passwordHash(passwordEncoder.encode(password))
+            .role(UserRole.ADMIN)
+            .status("active")
+            .build());
+  }
+
+  private UserAccount createSimpleUser(String email, String password) {
+    return userRepository.save(
+        UserAccount.builder()
+            .firstname("Catalog")
+            .lastname("User")
+            .email(email)
+            .phone("+26133" + String.format("%06d", Math.abs(email.hashCode()) % 1_000_000))
+            .passwordHash(passwordEncoder.encode(password))
+            .role(UserRole.SIMPLE_USER)
+            .status("active")
+            .build());
+  }
+
+  private String bearer(String token) {
+    return "Bearer " + token;
   }
 
   private Product product(
