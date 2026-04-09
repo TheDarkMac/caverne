@@ -99,14 +99,18 @@ public class OrderController {
 
   @GetMapping(value = "/orders/{id}/payments", produces = MediaType.APPLICATION_JSON_VALUE)
   public String listPayments(@PathVariable Long id) {
-    List<org.openapitools.client.model.Payment> payments = orderService.listPayments(id);
+    List<org.openapitools.client.model.Payment> payments =
+        orderService.listPayments(id, securityActorResolver.resolveUserOrNull());
     return JSON.getGson().toJson(payments);
   }
 
   @PostMapping(value = "/orders/{id}/payments", produces = MediaType.APPLICATION_JSON_VALUE)
   @ResponseStatus(HttpStatus.CREATED)
   public String initiatePayment(@PathVariable Long id, @RequestBody String rawBody) {
-    return JSON.getGson().toJson(orderService.processPayment(id, parsePaymentInput(rawBody)));
+    return JSON.getGson()
+        .toJson(
+            orderService.processPayment(
+                id, parsePaymentInput(rawBody), securityActorResolver.resolveUserOrNull()));
   }
 
   private org.openapitools.client.model.OrderInput parseOrderInput(String rawBody) {

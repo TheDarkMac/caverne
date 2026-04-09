@@ -256,9 +256,39 @@ class CheckoutApiIntegrationTest {
         .andExpect(status().isForbidden());
 
     mockMvc
+        .perform(get("/orders/{id}/payments", ownedOrderId).header("Authorization", bearer(otherToken)))
+        .andExpect(status().isForbidden());
+
+    mockMvc
         .perform(get("/orders/{id}", ownedOrderId).header("Authorization", bearer(adminToken)))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.id").value(ownedOrderId));
+
+    String manualPaymentPayload =
+        objectMapper.writeValueAsString(
+            Map.of("method_code", "MANUAL", "currency_code", "MGA", "amount", 11000));
+
+    mockMvc
+        .perform(
+            post("/orders/{id}/payments", ownedOrderId)
+                .header("Authorization", bearer(otherToken))
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(manualPaymentPayload))
+        .andExpect(status().isForbidden());
+
+    mockMvc
+        .perform(
+            post("/orders/{id}/payments", ownedOrderId)
+                .header("Authorization", bearer(ownerToken))
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(manualPaymentPayload))
+        .andExpect(status().isCreated())
+        .andExpect(jsonPath("$.method_code").value("MANUAL"));
+
+    mockMvc
+        .perform(get("/orders/{id}/payments", ownedOrderId).header("Authorization", bearer(ownerToken)))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$[0].method_code").value("MANUAL"));
 
     mockMvc
         .perform(
