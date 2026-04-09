@@ -112,20 +112,17 @@ public class OrderService {
     return orderApiMapper.toOrderModel(orderRepository.save(order));
   }
 
-  public List<org.openapitools.client.model.Payment> listPayments(Long orderId) {
-    Order order = findOrder(orderId);
+  public List<org.openapitools.client.model.Payment> listPayments(Long orderId, UserAccount actor) {
+    Order order = requireOrderAccess(findOrder(orderId), actor);
     return order.getPayments().stream()
         .map(payment -> orderApiMapper.toPaymentModel(order, payment))
         .toList();
   }
 
   public org.openapitools.client.model.Payment processPayment(
-      Long orderId, org.openapitools.client.model.PaymentInput input) {
+      Long orderId, org.openapitools.client.model.PaymentInput input, UserAccount actor) {
     validatePaymentInput(input);
-    Order order =
-        orderRepository
-            .findById(orderId)
-            .orElseThrow(() -> new ResponseStatusException(NOT_FOUND, "Order not found"));
+    Order order = requireOrderAccess(findOrder(orderId), actor);
 
     PaymentProvider provider =
         paymentProviders.stream()
