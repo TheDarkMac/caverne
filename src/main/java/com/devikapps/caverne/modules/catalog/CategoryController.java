@@ -1,6 +1,5 @@
 package com.devikapps.caverne.modules.catalog;
 
-import com.devikapps.caverne.modules.user.AuthSessionResolver;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.openapitools.client.JSON;
@@ -14,7 +13,6 @@ import org.springframework.web.bind.annotation.*;
 public class CategoryController {
 
   private final CategoryService categoryService;
-  private final AuthSessionResolver authSessionResolver;
 
   @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
   public String listCategories(@RequestParam(defaultValue = "false") boolean flat) {
@@ -25,9 +23,7 @@ public class CategoryController {
 
   @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
   public org.springframework.http.ResponseEntity<String> createCategory(
-      @RequestHeader(value = "Authorization", required = false) String authorizationHeader,
       @RequestBody String rawBody) {
-    authSessionResolver.requireAdmin(authorizationHeader);
     CategoryService.UpsertCategoryResult result =
         categoryService.createCategory(parseCategoryInput(rawBody));
     return org.springframework.http.ResponseEntity.status(
@@ -42,10 +38,8 @@ public class CategoryController {
 
   @PutMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
   public org.springframework.http.ResponseEntity<String> updateCategory(
-      @RequestHeader(value = "Authorization", required = false) String authorizationHeader,
       @PathVariable Long id,
       @RequestBody String rawBody) {
-    authSessionResolver.requireAdmin(authorizationHeader);
     CategoryService.UpsertCategoryResult result =
         categoryService.updateCategory(id, parseCategoryInput(rawBody));
     return org.springframework.http.ResponseEntity.status(
@@ -55,10 +49,7 @@ public class CategoryController {
 
   @DeleteMapping("/{id}")
   @ResponseStatus(HttpStatus.NO_CONTENT)
-  public void deleteCategory(
-      @RequestHeader(value = "Authorization", required = false) String authorizationHeader,
-      @PathVariable Long id) {
-    authSessionResolver.requireAdmin(authorizationHeader);
+  public void deleteCategory(@PathVariable Long id) {
     categoryService.delete(id);
   }
 

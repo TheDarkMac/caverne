@@ -18,15 +18,14 @@ public class UserController {
 
   private final UserService userService;
   private final UserAddressService userAddressService;
-  private final AuthSessionResolver authSessionResolver;
+  private final SecurityActorResolver securityActorResolver;
 
   @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
   public String listUsers(
-      @RequestHeader("Authorization") String authorizationHeader,
       @RequestParam(required = false) String role,
       @RequestParam(defaultValue = "1") int page,
       @RequestParam(defaultValue = "20") int per_page) {
-    authSessionResolver.requireAdmin(authorizationHeader);
+    securityActorResolver.requireAdmin();
     var p = userService.findAll(role, PageRequest.of(page - 1, per_page));
     org.openapitools.client.model.UsersGet200Response response =
         new org.openapitools.client.model.UsersGet200Response()
@@ -42,55 +41,46 @@ public class UserController {
 
   @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
   @ResponseStatus(HttpStatus.CREATED)
-  public String createUser(
-      @RequestHeader("Authorization") String authorizationHeader, @RequestBody String rawBody) {
-    authSessionResolver.requireAdmin(authorizationHeader);
+  public String createUser(@RequestBody String rawBody) {
+    securityActorResolver.requireAdmin();
     return JSON.getGson().toJson(userService.createUser(parseUserCreateInput(rawBody)));
   }
 
   @GetMapping(value = "/me", produces = MediaType.APPLICATION_JSON_VALUE)
-  public String getMe(@RequestHeader("Authorization") String authorizationHeader) {
-    return JSON.getGson()
-        .toJson(userService.getCurrentUser(authSessionResolver.requireUser(authorizationHeader)));
+  public String getMe() {
+    return JSON.getGson().toJson(userService.getCurrentUser(securityActorResolver.requireUser()));
   }
 
   @PutMapping(value = "/me", produces = MediaType.APPLICATION_JSON_VALUE)
-  public String updateMe(
-      @RequestHeader("Authorization") String authorizationHeader, @RequestBody String rawBody) {
+  public String updateMe(@RequestBody String rawBody) {
     return JSON.getGson()
         .toJson(
-            userService.updateCurrentUser(
-                authSessionResolver.requireUser(authorizationHeader), parseUserUpdate(rawBody)));
+            userService.updateCurrentUser(securityActorResolver.requireUser(), parseUserUpdate(rawBody)));
   }
 
   @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-  public String getUser(
-      @RequestHeader("Authorization") String authorizationHeader, @PathVariable Long id) {
-    authSessionResolver.requireAdmin(authorizationHeader);
+  public String getUser(@PathVariable Long id) {
+    securityActorResolver.requireAdmin();
     return JSON.getGson().toJson(userService.getById(id));
   }
 
   @DeleteMapping("/{id}")
   @ResponseStatus(HttpStatus.NO_CONTENT)
-  public void deleteUser(
-      @RequestHeader("Authorization") String authorizationHeader, @PathVariable Long id) {
-    authSessionResolver.requireAdmin(authorizationHeader);
+  public void deleteUser(@PathVariable Long id) {
+    securityActorResolver.requireAdmin();
     userService.deleteById(id);
   }
 
   @GetMapping(value = "/me/addresses", produces = MediaType.APPLICATION_JSON_VALUE)
-  public String listMyAddresses(@RequestHeader("Authorization") String authorizationHeader) {
-    return JSON.getGson()
-        .toJson(
-            userAddressService.listForUser(authSessionResolver.requireUser(authorizationHeader)));
+  public String listMyAddresses() {
+    return JSON.getGson().toJson(userAddressService.listForUser(securityActorResolver.requireUser()));
   }
 
   @PostMapping(value = "/me/addresses", produces = MediaType.APPLICATION_JSON_VALUE)
-  public org.springframework.http.ResponseEntity<String> createMyAddress(
-      @RequestHeader("Authorization") String authorizationHeader, @RequestBody String rawBody) {
+  public org.springframework.http.ResponseEntity<String> createMyAddress(@RequestBody String rawBody) {
     UserAddressService.UpsertAddressResult result =
         userAddressService.createOrUpdateForUser(
-            authSessionResolver.requireUser(authorizationHeader), parseAddressInput(rawBody));
+            securityActorResolver.requireUser(), parseAddressInput(rawBody));
     return org.springframework.http.ResponseEntity.status(
             result.created() ? HttpStatus.CREATED : HttpStatus.OK)
         .body(JSON.getGson().toJson(result.address()));
@@ -98,12 +88,11 @@ public class UserController {
 
   @PutMapping(value = "/me/addresses/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
   public org.springframework.http.ResponseEntity<String> updateMyAddress(
-      @RequestHeader("Authorization") String authorizationHeader,
       @PathVariable Long id,
       @RequestBody String rawBody) {
     UserAddressService.UpsertAddressResult result =
         userAddressService.updateForUser(
-            authSessionResolver.requireUser(authorizationHeader), id, parseAddressInput(rawBody));
+            securityActorResolver.requireUser(), id, parseAddressInput(rawBody));
     return org.springframework.http.ResponseEntity.status(
             result.created() ? HttpStatus.CREATED : HttpStatus.OK)
         .body(JSON.getGson().toJson(result.address()));
@@ -111,18 +100,14 @@ public class UserController {
 
   @DeleteMapping("/me/addresses/{id}")
   @ResponseStatus(HttpStatus.NO_CONTENT)
-  public void deleteMyAddress(
-      @RequestHeader("Authorization") String authorizationHeader, @PathVariable Long id) {
-    userAddressService.deleteForUser(authSessionResolver.requireUser(authorizationHeader), id);
+  public void deleteMyAddress(@PathVariable Long id) {
+    userAddressService.deleteForUser(securityActorResolver.requireUser(), id);
   }
 
   @PutMapping(value = "/me/addresses/{id}/default", produces = MediaType.APPLICATION_JSON_VALUE)
-  public String setMyDefaultAddress(
-      @RequestHeader("Authorization") String authorizationHeader, @PathVariable Long id) {
+  public String setMyDefaultAddress(@PathVariable Long id) {
     return JSON.getGson()
-        .toJson(
-            userAddressService.setDefaultForUser(
-                authSessionResolver.requireUser(authorizationHeader), id));
+        .toJson(userAddressService.setDefaultForUser(securityActorResolver.requireUser(), id));
   }
 
   private org.openapitools.client.model.UserUpdate parseUserUpdate(String rawBody) {
