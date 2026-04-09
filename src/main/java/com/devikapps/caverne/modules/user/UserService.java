@@ -68,6 +68,7 @@ public class UserService {
             .email(normalizedEmail)
             .phone(normalizedPhone)
             .passwordHash(passwordEncoder.encode(input.getPassword()))
+            .authProvider(AuthProviderCode.LOCAL)
             .role(role)
             .status(status)
             .build();

@@ -6,6 +6,9 @@ import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 
 public interface UserRepository
     extends JpaRepository<UserAccount, Long>, JpaSpecificationExecutor<UserAccount> {
+  Optional<UserAccount> findByAuthProviderAndExternalAuthId(
+      AuthProviderCode authProvider, String externalAuthId);
+
   Optional<UserAccount> findByEmailIgnoreCase(String email);
 
   Optional<UserAccount> findByPhone(String phone);

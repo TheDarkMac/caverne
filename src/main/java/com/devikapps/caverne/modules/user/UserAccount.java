@@ -30,8 +30,22 @@ public class UserAccount {
 
   @Enumerated(EnumType.STRING)
   @Column(nullable = false)
+  private AuthProviderCode authProvider;
+
+  @Column private String externalAuthId;
+
+  @Enumerated(EnumType.STRING)
+  @Column(nullable = false)
   private UserRole role;
 
   @Column(nullable = false)
   private String status;
+
+  @PrePersist
+  @PreUpdate
+  void applyDefaults() {
+    if (authProvider == null) {
+      authProvider = AuthProviderCode.LOCAL;
+    }
+  }
 }

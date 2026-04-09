@@ -46,6 +46,7 @@ public class AuthService {
             .email(normalizedEmail)
             .phone(normalizedPhone)
             .passwordHash(passwordEncoder.encode(input.getPassword()))
+            .authProvider(AuthProviderCode.LOCAL)
             .role(UserRole.SIMPLE_USER)
             .status("active")
             .build();
@@ -83,11 +84,7 @@ public class AuthService {
   }
 
   public void logout(String authorizationHeader) {
-    String token = authSessionResolver.extractBearerToken(authorizationHeader);
-    if (authSessionRepository.findByToken(token).isEmpty()) {
-      throw new ResponseStatusException(UNAUTHORIZED, "Authentication required");
-    }
-    authSessionRepository.deleteByToken(token);
+    authSessionResolver.logout(authorizationHeader);
   }
 
   private void validateRegistration(org.openapitools.client.model.RegisterRequest input) {
