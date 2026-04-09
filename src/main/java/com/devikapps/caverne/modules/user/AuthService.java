@@ -6,7 +6,7 @@ import static org.springframework.http.HttpStatus.UNPROCESSABLE_ENTITY;
 import java.time.LocalDateTime;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
@@ -22,7 +22,7 @@ public class AuthService {
   private final AuthSessionRepository authSessionRepository;
   private final UserApiMapper userApiMapper;
   private final AuthSessionResolver authSessionResolver;
-  private final BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+  private final PasswordEncoder passwordEncoder;
 
   public org.openapitools.client.model.User register(
       org.openapitools.client.model.RegisterRequest input) {

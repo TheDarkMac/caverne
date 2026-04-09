@@ -30,7 +30,7 @@ public class LocalSessionAuthenticationProvider implements AuthenticationProvide
   public UserAccount authenticate(String token) {
     AuthSession session =
         authSessionRepository
-            .findByToken(token)
+            .findWithUserByToken(token)
             .orElseThrow(
                 () -> new ResponseStatusException(UNAUTHORIZED, "Authentication required"));
 
@@ -39,7 +39,9 @@ public class LocalSessionAuthenticationProvider implements AuthenticationProvide
       throw new ResponseStatusException(UNAUTHORIZED, "Authentication token expired");
     }
 
-    return session.getUser();
+    UserAccount user = session.getUser();
+    user.getRole();
+    return user;
   }
 
   @Override
