@@ -107,6 +107,28 @@ class SupabaseAuthIntegrationTest {
   }
 
   @Test
+  void shouldNotElevateProvisionedSupabaseUserToAdminFromTokenClaims() throws Exception {
+    String token =
+        createSupabaseJwt(
+            "supabase-user-3",
+            "admin-claim@example.com",
+            "+261340000778",
+            Map.of("first_name", "Claimed", "last_name", "Admin", "role", "admin"));
+
+    mockMvc
+        .perform(get("/users/me").header("Authorization", bearer(token)))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.email").value("admin-claim@example.com"))
+        .andExpect(jsonPath("$.role").value("simple_user"));
+
+    UserAccount createdUser =
+        userRepository
+            .findByAuthProviderAndExternalAuthId(AuthProviderCode.SUPABASE, "supabase-user-3")
+            .orElseThrow();
+    org.junit.jupiter.api.Assertions.assertEquals(UserRole.SIMPLE_USER, createdUser.getRole());
+  }
+
+  @Test
   void shouldAllowSupabaseUserToCallLogout() throws Exception {
     String token =
         createSupabaseJwt(
