@@ -38,8 +38,7 @@ public class CategoryController {
 
   @PutMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
   public org.springframework.http.ResponseEntity<String> updateCategory(
-      @PathVariable Long id,
-      @RequestBody String rawBody) {
+      @PathVariable Long id, @RequestBody String rawBody) {
     CategoryService.UpsertCategoryResult result =
         categoryService.updateCategory(id, parseCategoryInput(rawBody));
     return org.springframework.http.ResponseEntity.status(

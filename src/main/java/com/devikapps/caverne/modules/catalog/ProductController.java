@@ -55,8 +55,7 @@ public class ProductController {
 
   @PutMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
   public org.springframework.http.ResponseEntity<String> updateProduct(
-      @PathVariable Long id,
-      @RequestBody String rawBody) {
+      @PathVariable Long id, @RequestBody String rawBody) {
     ProductService.UpsertProductResult result =
         productService.updateProduct(id, parseProductInput(rawBody));
     return org.springframework.http.ResponseEntity.status(

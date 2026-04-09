@@ -43,9 +43,7 @@ public class AuthBearerFilter extends OncePerRequestFilter {
       if (user != null) {
         UsernamePasswordAuthenticationToken authentication =
             new UsernamePasswordAuthenticationToken(
-                user,
-                null,
-                List.of(new SimpleGrantedAuthority("ROLE_" + user.getRole().name())));
+                user, null, List.of(new SimpleGrantedAuthority("ROLE_" + user.getRole().name())));
         SecurityContextHolder.getContext().setAuthentication(authentication);
       }
       filterChain.doFilter(request, response);

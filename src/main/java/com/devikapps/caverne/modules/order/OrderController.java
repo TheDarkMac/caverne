@@ -70,11 +70,11 @@ public class OrderController {
 
   @PostMapping(value = "/orders", produces = MediaType.APPLICATION_JSON_VALUE)
   @ResponseStatus(HttpStatus.CREATED)
-  public String createOrder(
-      @RequestBody String rawBody) {
+  public String createOrder(@RequestBody String rawBody) {
     return JSON.getGson()
         .toJson(
-            orderService.createOrder(parseOrderInput(rawBody), securityActorResolver.resolveUserOrNull()));
+            orderService.createOrder(
+                parseOrderInput(rawBody), securityActorResolver.resolveUserOrNull()));
   }
 
   @GetMapping(value = "/orders/{id}", produces = MediaType.APPLICATION_JSON_VALUE)

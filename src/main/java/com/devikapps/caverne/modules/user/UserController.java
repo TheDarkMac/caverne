@@ -55,7 +55,8 @@ public class UserController {
   public String updateMe(@RequestBody String rawBody) {
     return JSON.getGson()
         .toJson(
-            userService.updateCurrentUser(securityActorResolver.requireUser(), parseUserUpdate(rawBody)));
+            userService.updateCurrentUser(
+                securityActorResolver.requireUser(), parseUserUpdate(rawBody)));
   }
 
   @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -73,11 +74,13 @@ public class UserController {
 
   @GetMapping(value = "/me/addresses", produces = MediaType.APPLICATION_JSON_VALUE)
   public String listMyAddresses() {
-    return JSON.getGson().toJson(userAddressService.listForUser(securityActorResolver.requireUser()));
+    return JSON.getGson()
+        .toJson(userAddressService.listForUser(securityActorResolver.requireUser()));
   }
 
   @PostMapping(value = "/me/addresses", produces = MediaType.APPLICATION_JSON_VALUE)
-  public org.springframework.http.ResponseEntity<String> createMyAddress(@RequestBody String rawBody) {
+  public org.springframework.http.ResponseEntity<String> createMyAddress(
+      @RequestBody String rawBody) {
     UserAddressService.UpsertAddressResult result =
         userAddressService.createOrUpdateForUser(
             securityActorResolver.requireUser(), parseAddressInput(rawBody));
@@ -88,8 +91,7 @@ public class UserController {
 
   @PutMapping(value = "/me/addresses/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
   public org.springframework.http.ResponseEntity<String> updateMyAddress(
-      @PathVariable Long id,
-      @RequestBody String rawBody) {
+      @PathVariable Long id, @RequestBody String rawBody) {
     UserAddressService.UpsertAddressResult result =
         userAddressService.updateForUser(
             securityActorResolver.requireUser(), id, parseAddressInput(rawBody));
