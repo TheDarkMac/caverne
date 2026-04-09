@@ -4,6 +4,7 @@ plugins {
 	id("io.spring.dependency-management") version "1.1.7"
 	id("org.hibernate.orm") version "7.2.7.Final"
 	id("org.graalvm.buildtools.native") version "0.11.5"
+	id("io.gatling.gradle") version "3.15.0.1"
 }
 
 group = "com.devikapps"

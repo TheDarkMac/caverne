@@ -1,0 +1,94 @@
+name: CI - Gatling
+
+on:
+  push:
+    branches: ["**"]
+  pull_request:
+    branches: ["**"]
+  workflow_dispatch:
+
+jobs:
+  gatling:
+    name: Verify Gatling Performance Path
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_DB: caverne
+          POSTGRES_USER: caverne
+          POSTGRES_PASSWORD: caverne
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd="pg_isready -U caverne -d caverne"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=10
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v5
+
+      - name: Set up JDK 21
+        uses: actions/setup-java@v5
+        with:
+          java-version: "21"
+          distribution: "temurin"
+          cache: gradle
+
+      - name: Build application and Gatling sources
+        run: ./gradlew --no-daemon bootJar gatlingClasses
+
+      - name: Start application in background
+        env:
+          SPRING_DATASOURCE_URL: jdbc:postgresql://127.0.0.1:5432/caverne
+          SPRING_DATASOURCE_USERNAME: caverne
+          SPRING_DATASOURCE_PASSWORD: caverne
+          SPRING_DATASOURCE_DRIVER_CLASS_NAME: org.postgresql.Driver
+          SPRING_DOCKER_COMPOSE_ENABLED: "false"
+          SPRING_JPA_SHOW_SQL: "false"
+          SPRING_JPA_PROPERTIES_HIBERNATE_FORMAT_SQL: "false"
+          APP_CORS_ALLOWED_ORIGINS: http://127.0.0.1:3000
+          AUTH_PROVIDERS_SUPABASE_ENABLED: "false"
+          BOOTSTRAP_ADMIN_ENABLED: "false"
+          STRIPE_ENABLED: "false"
+        run: |
+          java -jar build/libs/*.jar > app.log 2>&1 &
+          echo $! > app.pid
+
+      - name: Wait for application
+        run: |
+          for i in {1..60}; do
+            if curl --silent --fail http://127.0.0.1:8080/categories >/dev/null; then
+              exit 0
+            fi
+            sleep 2
+          done
+          echo "Application did not start in time"
+          cat app.log
+          exit 1
+
+      - name: Run Gatling simulation
+        env:
+          GATLING_BASE_URL: http://127.0.0.1:8080
+        run: ./gradlew --no-daemon gatlingRun
+
+      - name: Upload Gatling reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: gatling-report
+          path: |
+            build/reports/gatling
+            build/gatling-results
+            app.log
+
+      - name: Stop application
+        if: always()
+        run: |
+          if [ -f app.pid ]; then
+            kill "$(cat app.pid)" || true
+          fi
