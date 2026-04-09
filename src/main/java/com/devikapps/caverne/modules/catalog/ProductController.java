@@ -1,6 +1,5 @@
 package com.devikapps.caverne.modules.catalog;
 
-import com.devikapps.caverne.modules.user.AuthSessionResolver;
 import lombok.RequiredArgsConstructor;
 import org.openapitools.client.JSON;
 import org.springframework.data.domain.PageRequest;
@@ -14,7 +13,6 @@ import org.springframework.web.bind.annotation.*;
 public class ProductController {
 
   private final ProductService productService;
-  private final AuthSessionResolver authSessionResolver;
 
   @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
   public String listProducts(
@@ -42,9 +40,7 @@ public class ProductController {
 
   @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
   public org.springframework.http.ResponseEntity<String> createProduct(
-      @RequestHeader(value = "Authorization", required = false) String authorizationHeader,
       @RequestBody String rawBody) {
-    authSessionResolver.requireAdmin(authorizationHeader);
     ProductService.UpsertProductResult result =
         productService.createProduct(parseProductInput(rawBody));
     return org.springframework.http.ResponseEntity.status(
@@ -59,10 +55,8 @@ public class ProductController {
 
   @PutMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
   public org.springframework.http.ResponseEntity<String> updateProduct(
-      @RequestHeader(value = "Authorization", required = false) String authorizationHeader,
       @PathVariable Long id,
       @RequestBody String rawBody) {
-    authSessionResolver.requireAdmin(authorizationHeader);
     ProductService.UpsertProductResult result =
         productService.updateProduct(id, parseProductInput(rawBody));
     return org.springframework.http.ResponseEntity.status(
@@ -72,10 +66,7 @@ public class ProductController {
 
   @DeleteMapping("/{id}")
   @ResponseStatus(HttpStatus.NO_CONTENT)
-  public void deleteProduct(
-      @RequestHeader(value = "Authorization", required = false) String authorizationHeader,
-      @PathVariable Long id) {
-    authSessionResolver.requireAdmin(authorizationHeader);
+  public void deleteProduct(@PathVariable Long id) {
     productService.deleteProduct(id);
   }
 

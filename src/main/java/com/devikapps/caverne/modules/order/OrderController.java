@@ -2,7 +2,7 @@ package com.devikapps.caverne.modules.order;
 
 import static org.springframework.http.HttpStatus.UNPROCESSABLE_ENTITY;
 
-import com.devikapps.caverne.modules.user.AuthSessionResolver;
+import com.devikapps.caverne.modules.user.SecurityActorResolver;
 import com.devikapps.caverne.modules.user.UserAccount;
 import java.io.IOException;
 import java.util.List;
@@ -20,15 +20,14 @@ import org.springframework.web.server.ResponseStatusException;
 public class OrderController {
 
   private final OrderService orderService;
-  private final AuthSessionResolver authSessionResolver;
+  private final SecurityActorResolver securityActorResolver;
 
   @GetMapping(value = "/orders", produces = MediaType.APPLICATION_JSON_VALUE)
   public String listMyOrders(
-      @RequestHeader("Authorization") String authorizationHeader,
       @RequestParam(required = false) String status,
       @RequestParam(defaultValue = "1") int page,
       @RequestParam(defaultValue = "20") int per_page) {
-    UserAccount currentUser = authSessionResolver.requireUser(authorizationHeader);
+    UserAccount currentUser = securityActorResolver.requireUser();
     var p =
         orderService.findAllForUser(
             currentUser, parseOrderStatus(status), PageRequest.of(page - 1, per_page));
@@ -46,12 +45,11 @@ public class OrderController {
 
   @GetMapping(value = "/orders/all", produces = MediaType.APPLICATION_JSON_VALUE)
   public String listAllOrders(
-      @RequestHeader("Authorization") String authorizationHeader,
       @RequestParam(required = false) String status,
       @RequestParam(required = false) Integer user_id,
       @RequestParam(defaultValue = "1") int page,
       @RequestParam(defaultValue = "20") int per_page) {
-    authSessionResolver.requireAdmin(authorizationHeader);
+    securityActorResolver.requireAdmin();
 
     var p =
         orderService.findAll(
@@ -73,44 +71,30 @@ public class OrderController {
   @PostMapping(value = "/orders", produces = MediaType.APPLICATION_JSON_VALUE)
   @ResponseStatus(HttpStatus.CREATED)
   public String createOrder(
-      @RequestHeader(value = "Authorization", required = false) String authorizationHeader,
       @RequestBody String rawBody) {
     return JSON.getGson()
         .toJson(
-            orderService.createOrder(
-                parseOrderInput(rawBody),
-                authSessionResolver.resolveUserOrNull(authorizationHeader)));
+            orderService.createOrder(parseOrderInput(rawBody), securityActorResolver.resolveUserOrNull()));
   }
 
   @GetMapping(value = "/orders/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-  public String getOrder(
-      @RequestHeader(value = "Authorization", required = false) String authorizationHeader,
-      @PathVariable Long id) {
+  public String getOrder(@PathVariable Long id) {
     return JSON.getGson()
-        .toJson(
-            orderService.getOrderForActor(
-                id, authSessionResolver.resolveUserOrNull(authorizationHeader)));
+        .toJson(orderService.getOrderForActor(id, securityActorResolver.resolveUserOrNull()));
   }
 
   @PutMapping(value = "/orders/{id}/status", produces = MediaType.APPLICATION_JSON_VALUE)
-  public String updateStatus(
-      @RequestHeader("Authorization") String authorizationHeader,
-      @PathVariable Long id,
-      @RequestBody String rawBody) {
-    authSessionResolver.requireAdmin(authorizationHeader);
+  public String updateStatus(@PathVariable Long id, @RequestBody String rawBody) {
+    securityActorResolver.requireAdmin();
     org.openapitools.client.model.OrderStatusUpdate input = parseOrderStatusUpdate(rawBody);
     return JSON.getGson()
         .toJson(orderService.updateStatus(id, OrderStatus.valueOf(input.getStatus().name())));
   }
 
   @PostMapping(value = "/orders/{id}/cancel", produces = MediaType.APPLICATION_JSON_VALUE)
-  public String cancelOrder(
-      @RequestHeader(value = "Authorization", required = false) String authorizationHeader,
-      @PathVariable Long id) {
+  public String cancelOrder(@PathVariable Long id) {
     return JSON.getGson()
-        .toJson(
-            orderService.cancelOrder(
-                id, authSessionResolver.resolveUserOrNull(authorizationHeader)));
+        .toJson(orderService.cancelOrder(id, securityActorResolver.resolveUserOrNull()));
   }
 
   @GetMapping(value = "/orders/{id}/payments", produces = MediaType.APPLICATION_JSON_VALUE)
