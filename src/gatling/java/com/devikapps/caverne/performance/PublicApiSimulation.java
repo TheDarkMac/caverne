@@ -1,11 +1,7 @@
 package com.devikapps.caverne.performance;
 
-import static io.gatling.javaapi.core.CoreDsl.StringBody;
-import static io.gatling.javaapi.core.CoreDsl.global;
-import static io.gatling.javaapi.core.CoreDsl.rampUsers;
-import static io.gatling.javaapi.core.CoreDsl.scenario;
+import static io.gatling.javaapi.core.CoreDsl.*;
 import static io.gatling.javaapi.http.HttpDsl.http;
-import static io.gatling.javaapi.http.HttpDsl.jsonPath;
 import static io.gatling.javaapi.http.HttpDsl.status;
 
 import io.gatling.javaapi.core.ScenarioBuilder;
