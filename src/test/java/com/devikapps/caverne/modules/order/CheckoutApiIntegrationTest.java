@@ -256,7 +256,8 @@ class CheckoutApiIntegrationTest {
         .andExpect(status().isForbidden());
 
     mockMvc
-        .perform(get("/orders/{id}/payments", ownedOrderId).header("Authorization", bearer(otherToken)))
+        .perform(
+            get("/orders/{id}/payments", ownedOrderId).header("Authorization", bearer(otherToken)))
         .andExpect(status().isForbidden());
 
     mockMvc
@@ -286,7 +287,8 @@ class CheckoutApiIntegrationTest {
         .andExpect(jsonPath("$.method_code").value("MANUAL"));
 
     mockMvc
-        .perform(get("/orders/{id}/payments", ownedOrderId).header("Authorization", bearer(ownerToken)))
+        .perform(
+            get("/orders/{id}/payments", ownedOrderId).header("Authorization", bearer(ownerToken)))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$[0].method_code").value("MANUAL"));
 

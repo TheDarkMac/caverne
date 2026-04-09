@@ -411,7 +411,8 @@ class CatalogApiIntegrationTest {
                 "is_active", true));
 
     mockMvc
-        .perform(post("/categories").contentType(MediaType.APPLICATION_JSON).content(categoryPayload))
+        .perform(
+            post("/categories").contentType(MediaType.APPLICATION_JSON).content(categoryPayload))
         .andExpect(status().isUnauthorized());
 
     mockMvc

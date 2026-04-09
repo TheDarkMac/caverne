@@ -42,7 +42,8 @@ public class AdminBootstrapRunner implements ApplicationRunner {
   private void validateConfiguration() {
     if (isBlank(properties.getFirstname()) || isBlank(properties.getLastname())) {
       throw new IllegalStateException(
-          "bootstrap.admin.firstname and bootstrap.admin.lastname are required when bootstrap.admin.enabled=true");
+          "bootstrap.admin.firstname and bootstrap.admin.lastname are required when"
+              + " bootstrap.admin.enabled=true");
     }
     if (isBlank(properties.getPassword())) {
       throw new IllegalStateException(
@@ -50,7 +51,8 @@ public class AdminBootstrapRunner implements ApplicationRunner {
     }
     if (isBlank(properties.getEmail()) && isBlank(properties.getPhone())) {
       throw new IllegalStateException(
-          "bootstrap.admin.email or bootstrap.admin.phone is required when bootstrap.admin.enabled=true");
+          "bootstrap.admin.email or bootstrap.admin.phone is required when"
+              + " bootstrap.admin.enabled=true");
     }
   }
 

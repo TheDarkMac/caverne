@@ -85,7 +85,11 @@ public class NichesCatalogImporter implements ApplicationRunner {
         .orElseGet(
             () ->
                 categoryRepository.save(
-                    Category.builder().label(label).slug(slug).map(slug.toUpperCase(Locale.ROOT)).build()));
+                    Category.builder()
+                        .label(label)
+                        .slug(slug)
+                        .map(slug.toUpperCase(Locale.ROOT))
+                        .build()));
   }
 
   private Product findOrCreateProduct(Category category, String label) {

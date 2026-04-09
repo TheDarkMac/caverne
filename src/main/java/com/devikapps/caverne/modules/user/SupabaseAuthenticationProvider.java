@@ -39,7 +39,9 @@ public class SupabaseAuthenticationProvider extends AbstractExternalAuthenticati
 
   @Override
   public boolean supportsToken(String token) {
-    return properties.isEnabled() && token != null && token.chars().filter(ch -> ch == '.').count() == 2;
+    return properties.isEnabled()
+        && token != null
+        && token.chars().filter(ch -> ch == '.').count() == 2;
   }
 
   @Override
@@ -58,8 +60,7 @@ public class SupabaseAuthenticationProvider extends AbstractExternalAuthenticati
 
     Map<String, Object> header = decodePart(parts[0]);
     if (!"HS256".equals(header.get("alg"))) {
-      throw new ResponseStatusException(
-          UNAUTHORIZED, "Unsupported Supabase JWT algorithm");
+      throw new ResponseStatusException(UNAUTHORIZED, "Unsupported Supabase JWT algorithm");
     }
 
     verifySignature(parts[0], parts[1], parts[2]);
@@ -123,13 +124,15 @@ public class SupabaseAuthenticationProvider extends AbstractExternalAuthenticati
     }
   }
 
-  private void verifySignature(String encodedHeader, String encodedPayload, String encodedSignature) {
+  private void verifySignature(
+      String encodedHeader, String encodedPayload, String encodedSignature) {
     try {
       Mac mac = Mac.getInstance("HmacSHA256");
       mac.init(
           new SecretKeySpec(
               properties.getJwtSecret().getBytes(StandardCharsets.UTF_8), "HmacSHA256"));
-      byte[] expected = mac.doFinal((encodedHeader + "." + encodedPayload).getBytes(StandardCharsets.UTF_8));
+      byte[] expected =
+          mac.doFinal((encodedHeader + "." + encodedPayload).getBytes(StandardCharsets.UTF_8));
       byte[] actual = Base64.getUrlDecoder().decode(encodedSignature);
       if (!MessageDigest.isEqual(expected, actual)) {
         throw new ResponseStatusException(UNAUTHORIZED, "Supabase token signature is invalid");

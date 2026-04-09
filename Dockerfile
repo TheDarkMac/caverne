@@ -10,6 +10,7 @@ WORKDIR /app
 
 # Copier le jar depuis l'étape builder
 COPY --from=builder /workspace/app/build/libs/*.jar app.jar
+COPY --from=builder /workspace/app/niches.md /app/niches.md
 
 # Créer un utilisateur non-root
 RUN useradd -u 1001 -r -s /bin/false appuser \

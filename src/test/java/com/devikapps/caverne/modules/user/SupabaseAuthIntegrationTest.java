@@ -78,8 +78,10 @@ class SupabaseAuthIntegrationTest {
         .andExpect(jsonPath("$.role").value("admin"));
 
     UserAccount linkedUser = userRepository.findById(existingUser.getId()).orElseThrow();
-    org.junit.jupiter.api.Assertions.assertEquals(AuthProviderCode.SUPABASE, linkedUser.getAuthProvider());
-    org.junit.jupiter.api.Assertions.assertEquals("supabase-user-1", linkedUser.getExternalAuthId());
+    org.junit.jupiter.api.Assertions.assertEquals(
+        AuthProviderCode.SUPABASE, linkedUser.getAuthProvider());
+    org.junit.jupiter.api.Assertions.assertEquals(
+        "supabase-user-1", linkedUser.getExternalAuthId());
   }
 
   @Test
@@ -101,7 +103,8 @@ class SupabaseAuthIntegrationTest {
         .andExpect(jsonPath("$.role").value("simple_user"));
 
     UserAccount createdUser =
-        userRepository.findByAuthProviderAndExternalAuthId(AuthProviderCode.SUPABASE, "supabase-user-2")
+        userRepository
+            .findByAuthProviderAndExternalAuthId(AuthProviderCode.SUPABASE, "supabase-user-2")
             .orElseThrow();
     org.junit.jupiter.api.Assertions.assertEquals("new-user@example.com", createdUser.getEmail());
   }
@@ -138,12 +141,16 @@ class SupabaseAuthIntegrationTest {
             Map.of("first_name", "Logout", "last_name", "User"));
 
     mockMvc
-        .perform(post("/auth/logout").header("Authorization", bearer(token)).contentType(MediaType.APPLICATION_JSON))
+        .perform(
+            post("/auth/logout")
+                .header("Authorization", bearer(token))
+                .contentType(MediaType.APPLICATION_JSON))
         .andExpect(status().isNoContent());
   }
 
   private String createSupabaseJwt(
-      String subject, String email, String phone, Map<String, Object> userMetadata) throws Exception {
+      String subject, String email, String phone, Map<String, Object> userMetadata)
+      throws Exception {
     String header = encode(Map.of("alg", "HS256", "typ", "JWT"));
 
     Map<String, Object> payload = new LinkedHashMap<>();
@@ -169,8 +176,11 @@ class SupabaseAuthIntegrationTest {
 
   private String sign(String message) throws Exception {
     Mac mac = Mac.getInstance("HmacSHA256");
-    mac.init(new SecretKeySpec("test-supabase-secret".getBytes(StandardCharsets.UTF_8), "HmacSHA256"));
-    return Base64.getUrlEncoder().withoutPadding().encodeToString(mac.doFinal(message.getBytes(StandardCharsets.UTF_8)));
+    mac.init(
+        new SecretKeySpec("test-supabase-secret".getBytes(StandardCharsets.UTF_8), "HmacSHA256"));
+    return Base64.getUrlEncoder()
+        .withoutPadding()
+        .encodeToString(mac.doFinal(message.getBytes(StandardCharsets.UTF_8)));
   }
 
   private String bearer(String token) {

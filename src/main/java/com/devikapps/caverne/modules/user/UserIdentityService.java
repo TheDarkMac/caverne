@@ -35,7 +35,8 @@ public class UserIdentityService {
 
     UserAccount existingByEmail =
         email == null ? null : userRepository.findByEmailIgnoreCase(email).orElse(null);
-    UserAccount existingByPhone = phone == null ? null : userRepository.findByPhone(phone).orElse(null);
+    UserAccount existingByPhone =
+        phone == null ? null : userRepository.findByPhone(phone).orElse(null);
 
     if (existingByEmail != null
         && existingByPhone != null
