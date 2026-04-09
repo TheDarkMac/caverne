@@ -17,12 +17,16 @@ import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.authentication.HttpStatusEntryPoint;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.http.HttpStatus;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 @Configuration
 @RequiredArgsConstructor
 public class SecurityConfiguration {
 
   private final ObjectMapper objectMapper;
+  private final CorsProperties corsProperties;
 
   @Bean
   SecurityFilterChain securityFilterChain(HttpSecurity http, AuthBearerFilter authBearerFilter)
@@ -39,6 +43,8 @@ public class SecurityConfiguration {
         .authorizeHttpRequests(
             auth ->
                 auth.requestMatchers(HttpMethod.POST, "/auth/register", "/auth/login")
+                    .permitAll()
+                    .requestMatchers(HttpMethod.OPTIONS, "/**")
                     .permitAll()
                     .requestMatchers(HttpMethod.GET, "/orders/all")
                     .hasAuthority(roleAuthority(UserRole.ADMIN))
@@ -94,6 +100,21 @@ public class SecurityConfiguration {
                     .permitAll())
         .addFilterBefore(authBearerFilter, UsernamePasswordAuthenticationFilter.class)
         .build();
+  }
+
+  @Bean
+  CorsConfigurationSource corsConfigurationSource() {
+    CorsConfiguration configuration = new CorsConfiguration();
+    configuration.setAllowedOrigins(corsProperties.getAllowedOrigins());
+    configuration.setAllowedMethods(corsProperties.getAllowedMethods());
+    configuration.setAllowedHeaders(corsProperties.getAllowedHeaders());
+    configuration.setExposedHeaders(corsProperties.getExposedHeaders());
+    configuration.setAllowCredentials(corsProperties.isAllowCredentials());
+    configuration.setMaxAge(corsProperties.getMaxAge());
+
+    UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+    source.registerCorsConfiguration("/**", configuration);
+    return source;
   }
 
   private AccessDeniedHandler accessDeniedHandler() {
