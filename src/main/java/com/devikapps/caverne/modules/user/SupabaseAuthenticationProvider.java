@@ -12,19 +12,25 @@ import java.util.List;
 import java.util.Map;
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
-import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.web.server.ResponseStatusException;
 
 @Component
-@RequiredArgsConstructor
-public class SupabaseAuthenticationProvider implements AuthenticationProvider {
+public class SupabaseAuthenticationProvider extends AbstractExternalAuthenticationProvider {
 
   private static final TypeReference<Map<String, Object>> MAP_TYPE = new TypeReference<>() {};
 
   private final SupabaseAuthProperties properties;
   private final ObjectMapper objectMapper;
-  private final UserIdentityService userIdentityService;
+
+  public SupabaseAuthenticationProvider(
+      SupabaseAuthProperties properties,
+      ObjectMapper objectMapper,
+      UserIdentityService userIdentityService) {
+    super(userIdentityService);
+    this.properties = properties;
+    this.objectMapper = objectMapper;
+  }
 
   @Override
   public String getProviderCode() {
@@ -37,7 +43,7 @@ public class SupabaseAuthenticationProvider implements AuthenticationProvider {
   }
 
   @Override
-  public UserAccount authenticate(String token) {
+  protected ExternalIdentityProfile verifyIdentity(String token) {
     if (!properties.isEnabled()) {
       throw new ResponseStatusException(UNAUTHORIZED, "Supabase authentication is disabled");
     }
@@ -65,8 +71,8 @@ public class SupabaseAuthenticationProvider implements AuthenticationProvider {
       throw new ResponseStatusException(UNAUTHORIZED, "Supabase token subject is missing");
     }
 
-    Map<String, Object> userMetadata = userIdentityService.asMap(claims.get("user_metadata"));
-    return userIdentityService.resolveOrCreateExternalUser(
+    Map<String, Object> userMetadata = asMap(claims.get("user_metadata"));
+    return new ExternalIdentityProfile(
         AuthProviderCode.SUPABASE,
         subject,
         normalize(stringClaim(claims, "email")),

@@ -18,13 +18,14 @@ public class UserIdentityService {
   private final UserRepository userRepository;
   private final PasswordEncoder passwordEncoder;
 
-  public UserAccount resolveOrCreateExternalUser(
-      AuthProviderCode provider,
-      String externalAuthId,
-      String email,
-      String phone,
-      String firstname,
-      String lastname) {
+  public UserAccount resolveOrCreateExternalUser(ExternalIdentityProfile profile) {
+    AuthProviderCode provider = profile.provider();
+    String externalAuthId = profile.externalAuthId();
+    String email = profile.email();
+    String phone = profile.phone();
+    String firstname = profile.firstname();
+    String lastname = profile.lastname();
+
     UserAccount existingByProvider =
         userRepository.findByAuthProviderAndExternalAuthId(provider, externalAuthId).orElse(null);
     if (existingByProvider != null) {
@@ -114,6 +115,6 @@ public class UserIdentityService {
     if (lastname != null && !lastname.isBlank()) {
       return lastname;
     }
-    return "Supabase";
+    return "External";
   }
 }
