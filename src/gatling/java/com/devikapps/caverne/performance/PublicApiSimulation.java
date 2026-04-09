@@ -2,7 +2,6 @@ package com.devikapps.caverne.performance;
 
 import static io.gatling.javaapi.core.CoreDsl.StringBody;
 import static io.gatling.javaapi.core.CoreDsl.global;
-import static io.gatling.javaapi.core.CoreDsl.pause;
 import static io.gatling.javaapi.core.CoreDsl.rampUsers;
 import static io.gatling.javaapi.core.CoreDsl.scenario;
 import static io.gatling.javaapi.http.HttpDsl.http;
@@ -17,8 +16,7 @@ import java.time.Duration;
 public class PublicApiSimulation extends Simulation {
 
   private static final String RUN_ID = String.valueOf(System.currentTimeMillis());
-  private static final String RUN_SUFFIX =
-      RUN_ID.substring(Math.max(0, RUN_ID.length() - 6));
+  private static final String RUN_SUFFIX = RUN_ID.substring(Math.max(0, RUN_ID.length() - 6));
   private static final String BASE_URL =
       System.getProperty(
           "gatling.baseUrl",
@@ -32,10 +30,7 @@ public class PublicApiSimulation extends Simulation {
 
   private final ScenarioBuilder publicBrowsingScenario =
       scenario("Public Browsing")
-          .exec(
-              http("list categories")
-                  .get("/categories")
-                  .check(status().in(200, 204)))
+          .exec(http("list categories").get("/categories").check(status().in(200, 204)))
           .pause(1)
           .exec(
               http("list products")
@@ -110,7 +105,6 @@ public class PublicApiSimulation extends Simulation {
             authFlowScenario.injectOpen(rampUsers(3).during(Duration.ofSeconds(10))))
         .protocols(httpProtocol)
         .assertions(
-            global().failedRequests().count().is(0L),
-            global().responseTime().max().lt(5000));
+            global().failedRequests().count().is(0L), global().responseTime().max().lt(5000));
   }
 }
