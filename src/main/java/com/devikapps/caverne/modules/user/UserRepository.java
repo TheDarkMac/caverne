@@ -6,6 +6,8 @@ import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 
 public interface UserRepository
     extends JpaRepository<UserAccount, Long>, JpaSpecificationExecutor<UserAccount> {
+  boolean existsByRole(UserRole role);
+
   Optional<UserAccount> findByAuthProviderAndExternalAuthId(
       AuthProviderCode authProvider, String externalAuthId);
 
