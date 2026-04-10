@@ -32,6 +32,7 @@ public class OrderService {
 
   private final OrderRepository orderRepository;
   private final ProductService productService;
+  private final DeliveryCostService deliveryCostService;
   private final List<PaymentProvider> paymentProviders;
   private final ObjectMapper objectMapper;
   private final OrderApiMapper orderApiMapper;
@@ -74,6 +75,8 @@ public class OrderService {
             .totalAmount(BigDecimal.ZERO)
             .build();
 
+    BigDecimal deliveryAmount = resolveDeliveryAmount(input);
+
     List<OrderItem> items =
         input.getItems().stream()
             .map(
@@ -107,7 +110,10 @@ public class OrderService {
 
     order.setItems(items);
     order.setTotalAmount(
-        items.stream().map(OrderItem::getTotalPrice).reduce(BigDecimal.ZERO, BigDecimal::add));
+        items.stream()
+            .map(OrderItem::getTotalPrice)
+            .reduce(BigDecimal.ZERO, BigDecimal::add)
+            .add(deliveryAmount));
 
     return orderApiMapper.toOrderModel(orderRepository.save(order));
   }
@@ -252,6 +258,15 @@ public class OrderService {
     if (invalidItem) {
       throw new ResponseStatusException(UNPROCESSABLE_ENTITY, "items contain invalid values");
     }
+  }
+
+  private BigDecimal resolveDeliveryAmount(org.openapitools.client.model.OrderInput input) {
+    if (input.getDeliveryCostId() == null) {
+      return BigDecimal.ZERO;
+    }
+    DeliveryCost deliveryCost =
+        deliveryCostService.requireEntityById(input.getDeliveryCostId().longValue());
+    return deliveryCost.getAmount();
   }
 
   private void validatePaymentInput(org.openapitools.client.model.PaymentInput input) {

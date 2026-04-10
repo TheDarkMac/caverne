@@ -13,4 +13,5 @@ public class StripeProperties {
   private String apiVersion;
   private String checkoutSuccessUrl;
   private String checkoutCancelUrl;
+  private String webhookSecret;
 }

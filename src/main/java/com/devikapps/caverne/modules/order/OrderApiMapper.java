@@ -24,6 +24,7 @@ public class OrderApiMapper {
         .status(
             org.openapitools.client.model.Order.StatusEnum.fromValue(
                 order.getStatus().name().toLowerCase()))
+        .totalAmount(order.getTotalAmount() == null ? null : order.getTotalAmount().doubleValue())
         .deliveryCostId(
             order.getDeliveryCostId() == null ? null : order.getDeliveryCostId().intValue())
         .items(
