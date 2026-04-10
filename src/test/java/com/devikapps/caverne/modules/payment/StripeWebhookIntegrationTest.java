@@ -11,7 +11,6 @@ import com.devikapps.caverne.modules.order.OrderStatus;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.stripe.net.Webhook;
 import java.math.BigDecimal;
-import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -76,12 +75,13 @@ class StripeWebhookIntegrationTest {
                             .internalReference("cs_test_session_123")
                             .providerResponse(
                                 """
-                                {"checkout_session_id":"cs_test_session_123","checkout_status":"open","payment_status":"unpaid"}
-                                """)
+{"checkout_session_id":"cs_test_session_123","checkout_status":"open","payment_status":"unpaid"}
+""")
                             .build()))
                 .build());
 
-    String payload = buildPayload("checkout.session.completed", "cs_test_session_123", "complete", "paid");
+    String payload =
+        buildPayload("checkout.session.completed", "cs_test_session_123", "complete", "paid");
     String signature = buildSignature(payload, "whsec_test_secret");
 
     mockMvc
@@ -94,13 +94,19 @@ class StripeWebhookIntegrationTest {
 
     Order updated = orderRepository.findById(order.getId()).orElseThrow();
     org.junit.jupiter.api.Assertions.assertEquals(OrderStatus.CONFIRMED, updated.getStatus());
-    org.junit.jupiter.api.Assertions.assertEquals("confirmed", updated.getPayments().getFirst().getStatus());
+    org.junit.jupiter.api.Assertions.assertEquals(
+        "confirmed", updated.getPayments().getFirst().getStatus());
     org.junit.jupiter.api.Assertions.assertTrue(
-        updated.getPayments().getFirst().getProviderResponse().contains("\"last_webhook_event\":\"checkout.session.completed\""));
+        updated
+            .getPayments()
+            .getFirst()
+            .getProviderResponse()
+            .contains("\"last_webhook_event\":\"checkout.session.completed\""));
   }
 
   private String buildPayload(
-      String eventType, String sessionId, String checkoutStatus, String paymentStatus) throws Exception {
+      String eventType, String sessionId, String checkoutStatus, String paymentStatus)
+      throws Exception {
     Map<String, Object> root = new LinkedHashMap<>();
     root.put("id", "evt_test_123");
     root.put("object", "event");
