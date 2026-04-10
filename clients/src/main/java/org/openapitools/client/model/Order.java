@@ -54,7 +54,7 @@ import org.openapitools.client.JSON;
 /**
  * Order
  */
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2026-04-03T11:16:21.103478876+03:00[Indian/Antananarivo]", comments = "Generator version: 7.21.0")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2026-04-10T11:26:52.676581797+03:00[Indian/Antananarivo]", comments = "Generator version: 7.21.0")
 public class Order {
   public static final String SERIALIZED_NAME_ID = "id";
   @SerializedName(SERIALIZED_NAME_ID)
@@ -146,6 +146,11 @@ public class Order {
   @SerializedName(SERIALIZED_NAME_STATUS)
   @javax.annotation.Nullable
   private StatusEnum status;
+
+  public static final String SERIALIZED_NAME_TOTAL_AMOUNT = "total_amount";
+  @SerializedName(SERIALIZED_NAME_TOTAL_AMOUNT)
+  @javax.annotation.Nullable
+  private Double totalAmount;
 
   public static final String SERIALIZED_NAME_DELIVERY_COST_ID = "delivery_cost_id";
   @SerializedName(SERIALIZED_NAME_DELIVERY_COST_ID)
@@ -303,6 +308,25 @@ public class Order {
   }
 
 
+  public Order totalAmount(@javax.annotation.Nullable Double totalAmount) {
+    this.totalAmount = totalAmount;
+    return this;
+  }
+
+  /**
+   * Get totalAmount
+   * @return totalAmount
+   */
+  @javax.annotation.Nullable
+  public Double getTotalAmount() {
+    return totalAmount;
+  }
+
+  public void setTotalAmount(@javax.annotation.Nullable Double totalAmount) {
+    this.totalAmount = totalAmount;
+  }
+
+
   public Order deliveryCostId(@javax.annotation.Nullable Integer deliveryCostId) {
     this.deliveryCostId = deliveryCostId;
     return this;
@@ -374,7 +398,7 @@ public class Order {
   }
 
   /**
-   * Get providerResponse
+   * Sous-ensemble contrôlé de la réponse du provider. L&#39;API ne renvoie pas l&#39;objet Stripe complet. Pour Stripe Checkout, contient notamment &#x60;checkout_url&#x60;, &#x60;checkout_session_id&#x60;, &#x60;checkout_status&#x60; et &#x60;payment_status&#x60;. 
    * @return providerResponse
    */
   @javax.annotation.Nullable
@@ -404,6 +428,7 @@ public class Order {
         Objects.equals(this.reference, order.reference) &&
         Objects.equals(this.date, order.date) &&
         Objects.equals(this.status, order.status) &&
+        Objects.equals(this.totalAmount, order.totalAmount) &&
         Objects.equals(this.deliveryCostId, order.deliveryCostId) &&
         Objects.equals(this.items, order.items) &&
         Objects.equals(this.recipient, order.recipient) &&
@@ -416,7 +441,7 @@ public class Order {
 
   @Override
   public int hashCode() {
-    return Objects.hash(id, userId, addressId, currencyCode, reference, date, status, deliveryCostId, items, recipient, providerResponse);
+    return Objects.hash(id, userId, addressId, currencyCode, reference, date, status, totalAmount, deliveryCostId, items, recipient, providerResponse);
   }
 
   private static <T> int hashCodeNullable(JsonNullable<T> a) {
@@ -437,6 +462,7 @@ public class Order {
     sb.append("    reference: ").append(toIndentedString(reference)).append("\n");
     sb.append("    date: ").append(toIndentedString(date)).append("\n");
     sb.append("    status: ").append(toIndentedString(status)).append("\n");
+    sb.append("    totalAmount: ").append(toIndentedString(totalAmount)).append("\n");
     sb.append("    deliveryCostId: ").append(toIndentedString(deliveryCostId)).append("\n");
     sb.append("    items: ").append(toIndentedString(items)).append("\n");
     sb.append("    recipient: ").append(toIndentedString(recipient)).append("\n");
@@ -459,7 +485,7 @@ public class Order {
 
   static {
     // a set of all properties/fields (JSON key names)
-    openapiFields = new HashSet<String>(Arrays.asList("id", "user_id", "address_id", "currency_code", "reference", "date", "status", "delivery_cost_id", "items", "recipient", "provider_response"));
+    openapiFields = new HashSet<String>(Arrays.asList("id", "user_id", "address_id", "currency_code", "reference", "date", "status", "total_amount", "delivery_cost_id", "items", "recipient", "provider_response"));
 
     // a set of required properties/fields (JSON key names)
     openapiRequiredFields = new HashSet<String>(0);

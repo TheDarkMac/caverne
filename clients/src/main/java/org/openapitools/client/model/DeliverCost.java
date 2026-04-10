@@ -49,17 +49,12 @@ import org.openapitools.client.JSON;
 /**
  * DeliverCost
  */
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2026-04-03T11:16:21.103478876+03:00[Indian/Antananarivo]", comments = "Generator version: 7.21.0")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2026-04-10T11:26:52.676581797+03:00[Indian/Antananarivo]", comments = "Generator version: 7.21.0")
 public class DeliverCost {
   public static final String SERIALIZED_NAME_ID = "id";
   @SerializedName(SERIALIZED_NAME_ID)
   @javax.annotation.Nullable
   private Integer id;
-
-  public static final String SERIALIZED_NAME_ORDER_ID = "order_id";
-  @SerializedName(SERIALIZED_NAME_ORDER_ID)
-  @javax.annotation.Nullable
-  private Integer orderId;
 
   public static final String SERIALIZED_NAME_AMOUNT = "amount";
   @SerializedName(SERIALIZED_NAME_AMOUNT)
@@ -95,25 +90,6 @@ public class DeliverCost {
 
   public void setId(@javax.annotation.Nullable Integer id) {
     this.id = id;
-  }
-
-
-  public DeliverCost orderId(@javax.annotation.Nullable Integer orderId) {
-    this.orderId = orderId;
-    return this;
-  }
-
-  /**
-   * Get orderId
-   * @return orderId
-   */
-  @javax.annotation.Nullable
-  public Integer getOrderId() {
-    return orderId;
-  }
-
-  public void setOrderId(@javax.annotation.Nullable Integer orderId) {
-    this.orderId = orderId;
   }
 
 
@@ -185,7 +161,6 @@ public class DeliverCost {
     }
     DeliverCost deliverCost = (DeliverCost) o;
     return Objects.equals(this.id, deliverCost.id) &&
-        Objects.equals(this.orderId, deliverCost.orderId) &&
         Objects.equals(this.amount, deliverCost.amount) &&
         Objects.equals(this.provider, deliverCost.provider) &&
         Objects.equals(this.responseProvider, deliverCost.responseProvider);
@@ -197,7 +172,7 @@ public class DeliverCost {
 
   @Override
   public int hashCode() {
-    return Objects.hash(id, orderId, amount, provider, responseProvider);
+    return Objects.hash(id, amount, provider, responseProvider);
   }
 
   private static <T> int hashCodeNullable(JsonNullable<T> a) {
@@ -212,7 +187,6 @@ public class DeliverCost {
     StringBuilder sb = new StringBuilder();
     sb.append("class DeliverCost {\n");
     sb.append("    id: ").append(toIndentedString(id)).append("\n");
-    sb.append("    orderId: ").append(toIndentedString(orderId)).append("\n");
     sb.append("    amount: ").append(toIndentedString(amount)).append("\n");
     sb.append("    provider: ").append(toIndentedString(provider)).append("\n");
     sb.append("    responseProvider: ").append(toIndentedString(responseProvider)).append("\n");
@@ -234,7 +208,7 @@ public class DeliverCost {
 
   static {
     // a set of all properties/fields (JSON key names)
-    openapiFields = new HashSet<String>(Arrays.asList("id", "order_id", "amount", "provider", "response_provider"));
+    openapiFields = new HashSet<String>(Arrays.asList("id", "amount", "provider", "response_provider"));
 
     // a set of required properties/fields (JSON key names)
     openapiRequiredFields = new HashSet<String>(0);

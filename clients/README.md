@@ -2,7 +2,7 @@
 
 La Caverne Malgache API
 - API version: 1.0.0
-  - Build date: 2026-04-03T11:16:21.103478876+03:00[Indian/Antananarivo]
+  - Build date: 2026-04-10T11:26:52.676581797+03:00[Indian/Antananarivo]
   - Generator version: 7.21.0
 
 Documentation OpenAPI de La Caverne Malagasy.
@@ -93,7 +93,7 @@ import org.openapitools.client.api.AddressesApi;
 public class Example {
   public static void main(String[] args) {
     ApiClient defaultClient = Configuration.getDefaultApiClient();
-    defaultClient.setBasePath("https://api.lacaverne/v1");
+    defaultClient.setBasePath("http://localhost:8080");
     
     // Configure HTTP bearer authorization: BearerAuth
     HttpBearerAuth BearerAuth = (HttpBearerAuth) defaultClient.getAuthentication("BearerAuth");
@@ -117,7 +117,7 @@ public class Example {
 
 ## Documentation for API Endpoints
 
-All URIs are relative to *https://api.lacaverne/v1*
+All URIs are relative to *http://localhost:8080*
 
 Class | Method | HTTP request | Description
 ------------ | ------------- | ------------- | -------------
@@ -134,6 +134,11 @@ Class | Method | HTTP request | Description
 *CategoriesApi* | [**categoriesIdGet**](docs/CategoriesApi.md#categoriesIdGet) | **GET** /categories/{id} | Détail d&#39;une catégorie
 *CategoriesApi* | [**categoriesIdPut**](docs/CategoriesApi.md#categoriesIdPut) | **PUT** /categories/{id} | Créer ou mettre à jour une catégorie par identifiant (admin)
 *CategoriesApi* | [**categoriesPost**](docs/CategoriesApi.md#categoriesPost) | **POST** /categories | Créer ou mettre à jour une catégorie (admin)
+*DeliveryCostsApi* | [**deliveryCostsGet**](docs/DeliveryCostsApi.md#deliveryCostsGet) | **GET** /delivery-costs | Liste des coûts de livraison
+*DeliveryCostsApi* | [**deliveryCostsIdDelete**](docs/DeliveryCostsApi.md#deliveryCostsIdDelete) | **DELETE** /delivery-costs/{id} | Supprimer un coût de livraison (admin)
+*DeliveryCostsApi* | [**deliveryCostsIdGet**](docs/DeliveryCostsApi.md#deliveryCostsIdGet) | **GET** /delivery-costs/{id} | Détail d&#39;un coût de livraison
+*DeliveryCostsApi* | [**deliveryCostsIdPut**](docs/DeliveryCostsApi.md#deliveryCostsIdPut) | **PUT** /delivery-costs/{id} | Mettre à jour un coût de livraison (admin)
+*DeliveryCostsApi* | [**deliveryCostsPost**](docs/DeliveryCostsApi.md#deliveryCostsPost) | **POST** /delivery-costs | Créer un coût de livraison (admin)
 *OrdersApi* | [**ordersAllGet**](docs/OrdersApi.md#ordersAllGet) | **GET** /orders/all | Toutes les commandes (admin)
 *OrdersApi* | [**ordersGet**](docs/OrdersApi.md#ordersGet) | **GET** /orders | Mes commandes (utilisateur connecté)
 *OrdersApi* | [**ordersIdCancelPost**](docs/OrdersApi.md#ordersIdCancelPost) | **POST** /orders/{id}/cancel | Annuler une commande (owner ou admin)
@@ -143,6 +148,7 @@ Class | Method | HTTP request | Description
 *PaymentsApi* | [**ordersIdPaymentsGet**](docs/PaymentsApi.md#ordersIdPaymentsGet) | **GET** /orders/{id}/payments | Paiements associés à une commande
 *PaymentsApi* | [**ordersIdPaymentsPost**](docs/PaymentsApi.md#ordersIdPaymentsPost) | **POST** /orders/{id}/payments | Initier un paiement
 *PaymentsApi* | [**paymentMethodsGet**](docs/PaymentsApi.md#paymentMethodsGet) | **GET** /payment-methods | Liste des moyens de paiement disponibles
+*PaymentsApi* | [**paymentsWebhooksStripePost**](docs/PaymentsApi.md#paymentsWebhooksStripePost) | **POST** /payments/webhooks/stripe | Webhook Stripe Checkout
 *ProductsApi* | [**productsGet**](docs/ProductsApi.md#productsGet) | **GET** /products | Catalogue produits
 *ProductsApi* | [**productsIdDelete**](docs/ProductsApi.md#productsIdDelete) | **DELETE** /products/{id} | Supprimer un produit (admin)
 *ProductsApi* | [**productsIdGet**](docs/ProductsApi.md#productsIdGet) | **GET** /products/{id} | Détail d&#39;un produit
@@ -162,7 +168,6 @@ Class | Method | HTTP request | Description
  - [AddressInput](docs/AddressInput.md)
  - [Category](docs/Category.md)
  - [CategoryInput](docs/CategoryInput.md)
- - [Currency](docs/Currency.md)
  - [DeliverCost](docs/DeliverCost.md)
  - [DeliverCostInput](docs/DeliverCostInput.md)
  - [Error](docs/Error.md)
@@ -180,21 +185,11 @@ Class | Method | HTTP request | Description
  - [PaymentMethod](docs/PaymentMethod.md)
  - [PaymentMethodInput](docs/PaymentMethodInput.md)
  - [Price](docs/Price.md)
- - [PriceInput](docs/PriceInput.md)
  - [Product](docs/Product.md)
- - [ProductImage](docs/ProductImage.md)
- - [ProductImageInput](docs/ProductImageInput.md)
  - [ProductInput](docs/ProductInput.md)
  - [ProductsGet200Response](docs/ProductsGet200Response.md)
  - [RecipientInput](docs/RecipientInput.md)
  - [RegisterRequest](docs/RegisterRequest.md)
- - [Review](docs/Review.md)
- - [ReviewInput](docs/ReviewInput.md)
- - [StockEntry](docs/StockEntry.md)
- - [StockInput](docs/StockInput.md)
- - [StockSummary](docs/StockSummary.md)
- - [TechnicalSpecs](docs/TechnicalSpecs.md)
- - [TechnicalSpecsInput](docs/TechnicalSpecsInput.md)
  - [User](docs/User.md)
  - [UserCreateInput](docs/UserCreateInput.md)
  - [UserUpdate](docs/UserUpdate.md)

@@ -1,12 +1,13 @@
 # PaymentsApi
 
-All URIs are relative to *https://api.lacaverne/v1*
+All URIs are relative to *http://localhost:8080*
 
 | Method | HTTP request | Description |
 |------------- | ------------- | -------------|
 | [**ordersIdPaymentsGet**](PaymentsApi.md#ordersIdPaymentsGet) | **GET** /orders/{id}/payments | Paiements associés à une commande |
 | [**ordersIdPaymentsPost**](PaymentsApi.md#ordersIdPaymentsPost) | **POST** /orders/{id}/payments | Initier un paiement |
 | [**paymentMethodsGet**](PaymentsApi.md#paymentMethodsGet) | **GET** /payment-methods | Liste des moyens de paiement disponibles |
+| [**paymentsWebhooksStripePost**](PaymentsApi.md#paymentsWebhooksStripePost) | **POST** /payments/webhooks/stripe | Webhook Stripe Checkout |
 
 
 <a id="ordersIdPaymentsGet"></a>
@@ -27,7 +28,7 @@ import org.openapitools.client.api.PaymentsApi;
 public class Example {
   public static void main(String[] args) {
     ApiClient defaultClient = Configuration.getDefaultApiClient();
-    defaultClient.setBasePath("https://api.lacaverne/v1");
+    defaultClient.setBasePath("http://localhost:8080");
 
     PaymentsApi apiInstance = new PaymentsApi(defaultClient);
     Integer id = 56; // Integer | 
@@ -87,7 +88,7 @@ import org.openapitools.client.api.PaymentsApi;
 public class Example {
   public static void main(String[] args) {
     ApiClient defaultClient = Configuration.getDefaultApiClient();
-    defaultClient.setBasePath("https://api.lacaverne/v1");
+    defaultClient.setBasePath("http://localhost:8080");
 
     PaymentsApi apiInstance = new PaymentsApi(defaultClient);
     Integer id = 56; // Integer | 
@@ -150,7 +151,7 @@ import org.openapitools.client.api.PaymentsApi;
 public class Example {
   public static void main(String[] args) {
     ApiClient defaultClient = Configuration.getDefaultApiClient();
-    defaultClient.setBasePath("https://api.lacaverne/v1");
+    defaultClient.setBasePath("http://localhost:8080");
 
     PaymentsApi apiInstance = new PaymentsApi(defaultClient);
     try {
@@ -187,4 +188,64 @@ No authorization required
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
 | **200** | Moyens disponibles |  -  |
+
+<a id="paymentsWebhooksStripePost"></a>
+# **paymentsWebhooksStripePost**
+> paymentsWebhooksStripePost(requestBody)
+
+Webhook Stripe Checkout
+
+### Example
+```java
+// Import classes:
+import org.openapitools.client.ApiClient;
+import org.openapitools.client.ApiException;
+import org.openapitools.client.Configuration;
+import org.openapitools.client.models.*;
+import org.openapitools.client.api.PaymentsApi;
+
+public class Example {
+  public static void main(String[] args) {
+    ApiClient defaultClient = Configuration.getDefaultApiClient();
+    defaultClient.setBasePath("http://localhost:8080");
+
+    PaymentsApi apiInstance = new PaymentsApi(defaultClient);
+    Map<String, Object> requestBody = null; // Map<String, Object> | 
+    try {
+      apiInstance.paymentsWebhooksStripePost(requestBody);
+    } catch (ApiException e) {
+      System.err.println("Exception when calling PaymentsApi#paymentsWebhooksStripePost");
+      System.err.println("Status code: " + e.getCode());
+      System.err.println("Reason: " + e.getResponseBody());
+      System.err.println("Response headers: " + e.getResponseHeaders());
+      e.printStackTrace();
+    }
+  }
+}
+```
+
+### Parameters
+
+| Name | Type | Description  | Notes |
+|------------- | ------------- | ------------- | -------------|
+| **requestBody** | [**Map&lt;String, Object&gt;**](Object.md)|  | |
+
+### Return type
+
+null (empty response body)
+
+### Authorization
+
+No authorization required
+
+### HTTP request headers
+
+ - **Content-Type**: application/json
+ - **Accept**: application/json
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **204** | Webhook traité |  -  |
+| **422** | Données invalides |  -  |
 

@@ -1,22 +1,21 @@
-# UsersApi
+# DeliveryCostsApi
 
 All URIs are relative to *http://localhost:8080*
 
 | Method | HTTP request | Description |
 |------------- | ------------- | -------------|
-| [**usersGet**](UsersApi.md#usersGet) | **GET** /users | Liste des utilisateurs (admin) |
-| [**usersIdDelete**](UsersApi.md#usersIdDelete) | **DELETE** /users/{id} | Suppression d&#39;un utilisateur (admin) |
-| [**usersIdGet**](UsersApi.md#usersIdGet) | **GET** /users/{id} | Détail d&#39;un utilisateur (admin) |
-| [**usersMeGet**](UsersApi.md#usersMeGet) | **GET** /users/me | Profil de l&#39;utilisateur connecté |
-| [**usersMePut**](UsersApi.md#usersMePut) | **PUT** /users/me | Mise à jour du profil |
-| [**usersPost**](UsersApi.md#usersPost) | **POST** /users | Créer un utilisateur (admin) |
+| [**deliveryCostsGet**](DeliveryCostsApi.md#deliveryCostsGet) | **GET** /delivery-costs | Liste des coûts de livraison |
+| [**deliveryCostsIdDelete**](DeliveryCostsApi.md#deliveryCostsIdDelete) | **DELETE** /delivery-costs/{id} | Supprimer un coût de livraison (admin) |
+| [**deliveryCostsIdGet**](DeliveryCostsApi.md#deliveryCostsIdGet) | **GET** /delivery-costs/{id} | Détail d&#39;un coût de livraison |
+| [**deliveryCostsIdPut**](DeliveryCostsApi.md#deliveryCostsIdPut) | **PUT** /delivery-costs/{id} | Mettre à jour un coût de livraison (admin) |
+| [**deliveryCostsPost**](DeliveryCostsApi.md#deliveryCostsPost) | **POST** /delivery-costs | Créer un coût de livraison (admin) |
 
 
-<a id="usersGet"></a>
-# **usersGet**
-> UsersGet200Response usersGet(page, perPage, role)
+<a id="deliveryCostsGet"></a>
+# **deliveryCostsGet**
+> List&lt;DeliverCost&gt; deliveryCostsGet()
 
-Liste des utilisateurs (admin)
+Liste des coûts de livraison
 
 ### Example
 ```java
@@ -24,28 +23,20 @@ Liste des utilisateurs (admin)
 import org.openapitools.client.ApiClient;
 import org.openapitools.client.ApiException;
 import org.openapitools.client.Configuration;
-import org.openapitools.client.auth.*;
 import org.openapitools.client.models.*;
-import org.openapitools.client.api.UsersApi;
+import org.openapitools.client.api.DeliveryCostsApi;
 
 public class Example {
   public static void main(String[] args) {
     ApiClient defaultClient = Configuration.getDefaultApiClient();
     defaultClient.setBasePath("http://localhost:8080");
-    
-    // Configure HTTP bearer authorization: BearerAuth
-    HttpBearerAuth BearerAuth = (HttpBearerAuth) defaultClient.getAuthentication("BearerAuth");
-    BearerAuth.setBearerToken("BEARER TOKEN");
 
-    UsersApi apiInstance = new UsersApi(defaultClient);
-    Integer page = 1; // Integer | 
-    Integer perPage = 20; // Integer | 
-    String role = "admin"; // String | 
+    DeliveryCostsApi apiInstance = new DeliveryCostsApi(defaultClient);
     try {
-      UsersGet200Response result = apiInstance.usersGet(page, perPage, role);
+      List<DeliverCost> result = apiInstance.deliveryCostsGet();
       System.out.println(result);
     } catch (ApiException e) {
-      System.err.println("Exception when calling UsersApi#usersGet");
+      System.err.println("Exception when calling DeliveryCostsApi#deliveryCostsGet");
       System.err.println("Status code: " + e.getCode());
       System.err.println("Reason: " + e.getResponseBody());
       System.err.println("Response headers: " + e.getResponseHeaders());
@@ -56,20 +47,15 @@ public class Example {
 ```
 
 ### Parameters
-
-| Name | Type | Description  | Notes |
-|------------- | ------------- | ------------- | -------------|
-| **page** | **Integer**|  | [optional] [default to 1] |
-| **perPage** | **Integer**|  | [optional] [default to 20] |
-| **role** | **String**|  | [optional] [enum: admin, simple_user] |
+This endpoint does not need any parameter.
 
 ### Return type
 
-[**UsersGet200Response**](UsersGet200Response.md)
+[**List&lt;DeliverCost&gt;**](DeliverCost.md)
 
 ### Authorization
 
-[BearerAuth](../README.md#BearerAuth)
+No authorization required
 
 ### HTTP request headers
 
@@ -79,15 +65,13 @@ public class Example {
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
-| **200** | Liste paginée |  -  |
-| **401** | Token JWT manquant ou invalide |  -  |
-| **403** | Accès refusé (rôle insuffisant) |  -  |
+| **200** | OK |  -  |
 
-<a id="usersIdDelete"></a>
-# **usersIdDelete**
-> usersIdDelete(id)
+<a id="deliveryCostsIdDelete"></a>
+# **deliveryCostsIdDelete**
+> deliveryCostsIdDelete(id)
 
-Suppression d&#39;un utilisateur (admin)
+Supprimer un coût de livraison (admin)
 
 ### Example
 ```java
@@ -97,7 +81,7 @@ import org.openapitools.client.ApiException;
 import org.openapitools.client.Configuration;
 import org.openapitools.client.auth.*;
 import org.openapitools.client.models.*;
-import org.openapitools.client.api.UsersApi;
+import org.openapitools.client.api.DeliveryCostsApi;
 
 public class Example {
   public static void main(String[] args) {
@@ -108,12 +92,12 @@ public class Example {
     HttpBearerAuth BearerAuth = (HttpBearerAuth) defaultClient.getAuthentication("BearerAuth");
     BearerAuth.setBearerToken("BEARER TOKEN");
 
-    UsersApi apiInstance = new UsersApi(defaultClient);
+    DeliveryCostsApi apiInstance = new DeliveryCostsApi(defaultClient);
     Integer id = 56; // Integer | 
     try {
-      apiInstance.usersIdDelete(id);
+      apiInstance.deliveryCostsIdDelete(id);
     } catch (ApiException e) {
-      System.err.println("Exception when calling UsersApi#usersIdDelete");
+      System.err.println("Exception when calling DeliveryCostsApi#deliveryCostsIdDelete");
       System.err.println("Status code: " + e.getCode());
       System.err.println("Reason: " + e.getResponseBody());
       System.err.println("Response headers: " + e.getResponseHeaders());
@@ -146,14 +130,15 @@ null (empty response body)
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
 | **204** | Supprimé |  -  |
+| **401** | Token JWT manquant ou invalide |  -  |
 | **403** | Accès refusé (rôle insuffisant) |  -  |
 | **404** | Ressource introuvable |  -  |
 
-<a id="usersIdGet"></a>
-# **usersIdGet**
-> User usersIdGet(id)
+<a id="deliveryCostsIdGet"></a>
+# **deliveryCostsIdGet**
+> DeliverCost deliveryCostsIdGet(id)
 
-Détail d&#39;un utilisateur (admin)
+Détail d&#39;un coût de livraison
 
 ### Example
 ```java
@@ -161,26 +146,21 @@ Détail d&#39;un utilisateur (admin)
 import org.openapitools.client.ApiClient;
 import org.openapitools.client.ApiException;
 import org.openapitools.client.Configuration;
-import org.openapitools.client.auth.*;
 import org.openapitools.client.models.*;
-import org.openapitools.client.api.UsersApi;
+import org.openapitools.client.api.DeliveryCostsApi;
 
 public class Example {
   public static void main(String[] args) {
     ApiClient defaultClient = Configuration.getDefaultApiClient();
     defaultClient.setBasePath("http://localhost:8080");
-    
-    // Configure HTTP bearer authorization: BearerAuth
-    HttpBearerAuth BearerAuth = (HttpBearerAuth) defaultClient.getAuthentication("BearerAuth");
-    BearerAuth.setBearerToken("BEARER TOKEN");
 
-    UsersApi apiInstance = new UsersApi(defaultClient);
+    DeliveryCostsApi apiInstance = new DeliveryCostsApi(defaultClient);
     Integer id = 56; // Integer | 
     try {
-      User result = apiInstance.usersIdGet(id);
+      DeliverCost result = apiInstance.deliveryCostsIdGet(id);
       System.out.println(result);
     } catch (ApiException e) {
-      System.err.println("Exception when calling UsersApi#usersIdGet");
+      System.err.println("Exception when calling DeliveryCostsApi#deliveryCostsIdGet");
       System.err.println("Status code: " + e.getCode());
       System.err.println("Reason: " + e.getResponseBody());
       System.err.println("Response headers: " + e.getResponseHeaders());
@@ -198,11 +178,11 @@ public class Example {
 
 ### Return type
 
-[**User**](User.md)
+[**DeliverCost**](DeliverCost.md)
 
 ### Authorization
 
-[BearerAuth](../README.md#BearerAuth)
+No authorization required
 
 ### HTTP request headers
 
@@ -215,11 +195,11 @@ public class Example {
 | **200** | OK |  -  |
 | **404** | Ressource introuvable |  -  |
 
-<a id="usersMeGet"></a>
-# **usersMeGet**
-> User usersMeGet()
+<a id="deliveryCostsIdPut"></a>
+# **deliveryCostsIdPut**
+> DeliverCost deliveryCostsIdPut(id, deliverCostInput)
 
-Profil de l&#39;utilisateur connecté
+Mettre à jour un coût de livraison (admin)
 
 ### Example
 ```java
@@ -229,7 +209,7 @@ import org.openapitools.client.ApiException;
 import org.openapitools.client.Configuration;
 import org.openapitools.client.auth.*;
 import org.openapitools.client.models.*;
-import org.openapitools.client.api.UsersApi;
+import org.openapitools.client.api.DeliveryCostsApi;
 
 public class Example {
   public static void main(String[] args) {
@@ -240,75 +220,14 @@ public class Example {
     HttpBearerAuth BearerAuth = (HttpBearerAuth) defaultClient.getAuthentication("BearerAuth");
     BearerAuth.setBearerToken("BEARER TOKEN");
 
-    UsersApi apiInstance = new UsersApi(defaultClient);
+    DeliveryCostsApi apiInstance = new DeliveryCostsApi(defaultClient);
+    Integer id = 56; // Integer | 
+    DeliverCostInput deliverCostInput = new DeliverCostInput(); // DeliverCostInput | 
     try {
-      User result = apiInstance.usersMeGet();
+      DeliverCost result = apiInstance.deliveryCostsIdPut(id, deliverCostInput);
       System.out.println(result);
     } catch (ApiException e) {
-      System.err.println("Exception when calling UsersApi#usersMeGet");
-      System.err.println("Status code: " + e.getCode());
-      System.err.println("Reason: " + e.getResponseBody());
-      System.err.println("Response headers: " + e.getResponseHeaders());
-      e.printStackTrace();
-    }
-  }
-}
-```
-
-### Parameters
-This endpoint does not need any parameter.
-
-### Return type
-
-[**User**](User.md)
-
-### Authorization
-
-[BearerAuth](../README.md#BearerAuth)
-
-### HTTP request headers
-
- - **Content-Type**: Not defined
- - **Accept**: application/json
-
-### HTTP response details
-| Status code | Description | Response headers |
-|-------------|-------------|------------------|
-| **200** | Profil retourné |  -  |
-| **401** | Token JWT manquant ou invalide |  -  |
-
-<a id="usersMePut"></a>
-# **usersMePut**
-> User usersMePut(userUpdate)
-
-Mise à jour du profil
-
-### Example
-```java
-// Import classes:
-import org.openapitools.client.ApiClient;
-import org.openapitools.client.ApiException;
-import org.openapitools.client.Configuration;
-import org.openapitools.client.auth.*;
-import org.openapitools.client.models.*;
-import org.openapitools.client.api.UsersApi;
-
-public class Example {
-  public static void main(String[] args) {
-    ApiClient defaultClient = Configuration.getDefaultApiClient();
-    defaultClient.setBasePath("http://localhost:8080");
-    
-    // Configure HTTP bearer authorization: BearerAuth
-    HttpBearerAuth BearerAuth = (HttpBearerAuth) defaultClient.getAuthentication("BearerAuth");
-    BearerAuth.setBearerToken("BEARER TOKEN");
-
-    UsersApi apiInstance = new UsersApi(defaultClient);
-    UserUpdate userUpdate = new UserUpdate(); // UserUpdate | 
-    try {
-      User result = apiInstance.usersMePut(userUpdate);
-      System.out.println(result);
-    } catch (ApiException e) {
-      System.err.println("Exception when calling UsersApi#usersMePut");
+      System.err.println("Exception when calling DeliveryCostsApi#deliveryCostsIdPut");
       System.err.println("Status code: " + e.getCode());
       System.err.println("Reason: " + e.getResponseBody());
       System.err.println("Response headers: " + e.getResponseHeaders());
@@ -322,11 +241,12 @@ public class Example {
 
 | Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
-| **userUpdate** | [**UserUpdate**](UserUpdate.md)|  | |
+| **id** | **Integer**|  | |
+| **deliverCostInput** | [**DeliverCostInput**](DeliverCostInput.md)|  | |
 
 ### Return type
 
-[**User**](User.md)
+[**DeliverCost**](DeliverCost.md)
 
 ### Authorization
 
@@ -340,15 +260,17 @@ public class Example {
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
-| **200** | Profil mis à jour |  -  |
+| **200** | Coût de livraison mis à jour |  -  |
 | **401** | Token JWT manquant ou invalide |  -  |
+| **403** | Accès refusé (rôle insuffisant) |  -  |
+| **404** | Ressource introuvable |  -  |
 | **422** | Données invalides |  -  |
 
-<a id="usersPost"></a>
-# **usersPost**
-> User usersPost(userCreateInput)
+<a id="deliveryCostsPost"></a>
+# **deliveryCostsPost**
+> DeliverCost deliveryCostsPost(deliverCostInput)
 
-Créer un utilisateur (admin)
+Créer un coût de livraison (admin)
 
 ### Example
 ```java
@@ -358,7 +280,7 @@ import org.openapitools.client.ApiException;
 import org.openapitools.client.Configuration;
 import org.openapitools.client.auth.*;
 import org.openapitools.client.models.*;
-import org.openapitools.client.api.UsersApi;
+import org.openapitools.client.api.DeliveryCostsApi;
 
 public class Example {
   public static void main(String[] args) {
@@ -369,13 +291,13 @@ public class Example {
     HttpBearerAuth BearerAuth = (HttpBearerAuth) defaultClient.getAuthentication("BearerAuth");
     BearerAuth.setBearerToken("BEARER TOKEN");
 
-    UsersApi apiInstance = new UsersApi(defaultClient);
-    UserCreateInput userCreateInput = new UserCreateInput(); // UserCreateInput | 
+    DeliveryCostsApi apiInstance = new DeliveryCostsApi(defaultClient);
+    DeliverCostInput deliverCostInput = new DeliverCostInput(); // DeliverCostInput | 
     try {
-      User result = apiInstance.usersPost(userCreateInput);
+      DeliverCost result = apiInstance.deliveryCostsPost(deliverCostInput);
       System.out.println(result);
     } catch (ApiException e) {
-      System.err.println("Exception when calling UsersApi#usersPost");
+      System.err.println("Exception when calling DeliveryCostsApi#deliveryCostsPost");
       System.err.println("Status code: " + e.getCode());
       System.err.println("Reason: " + e.getResponseBody());
       System.err.println("Response headers: " + e.getResponseHeaders());
@@ -389,11 +311,11 @@ public class Example {
 
 | Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
-| **userCreateInput** | [**UserCreateInput**](UserCreateInput.md)|  | |
+| **deliverCostInput** | [**DeliverCostInput**](DeliverCostInput.md)|  | |
 
 ### Return type
 
-[**User**](User.md)
+[**DeliverCost**](DeliverCost.md)
 
 ### Authorization
 
@@ -407,7 +329,7 @@ public class Example {
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
-| **201** | Utilisateur créé |  -  |
+| **201** | Coût de livraison créé |  -  |
 | **401** | Token JWT manquant ou invalide |  -  |
 | **403** | Accès refusé (rôle insuffisant) |  -  |
 | **422** | Données invalides |  -  |

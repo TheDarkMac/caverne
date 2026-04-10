@@ -47,14 +47,6 @@ public class DeliverCostTest {
     }
 
     /**
-     * Test the property 'orderId'
-     */
-    @Test
-    public void orderIdTest() {
-        // TODO: test orderId
-    }
-
-    /**
      * Test the property 'amount'
      */
     @Test

@@ -15,7 +15,7 @@
 |**date** | **OffsetDateTime** |  |  [optional] |
 |**status** | [**StatusEnum**](#StatusEnum) |  |  [optional] |
 |**internalReference** | **String** |  |  [optional] |
-|**providerResponse** | **Object** |  |  [optional] |
+|**providerResponse** | **Object** | Sous-ensemble contrôlé de la réponse du provider. L&#39;API ne renvoie pas l&#39;objet Stripe complet. Pour Stripe Checkout, contient notamment &#x60;checkout_url&#x60;, &#x60;checkout_session_id&#x60;, &#x60;checkout_status&#x60; et &#x60;payment_status&#x60;.  |  [optional] |
 
 
 

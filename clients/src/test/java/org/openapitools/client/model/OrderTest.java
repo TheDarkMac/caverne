@@ -100,6 +100,14 @@ public class OrderTest {
     }
 
     /**
+     * Test the property 'totalAmount'
+     */
+    @Test
+    public void totalAmountTest() {
+        // TODO: test totalAmount
+    }
+
+    /**
      * Test the property 'deliveryCostId'
      */
     @Test

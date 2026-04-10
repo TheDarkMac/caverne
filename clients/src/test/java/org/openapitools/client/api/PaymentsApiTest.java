@@ -70,4 +70,16 @@ public class PaymentsApiTest {
         // TODO: test validations
     }
 
+    /**
+     * Webhook Stripe Checkout
+     *
+     * @throws ApiException if the Api call fails
+     */
+    @Test
+    public void paymentsWebhooksStripePostTest() throws ApiException {
+        Map<String, Object> requestBody = null;
+        api.paymentsWebhooksStripePost(requestBody);
+        // TODO: test validations
+    }
+
 }

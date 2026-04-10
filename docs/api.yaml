@@ -230,19 +230,6 @@ components:
           type: integer
           nullable: true
 
-    # ── CURRENCY ──
-    Currency:
-      type: object
-      properties:
-        code_iso:
-          type: string
-          maxLength: 3
-          example: MGA
-        name:
-          type: string
-        symbol:
-          type: string
-
     # ── PRODUCT ──
     Product:
       type: object
@@ -268,16 +255,10 @@ components:
         is_active:
           type: boolean
           default: true
-        images:
-          type: array
-          items:
-            $ref: '#/components/schemas/ProductImage'
         prices:
           type: array
           items:
             $ref: '#/components/schemas/Price'
-        technical_specs:
-          $ref: '#/components/schemas/TechnicalSpecs'
 
     ProductInput:
       type: object
@@ -302,30 +283,6 @@ components:
         is_active:
           type: boolean
 
-    ProductImage:
-      type: object
-      properties:
-        id:
-          type: integer
-        product_id:
-          type: integer
-        url:
-          type: string
-          format: uri
-        is_main:
-          type: boolean
-          default: false
-
-    ProductImageInput:
-      type: object
-      required: [url]
-      properties:
-        url:
-          type: string
-          format: uri
-        is_main:
-          type: boolean
-
     # ── PRICE ──
     Price:
       type: object
@@ -344,128 +301,6 @@ components:
           type: string
           format: date
         unit:
-          type: string
-
-    PriceInput:
-      type: object
-      required: [currency_code, value, valid_from]
-      properties:
-        currency_code:
-          type: string
-        value:
-          type: number
-          format: double
-        valid_from:
-          type: string
-          format: date
-        unit:
-          type: string
-
-    # ── STOCK ──
-    StockEntry:
-      type: object
-      properties:
-        id:
-          type: integer
-        product_id:
-          type: integer
-        quantity:
-          type: number
-          format: double
-        movement_type:
-          type: string
-          enum: [in, out, adjustment]
-        date:
-          type: string
-          format: date-time
-        unit:
-          type: string
-
-    StockInput:
-      type: object
-      required: [quantity, movement_type]
-      properties:
-        quantity:
-          type: number
-          format: double
-        movement_type:
-          type: string
-          enum: [in, out, adjustment]
-        unit:
-          type: string
-
-    StockSummary:
-      type: object
-      properties:
-        product_id:
-          type: integer
-        available_quantity:
-          type: number
-        unit:
-          type: string
-        last_updated:
-          type: string
-          format: date-time
-
-    # ── TECHNICAL SPECS ──
-    TechnicalSpecs:
-      type: object
-      properties:
-        id:
-          type: integer
-        product_id:
-          type: integer
-        country:
-          type: string
-        region:
-          type: string
-        climate:
-          type: string
-        provider:
-          type: string
-          maxLength: 255
-
-    TechnicalSpecsInput:
-      type: object
-      properties:
-        country:
-          type: string
-        region:
-          type: string
-        climate:
-          type: string
-        provider:
-          type: string
-
-    # ── REVIEW ──
-    Review:
-      type: object
-      properties:
-        id:
-          type: integer
-        user_id:
-          type: integer
-        product_id:
-          type: integer
-        score:
-          type: integer
-          minimum: 1
-          maximum: 5
-        comment:
-          type: string
-        created_at:
-          type: string
-          format: date-time
-
-    ReviewInput:
-      type: object
-      required: [score]
-      properties:
-        score:
-          type: integer
-          minimum: 1
-          maximum: 5
-        comment:
           type: string
 
     # ── ORDER ──
@@ -500,6 +335,9 @@ components:
         status:
           type: string
           enum: [pending, confirmed, delivered, cancelled]
+        total_amount:
+          type: number
+          format: double
         delivery_cost_id:
           type: integer
           nullable: true
@@ -557,8 +395,6 @@ components:
       type: object
       properties:
         id:
-          type: integer
-        order_id:
           type: integer
         amount:
           type: number
@@ -1252,6 +1088,99 @@ paths:
           $ref: '#/components/responses/Forbidden'
 
   # ═══════════════════════════
+  # DELIVERY COSTS
+  # ═══════════════════════════
+  /delivery-costs:
+    get:
+      tags: [DeliveryCosts]
+      summary: Liste des coûts de livraison
+      security: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/DeliverCost'
+    post:
+      tags: [DeliveryCosts]
+      summary: Créer un coût de livraison (admin)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DeliverCostInput'
+      responses:
+        '201':
+          description: Coût de livraison créé
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeliverCost'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '422':
+          $ref: '#/components/responses/UnprocessableEntity'
+
+  /delivery-costs/{id}:
+    parameters:
+      - $ref: '#/components/parameters/pathId'
+    get:
+      tags: [DeliveryCosts]
+      summary: Détail d'un coût de livraison
+      security: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeliverCost'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    put:
+      tags: [DeliveryCosts]
+      summary: Mettre à jour un coût de livraison (admin)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DeliverCostInput'
+      responses:
+        '200':
+          description: Coût de livraison mis à jour
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeliverCost'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '422':
+          $ref: '#/components/responses/UnprocessableEntity'
+    delete:
+      tags: [DeliveryCosts]
+      summary: Supprimer un coût de livraison (admin)
+      responses:
+        '204':
+          description: Supprimé
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+  # ═══════════════════════════
   # ORDERS
   # ═══════════════════════════
   /orders:
@@ -1414,6 +1343,24 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/PaymentMethod'
+
+  /payments/webhooks/stripe:
+    post:
+      tags: [Payments]
+      summary: Webhook Stripe Checkout
+      security: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              additionalProperties: true
+      responses:
+        '204':
+          description: Webhook traité
+        '422':
+          $ref: '#/components/responses/UnprocessableEntity'
 
   # ═══════════════════════════
   # PAYMENTS

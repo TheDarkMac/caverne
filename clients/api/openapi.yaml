@@ -9,7 +9,7 @@ info:
   version: 1.0.0
 servers:
 - description: Serveur de production
-  url: https://api.lacaverne/v1
+  url: http://localhost:8080/
 security:
 - BearerAuth: []
 tags:
@@ -847,6 +847,177 @@ paths:
       x-content-type: application/json
       x-accepts:
       - application/json
+  /delivery-costs:
+    get:
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: "#/components/schemas/DeliverCost"
+                type: array
+          description: OK
+      security: []
+      summary: Liste des coûts de livraison
+      tags:
+      - DeliveryCosts
+      x-accepts:
+      - application/json
+    post:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/DeliverCostInput"
+        required: true
+      responses:
+        "201":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DeliverCost"
+          description: Coût de livraison créé
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+          description: Token JWT manquant ou invalide
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+          description: Accès refusé (rôle insuffisant)
+        "422":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+          description: Données invalides
+      summary: Créer un coût de livraison (admin)
+      tags:
+      - DeliveryCosts
+      x-content-type: application/json
+      x-accepts:
+      - application/json
+  /delivery-costs/{id}:
+    delete:
+      parameters:
+      - explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          type: integer
+        style: simple
+      responses:
+        "204":
+          description: Supprimé
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+          description: Token JWT manquant ou invalide
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+          description: Accès refusé (rôle insuffisant)
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+          description: Ressource introuvable
+      summary: Supprimer un coût de livraison (admin)
+      tags:
+      - DeliveryCosts
+      x-accepts:
+      - application/json
+    get:
+      parameters:
+      - explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          type: integer
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DeliverCost"
+          description: OK
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+          description: Ressource introuvable
+      security: []
+      summary: Détail d'un coût de livraison
+      tags:
+      - DeliveryCosts
+      x-accepts:
+      - application/json
+    put:
+      parameters:
+      - explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          type: integer
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/DeliverCostInput"
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DeliverCost"
+          description: Coût de livraison mis à jour
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+          description: Token JWT manquant ou invalide
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+          description: Accès refusé (rôle insuffisant)
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+          description: Ressource introuvable
+        "422":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+          description: Données invalides
+      summary: Mettre à jour un coût de livraison (admin)
+      tags:
+      - DeliveryCosts
+      x-content-type: application/json
+      x-accepts:
+      - application/json
   /orders:
     get:
       parameters:
@@ -1093,6 +1264,31 @@ paths:
       summary: Liste des moyens de paiement disponibles
       tags:
       - Payments
+      x-accepts:
+      - application/json
+  /payments/webhooks/stripe:
+    post:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              additionalProperties: true
+              type: object
+        required: true
+      responses:
+        "204":
+          description: Webhook traité
+        "422":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+          description: Données invalides
+      security: []
+      summary: Webhook Stripe Checkout
+      tags:
+      - Payments
+      x-content-type: application/json
       x-accepts:
       - application/json
   /orders/{id}/payments:
@@ -1488,36 +1684,9 @@ components:
       - label
       - slug
       type: object
-    Currency:
-      properties:
-        code_iso:
-          example: MGA
-          maxLength: 3
-          type: string
-        name:
-          type: string
-        symbol:
-          type: string
-      type: object
     Product:
       example:
         reference: reference
-        technical_specs:
-          country: country
-          provider: provider
-          product_id: 2
-          id: 3
-          climate: climate
-          region: region
-        images:
-        - product_id: 5
-          is_main: false
-          id: 5
-          url: https://openapi-generator.tech
-        - product_id: 5
-          is_main: false
-          id: 5
-          url: https://openapi-generator.tech
         is_active: true
         category_id: 6
         size: 1.4658129805029452
@@ -1527,16 +1696,16 @@ components:
         label: label
         prices:
         - unit: unit
-          product_id: 7
+          product_id: 5
           valid_from: 2000-01-23
-          id: 2
-          value: 9.301444243932576
+          id: 5
+          value: 2.3021358869347655
           currency_code: currency_code
         - unit: unit
-          product_id: 7
+          product_id: 5
           valid_from: 2000-01-23
-          id: 2
-          value: 9.301444243932576
+          id: 5
+          value: 2.3021358869347655
           currency_code: currency_code
       properties:
         id:
@@ -1560,16 +1729,10 @@ components:
         is_active:
           default: true
           type: boolean
-        images:
-          items:
-            $ref: "#/components/schemas/ProductImage"
-          type: array
         prices:
           items:
             $ref: "#/components/schemas/Price"
           type: array
-        technical_specs:
-          $ref: "#/components/schemas/TechnicalSpecs"
       type: object
     ProductInput:
       example:
@@ -1605,41 +1768,13 @@ components:
       - label
       - reference
       type: object
-    ProductImage:
-      example:
-        product_id: 5
-        is_main: false
-        id: 5
-        url: https://openapi-generator.tech
-      properties:
-        id:
-          type: integer
-        product_id:
-          type: integer
-        url:
-          format: uri
-          type: string
-        is_main:
-          default: false
-          type: boolean
-      type: object
-    ProductImageInput:
-      properties:
-        url:
-          format: uri
-          type: string
-        is_main:
-          type: boolean
-      required:
-      - url
-      type: object
     Price:
       example:
         unit: unit
-        product_id: 7
+        product_id: 5
         valid_from: 2000-01-23
-        id: 2
-        value: 9.301444243932576
+        id: 5
+        value: 2.3021358869347655
         currency_code: currency_code
       properties:
         id:
@@ -1658,141 +1793,11 @@ components:
         unit:
           type: string
       type: object
-    PriceInput:
-      properties:
-        currency_code:
-          type: string
-        value:
-          format: double
-          type: number
-        valid_from:
-          format: date
-          type: string
-        unit:
-          type: string
-      required:
-      - currency_code
-      - valid_from
-      - value
-      type: object
-    StockEntry:
-      properties:
-        id:
-          type: integer
-        product_id:
-          type: integer
-        quantity:
-          format: double
-          type: number
-        movement_type:
-          enum:
-          - in
-          - out
-          - adjustment
-          type: string
-        date:
-          format: date-time
-          type: string
-        unit:
-          type: string
-      type: object
-    StockInput:
-      properties:
-        quantity:
-          format: double
-          type: number
-        movement_type:
-          enum:
-          - in
-          - out
-          - adjustment
-          type: string
-        unit:
-          type: string
-      required:
-      - movement_type
-      - quantity
-      type: object
-    StockSummary:
-      properties:
-        product_id:
-          type: integer
-        available_quantity:
-          type: number
-        unit:
-          type: string
-        last_updated:
-          format: date-time
-          type: string
-      type: object
-    TechnicalSpecs:
-      example:
-        country: country
-        provider: provider
-        product_id: 2
-        id: 3
-        climate: climate
-        region: region
-      properties:
-        id:
-          type: integer
-        product_id:
-          type: integer
-        country:
-          type: string
-        region:
-          type: string
-        climate:
-          type: string
-        provider:
-          maxLength: 255
-          type: string
-      type: object
-    TechnicalSpecsInput:
-      properties:
-        country:
-          type: string
-        region:
-          type: string
-        climate:
-          type: string
-        provider:
-          type: string
-      type: object
-    Review:
-      properties:
-        id:
-          type: integer
-        user_id:
-          type: integer
-        product_id:
-          type: integer
-        score:
-          maximum: 5
-          minimum: 1
-          type: integer
-        comment:
-          type: string
-        created_at:
-          format: date-time
-          type: string
-      type: object
-    ReviewInput:
-      properties:
-        score:
-          maximum: 5
-          minimum: 1
-          type: integer
-        comment:
-          type: string
-      required:
-      - score
-      type: object
     OrderItem:
       example:
-        quantity: 2.3021358869347655
-        product_id: 5
-        unit_price: 7.061401241503109
+        quantity: 7.061401241503109
+        product_id: 2
+        unit_price: 9.301444243932576
       properties:
         product_id:
           type: integer
@@ -1809,6 +1814,7 @@ components:
         date: 2000-01-23T04:56:07.000+00:00
         delivery_cost_id: 5
         user_id: 6
+        total_amount: 5.962133916683182
         address_id: 1
         recipient:
           country_code: country_code
@@ -1819,12 +1825,12 @@ components:
           recipient_phone: recipient_phone
         id: 0
         items:
-        - quantity: 2.3021358869347655
-          product_id: 5
-          unit_price: 7.061401241503109
-        - quantity: 2.3021358869347655
-          product_id: 5
-          unit_price: 7.061401241503109
+        - quantity: 7.061401241503109
+          product_id: 2
+          unit_price: 9.301444243932576
+        - quantity: 7.061401241503109
+          product_id: 2
+          unit_price: 9.301444243932576
         currency_code: currency_code
         provider_response: "{}"
         status: pending
@@ -1849,6 +1855,9 @@ components:
           - delivered
           - cancelled
           type: string
+        total_amount:
+          format: double
+          type: number
         delivery_cost_id:
           nullable: true
           type: integer
@@ -1859,6 +1868,8 @@ components:
         recipient:
           $ref: "#/components/schemas/RecipientInput"
         provider_response:
+          description: |
+            Sous-ensemble contrôlé de la réponse du provider. L'API ne renvoie pas l'objet Stripe complet. Pour Stripe Checkout, contient notamment `checkout_url`, `checkout_session_id`, `checkout_status` et `payment_status`.
           nullable: true
           type: object
       type: object
@@ -1915,10 +1926,13 @@ components:
       - status
       type: object
     DeliverCost:
+      example:
+        response_provider: "{}"
+        amount: 6.027456183070403
+        provider: provider
+        id: 0
       properties:
         id:
-          type: integer
-        order_id:
           type: integer
         amount:
           format: double
@@ -1930,6 +1944,9 @@ components:
           type: object
       type: object
     DeliverCostInput:
+      example:
+        amount: 0.8008281904610115
+        provider: provider
       properties:
         amount:
           format: double
@@ -2021,6 +2038,8 @@ components:
         internal_reference:
           type: string
         provider_response:
+          description: |
+            Sous-ensemble contrôlé de la réponse du provider. L'API ne renvoie pas l'objet Stripe complet. Pour Stripe Checkout, contient notamment `checkout_url`, `checkout_session_id`, `checkout_status` et `payment_status`.
           nullable: true
           type: object
       type: object
@@ -2104,22 +2123,6 @@ components:
       example:
         data:
         - reference: reference
-          technical_specs:
-            country: country
-            provider: provider
-            product_id: 2
-            id: 3
-            climate: climate
-            region: region
-          images:
-          - product_id: 5
-            is_main: false
-            id: 5
-            url: https://openapi-generator.tech
-          - product_id: 5
-            is_main: false
-            id: 5
-            url: https://openapi-generator.tech
           is_active: true
           category_id: 6
           size: 1.4658129805029452
@@ -2129,34 +2132,18 @@ components:
           label: label
           prices:
           - unit: unit
-            product_id: 7
+            product_id: 5
             valid_from: 2000-01-23
-            id: 2
-            value: 9.301444243932576
+            id: 5
+            value: 2.3021358869347655
             currency_code: currency_code
           - unit: unit
-            product_id: 7
+            product_id: 5
             valid_from: 2000-01-23
-            id: 2
-            value: 9.301444243932576
+            id: 5
+            value: 2.3021358869347655
             currency_code: currency_code
         - reference: reference
-          technical_specs:
-            country: country
-            provider: provider
-            product_id: 2
-            id: 3
-            climate: climate
-            region: region
-          images:
-          - product_id: 5
-            is_main: false
-            id: 5
-            url: https://openapi-generator.tech
-          - product_id: 5
-            is_main: false
-            id: 5
-            url: https://openapi-generator.tech
           is_active: true
           category_id: 6
           size: 1.4658129805029452
@@ -2166,16 +2153,16 @@ components:
           label: label
           prices:
           - unit: unit
-            product_id: 7
+            product_id: 5
             valid_from: 2000-01-23
-            id: 2
-            value: 9.301444243932576
+            id: 5
+            value: 2.3021358869347655
             currency_code: currency_code
           - unit: unit
-            product_id: 7
+            product_id: 5
             valid_from: 2000-01-23
-            id: 2
-            value: 9.301444243932576
+            id: 5
+            value: 2.3021358869347655
             currency_code: currency_code
         meta:
           per_page: 1
@@ -2197,6 +2184,7 @@ components:
           date: 2000-01-23T04:56:07.000+00:00
           delivery_cost_id: 5
           user_id: 6
+          total_amount: 5.962133916683182
           address_id: 1
           recipient:
             country_code: country_code
@@ -2207,12 +2195,12 @@ components:
             recipient_phone: recipient_phone
           id: 0
           items:
-          - quantity: 2.3021358869347655
-            product_id: 5
-            unit_price: 7.061401241503109
-          - quantity: 2.3021358869347655
-            product_id: 5
-            unit_price: 7.061401241503109
+          - quantity: 7.061401241503109
+            product_id: 2
+            unit_price: 9.301444243932576
+          - quantity: 7.061401241503109
+            product_id: 2
+            unit_price: 9.301444243932576
           currency_code: currency_code
           provider_response: "{}"
           status: pending
@@ -2220,6 +2208,7 @@ components:
           date: 2000-01-23T04:56:07.000+00:00
           delivery_cost_id: 5
           user_id: 6
+          total_amount: 5.962133916683182
           address_id: 1
           recipient:
             country_code: country_code
@@ -2230,12 +2219,12 @@ components:
             recipient_phone: recipient_phone
           id: 0
           items:
-          - quantity: 2.3021358869347655
-            product_id: 5
-            unit_price: 7.061401241503109
-          - quantity: 2.3021358869347655
-            product_id: 5
-            unit_price: 7.061401241503109
+          - quantity: 7.061401241503109
+            product_id: 2
+            unit_price: 9.301444243932576
+          - quantity: 7.061401241503109
+            product_id: 2
+            unit_price: 9.301444243932576
           currency_code: currency_code
           provider_response: "{}"
           status: pending
