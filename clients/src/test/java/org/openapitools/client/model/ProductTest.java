@@ -25,8 +25,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import org.openapitools.client.model.Price;
-import org.openapitools.client.model.ProductImage;
-import org.openapitools.client.model.TechnicalSpecs;
 import org.openapitools.jackson.nullable.JsonNullable;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
@@ -110,27 +108,11 @@ public class ProductTest {
     }
 
     /**
-     * Test the property 'images'
-     */
-    @Test
-    public void imagesTest() {
-        // TODO: test images
-    }
-
-    /**
      * Test the property 'prices'
      */
     @Test
     public void pricesTest() {
         // TODO: test prices
-    }
-
-    /**
-     * Test the property 'technicalSpecs'
-     */
-    @Test
-    public void technicalSpecsTest() {
-        // TODO: test technicalSpecs
     }
 
 }

@@ -26,8 +26,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import org.openapitools.client.model.Price;
-import org.openapitools.client.model.ProductImage;
-import org.openapitools.client.model.TechnicalSpecs;
 import org.openapitools.jackson.nullable.JsonNullable;
 
 import com.google.gson.Gson;
@@ -56,7 +54,7 @@ import org.openapitools.client.JSON;
 /**
  * Product
  */
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2026-04-03T11:16:21.103478876+03:00[Indian/Antananarivo]", comments = "Generator version: 7.21.0")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2026-04-10T11:26:52.676581797+03:00[Indian/Antananarivo]", comments = "Generator version: 7.21.0")
 public class Product {
   public static final String SERIALIZED_NAME_ID = "id";
   @SerializedName(SERIALIZED_NAME_ID)
@@ -98,20 +96,10 @@ public class Product {
   @javax.annotation.Nullable
   private Boolean isActive = true;
 
-  public static final String SERIALIZED_NAME_IMAGES = "images";
-  @SerializedName(SERIALIZED_NAME_IMAGES)
-  @javax.annotation.Nullable
-  private List<ProductImage> images = new ArrayList<>();
-
   public static final String SERIALIZED_NAME_PRICES = "prices";
   @SerializedName(SERIALIZED_NAME_PRICES)
   @javax.annotation.Nullable
   private List<Price> prices = new ArrayList<>();
-
-  public static final String SERIALIZED_NAME_TECHNICAL_SPECS = "technical_specs";
-  @SerializedName(SERIALIZED_NAME_TECHNICAL_SPECS)
-  @javax.annotation.Nullable
-  private TechnicalSpecs technicalSpecs;
 
   public Product() {
   }
@@ -268,33 +256,6 @@ public class Product {
   }
 
 
-  public Product images(@javax.annotation.Nullable List<ProductImage> images) {
-    this.images = images;
-    return this;
-  }
-
-  public Product addImagesItem(ProductImage imagesItem) {
-    if (this.images == null) {
-      this.images = new ArrayList<>();
-    }
-    this.images.add(imagesItem);
-    return this;
-  }
-
-  /**
-   * Get images
-   * @return images
-   */
-  @javax.annotation.Nullable
-  public List<ProductImage> getImages() {
-    return images;
-  }
-
-  public void setImages(@javax.annotation.Nullable List<ProductImage> images) {
-    this.images = images;
-  }
-
-
   public Product prices(@javax.annotation.Nullable List<Price> prices) {
     this.prices = prices;
     return this;
@@ -322,25 +283,6 @@ public class Product {
   }
 
 
-  public Product technicalSpecs(@javax.annotation.Nullable TechnicalSpecs technicalSpecs) {
-    this.technicalSpecs = technicalSpecs;
-    return this;
-  }
-
-  /**
-   * Get technicalSpecs
-   * @return technicalSpecs
-   */
-  @javax.annotation.Nullable
-  public TechnicalSpecs getTechnicalSpecs() {
-    return technicalSpecs;
-  }
-
-  public void setTechnicalSpecs(@javax.annotation.Nullable TechnicalSpecs technicalSpecs) {
-    this.technicalSpecs = technicalSpecs;
-  }
-
-
 
   @Override
   public boolean equals(Object o) {
@@ -359,9 +301,7 @@ public class Product {
         Objects.equals(this.description, product.description) &&
         Objects.equals(this.size, product.size) &&
         Objects.equals(this.isActive, product.isActive) &&
-        Objects.equals(this.images, product.images) &&
-        Objects.equals(this.prices, product.prices) &&
-        Objects.equals(this.technicalSpecs, product.technicalSpecs);
+        Objects.equals(this.prices, product.prices);
   }
 
   private static <T> boolean equalsNullable(JsonNullable<T> a, JsonNullable<T> b) {
@@ -370,7 +310,7 @@ public class Product {
 
   @Override
   public int hashCode() {
-    return Objects.hash(id, categoryId, label, reference, limitDate, description, size, isActive, images, prices, technicalSpecs);
+    return Objects.hash(id, categoryId, label, reference, limitDate, description, size, isActive, prices);
   }
 
   private static <T> int hashCodeNullable(JsonNullable<T> a) {
@@ -392,9 +332,7 @@ public class Product {
     sb.append("    description: ").append(toIndentedString(description)).append("\n");
     sb.append("    size: ").append(toIndentedString(size)).append("\n");
     sb.append("    isActive: ").append(toIndentedString(isActive)).append("\n");
-    sb.append("    images: ").append(toIndentedString(images)).append("\n");
     sb.append("    prices: ").append(toIndentedString(prices)).append("\n");
-    sb.append("    technicalSpecs: ").append(toIndentedString(technicalSpecs)).append("\n");
     sb.append("}");
     return sb.toString();
   }
@@ -413,7 +351,7 @@ public class Product {
 
   static {
     // a set of all properties/fields (JSON key names)
-    openapiFields = new HashSet<String>(Arrays.asList("id", "category_id", "label", "reference", "limit_date", "description", "size", "is_active", "images", "prices", "technical_specs"));
+    openapiFields = new HashSet<String>(Arrays.asList("id", "category_id", "label", "reference", "limit_date", "description", "size", "is_active", "prices"));
 
     // a set of required properties/fields (JSON key names)
     openapiRequiredFields = new HashSet<String>(0);
@@ -449,20 +387,6 @@ public class Product {
       if ((jsonObj.get("description") != null && !jsonObj.get("description").isJsonNull()) && !jsonObj.get("description").isJsonPrimitive()) {
         throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "Expected the field `description` to be a primitive type in the JSON string but got `%s`", jsonObj.get("description").toString()));
       }
-      if (jsonObj.get("images") != null && !jsonObj.get("images").isJsonNull()) {
-        JsonArray jsonArrayimages = jsonObj.getAsJsonArray("images");
-        if (jsonArrayimages != null) {
-          // ensure the json data is an array
-          if (!jsonObj.get("images").isJsonArray()) {
-            throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "Expected the field `images` to be an array in the JSON string but got `%s`", jsonObj.get("images").toString()));
-          }
-
-          // validate the optional field `images` (array)
-          for (int i = 0; i < jsonArrayimages.size(); i++) {
-            ProductImage.validateJsonElement(jsonArrayimages.get(i));
-          };
-        }
-      }
       if (jsonObj.get("prices") != null && !jsonObj.get("prices").isJsonNull()) {
         JsonArray jsonArrayprices = jsonObj.getAsJsonArray("prices");
         if (jsonArrayprices != null) {
@@ -476,10 +400,6 @@ public class Product {
             Price.validateJsonElement(jsonArrayprices.get(i));
           };
         }
-      }
-      // validate the optional field `technical_specs`
-      if (jsonObj.get("technical_specs") != null && !jsonObj.get("technical_specs").isJsonNull()) {
-        TechnicalSpecs.validateJsonElement(jsonObj.get("technical_specs"));
       }
   }
 

@@ -1,6 +1,6 @@
 # ProductsApi
 
-All URIs are relative to *https://api.lacaverne/v1*
+All URIs are relative to *http://localhost:8080*
 
 | Method | HTTP request | Description |
 |------------- | ------------- | -------------|
@@ -29,7 +29,7 @@ import org.openapitools.client.api.ProductsApi;
 public class Example {
   public static void main(String[] args) {
     ApiClient defaultClient = Configuration.getDefaultApiClient();
-    defaultClient.setBasePath("https://api.lacaverne/v1");
+    defaultClient.setBasePath("http://localhost:8080");
 
     ProductsApi apiInstance = new ProductsApi(defaultClient);
     Integer page = 1; // Integer | 
@@ -100,7 +100,7 @@ import org.openapitools.client.api.ProductsApi;
 public class Example {
   public static void main(String[] args) {
     ApiClient defaultClient = Configuration.getDefaultApiClient();
-    defaultClient.setBasePath("https://api.lacaverne/v1");
+    defaultClient.setBasePath("http://localhost:8080");
     
     // Configure HTTP bearer authorization: BearerAuth
     HttpBearerAuth BearerAuth = (HttpBearerAuth) defaultClient.getAuthentication("BearerAuth");
@@ -165,7 +165,7 @@ import org.openapitools.client.api.ProductsApi;
 public class Example {
   public static void main(String[] args) {
     ApiClient defaultClient = Configuration.getDefaultApiClient();
-    defaultClient.setBasePath("https://api.lacaverne/v1");
+    defaultClient.setBasePath("http://localhost:8080");
 
     ProductsApi apiInstance = new ProductsApi(defaultClient);
     Integer id = 56; // Integer | 
@@ -229,7 +229,7 @@ import org.openapitools.client.api.ProductsApi;
 public class Example {
   public static void main(String[] args) {
     ApiClient defaultClient = Configuration.getDefaultApiClient();
-    defaultClient.setBasePath("https://api.lacaverne/v1");
+    defaultClient.setBasePath("http://localhost:8080");
     
     // Configure HTTP bearer authorization: BearerAuth
     HttpBearerAuth BearerAuth = (HttpBearerAuth) defaultClient.getAuthentication("BearerAuth");
@@ -301,7 +301,7 @@ import org.openapitools.client.api.ProductsApi;
 public class Example {
   public static void main(String[] args) {
     ApiClient defaultClient = Configuration.getDefaultApiClient();
-    defaultClient.setBasePath("https://api.lacaverne/v1");
+    defaultClient.setBasePath("http://localhost:8080");
     
     // Configure HTTP bearer authorization: BearerAuth
     HttpBearerAuth BearerAuth = (HttpBearerAuth) defaultClient.getAuthentication("BearerAuth");
