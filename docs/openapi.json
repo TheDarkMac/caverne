@@ -10,7 +10,7 @@
   },
   "servers" : [ {
     "description" : "Serveur de production",
-    "url" : "https://api.lacaverne/v1"
+    "url" : "http://localhost:8080/"
   } ],
   "security" : [ {
     "BearerAuth" : [ ]
@@ -1161,6 +1161,248 @@
         "tags" : [ "Products" ]
       }
     },
+    "/delivery-costs" : {
+      "get" : {
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "items" : {
+                    "$ref" : "#/components/schemas/DeliverCost"
+                  },
+                  "type" : "array"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "security" : [ ],
+        "summary" : "Liste des coûts de livraison",
+        "tags" : [ "DeliveryCosts" ]
+      },
+      "post" : {
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/DeliverCostInput"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "201" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/DeliverCost"
+                }
+              }
+            },
+            "description" : "Coût de livraison créé"
+          },
+          "401" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Error"
+                }
+              }
+            },
+            "description" : "Token JWT manquant ou invalide"
+          },
+          "403" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Error"
+                }
+              }
+            },
+            "description" : "Accès refusé (rôle insuffisant)"
+          },
+          "422" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Error"
+                }
+              }
+            },
+            "description" : "Données invalides"
+          }
+        },
+        "summary" : "Créer un coût de livraison (admin)",
+        "tags" : [ "DeliveryCosts" ]
+      }
+    },
+    "/delivery-costs/{id}" : {
+      "delete" : {
+        "parameters" : [ {
+          "explode" : false,
+          "in" : "path",
+          "name" : "id",
+          "required" : true,
+          "schema" : {
+            "type" : "integer"
+          },
+          "style" : "simple"
+        } ],
+        "responses" : {
+          "204" : {
+            "description" : "Supprimé"
+          },
+          "401" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Error"
+                }
+              }
+            },
+            "description" : "Token JWT manquant ou invalide"
+          },
+          "403" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Error"
+                }
+              }
+            },
+            "description" : "Accès refusé (rôle insuffisant)"
+          },
+          "404" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Error"
+                }
+              }
+            },
+            "description" : "Ressource introuvable"
+          }
+        },
+        "summary" : "Supprimer un coût de livraison (admin)",
+        "tags" : [ "DeliveryCosts" ]
+      },
+      "get" : {
+        "parameters" : [ {
+          "explode" : false,
+          "in" : "path",
+          "name" : "id",
+          "required" : true,
+          "schema" : {
+            "type" : "integer"
+          },
+          "style" : "simple"
+        } ],
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/DeliverCost"
+                }
+              }
+            },
+            "description" : "OK"
+          },
+          "404" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Error"
+                }
+              }
+            },
+            "description" : "Ressource introuvable"
+          }
+        },
+        "security" : [ ],
+        "summary" : "Détail d'un coût de livraison",
+        "tags" : [ "DeliveryCosts" ]
+      },
+      "put" : {
+        "parameters" : [ {
+          "explode" : false,
+          "in" : "path",
+          "name" : "id",
+          "required" : true,
+          "schema" : {
+            "type" : "integer"
+          },
+          "style" : "simple"
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/DeliverCostInput"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/DeliverCost"
+                }
+              }
+            },
+            "description" : "Coût de livraison mis à jour"
+          },
+          "401" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Error"
+                }
+              }
+            },
+            "description" : "Token JWT manquant ou invalide"
+          },
+          "403" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Error"
+                }
+              }
+            },
+            "description" : "Accès refusé (rôle insuffisant)"
+          },
+          "404" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Error"
+                }
+              }
+            },
+            "description" : "Ressource introuvable"
+          },
+          "422" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Error"
+                }
+              }
+            },
+            "description" : "Données invalides"
+          }
+        },
+        "summary" : "Mettre à jour un coût de livraison (admin)",
+        "tags" : [ "DeliveryCosts" ]
+      }
+    },
     "/orders" : {
       "get" : {
         "parameters" : [ {
@@ -1481,6 +1723,39 @@
         },
         "security" : [ ],
         "summary" : "Liste des moyens de paiement disponibles",
+        "tags" : [ "Payments" ]
+      }
+    },
+    "/payments/webhooks/stripe" : {
+      "post" : {
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "additionalProperties" : true,
+                "type" : "object"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "204" : {
+            "description" : "Webhook traité"
+          },
+          "422" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Error"
+                }
+              }
+            },
+            "description" : "Données invalides"
+          }
+        },
+        "security" : [ ],
+        "summary" : "Webhook Stripe Checkout",
         "tags" : [ "Payments" ]
       }
     },
@@ -1909,22 +2184,6 @@
         "required" : [ "label", "slug" ],
         "type" : "object"
       },
-      "Currency" : {
-        "properties" : {
-          "code_iso" : {
-            "example" : "MGA",
-            "maxLength" : 3,
-            "type" : "string"
-          },
-          "name" : {
-            "type" : "string"
-          },
-          "symbol" : {
-            "type" : "string"
-          }
-        },
-        "type" : "object"
-      },
       "Product" : {
         "properties" : {
           "id" : {
@@ -1956,20 +2215,11 @@
             "default" : true,
             "type" : "boolean"
           },
-          "images" : {
-            "items" : {
-              "$ref" : "#/components/schemas/ProductImage"
-            },
-            "type" : "array"
-          },
           "prices" : {
             "items" : {
               "$ref" : "#/components/schemas/Price"
             },
             "type" : "array"
-          },
-          "technical_specs" : {
-            "$ref" : "#/components/schemas/TechnicalSpecs"
           }
         },
         "type" : "object"
@@ -2006,38 +2256,6 @@
         "required" : [ "category_id", "label", "reference" ],
         "type" : "object"
       },
-      "ProductImage" : {
-        "properties" : {
-          "id" : {
-            "type" : "integer"
-          },
-          "product_id" : {
-            "type" : "integer"
-          },
-          "url" : {
-            "format" : "uri",
-            "type" : "string"
-          },
-          "is_main" : {
-            "default" : false,
-            "type" : "boolean"
-          }
-        },
-        "type" : "object"
-      },
-      "ProductImageInput" : {
-        "properties" : {
-          "url" : {
-            "format" : "uri",
-            "type" : "string"
-          },
-          "is_main" : {
-            "type" : "boolean"
-          }
-        },
-        "required" : [ "url" ],
-        "type" : "object"
-      },
       "Price" : {
         "properties" : {
           "id" : {
@@ -2062,168 +2280,6 @@
             "type" : "string"
           }
         },
-        "type" : "object"
-      },
-      "PriceInput" : {
-        "properties" : {
-          "currency_code" : {
-            "type" : "string"
-          },
-          "value" : {
-            "format" : "double",
-            "type" : "number"
-          },
-          "valid_from" : {
-            "format" : "date",
-            "type" : "string"
-          },
-          "unit" : {
-            "type" : "string"
-          }
-        },
-        "required" : [ "currency_code", "valid_from", "value" ],
-        "type" : "object"
-      },
-      "StockEntry" : {
-        "properties" : {
-          "id" : {
-            "type" : "integer"
-          },
-          "product_id" : {
-            "type" : "integer"
-          },
-          "quantity" : {
-            "format" : "double",
-            "type" : "number"
-          },
-          "movement_type" : {
-            "enum" : [ "in", "out", "adjustment" ],
-            "type" : "string"
-          },
-          "date" : {
-            "format" : "date-time",
-            "type" : "string"
-          },
-          "unit" : {
-            "type" : "string"
-          }
-        },
-        "type" : "object"
-      },
-      "StockInput" : {
-        "properties" : {
-          "quantity" : {
-            "format" : "double",
-            "type" : "number"
-          },
-          "movement_type" : {
-            "enum" : [ "in", "out", "adjustment" ],
-            "type" : "string"
-          },
-          "unit" : {
-            "type" : "string"
-          }
-        },
-        "required" : [ "movement_type", "quantity" ],
-        "type" : "object"
-      },
-      "StockSummary" : {
-        "properties" : {
-          "product_id" : {
-            "type" : "integer"
-          },
-          "available_quantity" : {
-            "type" : "number"
-          },
-          "unit" : {
-            "type" : "string"
-          },
-          "last_updated" : {
-            "format" : "date-time",
-            "type" : "string"
-          }
-        },
-        "type" : "object"
-      },
-      "TechnicalSpecs" : {
-        "properties" : {
-          "id" : {
-            "type" : "integer"
-          },
-          "product_id" : {
-            "type" : "integer"
-          },
-          "country" : {
-            "type" : "string"
-          },
-          "region" : {
-            "type" : "string"
-          },
-          "climate" : {
-            "type" : "string"
-          },
-          "provider" : {
-            "maxLength" : 255,
-            "type" : "string"
-          }
-        },
-        "type" : "object"
-      },
-      "TechnicalSpecsInput" : {
-        "properties" : {
-          "country" : {
-            "type" : "string"
-          },
-          "region" : {
-            "type" : "string"
-          },
-          "climate" : {
-            "type" : "string"
-          },
-          "provider" : {
-            "type" : "string"
-          }
-        },
-        "type" : "object"
-      },
-      "Review" : {
-        "properties" : {
-          "id" : {
-            "type" : "integer"
-          },
-          "user_id" : {
-            "type" : "integer"
-          },
-          "product_id" : {
-            "type" : "integer"
-          },
-          "score" : {
-            "maximum" : 5,
-            "minimum" : 1,
-            "type" : "integer"
-          },
-          "comment" : {
-            "type" : "string"
-          },
-          "created_at" : {
-            "format" : "date-time",
-            "type" : "string"
-          }
-        },
-        "type" : "object"
-      },
-      "ReviewInput" : {
-        "properties" : {
-          "score" : {
-            "maximum" : 5,
-            "minimum" : 1,
-            "type" : "integer"
-          },
-          "comment" : {
-            "type" : "string"
-          }
-        },
-        "required" : [ "score" ],
         "type" : "object"
       },
       "OrderItem" : {
@@ -2267,6 +2323,10 @@
             "enum" : [ "pending", "confirmed", "delivered", "cancelled" ],
             "type" : "string"
           },
+          "total_amount" : {
+            "format" : "double",
+            "type" : "number"
+          },
           "delivery_cost_id" : {
             "nullable" : true,
             "type" : "integer"
@@ -2281,6 +2341,7 @@
             "$ref" : "#/components/schemas/RecipientInput"
           },
           "provider_response" : {
+            "description" : "Sous-ensemble contrôlé de la réponse du provider. L'API ne renvoie pas l'objet Stripe complet. Pour Stripe Checkout, contient notamment `checkout_url`, `checkout_session_id`, `checkout_status` et `payment_status`.\n",
             "nullable" : true,
             "type" : "object"
           }
@@ -2327,9 +2388,6 @@
       "DeliverCost" : {
         "properties" : {
           "id" : {
-            "type" : "integer"
-          },
-          "order_id" : {
             "type" : "integer"
           },
           "amount" : {
@@ -2433,6 +2491,7 @@
             "type" : "string"
           },
           "provider_response" : {
+            "description" : "Sous-ensemble contrôlé de la réponse du provider. L'API ne renvoie pas l'objet Stripe complet. Pour Stripe Checkout, contient notamment `checkout_url`, `checkout_session_id`, `checkout_status` et `payment_status`.\n",
             "nullable" : true,
             "type" : "object"
           }
