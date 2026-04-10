@@ -52,6 +52,8 @@ class CheckoutApiIntegrationTest {
 
   @Autowired private OrderRepository orderRepository;
 
+  @Autowired private DeliveryCostRepository deliveryCostRepository;
+
   @Autowired private UserRepository userRepository;
 
   @Autowired private AuthSessionRepository authSessionRepository;
@@ -62,6 +64,7 @@ class CheckoutApiIntegrationTest {
   void setUp() {
     authSessionRepository.deleteAll();
     orderRepository.deleteAll();
+    deliveryCostRepository.deleteAll();
     userRepository.deleteAll();
     productRepository.deleteAll();
     categoryRepository.deleteAll();
@@ -70,12 +73,15 @@ class CheckoutApiIntegrationTest {
   @Test
   void shouldCreateOrderFromRecipientPayload() throws Exception {
     Product product = saveProduct("Arabica Coffee", "COF-001", 25000);
+    DeliveryCost deliveryCost =
+        deliveryCostRepository.save(
+            DeliveryCost.builder().amount(BigDecimal.valueOf(5000)).provider("STANDARD").build());
 
     String payload =
         objectMapper.writeValueAsString(
             Map.of(
                 "delivery_cost_id",
-                7,
+                deliveryCost.getId(),
                 "currency_code",
                 "MGA",
                 "items",
@@ -94,7 +100,8 @@ class CheckoutApiIntegrationTest {
         .andExpect(status().isCreated())
         .andExpect(jsonPath("$.status").value("pending"))
         .andExpect(jsonPath("$.currency_code").value("MGA"))
-        .andExpect(jsonPath("$.delivery_cost_id").value(7))
+        .andExpect(jsonPath("$.delivery_cost_id").value(deliveryCost.getId()))
+        .andExpect(jsonPath("$.total_amount").value(55000))
         .andExpect(jsonPath("$.items[0].product_id").value(product.getId()))
         .andExpect(jsonPath("$.items[0].unit_price").value(25000))
         .andExpect(jsonPath("$.recipient.recipient_email").value("jean@example.com"));
