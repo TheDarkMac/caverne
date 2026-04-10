@@ -57,7 +57,10 @@ public class DeliveryCostService {
 
   private DeliveryCost fromInput(
       org.openapitools.client.model.DeliverCostInput input, DeliveryCost existing) {
-    if (input == null || input.getAmount() == null || input.getAmount() <= 0 || isBlank(input.getProvider())) {
+    if (input == null
+        || input.getAmount() == null
+        || input.getAmount() <= 0
+        || isBlank(input.getProvider())) {
       throw new ResponseStatusException(UNPROCESSABLE_ENTITY, "delivery cost input is invalid");
     }
 

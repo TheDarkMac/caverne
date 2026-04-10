@@ -34,7 +34,8 @@ public class StripeWebhookService {
 
   @Transactional
   public void handleWebhook(String payload, String signatureHeader) {
-    if (stripeProperties.getWebhookSecret() == null || stripeProperties.getWebhookSecret().isBlank()) {
+    if (stripeProperties.getWebhookSecret() == null
+        || stripeProperties.getWebhookSecret().isBlank()) {
       throw new ResponseStatusException(
           SERVICE_UNAVAILABLE, "Stripe webhook secret is not configured");
     }
@@ -43,12 +44,14 @@ public class StripeWebhookService {
       JsonNode root = objectMapper.readTree(payload);
       String eventType = requiredText(root.path("type"), "Stripe event type is missing");
       JsonNode objectNode = root.path("data").path("object");
-      String sessionId = requiredText(objectNode.path("id"), "Stripe checkout session id is missing");
+      String sessionId =
+          requiredText(objectNode.path("id"), "Stripe checkout session id is missing");
 
       Order order =
           orderRepository
               .findByPaymentInternalReference(sessionId)
-              .orElseThrow(() -> new ResponseStatusException(NOT_FOUND, "Stripe payment not found"));
+              .orElseThrow(
+                  () -> new ResponseStatusException(NOT_FOUND, "Stripe payment not found"));
 
       OrderPayment payment = findPayment(order, sessionId);
       updatePaymentFromEvent(payment, eventType, objectNode);
@@ -85,7 +88,8 @@ public class StripeWebhookService {
   }
 
   private void updateOrderFromPayment(Order order, OrderPayment payment) {
-    if ("confirmed".equalsIgnoreCase(payment.getStatus()) && order.getStatus() == OrderStatus.PENDING) {
+    if ("confirmed".equalsIgnoreCase(payment.getStatus())
+        && order.getStatus() == OrderStatus.PENDING) {
       order.setStatus(OrderStatus.CONFIRMED);
     }
   }

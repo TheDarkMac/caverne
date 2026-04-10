@@ -20,5 +20,6 @@ public interface OrderRepository
           limit 1
           """,
       nativeQuery = true)
-  Optional<Order> findByPaymentInternalReference(@Param("internalReference") String internalReference);
+  Optional<Order> findByPaymentInternalReference(
+      @Param("internalReference") String internalReference);
 }

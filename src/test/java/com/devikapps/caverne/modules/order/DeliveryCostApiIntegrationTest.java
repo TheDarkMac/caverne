@@ -90,7 +90,8 @@ class DeliveryCostApiIntegrationTest {
   @Test
   void shouldRejectDeliveryCostWritesForSimpleUser() throws Exception {
     String token = loginAsSimpleUser("delivery-user@example.com", "secret123");
-    String payload = objectMapper.writeValueAsString(Map.of("amount", 5000, "provider", "STANDARD"));
+    String payload =
+        objectMapper.writeValueAsString(Map.of("amount", 5000, "provider", "STANDARD"));
 
     mockMvc
         .perform(
