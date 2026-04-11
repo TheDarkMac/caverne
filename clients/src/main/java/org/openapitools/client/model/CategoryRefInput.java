@@ -47,58 +47,34 @@ import java.util.Set;
 import org.openapitools.client.JSON;
 
 /**
- * OrderInputItemsInner
+ * CategoryRefInput
  */
 @javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2026-04-11T07:12:32.659476305+03:00[Indian/Antananarivo]", comments = "Generator version: 7.21.0")
-public class OrderInputItemsInner {
-  public static final String SERIALIZED_NAME_PRODUCT_ID = "product_id";
-  @SerializedName(SERIALIZED_NAME_PRODUCT_ID)
+public class CategoryRefInput {
+  public static final String SERIALIZED_NAME_ID = "id";
+  @SerializedName(SERIALIZED_NAME_ID)
   @javax.annotation.Nonnull
-  private UUID productId;
+  private UUID id;
 
-  public static final String SERIALIZED_NAME_QUANTITY = "quantity";
-  @SerializedName(SERIALIZED_NAME_QUANTITY)
-  @javax.annotation.Nonnull
-  private Double quantity;
-
-  public OrderInputItemsInner() {
+  public CategoryRefInput() {
   }
 
-  public OrderInputItemsInner productId(@javax.annotation.Nonnull UUID productId) {
-    this.productId = productId;
+  public CategoryRefInput id(@javax.annotation.Nonnull UUID id) {
+    this.id = id;
     return this;
   }
 
   /**
-   * Get productId
-   * @return productId
+   * Get id
+   * @return id
    */
   @javax.annotation.Nonnull
-  public UUID getProductId() {
-    return productId;
+  public UUID getId() {
+    return id;
   }
 
-  public void setProductId(@javax.annotation.Nonnull UUID productId) {
-    this.productId = productId;
-  }
-
-
-  public OrderInputItemsInner quantity(@javax.annotation.Nonnull Double quantity) {
-    this.quantity = quantity;
-    return this;
-  }
-
-  /**
-   * Get quantity
-   * @return quantity
-   */
-  @javax.annotation.Nonnull
-  public Double getQuantity() {
-    return quantity;
-  }
-
-  public void setQuantity(@javax.annotation.Nonnull Double quantity) {
-    this.quantity = quantity;
+  public void setId(@javax.annotation.Nonnull UUID id) {
+    this.id = id;
   }
 
 
@@ -111,22 +87,20 @@ public class OrderInputItemsInner {
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    OrderInputItemsInner orderInputItemsInner = (OrderInputItemsInner) o;
-    return Objects.equals(this.productId, orderInputItemsInner.productId) &&
-        Objects.equals(this.quantity, orderInputItemsInner.quantity);
+    CategoryRefInput categoryRefInput = (CategoryRefInput) o;
+    return Objects.equals(this.id, categoryRefInput.id);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(productId, quantity);
+    return Objects.hash(id);
   }
 
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
-    sb.append("class OrderInputItemsInner {\n");
-    sb.append("    productId: ").append(toIndentedString(productId)).append("\n");
-    sb.append("    quantity: ").append(toIndentedString(quantity)).append("\n");
+    sb.append("class CategoryRefInput {\n");
+    sb.append("    id: ").append(toIndentedString(id)).append("\n");
     sb.append("}");
     return sb.toString();
   }
@@ -145,42 +119,42 @@ public class OrderInputItemsInner {
 
   static {
     // a set of all properties/fields (JSON key names)
-    openapiFields = new HashSet<String>(Arrays.asList("product_id", "quantity"));
+    openapiFields = new HashSet<String>(Arrays.asList("id"));
 
     // a set of required properties/fields (JSON key names)
-    openapiRequiredFields = new HashSet<String>(Arrays.asList("product_id", "quantity"));
+    openapiRequiredFields = new HashSet<String>(Arrays.asList("id"));
   }
 
   /**
    * Validates the JSON Element and throws an exception if issues found
    *
    * @param jsonElement JSON Element
-   * @throws IOException if the JSON Element is invalid with respect to OrderInputItemsInner
+   * @throws IOException if the JSON Element is invalid with respect to CategoryRefInput
    */
   public static void validateJsonElement(JsonElement jsonElement) throws IOException {
       if (jsonElement == null) {
-        if (!OrderInputItemsInner.openapiRequiredFields.isEmpty()) { // has required fields but JSON element is null
-          throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "The required field(s) %s in OrderInputItemsInner is not found in the empty JSON string", OrderInputItemsInner.openapiRequiredFields.toString()));
+        if (!CategoryRefInput.openapiRequiredFields.isEmpty()) { // has required fields but JSON element is null
+          throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "The required field(s) %s in CategoryRefInput is not found in the empty JSON string", CategoryRefInput.openapiRequiredFields.toString()));
         }
       }
 
       Set<Map.Entry<String, JsonElement>> entries = jsonElement.getAsJsonObject().entrySet();
       // check to see if the JSON string contains additional fields
       for (Map.Entry<String, JsonElement> entry : entries) {
-        if (!OrderInputItemsInner.openapiFields.contains(entry.getKey())) {
-          throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "The field `%s` in the JSON string is not defined in the `OrderInputItemsInner` properties. JSON: %s", entry.getKey(), jsonElement.toString()));
+        if (!CategoryRefInput.openapiFields.contains(entry.getKey())) {
+          throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "The field `%s` in the JSON string is not defined in the `CategoryRefInput` properties. JSON: %s", entry.getKey(), jsonElement.toString()));
         }
       }
 
       // check to make sure all required properties/fields are present in the JSON string
-      for (String requiredField : OrderInputItemsInner.openapiRequiredFields) {
+      for (String requiredField : CategoryRefInput.openapiRequiredFields) {
         if (jsonElement.getAsJsonObject().get(requiredField) == null) {
           throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "The required field `%s` is not found in the JSON string: %s", requiredField, jsonElement.toString()));
         }
       }
         JsonObject jsonObj = jsonElement.getAsJsonObject();
-      if (!jsonObj.get("product_id").isJsonPrimitive()) {
-        throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "Expected the field `product_id` to be a primitive type in the JSON string but got `%s`", jsonObj.get("product_id").toString()));
+      if (!jsonObj.get("id").isJsonPrimitive()) {
+        throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "Expected the field `id` to be a primitive type in the JSON string but got `%s`", jsonObj.get("id").toString()));
       }
   }
 
@@ -188,22 +162,22 @@ public class OrderInputItemsInner {
     @SuppressWarnings("unchecked")
     @Override
     public <T> TypeAdapter<T> create(Gson gson, TypeToken<T> type) {
-       if (!OrderInputItemsInner.class.isAssignableFrom(type.getRawType())) {
-         return null; // this class only serializes 'OrderInputItemsInner' and its subtypes
+       if (!CategoryRefInput.class.isAssignableFrom(type.getRawType())) {
+         return null; // this class only serializes 'CategoryRefInput' and its subtypes
        }
        final TypeAdapter<JsonElement> elementAdapter = gson.getAdapter(JsonElement.class);
-       final TypeAdapter<OrderInputItemsInner> thisAdapter
-                        = gson.getDelegateAdapter(this, TypeToken.get(OrderInputItemsInner.class));
+       final TypeAdapter<CategoryRefInput> thisAdapter
+                        = gson.getDelegateAdapter(this, TypeToken.get(CategoryRefInput.class));
 
-       return (TypeAdapter<T>) new TypeAdapter<OrderInputItemsInner>() {
+       return (TypeAdapter<T>) new TypeAdapter<CategoryRefInput>() {
            @Override
-           public void write(JsonWriter out, OrderInputItemsInner value) throws IOException {
+           public void write(JsonWriter out, CategoryRefInput value) throws IOException {
              JsonObject obj = thisAdapter.toJsonTree(value).getAsJsonObject();
              elementAdapter.write(out, obj);
            }
 
            @Override
-           public OrderInputItemsInner read(JsonReader in) throws IOException {
+           public CategoryRefInput read(JsonReader in) throws IOException {
              JsonElement jsonElement = elementAdapter.read(in);
              validateJsonElement(jsonElement);
              return thisAdapter.fromJsonTree(jsonElement);
@@ -214,18 +188,18 @@ public class OrderInputItemsInner {
   }
 
   /**
-   * Create an instance of OrderInputItemsInner given an JSON string
+   * Create an instance of CategoryRefInput given an JSON string
    *
    * @param jsonString JSON string
-   * @return An instance of OrderInputItemsInner
-   * @throws IOException if the JSON string is invalid with respect to OrderInputItemsInner
+   * @return An instance of CategoryRefInput
+   * @throws IOException if the JSON string is invalid with respect to CategoryRefInput
    */
-  public static OrderInputItemsInner fromJson(String jsonString) throws IOException {
-    return JSON.getGson().fromJson(jsonString, OrderInputItemsInner.class);
+  public static CategoryRefInput fromJson(String jsonString) throws IOException {
+    return JSON.getGson().fromJson(jsonString, CategoryRefInput.class);
   }
 
   /**
-   * Convert an instance of OrderInputItemsInner to an JSON string
+   * Convert an instance of CategoryRefInput to an JSON string
    *
    * @return JSON string
    */

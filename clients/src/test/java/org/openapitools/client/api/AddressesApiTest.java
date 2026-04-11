@@ -17,6 +17,7 @@ import org.openapitools.client.ApiException;
 import org.openapitools.client.model.Address;
 import org.openapitools.client.model.AddressInput;
 import org.openapitools.client.model.Error;
+import java.util.UUID;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
@@ -51,7 +52,7 @@ public class AddressesApiTest {
      */
     @Test
     public void usersMeAddressesIdDefaultPutTest() throws ApiException {
-        Integer id = null;
+        UUID id = null;
         Address response = api.usersMeAddressesIdDefaultPut(id);
         // TODO: test validations
     }
@@ -63,7 +64,7 @@ public class AddressesApiTest {
      */
     @Test
     public void usersMeAddressesIdDeleteTest() throws ApiException {
-        Integer id = null;
+        UUID id = null;
         api.usersMeAddressesIdDelete(id);
         // TODO: test validations
     }
@@ -77,7 +78,7 @@ public class AddressesApiTest {
      */
     @Test
     public void usersMeAddressesIdPutTest() throws ApiException {
-        Integer id = null;
+        UUID id = null;
         AddressInput addressInput = null;
         Address response = api.usersMeAddressesIdPut(id, addressInput);
         // TODO: test validations

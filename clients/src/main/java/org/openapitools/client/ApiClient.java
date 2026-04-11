@@ -61,12 +61,19 @@ import org.openapitools.client.auth.ApiKeyAuth;
  */
 public class ApiClient {
 
-    protected String basePath = "http://localhost:8080";
+    protected String basePath = "http://localhost:8080/api/v1";
     protected List<ServerConfiguration> servers = new ArrayList<ServerConfiguration>(Arrays.asList(
     new ServerConfiguration(
-      "http://localhost:8080",
-      "Serveur de production",
-      new HashMap<String, ServerVariable>()
+      "http://localhost:8080/api/{version}",
+      "Serveur avec préfixe API versionné",
+      new HashMap<String, ServerVariable>() {{
+        put("version", new ServerVariable(
+          "Version HTTP exposée sous le préfixe `/api`",
+          "v1",
+          new HashSet<String>(
+          )
+        ));
+      }}
     )
   ));
     protected Integer serverIndex = 0;
@@ -159,7 +166,7 @@ public class ApiClient {
     /**
      * Set base path
      *
-     * @param basePath Base path of the URL (e.g http://localhost:8080)
+     * @param basePath Base path of the URL (e.g http://localhost:8080/api/v1)
      * @return An instance of ApiClient
      */
     public ApiClient setBasePath(String basePath) {

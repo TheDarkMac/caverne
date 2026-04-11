@@ -23,6 +23,7 @@ import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.UUID;
 import org.openapitools.client.model.OrderItem;
 import org.openapitools.client.model.RecipientInput;
 import org.openapitools.jackson.nullable.JsonNullable;

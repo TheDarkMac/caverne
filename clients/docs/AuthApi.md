@@ -1,6 +1,6 @@
 # AuthApi
 
-All URIs are relative to *http://localhost:8080*
+All URIs are relative to *http://localhost:8080/api/v1*
 
 | Method | HTTP request | Description |
 |------------- | ------------- | -------------|
@@ -27,7 +27,7 @@ import org.openapitools.client.api.AuthApi;
 public class Example {
   public static void main(String[] args) {
     ApiClient defaultClient = Configuration.getDefaultApiClient();
-    defaultClient.setBasePath("http://localhost:8080");
+    defaultClient.setBasePath("http://localhost:8080/api/v1");
 
     AuthApi apiInstance = new AuthApi(defaultClient);
     LoginRequest loginRequest = new LoginRequest(); // LoginRequest | 
@@ -89,7 +89,7 @@ import org.openapitools.client.api.AuthApi;
 public class Example {
   public static void main(String[] args) {
     ApiClient defaultClient = Configuration.getDefaultApiClient();
-    defaultClient.setBasePath("http://localhost:8080");
+    defaultClient.setBasePath("http://localhost:8080/api/v1");
     
     // Configure HTTP bearer authorization: BearerAuth
     HttpBearerAuth BearerAuth = (HttpBearerAuth) defaultClient.getAuthentication("BearerAuth");
@@ -149,7 +149,7 @@ import org.openapitools.client.api.AuthApi;
 public class Example {
   public static void main(String[] args) {
     ApiClient defaultClient = Configuration.getDefaultApiClient();
-    defaultClient.setBasePath("http://localhost:8080");
+    defaultClient.setBasePath("http://localhost:8080/api/v1");
 
     AuthApi apiInstance = new AuthApi(defaultClient);
     RegisterRequest registerRequest = new RegisterRequest(); // RegisterRequest | 

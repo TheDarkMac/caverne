@@ -8,8 +8,12 @@ info:
   contact:
     name: Mr
 servers:
-  - url: http://localhost:8080/
-    description: Serveur de production
+  - url: http://localhost:8080/api/{version}
+    description: Serveur avec préfixe API versionné
+    variables:
+      version:
+        default: v1
+        description: Version HTTP exposée sous le préfixe `/api`
 
 security:
   - BearerAuth: []
@@ -84,7 +88,8 @@ components:
       type: object
       properties:
         id:
-          type: integer
+          type: string
+          format: uuid
         firstname:
           type: string
         lastname:
@@ -142,9 +147,11 @@ components:
       type: object
       properties:
         id:
-          type: integer
+          type: string
+          format: uuid
         user_id:
-          type: integer
+          type: string
+          format: uuid
         location:
           type: string
         postal_code:
@@ -161,7 +168,8 @@ components:
       required: [location, postal_code, country_code]
       properties:
         id:
-          type: integer
+          type: string
+          format: uuid
           nullable: true
         location:
           type: string
@@ -197,7 +205,8 @@ components:
       type: object
       properties:
         id:
-          type: integer
+          type: string
+          format: uuid
         label:
           type: string
         slug:
@@ -206,7 +215,8 @@ components:
           type: string
           maxLength: 100
         parent_id:
-          type: integer
+          type: string
+          format: uuid
           nullable: true
         children:
           type: array
@@ -218,7 +228,8 @@ components:
       required: [label, slug]
       properties:
         id:
-          type: integer
+          type: string
+          format: uuid
           nullable: true
         label:
           type: string
@@ -227,17 +238,27 @@ components:
         map:
           type: string
         parent_id:
-          type: integer
+          type: string
+          format: uuid
           nullable: true
+
+    CategoryRefInput:
+      type: object
+      required: [id]
+      properties:
+        id:
+          type: string
+          format: uuid
 
     # ── PRODUCT ──
     Product:
       type: object
       properties:
         id:
-          type: integer
-        category_id:
-          type: integer
+          type: string
+          format: uuid
+        category:
+          $ref: '#/components/schemas/Category'
         label:
           type: string
           maxLength: 255
@@ -262,13 +283,14 @@ components:
 
     ProductInput:
       type: object
-      required: [category_id, label, reference]
+      required: [category, label, reference]
       properties:
         id:
-          type: integer
+          type: string
+          format: uuid
           nullable: true
-        category_id:
-          type: integer
+        category:
+          $ref: '#/components/schemas/CategoryRefInput'
         label:
           type: string
         reference:
@@ -288,9 +310,11 @@ components:
       type: object
       properties:
         id:
-          type: integer
+          type: string
+          format: uuid
         product_id:
-          type: integer
+          type: string
+          format: uuid
         currency_code:
           type: string
           maxLength: 3
@@ -308,7 +332,8 @@ components:
       type: object
       properties:
         product_id:
-          type: integer
+          type: string
+          format: uuid
         quantity:
           type: number
           format: double
@@ -320,11 +345,14 @@ components:
       type: object
       properties:
         id:
-          type: integer
+          type: string
+          format: uuid
         user_id:
-          type: integer
+          type: string
+          format: uuid
         address_id:
-          type: integer
+          type: string
+          format: uuid
         currency_code:
           type: string
         reference:
@@ -339,7 +367,8 @@ components:
           type: number
           format: double
         delivery_cost_id:
-          type: integer
+          type: string
+          format: uuid
           nullable: true
         items:
           type: array
@@ -360,10 +389,12 @@ components:
       required: [currency_code, items, recipient]
       properties:
         address_id:
-          type: integer
+          type: string
+          format: uuid
           nullable: true
         delivery_cost_id:
-          type: integer
+          type: string
+          format: uuid
           nullable: true
         currency_code:
           type: string
@@ -375,7 +406,8 @@ components:
             required: [product_id, quantity]
             properties:
               product_id:
-                type: integer
+                type: string
+                format: uuid
               quantity:
                 type: number
                 format: double
@@ -395,7 +427,8 @@ components:
       type: object
       properties:
         id:
-          type: integer
+          type: string
+          format: uuid
         amount:
           type: number
           format: double
@@ -453,9 +486,11 @@ components:
       type: object
       properties:
         id:
-          type: integer
+          type: string
+          format: uuid
         order_id:
-          type: integer
+          type: string
+          format: uuid
         method_code:
           type: string
         currency_code:
@@ -549,7 +584,8 @@ components:
       in: path
       required: true
       schema:
-        type: integer
+        type: string
+        format: uuid
     queryPage:
       name: page
       in: query
@@ -971,7 +1007,8 @@ paths:
         - name: category_id
           in: query
           schema:
-            type: integer
+            type: string
+            format: uuid
         - name: is_active
           in: query
           schema:
@@ -1243,7 +1280,8 @@ paths:
         - name: user_id
           in: query
           schema:
-            type: integer
+            type: string
+            format: uuid
       responses:
         '200':
           description: OK

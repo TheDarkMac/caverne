@@ -9,8 +9,14 @@
     "version" : "1.0.0"
   },
   "servers" : [ {
-    "description" : "Serveur de production",
-    "url" : "http://localhost:8080/"
+    "description" : "Serveur avec préfixe API versionné",
+    "url" : "http://localhost:8080/api/{version}",
+    "variables" : {
+      "version" : {
+        "default" : "v1",
+        "description" : "Version HTTP exposée sous le préfixe `/api`"
+      }
+    }
   } ],
   "security" : [ {
     "BearerAuth" : [ ]
@@ -344,7 +350,8 @@
           "name" : "id",
           "required" : true,
           "schema" : {
-            "type" : "integer"
+            "format" : "uuid",
+            "type" : "string"
           },
           "style" : "simple"
         } ],
@@ -383,7 +390,8 @@
           "name" : "id",
           "required" : true,
           "schema" : {
-            "type" : "integer"
+            "format" : "uuid",
+            "type" : "string"
           },
           "style" : "simple"
         } ],
@@ -499,7 +507,8 @@
           "name" : "id",
           "required" : true,
           "schema" : {
-            "type" : "integer"
+            "format" : "uuid",
+            "type" : "string"
           },
           "style" : "simple"
         } ],
@@ -539,7 +548,8 @@
           "name" : "id",
           "required" : true,
           "schema" : {
-            "type" : "integer"
+            "format" : "uuid",
+            "type" : "string"
           },
           "style" : "simple"
         } ],
@@ -607,7 +617,8 @@
           "name" : "id",
           "required" : true,
           "schema" : {
-            "type" : "integer"
+            "format" : "uuid",
+            "type" : "string"
           },
           "style" : "simple"
         } ],
@@ -735,7 +746,8 @@
           "name" : "id",
           "required" : true,
           "schema" : {
-            "type" : "integer"
+            "format" : "uuid",
+            "type" : "string"
           },
           "style" : "simple"
         } ],
@@ -774,7 +786,8 @@
           "name" : "id",
           "required" : true,
           "schema" : {
-            "type" : "integer"
+            "format" : "uuid",
+            "type" : "string"
           },
           "style" : "simple"
         } ],
@@ -812,7 +825,8 @@
           "name" : "id",
           "required" : true,
           "schema" : {
-            "type" : "integer"
+            "format" : "uuid",
+            "type" : "string"
           },
           "style" : "simple"
         } ],
@@ -910,7 +924,8 @@
           "name" : "category_id",
           "required" : false,
           "schema" : {
-            "type" : "integer"
+            "format" : "uuid",
+            "type" : "string"
           },
           "style" : "form"
         }, {
@@ -1024,7 +1039,8 @@
           "name" : "id",
           "required" : true,
           "schema" : {
-            "type" : "integer"
+            "format" : "uuid",
+            "type" : "string"
           },
           "style" : "simple"
         } ],
@@ -1063,7 +1079,8 @@
           "name" : "id",
           "required" : true,
           "schema" : {
-            "type" : "integer"
+            "format" : "uuid",
+            "type" : "string"
           },
           "style" : "simple"
         } ],
@@ -1101,7 +1118,8 @@
           "name" : "id",
           "required" : true,
           "schema" : {
-            "type" : "integer"
+            "format" : "uuid",
+            "type" : "string"
           },
           "style" : "simple"
         } ],
@@ -1247,7 +1265,8 @@
           "name" : "id",
           "required" : true,
           "schema" : {
-            "type" : "integer"
+            "format" : "uuid",
+            "type" : "string"
           },
           "style" : "simple"
         } ],
@@ -1296,7 +1315,8 @@
           "name" : "id",
           "required" : true,
           "schema" : {
-            "type" : "integer"
+            "format" : "uuid",
+            "type" : "string"
           },
           "style" : "simple"
         } ],
@@ -1333,7 +1353,8 @@
           "name" : "id",
           "required" : true,
           "schema" : {
-            "type" : "integer"
+            "format" : "uuid",
+            "type" : "string"
           },
           "style" : "simple"
         } ],
@@ -1517,7 +1538,8 @@
           "name" : "user_id",
           "required" : false,
           "schema" : {
-            "type" : "integer"
+            "format" : "uuid",
+            "type" : "string"
           },
           "style" : "form"
         } ],
@@ -1566,7 +1588,8 @@
           "name" : "id",
           "required" : true,
           "schema" : {
-            "type" : "integer"
+            "format" : "uuid",
+            "type" : "string"
           },
           "style" : "simple"
         } ],
@@ -1615,7 +1638,8 @@
           "name" : "id",
           "required" : true,
           "schema" : {
-            "type" : "integer"
+            "format" : "uuid",
+            "type" : "string"
           },
           "style" : "simple"
         } ],
@@ -1673,7 +1697,8 @@
           "name" : "id",
           "required" : true,
           "schema" : {
-            "type" : "integer"
+            "format" : "uuid",
+            "type" : "string"
           },
           "style" : "simple"
         } ],
@@ -1767,7 +1792,8 @@
           "name" : "id",
           "required" : true,
           "schema" : {
-            "type" : "integer"
+            "format" : "uuid",
+            "type" : "string"
           },
           "style" : "simple"
         } ],
@@ -1797,7 +1823,8 @@
           "name" : "id",
           "required" : true,
           "schema" : {
-            "type" : "integer"
+            "format" : "uuid",
+            "type" : "string"
           },
           "style" : "simple"
         } ],
@@ -1847,7 +1874,8 @@
         "name" : "id",
         "required" : true,
         "schema" : {
-          "type" : "integer"
+          "format" : "uuid",
+          "type" : "string"
         },
         "style" : "simple"
       },
@@ -1985,7 +2013,8 @@
       "User" : {
         "properties" : {
           "id" : {
-            "type" : "integer"
+            "format" : "uuid",
+            "type" : "string"
           },
           "firstname" : {
             "type" : "string"
@@ -2062,10 +2091,12 @@
       "Address" : {
         "properties" : {
           "id" : {
-            "type" : "integer"
+            "format" : "uuid",
+            "type" : "string"
           },
           "user_id" : {
-            "type" : "integer"
+            "format" : "uuid",
+            "type" : "string"
           },
           "location" : {
             "type" : "string"
@@ -2087,8 +2118,9 @@
       "AddressInput" : {
         "properties" : {
           "id" : {
+            "format" : "uuid",
             "nullable" : true,
-            "type" : "integer"
+            "type" : "string"
           },
           "location" : {
             "type" : "string"
@@ -2136,7 +2168,8 @@
       "Category" : {
         "properties" : {
           "id" : {
-            "type" : "integer"
+            "format" : "uuid",
+            "type" : "string"
           },
           "label" : {
             "type" : "string"
@@ -2149,8 +2182,9 @@
             "type" : "string"
           },
           "parent_id" : {
+            "format" : "uuid",
             "nullable" : true,
-            "type" : "integer"
+            "type" : "string"
           },
           "children" : {
             "items" : {
@@ -2164,8 +2198,9 @@
       "CategoryInput" : {
         "properties" : {
           "id" : {
+            "format" : "uuid",
             "nullable" : true,
-            "type" : "integer"
+            "type" : "string"
           },
           "label" : {
             "type" : "string"
@@ -2177,20 +2212,32 @@
             "type" : "string"
           },
           "parent_id" : {
+            "format" : "uuid",
             "nullable" : true,
-            "type" : "integer"
+            "type" : "string"
           }
         },
         "required" : [ "label", "slug" ],
         "type" : "object"
       },
+      "CategoryRefInput" : {
+        "properties" : {
+          "id" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        },
+        "required" : [ "id" ],
+        "type" : "object"
+      },
       "Product" : {
         "properties" : {
           "id" : {
-            "type" : "integer"
+            "format" : "uuid",
+            "type" : "string"
           },
-          "category_id" : {
-            "type" : "integer"
+          "category" : {
+            "$ref" : "#/components/schemas/Category"
           },
           "label" : {
             "maxLength" : 255,
@@ -2227,11 +2274,12 @@
       "ProductInput" : {
         "properties" : {
           "id" : {
+            "format" : "uuid",
             "nullable" : true,
-            "type" : "integer"
+            "type" : "string"
           },
-          "category_id" : {
-            "type" : "integer"
+          "category" : {
+            "$ref" : "#/components/schemas/CategoryRefInput"
           },
           "label" : {
             "type" : "string"
@@ -2253,16 +2301,18 @@
             "type" : "boolean"
           }
         },
-        "required" : [ "category_id", "label", "reference" ],
+        "required" : [ "category", "label", "reference" ],
         "type" : "object"
       },
       "Price" : {
         "properties" : {
           "id" : {
-            "type" : "integer"
+            "format" : "uuid",
+            "type" : "string"
           },
           "product_id" : {
-            "type" : "integer"
+            "format" : "uuid",
+            "type" : "string"
           },
           "currency_code" : {
             "maxLength" : 3,
@@ -2285,7 +2335,8 @@
       "OrderItem" : {
         "properties" : {
           "product_id" : {
-            "type" : "integer"
+            "format" : "uuid",
+            "type" : "string"
           },
           "quantity" : {
             "format" : "double",
@@ -2301,13 +2352,16 @@
       "Order" : {
         "properties" : {
           "id" : {
-            "type" : "integer"
+            "format" : "uuid",
+            "type" : "string"
           },
           "user_id" : {
-            "type" : "integer"
+            "format" : "uuid",
+            "type" : "string"
           },
           "address_id" : {
-            "type" : "integer"
+            "format" : "uuid",
+            "type" : "string"
           },
           "currency_code" : {
             "type" : "string"
@@ -2328,8 +2382,9 @@
             "type" : "number"
           },
           "delivery_cost_id" : {
+            "format" : "uuid",
             "nullable" : true,
-            "type" : "integer"
+            "type" : "string"
           },
           "items" : {
             "items" : {
@@ -2351,12 +2406,14 @@
       "OrderInput" : {
         "properties" : {
           "address_id" : {
+            "format" : "uuid",
             "nullable" : true,
-            "type" : "integer"
+            "type" : "string"
           },
           "delivery_cost_id" : {
+            "format" : "uuid",
             "nullable" : true,
-            "type" : "integer"
+            "type" : "string"
           },
           "currency_code" : {
             "type" : "string"
@@ -2388,7 +2445,8 @@
       "DeliverCost" : {
         "properties" : {
           "id" : {
-            "type" : "integer"
+            "format" : "uuid",
+            "type" : "string"
           },
           "amount" : {
             "format" : "double",
@@ -2464,10 +2522,12 @@
       "Payment" : {
         "properties" : {
           "id" : {
-            "type" : "integer"
+            "format" : "uuid",
+            "type" : "string"
           },
           "order_id" : {
-            "type" : "integer"
+            "format" : "uuid",
+            "type" : "string"
           },
           "method_code" : {
             "type" : "string"
@@ -2588,7 +2648,8 @@
       "OrderInput_items_inner" : {
         "properties" : {
           "product_id" : {
-            "type" : "integer"
+            "format" : "uuid",
+            "type" : "string"
           },
           "quantity" : {
             "format" : "double",

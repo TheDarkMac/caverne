@@ -24,6 +24,8 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.UUID;
+import org.openapitools.client.model.Category;
 import org.openapitools.client.model.Price;
 import org.openapitools.jackson.nullable.JsonNullable;
 import org.junit.jupiter.api.Disabled;
@@ -52,11 +54,11 @@ public class ProductTest {
     }
 
     /**
-     * Test the property 'categoryId'
+     * Test the property 'category'
      */
     @Test
-    public void categoryIdTest() {
-        // TODO: test categoryId
+    public void categoryTest() {
+        // TODO: test category
     }
 
     /**

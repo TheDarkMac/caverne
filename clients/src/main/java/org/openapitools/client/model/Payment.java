@@ -22,6 +22,7 @@ import com.google.gson.stream.JsonWriter;
 import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.Arrays;
+import java.util.UUID;
 import org.openapitools.jackson.nullable.JsonNullable;
 
 import com.google.gson.Gson;
@@ -50,17 +51,17 @@ import org.openapitools.client.JSON;
 /**
  * Payment
  */
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2026-04-10T11:26:52.676581797+03:00[Indian/Antananarivo]", comments = "Generator version: 7.21.0")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2026-04-11T07:12:32.659476305+03:00[Indian/Antananarivo]", comments = "Generator version: 7.21.0")
 public class Payment {
   public static final String SERIALIZED_NAME_ID = "id";
   @SerializedName(SERIALIZED_NAME_ID)
   @javax.annotation.Nullable
-  private Integer id;
+  private UUID id;
 
   public static final String SERIALIZED_NAME_ORDER_ID = "order_id";
   @SerializedName(SERIALIZED_NAME_ORDER_ID)
   @javax.annotation.Nullable
-  private Integer orderId;
+  private UUID orderId;
 
   public static final String SERIALIZED_NAME_METHOD_CODE = "method_code";
   @SerializedName(SERIALIZED_NAME_METHOD_CODE)
@@ -156,7 +157,7 @@ public class Payment {
   public Payment() {
   }
 
-  public Payment id(@javax.annotation.Nullable Integer id) {
+  public Payment id(@javax.annotation.Nullable UUID id) {
     this.id = id;
     return this;
   }
@@ -166,16 +167,16 @@ public class Payment {
    * @return id
    */
   @javax.annotation.Nullable
-  public Integer getId() {
+  public UUID getId() {
     return id;
   }
 
-  public void setId(@javax.annotation.Nullable Integer id) {
+  public void setId(@javax.annotation.Nullable UUID id) {
     this.id = id;
   }
 
 
-  public Payment orderId(@javax.annotation.Nullable Integer orderId) {
+  public Payment orderId(@javax.annotation.Nullable UUID orderId) {
     this.orderId = orderId;
     return this;
   }
@@ -185,11 +186,11 @@ public class Payment {
    * @return orderId
    */
   @javax.annotation.Nullable
-  public Integer getOrderId() {
+  public UUID getOrderId() {
     return orderId;
   }
 
-  public void setOrderId(@javax.annotation.Nullable Integer orderId) {
+  public void setOrderId(@javax.annotation.Nullable UUID orderId) {
     this.orderId = orderId;
   }
 
@@ -422,6 +423,12 @@ public class Payment {
         }
       }
         JsonObject jsonObj = jsonElement.getAsJsonObject();
+      if ((jsonObj.get("id") != null && !jsonObj.get("id").isJsonNull()) && !jsonObj.get("id").isJsonPrimitive()) {
+        throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "Expected the field `id` to be a primitive type in the JSON string but got `%s`", jsonObj.get("id").toString()));
+      }
+      if ((jsonObj.get("order_id") != null && !jsonObj.get("order_id").isJsonNull()) && !jsonObj.get("order_id").isJsonPrimitive()) {
+        throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "Expected the field `order_id` to be a primitive type in the JSON string but got `%s`", jsonObj.get("order_id").toString()));
+      }
       if ((jsonObj.get("method_code") != null && !jsonObj.get("method_code").isJsonNull()) && !jsonObj.get("method_code").isJsonPrimitive()) {
         throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "Expected the field `method_code` to be a primitive type in the JSON string but got `%s`", jsonObj.get("method_code").toString()));
       }

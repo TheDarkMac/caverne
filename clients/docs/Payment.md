@@ -7,8 +7,8 @@
 
 | Name | Type | Description | Notes |
 |------------ | ------------- | ------------- | -------------|
-|**id** | **Integer** |  |  [optional] |
-|**orderId** | **Integer** |  |  [optional] |
+|**id** | **UUID** |  |  [optional] |
+|**orderId** | **UUID** |  |  [optional] |
 |**methodCode** | **String** |  |  [optional] |
 |**currencyCode** | **String** |  |  [optional] |
 |**amount** | **Double** |  |  [optional] |

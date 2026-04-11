@@ -25,6 +25,8 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.UUID;
+import org.openapitools.client.model.Category;
 import org.openapitools.client.model.Price;
 import org.openapitools.jackson.nullable.JsonNullable;
 
@@ -54,17 +56,17 @@ import org.openapitools.client.JSON;
 /**
  * Product
  */
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2026-04-10T11:26:52.676581797+03:00[Indian/Antananarivo]", comments = "Generator version: 7.21.0")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2026-04-11T07:12:32.659476305+03:00[Indian/Antananarivo]", comments = "Generator version: 7.21.0")
 public class Product {
   public static final String SERIALIZED_NAME_ID = "id";
   @SerializedName(SERIALIZED_NAME_ID)
   @javax.annotation.Nullable
-  private Integer id;
+  private UUID id;
 
-  public static final String SERIALIZED_NAME_CATEGORY_ID = "category_id";
-  @SerializedName(SERIALIZED_NAME_CATEGORY_ID)
+  public static final String SERIALIZED_NAME_CATEGORY = "category";
+  @SerializedName(SERIALIZED_NAME_CATEGORY)
   @javax.annotation.Nullable
-  private Integer categoryId;
+  private Category category;
 
   public static final String SERIALIZED_NAME_LABEL = "label";
   @SerializedName(SERIALIZED_NAME_LABEL)
@@ -104,7 +106,7 @@ public class Product {
   public Product() {
   }
 
-  public Product id(@javax.annotation.Nullable Integer id) {
+  public Product id(@javax.annotation.Nullable UUID id) {
     this.id = id;
     return this;
   }
@@ -114,31 +116,31 @@ public class Product {
    * @return id
    */
   @javax.annotation.Nullable
-  public Integer getId() {
+  public UUID getId() {
     return id;
   }
 
-  public void setId(@javax.annotation.Nullable Integer id) {
+  public void setId(@javax.annotation.Nullable UUID id) {
     this.id = id;
   }
 
 
-  public Product categoryId(@javax.annotation.Nullable Integer categoryId) {
-    this.categoryId = categoryId;
+  public Product category(@javax.annotation.Nullable Category category) {
+    this.category = category;
     return this;
   }
 
   /**
-   * Get categoryId
-   * @return categoryId
+   * Get category
+   * @return category
    */
   @javax.annotation.Nullable
-  public Integer getCategoryId() {
-    return categoryId;
+  public Category getCategory() {
+    return category;
   }
 
-  public void setCategoryId(@javax.annotation.Nullable Integer categoryId) {
-    this.categoryId = categoryId;
+  public void setCategory(@javax.annotation.Nullable Category category) {
+    this.category = category;
   }
 
 
@@ -294,7 +296,7 @@ public class Product {
     }
     Product product = (Product) o;
     return Objects.equals(this.id, product.id) &&
-        Objects.equals(this.categoryId, product.categoryId) &&
+        Objects.equals(this.category, product.category) &&
         Objects.equals(this.label, product.label) &&
         Objects.equals(this.reference, product.reference) &&
         Objects.equals(this.limitDate, product.limitDate) &&
@@ -310,7 +312,7 @@ public class Product {
 
   @Override
   public int hashCode() {
-    return Objects.hash(id, categoryId, label, reference, limitDate, description, size, isActive, prices);
+    return Objects.hash(id, category, label, reference, limitDate, description, size, isActive, prices);
   }
 
   private static <T> int hashCodeNullable(JsonNullable<T> a) {
@@ -325,7 +327,7 @@ public class Product {
     StringBuilder sb = new StringBuilder();
     sb.append("class Product {\n");
     sb.append("    id: ").append(toIndentedString(id)).append("\n");
-    sb.append("    categoryId: ").append(toIndentedString(categoryId)).append("\n");
+    sb.append("    category: ").append(toIndentedString(category)).append("\n");
     sb.append("    label: ").append(toIndentedString(label)).append("\n");
     sb.append("    reference: ").append(toIndentedString(reference)).append("\n");
     sb.append("    limitDate: ").append(toIndentedString(limitDate)).append("\n");
@@ -351,7 +353,7 @@ public class Product {
 
   static {
     // a set of all properties/fields (JSON key names)
-    openapiFields = new HashSet<String>(Arrays.asList("id", "category_id", "label", "reference", "limit_date", "description", "size", "is_active", "prices"));
+    openapiFields = new HashSet<String>(Arrays.asList("id", "category", "label", "reference", "limit_date", "description", "size", "is_active", "prices"));
 
     // a set of required properties/fields (JSON key names)
     openapiRequiredFields = new HashSet<String>(0);
@@ -378,6 +380,13 @@ public class Product {
         }
       }
         JsonObject jsonObj = jsonElement.getAsJsonObject();
+      if ((jsonObj.get("id") != null && !jsonObj.get("id").isJsonNull()) && !jsonObj.get("id").isJsonPrimitive()) {
+        throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "Expected the field `id` to be a primitive type in the JSON string but got `%s`", jsonObj.get("id").toString()));
+      }
+      // validate the optional field `category`
+      if (jsonObj.get("category") != null && !jsonObj.get("category").isJsonNull()) {
+        Category.validateJsonElement(jsonObj.get("category"));
+      }
       if ((jsonObj.get("label") != null && !jsonObj.get("label").isJsonNull()) && !jsonObj.get("label").isJsonPrimitive()) {
         throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "Expected the field `label` to be a primitive type in the JSON string but got `%s`", jsonObj.get("label").toString()));
       }

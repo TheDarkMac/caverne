@@ -1,14 +1,13 @@
 
 
-# OrderInputItemsInner
+# CategoryRefInput
 
 
 ## Properties
 
 | Name | Type | Description | Notes |
 |------------ | ------------- | ------------- | -------------|
-|**productId** | **UUID** |  |  |
-|**quantity** | **Double** |  |  |
+|**id** | **UUID** |  |  |
 
 
 

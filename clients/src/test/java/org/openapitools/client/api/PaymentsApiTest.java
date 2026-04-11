@@ -18,6 +18,7 @@ import org.openapitools.client.model.Error;
 import org.openapitools.client.model.Payment;
 import org.openapitools.client.model.PaymentInput;
 import org.openapitools.client.model.PaymentMethod;
+import java.util.UUID;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
@@ -41,7 +42,7 @@ public class PaymentsApiTest {
      */
     @Test
     public void ordersIdPaymentsGetTest() throws ApiException {
-        Integer id = null;
+        UUID id = null;
         List<Payment> response = api.ordersIdPaymentsGet(id);
         // TODO: test validations
     }
@@ -53,7 +54,7 @@ public class PaymentsApiTest {
      */
     @Test
     public void ordersIdPaymentsPostTest() throws ApiException {
-        Integer id = null;
+        UUID id = null;
         PaymentInput paymentInput = null;
         Payment response = api.ordersIdPaymentsPost(id, paymentInput);
         // TODO: test validations

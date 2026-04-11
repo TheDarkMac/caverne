@@ -1,6 +1,6 @@
 # CategoriesApi
 
-All URIs are relative to *http://localhost:8080*
+All URIs are relative to *http://localhost:8080/api/v1*
 
 | Method | HTTP request | Description |
 |------------- | ------------- | -------------|
@@ -29,7 +29,7 @@ import org.openapitools.client.api.CategoriesApi;
 public class Example {
   public static void main(String[] args) {
     ApiClient defaultClient = Configuration.getDefaultApiClient();
-    defaultClient.setBasePath("http://localhost:8080");
+    defaultClient.setBasePath("http://localhost:8080/api/v1");
 
     CategoriesApi apiInstance = new CategoriesApi(defaultClient);
     Boolean flat = true; // Boolean | Si true, retourne une liste plate sans enfants
@@ -90,14 +90,14 @@ import org.openapitools.client.api.CategoriesApi;
 public class Example {
   public static void main(String[] args) {
     ApiClient defaultClient = Configuration.getDefaultApiClient();
-    defaultClient.setBasePath("http://localhost:8080");
+    defaultClient.setBasePath("http://localhost:8080/api/v1");
     
     // Configure HTTP bearer authorization: BearerAuth
     HttpBearerAuth BearerAuth = (HttpBearerAuth) defaultClient.getAuthentication("BearerAuth");
     BearerAuth.setBearerToken("BEARER TOKEN");
 
     CategoriesApi apiInstance = new CategoriesApi(defaultClient);
-    Integer id = 56; // Integer | 
+    UUID id = UUID.randomUUID(); // UUID | 
     try {
       apiInstance.categoriesIdDelete(id);
     } catch (ApiException e) {
@@ -115,7 +115,7 @@ public class Example {
 
 | Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
-| **id** | **Integer**|  | |
+| **id** | **UUID**|  | |
 
 ### Return type
 
@@ -155,10 +155,10 @@ import org.openapitools.client.api.CategoriesApi;
 public class Example {
   public static void main(String[] args) {
     ApiClient defaultClient = Configuration.getDefaultApiClient();
-    defaultClient.setBasePath("http://localhost:8080");
+    defaultClient.setBasePath("http://localhost:8080/api/v1");
 
     CategoriesApi apiInstance = new CategoriesApi(defaultClient);
-    Integer id = 56; // Integer | 
+    UUID id = UUID.randomUUID(); // UUID | 
     try {
       Category result = apiInstance.categoriesIdGet(id);
       System.out.println(result);
@@ -177,7 +177,7 @@ public class Example {
 
 | Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
-| **id** | **Integer**|  | |
+| **id** | **UUID**|  | |
 
 ### Return type
 
@@ -219,14 +219,14 @@ import org.openapitools.client.api.CategoriesApi;
 public class Example {
   public static void main(String[] args) {
     ApiClient defaultClient = Configuration.getDefaultApiClient();
-    defaultClient.setBasePath("http://localhost:8080");
+    defaultClient.setBasePath("http://localhost:8080/api/v1");
     
     // Configure HTTP bearer authorization: BearerAuth
     HttpBearerAuth BearerAuth = (HttpBearerAuth) defaultClient.getAuthentication("BearerAuth");
     BearerAuth.setBearerToken("BEARER TOKEN");
 
     CategoriesApi apiInstance = new CategoriesApi(defaultClient);
-    Integer id = 56; // Integer | 
+    UUID id = UUID.randomUUID(); // UUID | 
     CategoryInput categoryInput = new CategoryInput(); // CategoryInput | 
     try {
       Category result = apiInstance.categoriesIdPut(id, categoryInput);
@@ -246,7 +246,7 @@ public class Example {
 
 | Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
-| **id** | **Integer**|  | |
+| **id** | **UUID**|  | |
 | **categoryInput** | [**CategoryInput**](CategoryInput.md)|  | |
 
 ### Return type
@@ -292,7 +292,7 @@ import org.openapitools.client.api.CategoriesApi;
 public class Example {
   public static void main(String[] args) {
     ApiClient defaultClient = Configuration.getDefaultApiClient();
-    defaultClient.setBasePath("http://localhost:8080");
+    defaultClient.setBasePath("http://localhost:8080/api/v1");
     
     // Configure HTTP bearer authorization: BearerAuth
     HttpBearerAuth BearerAuth = (HttpBearerAuth) defaultClient.getAuthentication("BearerAuth");

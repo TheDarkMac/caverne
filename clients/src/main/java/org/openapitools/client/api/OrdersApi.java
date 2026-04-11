@@ -32,6 +32,7 @@ import org.openapitools.client.model.Order;
 import org.openapitools.client.model.OrderInput;
 import org.openapitools.client.model.OrderStatusUpdate;
 import org.openapitools.client.model.OrdersGet200Response;
+import java.util.UUID;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
@@ -94,7 +95,7 @@ public class OrdersApi {
         <tr><td> 403 </td><td> Accès refusé (rôle insuffisant) </td><td>  -  </td></tr>
      </table>
      */
-    public okhttp3.Call ordersAllGetCall(@javax.annotation.Nullable Integer page, @javax.annotation.Nullable Integer perPage, @javax.annotation.Nullable String status, @javax.annotation.Nullable Integer userId, final ApiCallback _callback) throws ApiException {
+    public okhttp3.Call ordersAllGetCall(@javax.annotation.Nullable Integer page, @javax.annotation.Nullable Integer perPage, @javax.annotation.Nullable String status, @javax.annotation.Nullable UUID userId, final ApiCallback _callback) throws ApiException {
         String basePath = null;
         // Operation Servers
         String[] localBasePaths = new String[] {  };
@@ -155,7 +156,7 @@ public class OrdersApi {
     }
 
     @SuppressWarnings("rawtypes")
-    private okhttp3.Call ordersAllGetValidateBeforeCall(@javax.annotation.Nullable Integer page, @javax.annotation.Nullable Integer perPage, @javax.annotation.Nullable String status, @javax.annotation.Nullable Integer userId, final ApiCallback _callback) throws ApiException {
+    private okhttp3.Call ordersAllGetValidateBeforeCall(@javax.annotation.Nullable Integer page, @javax.annotation.Nullable Integer perPage, @javax.annotation.Nullable String status, @javax.annotation.Nullable UUID userId, final ApiCallback _callback) throws ApiException {
         return ordersAllGetCall(page, perPage, status, userId, _callback);
 
     }
@@ -178,7 +179,7 @@ public class OrdersApi {
         <tr><td> 403 </td><td> Accès refusé (rôle insuffisant) </td><td>  -  </td></tr>
      </table>
      */
-    public OrdersGet200Response ordersAllGet(@javax.annotation.Nullable Integer page, @javax.annotation.Nullable Integer perPage, @javax.annotation.Nullable String status, @javax.annotation.Nullable Integer userId) throws ApiException {
+    public OrdersGet200Response ordersAllGet(@javax.annotation.Nullable Integer page, @javax.annotation.Nullable Integer perPage, @javax.annotation.Nullable String status, @javax.annotation.Nullable UUID userId) throws ApiException {
         ApiResponse<OrdersGet200Response> localVarResp = ordersAllGetWithHttpInfo(page, perPage, status, userId);
         return localVarResp.getData();
     }
@@ -201,7 +202,7 @@ public class OrdersApi {
         <tr><td> 403 </td><td> Accès refusé (rôle insuffisant) </td><td>  -  </td></tr>
      </table>
      */
-    public ApiResponse<OrdersGet200Response> ordersAllGetWithHttpInfo(@javax.annotation.Nullable Integer page, @javax.annotation.Nullable Integer perPage, @javax.annotation.Nullable String status, @javax.annotation.Nullable Integer userId) throws ApiException {
+    public ApiResponse<OrdersGet200Response> ordersAllGetWithHttpInfo(@javax.annotation.Nullable Integer page, @javax.annotation.Nullable Integer perPage, @javax.annotation.Nullable String status, @javax.annotation.Nullable UUID userId) throws ApiException {
         okhttp3.Call localVarCall = ordersAllGetValidateBeforeCall(page, perPage, status, userId, null);
         Type localVarReturnType = new TypeToken<OrdersGet200Response>(){}.getType();
         return localVarApiClient.execute(localVarCall, localVarReturnType);
@@ -226,7 +227,7 @@ public class OrdersApi {
         <tr><td> 403 </td><td> Accès refusé (rôle insuffisant) </td><td>  -  </td></tr>
      </table>
      */
-    public okhttp3.Call ordersAllGetAsync(@javax.annotation.Nullable Integer page, @javax.annotation.Nullable Integer perPage, @javax.annotation.Nullable String status, @javax.annotation.Nullable Integer userId, final ApiCallback<OrdersGet200Response> _callback) throws ApiException {
+    public okhttp3.Call ordersAllGetAsync(@javax.annotation.Nullable Integer page, @javax.annotation.Nullable Integer perPage, @javax.annotation.Nullable String status, @javax.annotation.Nullable UUID userId, final ApiCallback<OrdersGet200Response> _callback) throws ApiException {
 
         okhttp3.Call localVarCall = ordersAllGetValidateBeforeCall(page, perPage, status, userId, _callback);
         Type localVarReturnType = new TypeToken<OrdersGet200Response>(){}.getType();
@@ -380,7 +381,7 @@ public class OrdersApi {
         <tr><td> 403 </td><td> Accès refusé (rôle insuffisant) </td><td>  -  </td></tr>
      </table>
      */
-    public okhttp3.Call ordersIdCancelPostCall(@javax.annotation.Nonnull Integer id, final ApiCallback _callback) throws ApiException {
+    public okhttp3.Call ordersIdCancelPostCall(@javax.annotation.Nonnull UUID id, final ApiCallback _callback) throws ApiException {
         String basePath = null;
         // Operation Servers
         String[] localBasePaths = new String[] {  };
@@ -426,7 +427,7 @@ public class OrdersApi {
     }
 
     @SuppressWarnings("rawtypes")
-    private okhttp3.Call ordersIdCancelPostValidateBeforeCall(@javax.annotation.Nonnull Integer id, final ApiCallback _callback) throws ApiException {
+    private okhttp3.Call ordersIdCancelPostValidateBeforeCall(@javax.annotation.Nonnull UUID id, final ApiCallback _callback) throws ApiException {
         // verify the required parameter 'id' is set
         if (id == null) {
             throw new ApiException("Missing the required parameter 'id' when calling ordersIdCancelPost(Async)");
@@ -450,7 +451,7 @@ public class OrdersApi {
         <tr><td> 403 </td><td> Accès refusé (rôle insuffisant) </td><td>  -  </td></tr>
      </table>
      */
-    public Order ordersIdCancelPost(@javax.annotation.Nonnull Integer id) throws ApiException {
+    public Order ordersIdCancelPost(@javax.annotation.Nonnull UUID id) throws ApiException {
         ApiResponse<Order> localVarResp = ordersIdCancelPostWithHttpInfo(id);
         return localVarResp.getData();
     }
@@ -469,7 +470,7 @@ public class OrdersApi {
         <tr><td> 403 </td><td> Accès refusé (rôle insuffisant) </td><td>  -  </td></tr>
      </table>
      */
-    public ApiResponse<Order> ordersIdCancelPostWithHttpInfo(@javax.annotation.Nonnull Integer id) throws ApiException {
+    public ApiResponse<Order> ordersIdCancelPostWithHttpInfo(@javax.annotation.Nonnull UUID id) throws ApiException {
         okhttp3.Call localVarCall = ordersIdCancelPostValidateBeforeCall(id, null);
         Type localVarReturnType = new TypeToken<Order>(){}.getType();
         return localVarApiClient.execute(localVarCall, localVarReturnType);
@@ -490,7 +491,7 @@ public class OrdersApi {
         <tr><td> 403 </td><td> Accès refusé (rôle insuffisant) </td><td>  -  </td></tr>
      </table>
      */
-    public okhttp3.Call ordersIdCancelPostAsync(@javax.annotation.Nonnull Integer id, final ApiCallback<Order> _callback) throws ApiException {
+    public okhttp3.Call ordersIdCancelPostAsync(@javax.annotation.Nonnull UUID id, final ApiCallback<Order> _callback) throws ApiException {
 
         okhttp3.Call localVarCall = ordersIdCancelPostValidateBeforeCall(id, _callback);
         Type localVarReturnType = new TypeToken<Order>(){}.getType();
@@ -512,7 +513,7 @@ public class OrdersApi {
         <tr><td> 404 </td><td> Ressource introuvable </td><td>  -  </td></tr>
      </table>
      */
-    public okhttp3.Call ordersIdGetCall(@javax.annotation.Nonnull Integer id, final ApiCallback _callback) throws ApiException {
+    public okhttp3.Call ordersIdGetCall(@javax.annotation.Nonnull UUID id, final ApiCallback _callback) throws ApiException {
         String basePath = null;
         // Operation Servers
         String[] localBasePaths = new String[] {  };
@@ -558,7 +559,7 @@ public class OrdersApi {
     }
 
     @SuppressWarnings("rawtypes")
-    private okhttp3.Call ordersIdGetValidateBeforeCall(@javax.annotation.Nonnull Integer id, final ApiCallback _callback) throws ApiException {
+    private okhttp3.Call ordersIdGetValidateBeforeCall(@javax.annotation.Nonnull UUID id, final ApiCallback _callback) throws ApiException {
         // verify the required parameter 'id' is set
         if (id == null) {
             throw new ApiException("Missing the required parameter 'id' when calling ordersIdGet(Async)");
@@ -583,7 +584,7 @@ public class OrdersApi {
         <tr><td> 404 </td><td> Ressource introuvable </td><td>  -  </td></tr>
      </table>
      */
-    public Order ordersIdGet(@javax.annotation.Nonnull Integer id) throws ApiException {
+    public Order ordersIdGet(@javax.annotation.Nonnull UUID id) throws ApiException {
         ApiResponse<Order> localVarResp = ordersIdGetWithHttpInfo(id);
         return localVarResp.getData();
     }
@@ -603,7 +604,7 @@ public class OrdersApi {
         <tr><td> 404 </td><td> Ressource introuvable </td><td>  -  </td></tr>
      </table>
      */
-    public ApiResponse<Order> ordersIdGetWithHttpInfo(@javax.annotation.Nonnull Integer id) throws ApiException {
+    public ApiResponse<Order> ordersIdGetWithHttpInfo(@javax.annotation.Nonnull UUID id) throws ApiException {
         okhttp3.Call localVarCall = ordersIdGetValidateBeforeCall(id, null);
         Type localVarReturnType = new TypeToken<Order>(){}.getType();
         return localVarApiClient.execute(localVarCall, localVarReturnType);
@@ -625,7 +626,7 @@ public class OrdersApi {
         <tr><td> 404 </td><td> Ressource introuvable </td><td>  -  </td></tr>
      </table>
      */
-    public okhttp3.Call ordersIdGetAsync(@javax.annotation.Nonnull Integer id, final ApiCallback<Order> _callback) throws ApiException {
+    public okhttp3.Call ordersIdGetAsync(@javax.annotation.Nonnull UUID id, final ApiCallback<Order> _callback) throws ApiException {
 
         okhttp3.Call localVarCall = ordersIdGetValidateBeforeCall(id, _callback);
         Type localVarReturnType = new TypeToken<Order>(){}.getType();
@@ -648,7 +649,7 @@ public class OrdersApi {
         <tr><td> 403 </td><td> Accès refusé (rôle insuffisant) </td><td>  -  </td></tr>
      </table>
      */
-    public okhttp3.Call ordersIdStatusPutCall(@javax.annotation.Nonnull Integer id, @javax.annotation.Nonnull OrderStatusUpdate orderStatusUpdate, final ApiCallback _callback) throws ApiException {
+    public okhttp3.Call ordersIdStatusPutCall(@javax.annotation.Nonnull UUID id, @javax.annotation.Nonnull OrderStatusUpdate orderStatusUpdate, final ApiCallback _callback) throws ApiException {
         String basePath = null;
         // Operation Servers
         String[] localBasePaths = new String[] {  };
@@ -695,7 +696,7 @@ public class OrdersApi {
     }
 
     @SuppressWarnings("rawtypes")
-    private okhttp3.Call ordersIdStatusPutValidateBeforeCall(@javax.annotation.Nonnull Integer id, @javax.annotation.Nonnull OrderStatusUpdate orderStatusUpdate, final ApiCallback _callback) throws ApiException {
+    private okhttp3.Call ordersIdStatusPutValidateBeforeCall(@javax.annotation.Nonnull UUID id, @javax.annotation.Nonnull OrderStatusUpdate orderStatusUpdate, final ApiCallback _callback) throws ApiException {
         // verify the required parameter 'id' is set
         if (id == null) {
             throw new ApiException("Missing the required parameter 'id' when calling ordersIdStatusPut(Async)");
@@ -726,7 +727,7 @@ public class OrdersApi {
         <tr><td> 403 </td><td> Accès refusé (rôle insuffisant) </td><td>  -  </td></tr>
      </table>
      */
-    public Order ordersIdStatusPut(@javax.annotation.Nonnull Integer id, @javax.annotation.Nonnull OrderStatusUpdate orderStatusUpdate) throws ApiException {
+    public Order ordersIdStatusPut(@javax.annotation.Nonnull UUID id, @javax.annotation.Nonnull OrderStatusUpdate orderStatusUpdate) throws ApiException {
         ApiResponse<Order> localVarResp = ordersIdStatusPutWithHttpInfo(id, orderStatusUpdate);
         return localVarResp.getData();
     }
@@ -747,7 +748,7 @@ public class OrdersApi {
         <tr><td> 403 </td><td> Accès refusé (rôle insuffisant) </td><td>  -  </td></tr>
      </table>
      */
-    public ApiResponse<Order> ordersIdStatusPutWithHttpInfo(@javax.annotation.Nonnull Integer id, @javax.annotation.Nonnull OrderStatusUpdate orderStatusUpdate) throws ApiException {
+    public ApiResponse<Order> ordersIdStatusPutWithHttpInfo(@javax.annotation.Nonnull UUID id, @javax.annotation.Nonnull OrderStatusUpdate orderStatusUpdate) throws ApiException {
         okhttp3.Call localVarCall = ordersIdStatusPutValidateBeforeCall(id, orderStatusUpdate, null);
         Type localVarReturnType = new TypeToken<Order>(){}.getType();
         return localVarApiClient.execute(localVarCall, localVarReturnType);
@@ -770,7 +771,7 @@ public class OrdersApi {
         <tr><td> 403 </td><td> Accès refusé (rôle insuffisant) </td><td>  -  </td></tr>
      </table>
      */
-    public okhttp3.Call ordersIdStatusPutAsync(@javax.annotation.Nonnull Integer id, @javax.annotation.Nonnull OrderStatusUpdate orderStatusUpdate, final ApiCallback<Order> _callback) throws ApiException {
+    public okhttp3.Call ordersIdStatusPutAsync(@javax.annotation.Nonnull UUID id, @javax.annotation.Nonnull OrderStatusUpdate orderStatusUpdate, final ApiCallback<Order> _callback) throws ApiException {
 
         okhttp3.Call localVarCall = ordersIdStatusPutValidateBeforeCall(id, orderStatusUpdate, _callback);
         Type localVarReturnType = new TypeToken<Order>(){}.getType();

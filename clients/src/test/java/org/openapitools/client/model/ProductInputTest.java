@@ -22,6 +22,8 @@ import java.io.IOException;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.Arrays;
+import java.util.UUID;
+import org.openapitools.client.model.CategoryRefInput;
 import org.openapitools.jackson.nullable.JsonNullable;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
@@ -49,11 +51,11 @@ public class ProductInputTest {
     }
 
     /**
-     * Test the property 'categoryId'
+     * Test the property 'category'
      */
     @Test
-    public void categoryIdTest() {
-        // TODO: test categoryId
+    public void categoryTest() {
+        // TODO: test category
     }
 
     /**

@@ -7,8 +7,8 @@
 
 | Name | Type | Description | Notes |
 |------------ | ------------- | ------------- | -------------|
-|**id** | **Integer** |  |  [optional] |
-|**productId** | **Integer** |  |  [optional] |
+|**id** | **UUID** |  |  [optional] |
+|**productId** | **UUID** |  |  [optional] |
 |**currencyCode** | **String** |  |  [optional] |
 |**value** | **Double** |  |  [optional] |
 |**validFrom** | **LocalDate** |  |  [optional] |

@@ -1,6 +1,6 @@
 # PaymentsApi
 
-All URIs are relative to *http://localhost:8080*
+All URIs are relative to *http://localhost:8080/api/v1*
 
 | Method | HTTP request | Description |
 |------------- | ------------- | -------------|
@@ -28,10 +28,10 @@ import org.openapitools.client.api.PaymentsApi;
 public class Example {
   public static void main(String[] args) {
     ApiClient defaultClient = Configuration.getDefaultApiClient();
-    defaultClient.setBasePath("http://localhost:8080");
+    defaultClient.setBasePath("http://localhost:8080/api/v1");
 
     PaymentsApi apiInstance = new PaymentsApi(defaultClient);
-    Integer id = 56; // Integer | 
+    UUID id = UUID.randomUUID(); // UUID | 
     try {
       List<Payment> result = apiInstance.ordersIdPaymentsGet(id);
       System.out.println(result);
@@ -50,7 +50,7 @@ public class Example {
 
 | Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
-| **id** | **Integer**|  | |
+| **id** | **UUID**|  | |
 
 ### Return type
 
@@ -88,10 +88,10 @@ import org.openapitools.client.api.PaymentsApi;
 public class Example {
   public static void main(String[] args) {
     ApiClient defaultClient = Configuration.getDefaultApiClient();
-    defaultClient.setBasePath("http://localhost:8080");
+    defaultClient.setBasePath("http://localhost:8080/api/v1");
 
     PaymentsApi apiInstance = new PaymentsApi(defaultClient);
-    Integer id = 56; // Integer | 
+    UUID id = UUID.randomUUID(); // UUID | 
     PaymentInput paymentInput = new PaymentInput(); // PaymentInput | 
     try {
       Payment result = apiInstance.ordersIdPaymentsPost(id, paymentInput);
@@ -111,7 +111,7 @@ public class Example {
 
 | Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
-| **id** | **Integer**|  | |
+| **id** | **UUID**|  | |
 | **paymentInput** | [**PaymentInput**](PaymentInput.md)|  | |
 
 ### Return type
@@ -151,7 +151,7 @@ import org.openapitools.client.api.PaymentsApi;
 public class Example {
   public static void main(String[] args) {
     ApiClient defaultClient = Configuration.getDefaultApiClient();
-    defaultClient.setBasePath("http://localhost:8080");
+    defaultClient.setBasePath("http://localhost:8080/api/v1");
 
     PaymentsApi apiInstance = new PaymentsApi(defaultClient);
     try {
@@ -207,7 +207,7 @@ import org.openapitools.client.api.PaymentsApi;
 public class Example {
   public static void main(String[] args) {
     ApiClient defaultClient = Configuration.getDefaultApiClient();
-    defaultClient.setBasePath("http://localhost:8080");
+    defaultClient.setBasePath("http://localhost:8080/api/v1");
 
     PaymentsApi apiInstance = new PaymentsApi(defaultClient);
     Map<String, Object> requestBody = null; // Map<String, Object> | 

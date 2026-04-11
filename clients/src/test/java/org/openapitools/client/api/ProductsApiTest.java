@@ -18,6 +18,7 @@ import org.openapitools.client.model.Error;
 import org.openapitools.client.model.Product;
 import org.openapitools.client.model.ProductInput;
 import org.openapitools.client.model.ProductsGet200Response;
+import java.util.UUID;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
@@ -43,7 +44,7 @@ public class ProductsApiTest {
     public void productsGetTest() throws ApiException {
         Integer page = null;
         Integer perPage = null;
-        Integer categoryId = null;
+        UUID categoryId = null;
         Boolean isActive = null;
         String search = null;
         String currency = null;
@@ -58,7 +59,7 @@ public class ProductsApiTest {
      */
     @Test
     public void productsIdDeleteTest() throws ApiException {
-        Integer id = null;
+        UUID id = null;
         api.productsIdDelete(id);
         // TODO: test validations
     }
@@ -70,7 +71,7 @@ public class ProductsApiTest {
      */
     @Test
     public void productsIdGetTest() throws ApiException {
-        Integer id = null;
+        UUID id = null;
         Product response = api.productsIdGet(id);
         // TODO: test validations
     }
@@ -84,7 +85,7 @@ public class ProductsApiTest {
      */
     @Test
     public void productsIdPutTest() throws ApiException {
-        Integer id = null;
+        UUID id = null;
         ProductInput productInput = null;
         Product response = api.productsIdPut(id, productInput);
         // TODO: test validations
