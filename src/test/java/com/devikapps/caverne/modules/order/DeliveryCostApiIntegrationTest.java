@@ -64,12 +64,13 @@ class DeliveryCostApiIntegrationTest {
             .getResponse()
             .getContentAsString();
 
-    Integer deliveryCostId = org.openapitools.client.model.DeliverCost.fromJson(response).getId();
+    java.util.UUID deliveryCostId =
+        org.openapitools.client.model.DeliverCost.fromJson(response).getId();
 
     mockMvc
         .perform(get("/delivery-costs"))
         .andExpect(status().isOk())
-        .andExpect(jsonPath("$[0].id").value(deliveryCostId))
+        .andExpect(jsonPath("$[0].id").value(deliveryCostId.toString()))
         .andExpect(jsonPath("$[0].provider").value("STANDARD"));
 
     String updatePayload =
@@ -82,7 +83,7 @@ class DeliveryCostApiIntegrationTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(updatePayload))
         .andExpect(status().isOk())
-        .andExpect(jsonPath("$.id").value(deliveryCostId))
+        .andExpect(jsonPath("$.id").value(deliveryCostId.toString()))
         .andExpect(jsonPath("$.amount").value(6500))
         .andExpect(jsonPath("$.provider").value("EXPRESS"));
   }

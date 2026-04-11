@@ -4,6 +4,7 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.UUID;
 import lombok.*;
 
 @Embeddable
@@ -15,7 +16,7 @@ import lombok.*;
 @ToString
 public class OrderPayment {
 
-  private Integer paymentId;
+  private UUID paymentId;
 
   private String methodCode;
   private String currencyCode;

@@ -1,7 +1,9 @@
 package com.devikapps.caverne.modules.user;
 
 import jakarta.persistence.*;
+import java.util.UUID;
 import lombok.*;
+import org.hibernate.annotations.UuidGenerator;
 
 @Entity
 @Table(name = "app_users")
@@ -11,9 +13,7 @@ import lombok.*;
 @AllArgsConstructor
 @Builder
 public class UserAccount {
-  @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private Long id;
+  @Id @UuidGenerator private UUID id;
 
   @Column(nullable = false)
   private String firstname;

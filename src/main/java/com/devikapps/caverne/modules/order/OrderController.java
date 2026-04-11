@@ -6,6 +6,7 @@ import com.devikapps.caverne.modules.user.SecurityActorResolver;
 import com.devikapps.caverne.modules.user.UserAccount;
 import java.io.IOException;
 import java.util.List;
+import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.openapitools.client.JSON;
 import org.springframework.data.domain.PageRequest;
@@ -46,16 +47,13 @@ public class OrderController {
   @GetMapping(value = "/orders/all", produces = MediaType.APPLICATION_JSON_VALUE)
   public String listAllOrders(
       @RequestParam(required = false) String status,
-      @RequestParam(required = false) Integer user_id,
+      @RequestParam(required = false) UUID user_id,
       @RequestParam(defaultValue = "1") int page,
       @RequestParam(defaultValue = "20") int per_page) {
     securityActorResolver.requireAdmin();
 
     var p =
-        orderService.findAll(
-            parseOrderStatus(status),
-            user_id == null ? null : user_id.longValue(),
-            PageRequest.of(page - 1, per_page));
+        orderService.findAll(parseOrderStatus(status), user_id, PageRequest.of(page - 1, per_page));
     org.openapitools.client.model.OrdersGet200Response response =
         new org.openapitools.client.model.OrdersGet200Response()
             .data(p.getContent())
@@ -78,13 +76,13 @@ public class OrderController {
   }
 
   @GetMapping(value = "/orders/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-  public String getOrder(@PathVariable Long id) {
+  public String getOrder(@PathVariable UUID id) {
     return JSON.getGson()
         .toJson(orderService.getOrderForActor(id, securityActorResolver.resolveUserOrNull()));
   }
 
   @PutMapping(value = "/orders/{id}/status", produces = MediaType.APPLICATION_JSON_VALUE)
-  public String updateStatus(@PathVariable Long id, @RequestBody String rawBody) {
+  public String updateStatus(@PathVariable UUID id, @RequestBody String rawBody) {
     securityActorResolver.requireAdmin();
     org.openapitools.client.model.OrderStatusUpdate input = parseOrderStatusUpdate(rawBody);
     return JSON.getGson()
@@ -92,13 +90,13 @@ public class OrderController {
   }
 
   @PostMapping(value = "/orders/{id}/cancel", produces = MediaType.APPLICATION_JSON_VALUE)
-  public String cancelOrder(@PathVariable Long id) {
+  public String cancelOrder(@PathVariable UUID id) {
     return JSON.getGson()
         .toJson(orderService.cancelOrder(id, securityActorResolver.resolveUserOrNull()));
   }
 
   @GetMapping(value = "/orders/{id}/payments", produces = MediaType.APPLICATION_JSON_VALUE)
-  public String listPayments(@PathVariable Long id) {
+  public String listPayments(@PathVariable UUID id) {
     List<org.openapitools.client.model.Payment> payments =
         orderService.listPayments(id, securityActorResolver.resolveUserOrNull());
     return JSON.getGson().toJson(payments);
@@ -106,7 +104,7 @@ public class OrderController {
 
   @PostMapping(value = "/orders/{id}/payments", produces = MediaType.APPLICATION_JSON_VALUE)
   @ResponseStatus(HttpStatus.CREATED)
-  public String initiatePayment(@PathVariable Long id, @RequestBody String rawBody) {
+  public String initiatePayment(@PathVariable UUID id, @RequestBody String rawBody) {
     return JSON.getGson()
         .toJson(
             orderService.processPayment(

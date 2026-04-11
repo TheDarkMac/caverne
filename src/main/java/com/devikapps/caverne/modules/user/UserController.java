@@ -3,6 +3,7 @@ package com.devikapps.caverne.modules.user;
 import static org.springframework.http.HttpStatus.UNPROCESSABLE_ENTITY;
 
 import java.io.IOException;
+import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.openapitools.client.JSON;
 import org.springframework.data.domain.PageRequest;
@@ -60,14 +61,14 @@ public class UserController {
   }
 
   @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-  public String getUser(@PathVariable Long id) {
+  public String getUser(@PathVariable UUID id) {
     securityActorResolver.requireAdmin();
     return JSON.getGson().toJson(userService.getById(id));
   }
 
   @DeleteMapping("/{id}")
   @ResponseStatus(HttpStatus.NO_CONTENT)
-  public void deleteUser(@PathVariable Long id) {
+  public void deleteUser(@PathVariable UUID id) {
     securityActorResolver.requireAdmin();
     userService.deleteById(id);
   }
@@ -91,7 +92,7 @@ public class UserController {
 
   @PutMapping(value = "/me/addresses/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
   public org.springframework.http.ResponseEntity<String> updateMyAddress(
-      @PathVariable Long id, @RequestBody String rawBody) {
+      @PathVariable UUID id, @RequestBody String rawBody) {
     UserAddressService.UpsertAddressResult result =
         userAddressService.updateForUser(
             securityActorResolver.requireUser(), id, parseAddressInput(rawBody));
@@ -102,12 +103,12 @@ public class UserController {
 
   @DeleteMapping("/me/addresses/{id}")
   @ResponseStatus(HttpStatus.NO_CONTENT)
-  public void deleteMyAddress(@PathVariable Long id) {
+  public void deleteMyAddress(@PathVariable UUID id) {
     userAddressService.deleteForUser(securityActorResolver.requireUser(), id);
   }
 
   @PutMapping(value = "/me/addresses/{id}/default", produces = MediaType.APPLICATION_JSON_VALUE)
-  public String setMyDefaultAddress(@PathVariable Long id) {
+  public String setMyDefaultAddress(@PathVariable UUID id) {
     return JSON.getGson()
         .toJson(userAddressService.setDefaultForUser(securityActorResolver.requireUser(), id));
   }

@@ -1,6 +1,7 @@
 package com.devikapps.caverne.modules.catalog;
 
 import java.util.List;
+import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.openapitools.client.JSON;
 import org.springframework.http.HttpStatus;
@@ -32,13 +33,13 @@ public class CategoryController {
   }
 
   @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-  public String getCategory(@PathVariable Long id) {
+  public String getCategory(@PathVariable UUID id) {
     return JSON.getGson().toJson(categoryService.findById(id));
   }
 
   @PutMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
   public org.springframework.http.ResponseEntity<String> updateCategory(
-      @PathVariable Long id, @RequestBody String rawBody) {
+      @PathVariable UUID id, @RequestBody String rawBody) {
     CategoryService.UpsertCategoryResult result =
         categoryService.updateCategory(id, parseCategoryInput(rawBody));
     return org.springframework.http.ResponseEntity.status(
@@ -48,7 +49,7 @@ public class CategoryController {
 
   @DeleteMapping("/{id}")
   @ResponseStatus(HttpStatus.NO_CONTENT)
-  public void deleteCategory(@PathVariable Long id) {
+  public void deleteCategory(@PathVariable UUID id) {
     categoryService.delete(id);
   }
 

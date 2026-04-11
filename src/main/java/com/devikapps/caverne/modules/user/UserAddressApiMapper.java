@@ -7,8 +7,8 @@ public class UserAddressApiMapper {
 
   public org.openapitools.client.model.Address toResponse(UserAddress address) {
     return new org.openapitools.client.model.Address()
-        .id(address.getId().intValue())
-        .userId(address.getUser().getId().intValue())
+        .id(address.getId())
+        .userId(address.getUser().getId())
         .location(address.getLocation())
         .postalCode(address.getPostalCode())
         .countryCode(address.getCountryCode())

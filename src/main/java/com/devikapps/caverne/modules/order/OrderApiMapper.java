@@ -16,8 +16,8 @@ public class OrderApiMapper {
 
   public org.openapitools.client.model.Order toOrderModel(Order order) {
     return new org.openapitools.client.model.Order()
-        .id(order.getId().intValue())
-        .userId(order.getUser() == null ? null : order.getUser().getId().intValue())
+        .id(order.getId())
+        .userId(order.getUser() == null ? null : order.getUser().getId())
         .currencyCode(order.getCurrencyCode())
         .reference(order.getReference())
         .date(order.getDate().atOffset(OffsetDateTime.now().getOffset()))
@@ -25,14 +25,13 @@ public class OrderApiMapper {
             org.openapitools.client.model.Order.StatusEnum.fromValue(
                 order.getStatus().name().toLowerCase()))
         .totalAmount(order.getTotalAmount() == null ? null : order.getTotalAmount().doubleValue())
-        .deliveryCostId(
-            order.getDeliveryCostId() == null ? null : order.getDeliveryCostId().intValue())
+        .deliveryCostId(order.getDeliveryCostId())
         .items(
             order.getItems().stream()
                 .map(
                     item ->
                         new org.openapitools.client.model.OrderItem()
-                            .productId(item.getProductId().intValue())
+                            .productId(item.getProductId())
                             .quantity(item.getQuantity().doubleValue())
                             .unitPrice(item.getUnitPrice().doubleValue()))
                 .toList())
@@ -49,7 +48,7 @@ public class OrderApiMapper {
   public org.openapitools.client.model.Payment toPaymentModel(Order order, OrderPayment payment) {
     return new org.openapitools.client.model.Payment()
         .id(payment.getPaymentId())
-        .orderId(order.getId().intValue())
+        .orderId(order.getId())
         .methodCode(payment.getMethodCode())
         .currencyCode(payment.getCurrencyCode())
         .amount(payment.getAmount().doubleValue())

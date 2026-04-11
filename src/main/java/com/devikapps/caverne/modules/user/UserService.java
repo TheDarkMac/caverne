@@ -3,6 +3,7 @@ package com.devikapps.caverne.modules.user;
 import static org.springframework.http.HttpStatus.NOT_FOUND;
 import static org.springframework.http.HttpStatus.UNPROCESSABLE_ENTITY;
 
+import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -77,17 +78,17 @@ public class UserService {
   }
 
   @Transactional(readOnly = true)
-  public org.openapitools.client.model.User getById(Long id) {
+  public org.openapitools.client.model.User getById(UUID id) {
     return userApiMapper.toResponse(findEntityById(id));
   }
 
-  public void deleteById(Long id) {
+  public void deleteById(UUID id) {
     UserAccount user = findEntityById(id);
     authSessionRepository.deleteByUser(user);
     userRepository.delete(user);
   }
 
-  private UserAccount findEntityById(Long id) {
+  private UserAccount findEntityById(UUID id) {
     return userRepository
         .findById(id)
         .orElseThrow(() -> new ResponseStatusException(NOT_FOUND, "User not found"));

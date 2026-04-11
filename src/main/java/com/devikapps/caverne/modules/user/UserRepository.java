@@ -1,11 +1,12 @@
 package com.devikapps.caverne.modules.user;
 
 import java.util.Optional;
+import java.util.UUID;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 
 public interface UserRepository
-    extends JpaRepository<UserAccount, Long>, JpaSpecificationExecutor<UserAccount> {
+    extends JpaRepository<UserAccount, UUID>, JpaSpecificationExecutor<UserAccount> {
   boolean existsByRole(UserRole role);
 
   Optional<UserAccount> findByAuthProviderAndExternalAuthId(

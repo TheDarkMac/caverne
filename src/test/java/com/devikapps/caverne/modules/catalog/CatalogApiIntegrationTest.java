@@ -17,6 +17,7 @@ import java.time.LocalDate;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -66,7 +67,7 @@ class CatalogApiIntegrationTest {
         .andExpect(status().isOk())
         .andExpect(jsonPath("$[0].label").value("Tea"))
         .andExpect(jsonPath("$[0].children[0].label").value("Green Tea"))
-        .andExpect(jsonPath("$[0].children[0].parent_id").value(root.getId()));
+        .andExpect(jsonPath("$[0].children[0].parent_id").value(root.getId().toString()));
   }
 
   @Test
@@ -101,7 +102,7 @@ class CatalogApiIntegrationTest {
         .andExpect(jsonPath("$.meta.total").value(1))
         .andExpect(jsonPath("$.meta.page").value(1))
         .andExpect(jsonPath("$.data[0].label").value("Wild Pepper"))
-        .andExpect(jsonPath("$.data[0].category_id").value(category.getId()))
+        .andExpect(jsonPath("$.data[0].category.id").value(category.getId().toString()))
         .andExpect(jsonPath("$.data[0].prices[0].currency_code").value("MGA"));
   }
 
@@ -118,7 +119,7 @@ class CatalogApiIntegrationTest {
     mockMvc
         .perform(get("/products/{id}", product.getId()).accept(MediaType.APPLICATION_JSON))
         .andExpect(status().isOk())
-        .andExpect(jsonPath("$.id").value(product.getId()))
+        .andExpect(jsonPath("$.id").value(product.getId().toString()))
         .andExpect(jsonPath("$.label").value("Forest Honey"))
         .andExpect(jsonPath("$.reference").value("HON-001"))
         .andExpect(jsonPath("$.prices[0].value").value(18000));
@@ -142,7 +143,7 @@ class CatalogApiIntegrationTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(payload))
         .andExpect(status().isCreated())
-        .andExpect(jsonPath("$.id").isNumber())
+        .andExpect(jsonPath("$.id").isString())
         .andExpect(jsonPath("$.label").value("Tea"))
         .andExpect(jsonPath("$.slug").value("tea"))
         .andExpect(jsonPath("$.map").value("TEA"))
@@ -179,7 +180,7 @@ class CatalogApiIntegrationTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(payload))
         .andExpect(status().isOk())
-        .andExpect(jsonPath("$.id").value(child.getId()))
+        .andExpect(jsonPath("$.id").value(child.getId().toString()))
         .andExpect(jsonPath("$.label").value("Black Tea"))
         .andExpect(jsonPath("$.slug").value("black-tea"))
         .andExpect(jsonPath("$.parent_id").doesNotExist());
@@ -211,7 +212,7 @@ class CatalogApiIntegrationTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(payload))
         .andExpect(status().isOk())
-        .andExpect(jsonPath("$.id").value(category.getId()))
+        .andExpect(jsonPath("$.id").value(category.getId().toString()))
         .andExpect(jsonPath("$.label").value("Herbal Tea"))
         .andExpect(jsonPath("$.slug").value("herbal-tea"));
   }
@@ -220,18 +221,19 @@ class CatalogApiIntegrationTest {
   void shouldCreateCategoryThroughPutWhenIdDoesNotExist() throws Exception {
     String adminToken = loginAsAdmin("catalog-admin-category-put@example.com", "secret123");
 
+    UUID newCategoryId = UUID.randomUUID();
     String payload =
         objectMapper.writeValueAsString(
-            Map.of("id", 9999, "label", "Coffee", "slug", "coffee", "map", "COFFEE"));
+            Map.of("id", newCategoryId, "label", "Coffee", "slug", "coffee", "map", "COFFEE"));
 
     mockMvc
         .perform(
-            put("/categories/{id}", 9999)
+            put("/categories/{id}", newCategoryId)
                 .header("Authorization", bearer(adminToken))
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(payload))
         .andExpect(status().isCreated())
-        .andExpect(jsonPath("$.id").isNumber())
+        .andExpect(jsonPath("$.id").isString())
         .andExpect(jsonPath("$.label").value("Coffee"))
         .andExpect(jsonPath("$.slug").value("coffee"));
   }
@@ -247,7 +249,7 @@ class CatalogApiIntegrationTest {
     String payload =
         objectMapper.writeValueAsString(
             Map.of(
-                "category_id", category.getId(),
+                "category", Map.of("id", category.getId()),
                 "label", "Wild Pepper",
                 "reference", "PEP-NEW",
                 "limit_date", "2026-12-31",
@@ -262,8 +264,8 @@ class CatalogApiIntegrationTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(payload))
         .andExpect(status().isCreated())
-        .andExpect(jsonPath("$.id").isNumber())
-        .andExpect(jsonPath("$.category_id").value(category.getId()))
+        .andExpect(jsonPath("$.id").isString())
+        .andExpect(jsonPath("$.category.id").value(category.getId().toString()))
         .andExpect(jsonPath("$.label").value("Wild Pepper"))
         .andExpect(jsonPath("$.reference").value("PEP-NEW"))
         .andExpect(jsonPath("$.is_active").value(true));
@@ -286,7 +288,7 @@ class CatalogApiIntegrationTest {
     String payload =
         objectMapper.writeValueAsString(
             Map.of(
-                "category_id", updatedCategory.getId(),
+                "category", Map.of("id", updatedCategory.getId()),
                 "label", "Smoked Tea",
                 "reference", "TEA-001",
                 "limit_date", "2027-01-31",
@@ -301,8 +303,8 @@ class CatalogApiIntegrationTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(payload))
         .andExpect(status().isOk())
-        .andExpect(jsonPath("$.id").value(product.getId()))
-        .andExpect(jsonPath("$.category_id").value(updatedCategory.getId()))
+        .andExpect(jsonPath("$.id").value(product.getId().toString()))
+        .andExpect(jsonPath("$.category.id").value(updatedCategory.getId().toString()))
         .andExpect(jsonPath("$.label").value("Smoked Tea"))
         .andExpect(jsonPath("$.reference").value("TEA-001"))
         .andExpect(jsonPath("$.is_active").value(false));
@@ -324,8 +326,8 @@ class CatalogApiIntegrationTest {
             Map.of(
                 "id",
                 product.getId(),
-                "category_id",
-                category.getId(),
+                "category",
+                Map.of("id", category.getId()),
                 "label",
                 "Updated Pepper",
                 "reference",
@@ -346,7 +348,7 @@ class CatalogApiIntegrationTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(payload))
         .andExpect(status().isOk())
-        .andExpect(jsonPath("$.id").value(product.getId()))
+        .andExpect(jsonPath("$.id").value(product.getId().toString()))
         .andExpect(jsonPath("$.label").value("Updated Pepper"))
         .andExpect(jsonPath("$.reference").value("PEP-002"));
   }
@@ -359,13 +361,14 @@ class CatalogApiIntegrationTest {
         categoryRepository.save(
             Category.builder().label("Spices").slug("spices").map("SPICES").build());
 
+    UUID newProductId = UUID.randomUUID();
     String payload =
         objectMapper.writeValueAsString(
             Map.of(
                 "id",
-                7777,
-                "category_id",
-                category.getId(),
+                newProductId,
+                "category",
+                Map.of("id", category.getId()),
                 "label",
                 "New Product",
                 "reference",
@@ -381,12 +384,12 @@ class CatalogApiIntegrationTest {
 
     mockMvc
         .perform(
-            put("/products/{id}", 7777)
+            put("/products/{id}", newProductId)
                 .header("Authorization", bearer(adminToken))
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(payload))
         .andExpect(status().isCreated())
-        .andExpect(jsonPath("$.id").isNumber())
+        .andExpect(jsonPath("$.id").isString())
         .andExpect(jsonPath("$.label").value("New Product"))
         .andExpect(jsonPath("$.reference").value("NEW-001"));
   }
@@ -402,7 +405,7 @@ class CatalogApiIntegrationTest {
     String productPayload =
         objectMapper.writeValueAsString(
             Map.of(
-                "category_id", category.getId(),
+                "category", Map.of("id", category.getId()),
                 "label", "Wild Pepper",
                 "reference", "PEP-NEW",
                 "limit_date", "2026-12-31",
@@ -415,9 +418,10 @@ class CatalogApiIntegrationTest {
             post("/categories").contentType(MediaType.APPLICATION_JSON).content(categoryPayload))
         .andExpect(status().isUnauthorized());
 
+    UUID categoryId = UUID.randomUUID();
     mockMvc
         .perform(
-            put("/categories/{id}", 9999)
+            put("/categories/{id}", categoryId)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(categoryPayload))
         .andExpect(status().isUnauthorized());
@@ -426,9 +430,10 @@ class CatalogApiIntegrationTest {
         .perform(post("/products").contentType(MediaType.APPLICATION_JSON).content(productPayload))
         .andExpect(status().isUnauthorized());
 
+    UUID productId = UUID.randomUUID();
     mockMvc
         .perform(
-            put("/products/{id}", 7777)
+            put("/products/{id}", productId)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(productPayload))
         .andExpect(status().isUnauthorized());
@@ -446,7 +451,7 @@ class CatalogApiIntegrationTest {
     String productPayload =
         objectMapper.writeValueAsString(
             Map.of(
-                "category_id", category.getId(),
+                "category", Map.of("id", category.getId()),
                 "label", "Wild Pepper",
                 "reference", "PEP-NEW",
                 "limit_date", "2026-12-31",

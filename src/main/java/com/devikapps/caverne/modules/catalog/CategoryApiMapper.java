@@ -8,11 +8,11 @@ public class CategoryApiMapper {
 
   public org.openapitools.client.model.Category toTreeResponse(Category category) {
     return new org.openapitools.client.model.Category()
-        .id(category.getId().intValue())
+        .id(category.getId())
         .label(category.getLabel())
         .slug(category.getSlug())
         .map(category.getMap())
-        .parentId(category.getParent() == null ? null : category.getParent().getId().intValue())
+        .parentId(category.getParent() == null ? null : category.getParent().getId())
         .children(
             category.getChildren() == null
                 ? List.of()
@@ -21,11 +21,11 @@ public class CategoryApiMapper {
 
   public org.openapitools.client.model.Category toFlatResponse(Category category) {
     return new org.openapitools.client.model.Category()
-        .id(category.getId().intValue())
+        .id(category.getId())
         .label(category.getLabel())
         .slug(category.getSlug())
         .map(category.getMap())
-        .parentId(category.getParent() == null ? null : category.getParent().getId().intValue())
+        .parentId(category.getParent() == null ? null : category.getParent().getId())
         .children(List.of());
   }
 
@@ -37,7 +37,7 @@ public class CategoryApiMapper {
 
     if (input.getParentId() != null) {
       Category parent = new Category();
-      parent.setId(input.getParentId().longValue());
+      parent.setId(input.getParentId());
       category.setParent(parent);
     } else {
       category.setParent(null);
