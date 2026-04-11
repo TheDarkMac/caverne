@@ -16,7 +16,7 @@ public class PublicApiSimulation extends Simulation {
   private static final String BASE_URL =
       System.getProperty(
           "gatling.baseUrl",
-          System.getenv().getOrDefault("GATLING_BASE_URL", "http://127.0.0.1:8080"));
+          System.getenv().getOrDefault("GATLING_BASE_URL", "http://127.0.0.1:8080/api/v1"));
 
   private final HttpProtocolBuilder httpProtocol =
       http.baseUrl(BASE_URL)
