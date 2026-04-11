@@ -19,6 +19,7 @@ import org.openapitools.client.model.Order;
 import org.openapitools.client.model.OrderInput;
 import org.openapitools.client.model.OrderStatusUpdate;
 import org.openapitools.client.model.OrdersGet200Response;
+import java.util.UUID;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
@@ -45,7 +46,7 @@ public class OrdersApiTest {
         Integer page = null;
         Integer perPage = null;
         String status = null;
-        Integer userId = null;
+        UUID userId = null;
         OrdersGet200Response response = api.ordersAllGet(page, perPage, status, userId);
         // TODO: test validations
     }
@@ -70,7 +71,7 @@ public class OrdersApiTest {
      */
     @Test
     public void ordersIdCancelPostTest() throws ApiException {
-        Integer id = null;
+        UUID id = null;
         Order response = api.ordersIdCancelPost(id);
         // TODO: test validations
     }
@@ -84,7 +85,7 @@ public class OrdersApiTest {
      */
     @Test
     public void ordersIdGetTest() throws ApiException {
-        Integer id = null;
+        UUID id = null;
         Order response = api.ordersIdGet(id);
         // TODO: test validations
     }
@@ -96,7 +97,7 @@ public class OrdersApiTest {
      */
     @Test
     public void ordersIdStatusPutTest() throws ApiException {
-        Integer id = null;
+        UUID id = null;
         OrderStatusUpdate orderStatusUpdate = null;
         Order response = api.ordersIdStatusPut(id, orderStatusUpdate);
         // TODO: test validations

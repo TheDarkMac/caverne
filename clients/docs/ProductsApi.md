@@ -1,6 +1,6 @@
 # ProductsApi
 
-All URIs are relative to *http://localhost:8080*
+All URIs are relative to *http://localhost:8080/api/v1*
 
 | Method | HTTP request | Description |
 |------------- | ------------- | -------------|
@@ -29,12 +29,12 @@ import org.openapitools.client.api.ProductsApi;
 public class Example {
   public static void main(String[] args) {
     ApiClient defaultClient = Configuration.getDefaultApiClient();
-    defaultClient.setBasePath("http://localhost:8080");
+    defaultClient.setBasePath("http://localhost:8080/api/v1");
 
     ProductsApi apiInstance = new ProductsApi(defaultClient);
     Integer page = 1; // Integer | 
     Integer perPage = 20; // Integer | 
-    Integer categoryId = 56; // Integer | 
+    UUID categoryId = UUID.randomUUID(); // UUID | 
     Boolean isActive = true; // Boolean | 
     String search = "search_example"; // String | 
     String currency = "MGA"; // String | 
@@ -58,7 +58,7 @@ public class Example {
 |------------- | ------------- | ------------- | -------------|
 | **page** | **Integer**|  | [optional] [default to 1] |
 | **perPage** | **Integer**|  | [optional] [default to 20] |
-| **categoryId** | **Integer**|  | [optional] |
+| **categoryId** | **UUID**|  | [optional] |
 | **isActive** | **Boolean**|  | [optional] |
 | **search** | **String**|  | [optional] |
 | **currency** | **String**|  | [optional] |
@@ -100,14 +100,14 @@ import org.openapitools.client.api.ProductsApi;
 public class Example {
   public static void main(String[] args) {
     ApiClient defaultClient = Configuration.getDefaultApiClient();
-    defaultClient.setBasePath("http://localhost:8080");
+    defaultClient.setBasePath("http://localhost:8080/api/v1");
     
     // Configure HTTP bearer authorization: BearerAuth
     HttpBearerAuth BearerAuth = (HttpBearerAuth) defaultClient.getAuthentication("BearerAuth");
     BearerAuth.setBearerToken("BEARER TOKEN");
 
     ProductsApi apiInstance = new ProductsApi(defaultClient);
-    Integer id = 56; // Integer | 
+    UUID id = UUID.randomUUID(); // UUID | 
     try {
       apiInstance.productsIdDelete(id);
     } catch (ApiException e) {
@@ -125,7 +125,7 @@ public class Example {
 
 | Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
-| **id** | **Integer**|  | |
+| **id** | **UUID**|  | |
 
 ### Return type
 
@@ -165,10 +165,10 @@ import org.openapitools.client.api.ProductsApi;
 public class Example {
   public static void main(String[] args) {
     ApiClient defaultClient = Configuration.getDefaultApiClient();
-    defaultClient.setBasePath("http://localhost:8080");
+    defaultClient.setBasePath("http://localhost:8080/api/v1");
 
     ProductsApi apiInstance = new ProductsApi(defaultClient);
-    Integer id = 56; // Integer | 
+    UUID id = UUID.randomUUID(); // UUID | 
     try {
       Product result = apiInstance.productsIdGet(id);
       System.out.println(result);
@@ -187,7 +187,7 @@ public class Example {
 
 | Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
-| **id** | **Integer**|  | |
+| **id** | **UUID**|  | |
 
 ### Return type
 
@@ -229,14 +229,14 @@ import org.openapitools.client.api.ProductsApi;
 public class Example {
   public static void main(String[] args) {
     ApiClient defaultClient = Configuration.getDefaultApiClient();
-    defaultClient.setBasePath("http://localhost:8080");
+    defaultClient.setBasePath("http://localhost:8080/api/v1");
     
     // Configure HTTP bearer authorization: BearerAuth
     HttpBearerAuth BearerAuth = (HttpBearerAuth) defaultClient.getAuthentication("BearerAuth");
     BearerAuth.setBearerToken("BEARER TOKEN");
 
     ProductsApi apiInstance = new ProductsApi(defaultClient);
-    Integer id = 56; // Integer | 
+    UUID id = UUID.randomUUID(); // UUID | 
     ProductInput productInput = new ProductInput(); // ProductInput | 
     try {
       Product result = apiInstance.productsIdPut(id, productInput);
@@ -256,7 +256,7 @@ public class Example {
 
 | Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
-| **id** | **Integer**|  | |
+| **id** | **UUID**|  | |
 | **productInput** | [**ProductInput**](ProductInput.md)|  | |
 
 ### Return type
@@ -301,7 +301,7 @@ import org.openapitools.client.api.ProductsApi;
 public class Example {
   public static void main(String[] args) {
     ApiClient defaultClient = Configuration.getDefaultApiClient();
-    defaultClient.setBasePath("http://localhost:8080");
+    defaultClient.setBasePath("http://localhost:8080/api/v1");
     
     // Configure HTTP bearer authorization: BearerAuth
     HttpBearerAuth BearerAuth = (HttpBearerAuth) defaultClient.getAuthentication("BearerAuth");

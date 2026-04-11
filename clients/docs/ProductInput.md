@@ -7,8 +7,8 @@
 
 | Name | Type | Description | Notes |
 |------------ | ------------- | ------------- | -------------|
-|**id** | **Integer** |  |  [optional] |
-|**categoryId** | **Integer** |  |  |
+|**id** | **UUID** |  |  [optional] |
+|**category** | [**CategoryRefInput**](CategoryRefInput.md) |  |  |
 |**label** | **String** |  |  |
 |**reference** | **String** |  |  |
 |**limitDate** | **LocalDate** |  |  [optional] |

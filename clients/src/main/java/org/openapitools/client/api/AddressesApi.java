@@ -30,6 +30,7 @@ import java.io.IOException;
 import org.openapitools.client.model.Address;
 import org.openapitools.client.model.AddressInput;
 import org.openapitools.client.model.Error;
+import java.util.UUID;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
@@ -209,7 +210,7 @@ public class AddressesApi {
         <tr><td> 401 </td><td> Token JWT manquant ou invalide </td><td>  -  </td></tr>
      </table>
      */
-    public okhttp3.Call usersMeAddressesIdDefaultPutCall(@javax.annotation.Nonnull Integer id, final ApiCallback _callback) throws ApiException {
+    public okhttp3.Call usersMeAddressesIdDefaultPutCall(@javax.annotation.Nonnull UUID id, final ApiCallback _callback) throws ApiException {
         String basePath = null;
         // Operation Servers
         String[] localBasePaths = new String[] {  };
@@ -255,7 +256,7 @@ public class AddressesApi {
     }
 
     @SuppressWarnings("rawtypes")
-    private okhttp3.Call usersMeAddressesIdDefaultPutValidateBeforeCall(@javax.annotation.Nonnull Integer id, final ApiCallback _callback) throws ApiException {
+    private okhttp3.Call usersMeAddressesIdDefaultPutValidateBeforeCall(@javax.annotation.Nonnull UUID id, final ApiCallback _callback) throws ApiException {
         // verify the required parameter 'id' is set
         if (id == null) {
             throw new ApiException("Missing the required parameter 'id' when calling usersMeAddressesIdDefaultPut(Async)");
@@ -279,7 +280,7 @@ public class AddressesApi {
         <tr><td> 401 </td><td> Token JWT manquant ou invalide </td><td>  -  </td></tr>
      </table>
      */
-    public Address usersMeAddressesIdDefaultPut(@javax.annotation.Nonnull Integer id) throws ApiException {
+    public Address usersMeAddressesIdDefaultPut(@javax.annotation.Nonnull UUID id) throws ApiException {
         ApiResponse<Address> localVarResp = usersMeAddressesIdDefaultPutWithHttpInfo(id);
         return localVarResp.getData();
     }
@@ -298,7 +299,7 @@ public class AddressesApi {
         <tr><td> 401 </td><td> Token JWT manquant ou invalide </td><td>  -  </td></tr>
      </table>
      */
-    public ApiResponse<Address> usersMeAddressesIdDefaultPutWithHttpInfo(@javax.annotation.Nonnull Integer id) throws ApiException {
+    public ApiResponse<Address> usersMeAddressesIdDefaultPutWithHttpInfo(@javax.annotation.Nonnull UUID id) throws ApiException {
         okhttp3.Call localVarCall = usersMeAddressesIdDefaultPutValidateBeforeCall(id, null);
         Type localVarReturnType = new TypeToken<Address>(){}.getType();
         return localVarApiClient.execute(localVarCall, localVarReturnType);
@@ -319,7 +320,7 @@ public class AddressesApi {
         <tr><td> 401 </td><td> Token JWT manquant ou invalide </td><td>  -  </td></tr>
      </table>
      */
-    public okhttp3.Call usersMeAddressesIdDefaultPutAsync(@javax.annotation.Nonnull Integer id, final ApiCallback<Address> _callback) throws ApiException {
+    public okhttp3.Call usersMeAddressesIdDefaultPutAsync(@javax.annotation.Nonnull UUID id, final ApiCallback<Address> _callback) throws ApiException {
 
         okhttp3.Call localVarCall = usersMeAddressesIdDefaultPutValidateBeforeCall(id, _callback);
         Type localVarReturnType = new TypeToken<Address>(){}.getType();
@@ -341,7 +342,7 @@ public class AddressesApi {
         <tr><td> 404 </td><td> Ressource introuvable </td><td>  -  </td></tr>
      </table>
      */
-    public okhttp3.Call usersMeAddressesIdDeleteCall(@javax.annotation.Nonnull Integer id, final ApiCallback _callback) throws ApiException {
+    public okhttp3.Call usersMeAddressesIdDeleteCall(@javax.annotation.Nonnull UUID id, final ApiCallback _callback) throws ApiException {
         String basePath = null;
         // Operation Servers
         String[] localBasePaths = new String[] {  };
@@ -387,7 +388,7 @@ public class AddressesApi {
     }
 
     @SuppressWarnings("rawtypes")
-    private okhttp3.Call usersMeAddressesIdDeleteValidateBeforeCall(@javax.annotation.Nonnull Integer id, final ApiCallback _callback) throws ApiException {
+    private okhttp3.Call usersMeAddressesIdDeleteValidateBeforeCall(@javax.annotation.Nonnull UUID id, final ApiCallback _callback) throws ApiException {
         // verify the required parameter 'id' is set
         if (id == null) {
             throw new ApiException("Missing the required parameter 'id' when calling usersMeAddressesIdDelete(Async)");
@@ -411,7 +412,7 @@ public class AddressesApi {
         <tr><td> 404 </td><td> Ressource introuvable </td><td>  -  </td></tr>
      </table>
      */
-    public void usersMeAddressesIdDelete(@javax.annotation.Nonnull Integer id) throws ApiException {
+    public void usersMeAddressesIdDelete(@javax.annotation.Nonnull UUID id) throws ApiException {
         usersMeAddressesIdDeleteWithHttpInfo(id);
     }
 
@@ -430,7 +431,7 @@ public class AddressesApi {
         <tr><td> 404 </td><td> Ressource introuvable </td><td>  -  </td></tr>
      </table>
      */
-    public ApiResponse<Void> usersMeAddressesIdDeleteWithHttpInfo(@javax.annotation.Nonnull Integer id) throws ApiException {
+    public ApiResponse<Void> usersMeAddressesIdDeleteWithHttpInfo(@javax.annotation.Nonnull UUID id) throws ApiException {
         okhttp3.Call localVarCall = usersMeAddressesIdDeleteValidateBeforeCall(id, null);
         return localVarApiClient.execute(localVarCall);
     }
@@ -451,7 +452,7 @@ public class AddressesApi {
         <tr><td> 404 </td><td> Ressource introuvable </td><td>  -  </td></tr>
      </table>
      */
-    public okhttp3.Call usersMeAddressesIdDeleteAsync(@javax.annotation.Nonnull Integer id, final ApiCallback<Void> _callback) throws ApiException {
+    public okhttp3.Call usersMeAddressesIdDeleteAsync(@javax.annotation.Nonnull UUID id, final ApiCallback<Void> _callback) throws ApiException {
 
         okhttp3.Call localVarCall = usersMeAddressesIdDeleteValidateBeforeCall(id, _callback);
         localVarApiClient.executeAsync(localVarCall, _callback);
@@ -474,7 +475,7 @@ public class AddressesApi {
         <tr><td> 404 </td><td> Ressource introuvable </td><td>  -  </td></tr>
      </table>
      */
-    public okhttp3.Call usersMeAddressesIdPutCall(@javax.annotation.Nonnull Integer id, @javax.annotation.Nonnull AddressInput addressInput, final ApiCallback _callback) throws ApiException {
+    public okhttp3.Call usersMeAddressesIdPutCall(@javax.annotation.Nonnull UUID id, @javax.annotation.Nonnull AddressInput addressInput, final ApiCallback _callback) throws ApiException {
         String basePath = null;
         // Operation Servers
         String[] localBasePaths = new String[] {  };
@@ -521,7 +522,7 @@ public class AddressesApi {
     }
 
     @SuppressWarnings("rawtypes")
-    private okhttp3.Call usersMeAddressesIdPutValidateBeforeCall(@javax.annotation.Nonnull Integer id, @javax.annotation.Nonnull AddressInput addressInput, final ApiCallback _callback) throws ApiException {
+    private okhttp3.Call usersMeAddressesIdPutValidateBeforeCall(@javax.annotation.Nonnull UUID id, @javax.annotation.Nonnull AddressInput addressInput, final ApiCallback _callback) throws ApiException {
         // verify the required parameter 'id' is set
         if (id == null) {
             throw new ApiException("Missing the required parameter 'id' when calling usersMeAddressesIdPut(Async)");
@@ -553,7 +554,7 @@ public class AddressesApi {
         <tr><td> 404 </td><td> Ressource introuvable </td><td>  -  </td></tr>
      </table>
      */
-    public Address usersMeAddressesIdPut(@javax.annotation.Nonnull Integer id, @javax.annotation.Nonnull AddressInput addressInput) throws ApiException {
+    public Address usersMeAddressesIdPut(@javax.annotation.Nonnull UUID id, @javax.annotation.Nonnull AddressInput addressInput) throws ApiException {
         ApiResponse<Address> localVarResp = usersMeAddressesIdPutWithHttpInfo(id, addressInput);
         return localVarResp.getData();
     }
@@ -575,7 +576,7 @@ public class AddressesApi {
         <tr><td> 404 </td><td> Ressource introuvable </td><td>  -  </td></tr>
      </table>
      */
-    public ApiResponse<Address> usersMeAddressesIdPutWithHttpInfo(@javax.annotation.Nonnull Integer id, @javax.annotation.Nonnull AddressInput addressInput) throws ApiException {
+    public ApiResponse<Address> usersMeAddressesIdPutWithHttpInfo(@javax.annotation.Nonnull UUID id, @javax.annotation.Nonnull AddressInput addressInput) throws ApiException {
         okhttp3.Call localVarCall = usersMeAddressesIdPutValidateBeforeCall(id, addressInput, null);
         Type localVarReturnType = new TypeToken<Address>(){}.getType();
         return localVarApiClient.execute(localVarCall, localVarReturnType);
@@ -599,7 +600,7 @@ public class AddressesApi {
         <tr><td> 404 </td><td> Ressource introuvable </td><td>  -  </td></tr>
      </table>
      */
-    public okhttp3.Call usersMeAddressesIdPutAsync(@javax.annotation.Nonnull Integer id, @javax.annotation.Nonnull AddressInput addressInput, final ApiCallback<Address> _callback) throws ApiException {
+    public okhttp3.Call usersMeAddressesIdPutAsync(@javax.annotation.Nonnull UUID id, @javax.annotation.Nonnull AddressInput addressInput, final ApiCallback<Address> _callback) throws ApiException {
 
         okhttp3.Call localVarCall = usersMeAddressesIdPutValidateBeforeCall(id, addressInput, _callback);
         Type localVarReturnType = new TypeToken<Address>(){}.getType();

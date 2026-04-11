@@ -31,6 +31,7 @@ import org.openapitools.client.model.Error;
 import org.openapitools.client.model.Payment;
 import org.openapitools.client.model.PaymentInput;
 import org.openapitools.client.model.PaymentMethod;
+import java.util.UUID;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
@@ -88,7 +89,7 @@ public class PaymentsApi {
         <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
      </table>
      */
-    public okhttp3.Call ordersIdPaymentsGetCall(@javax.annotation.Nonnull Integer id, final ApiCallback _callback) throws ApiException {
+    public okhttp3.Call ordersIdPaymentsGetCall(@javax.annotation.Nonnull UUID id, final ApiCallback _callback) throws ApiException {
         String basePath = null;
         // Operation Servers
         String[] localBasePaths = new String[] {  };
@@ -134,7 +135,7 @@ public class PaymentsApi {
     }
 
     @SuppressWarnings("rawtypes")
-    private okhttp3.Call ordersIdPaymentsGetValidateBeforeCall(@javax.annotation.Nonnull Integer id, final ApiCallback _callback) throws ApiException {
+    private okhttp3.Call ordersIdPaymentsGetValidateBeforeCall(@javax.annotation.Nonnull UUID id, final ApiCallback _callback) throws ApiException {
         // verify the required parameter 'id' is set
         if (id == null) {
             throw new ApiException("Missing the required parameter 'id' when calling ordersIdPaymentsGet(Async)");
@@ -157,7 +158,7 @@ public class PaymentsApi {
         <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
      </table>
      */
-    public List<Payment> ordersIdPaymentsGet(@javax.annotation.Nonnull Integer id) throws ApiException {
+    public List<Payment> ordersIdPaymentsGet(@javax.annotation.Nonnull UUID id) throws ApiException {
         ApiResponse<List<Payment>> localVarResp = ordersIdPaymentsGetWithHttpInfo(id);
         return localVarResp.getData();
     }
@@ -175,7 +176,7 @@ public class PaymentsApi {
         <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
      </table>
      */
-    public ApiResponse<List<Payment>> ordersIdPaymentsGetWithHttpInfo(@javax.annotation.Nonnull Integer id) throws ApiException {
+    public ApiResponse<List<Payment>> ordersIdPaymentsGetWithHttpInfo(@javax.annotation.Nonnull UUID id) throws ApiException {
         okhttp3.Call localVarCall = ordersIdPaymentsGetValidateBeforeCall(id, null);
         Type localVarReturnType = new TypeToken<List<Payment>>(){}.getType();
         return localVarApiClient.execute(localVarCall, localVarReturnType);
@@ -195,7 +196,7 @@ public class PaymentsApi {
         <tr><td> 200 </td><td> OK </td><td>  -  </td></tr>
      </table>
      */
-    public okhttp3.Call ordersIdPaymentsGetAsync(@javax.annotation.Nonnull Integer id, final ApiCallback<List<Payment>> _callback) throws ApiException {
+    public okhttp3.Call ordersIdPaymentsGetAsync(@javax.annotation.Nonnull UUID id, final ApiCallback<List<Payment>> _callback) throws ApiException {
 
         okhttp3.Call localVarCall = ordersIdPaymentsGetValidateBeforeCall(id, _callback);
         Type localVarReturnType = new TypeToken<List<Payment>>(){}.getType();
@@ -217,7 +218,7 @@ public class PaymentsApi {
         <tr><td> 422 </td><td> Données invalides </td><td>  -  </td></tr>
      </table>
      */
-    public okhttp3.Call ordersIdPaymentsPostCall(@javax.annotation.Nonnull Integer id, @javax.annotation.Nonnull PaymentInput paymentInput, final ApiCallback _callback) throws ApiException {
+    public okhttp3.Call ordersIdPaymentsPostCall(@javax.annotation.Nonnull UUID id, @javax.annotation.Nonnull PaymentInput paymentInput, final ApiCallback _callback) throws ApiException {
         String basePath = null;
         // Operation Servers
         String[] localBasePaths = new String[] {  };
@@ -264,7 +265,7 @@ public class PaymentsApi {
     }
 
     @SuppressWarnings("rawtypes")
-    private okhttp3.Call ordersIdPaymentsPostValidateBeforeCall(@javax.annotation.Nonnull Integer id, @javax.annotation.Nonnull PaymentInput paymentInput, final ApiCallback _callback) throws ApiException {
+    private okhttp3.Call ordersIdPaymentsPostValidateBeforeCall(@javax.annotation.Nonnull UUID id, @javax.annotation.Nonnull PaymentInput paymentInput, final ApiCallback _callback) throws ApiException {
         // verify the required parameter 'id' is set
         if (id == null) {
             throw new ApiException("Missing the required parameter 'id' when calling ordersIdPaymentsPost(Async)");
@@ -294,7 +295,7 @@ public class PaymentsApi {
         <tr><td> 422 </td><td> Données invalides </td><td>  -  </td></tr>
      </table>
      */
-    public Payment ordersIdPaymentsPost(@javax.annotation.Nonnull Integer id, @javax.annotation.Nonnull PaymentInput paymentInput) throws ApiException {
+    public Payment ordersIdPaymentsPost(@javax.annotation.Nonnull UUID id, @javax.annotation.Nonnull PaymentInput paymentInput) throws ApiException {
         ApiResponse<Payment> localVarResp = ordersIdPaymentsPostWithHttpInfo(id, paymentInput);
         return localVarResp.getData();
     }
@@ -314,7 +315,7 @@ public class PaymentsApi {
         <tr><td> 422 </td><td> Données invalides </td><td>  -  </td></tr>
      </table>
      */
-    public ApiResponse<Payment> ordersIdPaymentsPostWithHttpInfo(@javax.annotation.Nonnull Integer id, @javax.annotation.Nonnull PaymentInput paymentInput) throws ApiException {
+    public ApiResponse<Payment> ordersIdPaymentsPostWithHttpInfo(@javax.annotation.Nonnull UUID id, @javax.annotation.Nonnull PaymentInput paymentInput) throws ApiException {
         okhttp3.Call localVarCall = ordersIdPaymentsPostValidateBeforeCall(id, paymentInput, null);
         Type localVarReturnType = new TypeToken<Payment>(){}.getType();
         return localVarApiClient.execute(localVarCall, localVarReturnType);
@@ -336,7 +337,7 @@ public class PaymentsApi {
         <tr><td> 422 </td><td> Données invalides </td><td>  -  </td></tr>
      </table>
      */
-    public okhttp3.Call ordersIdPaymentsPostAsync(@javax.annotation.Nonnull Integer id, @javax.annotation.Nonnull PaymentInput paymentInput, final ApiCallback<Payment> _callback) throws ApiException {
+    public okhttp3.Call ordersIdPaymentsPostAsync(@javax.annotation.Nonnull UUID id, @javax.annotation.Nonnull PaymentInput paymentInput, final ApiCallback<Payment> _callback) throws ApiException {
 
         okhttp3.Call localVarCall = ordersIdPaymentsPostValidateBeforeCall(id, paymentInput, _callback);
         Type localVarReturnType = new TypeToken<Payment>(){}.getType();

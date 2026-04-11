@@ -28,6 +28,7 @@ import java.io.IOException;
 
 
 import org.openapitools.client.model.Error;
+import java.util.UUID;
 import org.openapitools.client.model.User;
 import org.openapitools.client.model.UserCreateInput;
 import org.openapitools.client.model.UserUpdate;
@@ -240,7 +241,7 @@ public class UsersApi {
         <tr><td> 404 </td><td> Ressource introuvable </td><td>  -  </td></tr>
      </table>
      */
-    public okhttp3.Call usersIdDeleteCall(@javax.annotation.Nonnull Integer id, final ApiCallback _callback) throws ApiException {
+    public okhttp3.Call usersIdDeleteCall(@javax.annotation.Nonnull UUID id, final ApiCallback _callback) throws ApiException {
         String basePath = null;
         // Operation Servers
         String[] localBasePaths = new String[] {  };
@@ -286,7 +287,7 @@ public class UsersApi {
     }
 
     @SuppressWarnings("rawtypes")
-    private okhttp3.Call usersIdDeleteValidateBeforeCall(@javax.annotation.Nonnull Integer id, final ApiCallback _callback) throws ApiException {
+    private okhttp3.Call usersIdDeleteValidateBeforeCall(@javax.annotation.Nonnull UUID id, final ApiCallback _callback) throws ApiException {
         // verify the required parameter 'id' is set
         if (id == null) {
             throw new ApiException("Missing the required parameter 'id' when calling usersIdDelete(Async)");
@@ -310,7 +311,7 @@ public class UsersApi {
         <tr><td> 404 </td><td> Ressource introuvable </td><td>  -  </td></tr>
      </table>
      */
-    public void usersIdDelete(@javax.annotation.Nonnull Integer id) throws ApiException {
+    public void usersIdDelete(@javax.annotation.Nonnull UUID id) throws ApiException {
         usersIdDeleteWithHttpInfo(id);
     }
 
@@ -329,7 +330,7 @@ public class UsersApi {
         <tr><td> 404 </td><td> Ressource introuvable </td><td>  -  </td></tr>
      </table>
      */
-    public ApiResponse<Void> usersIdDeleteWithHttpInfo(@javax.annotation.Nonnull Integer id) throws ApiException {
+    public ApiResponse<Void> usersIdDeleteWithHttpInfo(@javax.annotation.Nonnull UUID id) throws ApiException {
         okhttp3.Call localVarCall = usersIdDeleteValidateBeforeCall(id, null);
         return localVarApiClient.execute(localVarCall);
     }
@@ -350,7 +351,7 @@ public class UsersApi {
         <tr><td> 404 </td><td> Ressource introuvable </td><td>  -  </td></tr>
      </table>
      */
-    public okhttp3.Call usersIdDeleteAsync(@javax.annotation.Nonnull Integer id, final ApiCallback<Void> _callback) throws ApiException {
+    public okhttp3.Call usersIdDeleteAsync(@javax.annotation.Nonnull UUID id, final ApiCallback<Void> _callback) throws ApiException {
 
         okhttp3.Call localVarCall = usersIdDeleteValidateBeforeCall(id, _callback);
         localVarApiClient.executeAsync(localVarCall, _callback);
@@ -370,7 +371,7 @@ public class UsersApi {
         <tr><td> 404 </td><td> Ressource introuvable </td><td>  -  </td></tr>
      </table>
      */
-    public okhttp3.Call usersIdGetCall(@javax.annotation.Nonnull Integer id, final ApiCallback _callback) throws ApiException {
+    public okhttp3.Call usersIdGetCall(@javax.annotation.Nonnull UUID id, final ApiCallback _callback) throws ApiException {
         String basePath = null;
         // Operation Servers
         String[] localBasePaths = new String[] {  };
@@ -416,7 +417,7 @@ public class UsersApi {
     }
 
     @SuppressWarnings("rawtypes")
-    private okhttp3.Call usersIdGetValidateBeforeCall(@javax.annotation.Nonnull Integer id, final ApiCallback _callback) throws ApiException {
+    private okhttp3.Call usersIdGetValidateBeforeCall(@javax.annotation.Nonnull UUID id, final ApiCallback _callback) throws ApiException {
         // verify the required parameter 'id' is set
         if (id == null) {
             throw new ApiException("Missing the required parameter 'id' when calling usersIdGet(Async)");
@@ -440,7 +441,7 @@ public class UsersApi {
         <tr><td> 404 </td><td> Ressource introuvable </td><td>  -  </td></tr>
      </table>
      */
-    public User usersIdGet(@javax.annotation.Nonnull Integer id) throws ApiException {
+    public User usersIdGet(@javax.annotation.Nonnull UUID id) throws ApiException {
         ApiResponse<User> localVarResp = usersIdGetWithHttpInfo(id);
         return localVarResp.getData();
     }
@@ -459,7 +460,7 @@ public class UsersApi {
         <tr><td> 404 </td><td> Ressource introuvable </td><td>  -  </td></tr>
      </table>
      */
-    public ApiResponse<User> usersIdGetWithHttpInfo(@javax.annotation.Nonnull Integer id) throws ApiException {
+    public ApiResponse<User> usersIdGetWithHttpInfo(@javax.annotation.Nonnull UUID id) throws ApiException {
         okhttp3.Call localVarCall = usersIdGetValidateBeforeCall(id, null);
         Type localVarReturnType = new TypeToken<User>(){}.getType();
         return localVarApiClient.execute(localVarCall, localVarReturnType);
@@ -480,7 +481,7 @@ public class UsersApi {
         <tr><td> 404 </td><td> Ressource introuvable </td><td>  -  </td></tr>
      </table>
      */
-    public okhttp3.Call usersIdGetAsync(@javax.annotation.Nonnull Integer id, final ApiCallback<User> _callback) throws ApiException {
+    public okhttp3.Call usersIdGetAsync(@javax.annotation.Nonnull UUID id, final ApiCallback<User> _callback) throws ApiException {
 
         okhttp3.Call localVarCall = usersIdGetValidateBeforeCall(id, _callback);
         Type localVarReturnType = new TypeToken<User>(){}.getType();

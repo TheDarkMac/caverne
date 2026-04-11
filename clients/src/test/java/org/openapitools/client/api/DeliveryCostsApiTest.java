@@ -17,6 +17,7 @@ import org.openapitools.client.ApiException;
 import org.openapitools.client.model.DeliverCost;
 import org.openapitools.client.model.DeliverCostInput;
 import org.openapitools.client.model.Error;
+import java.util.UUID;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
@@ -51,7 +52,7 @@ public class DeliveryCostsApiTest {
      */
     @Test
     public void deliveryCostsIdDeleteTest() throws ApiException {
-        Integer id = null;
+        UUID id = null;
         api.deliveryCostsIdDelete(id);
         // TODO: test validations
     }
@@ -63,7 +64,7 @@ public class DeliveryCostsApiTest {
      */
     @Test
     public void deliveryCostsIdGetTest() throws ApiException {
-        Integer id = null;
+        UUID id = null;
         DeliverCost response = api.deliveryCostsIdGet(id);
         // TODO: test validations
     }
@@ -75,7 +76,7 @@ public class DeliveryCostsApiTest {
      */
     @Test
     public void deliveryCostsIdPutTest() throws ApiException {
-        Integer id = null;
+        UUID id = null;
         DeliverCostInput deliverCostInput = null;
         DeliverCost response = api.deliveryCostsIdPut(id, deliverCostInput);
         // TODO: test validations

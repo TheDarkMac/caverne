@@ -21,6 +21,7 @@ import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.UUID;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -48,12 +49,12 @@ import org.openapitools.client.JSON;
 /**
  * OrderItem
  */
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2026-04-10T11:26:52.676581797+03:00[Indian/Antananarivo]", comments = "Generator version: 7.21.0")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2026-04-11T07:12:32.659476305+03:00[Indian/Antananarivo]", comments = "Generator version: 7.21.0")
 public class OrderItem {
   public static final String SERIALIZED_NAME_PRODUCT_ID = "product_id";
   @SerializedName(SERIALIZED_NAME_PRODUCT_ID)
   @javax.annotation.Nullable
-  private Integer productId;
+  private UUID productId;
 
   public static final String SERIALIZED_NAME_QUANTITY = "quantity";
   @SerializedName(SERIALIZED_NAME_QUANTITY)
@@ -68,7 +69,7 @@ public class OrderItem {
   public OrderItem() {
   }
 
-  public OrderItem productId(@javax.annotation.Nullable Integer productId) {
+  public OrderItem productId(@javax.annotation.Nullable UUID productId) {
     this.productId = productId;
     return this;
   }
@@ -78,11 +79,11 @@ public class OrderItem {
    * @return productId
    */
   @javax.annotation.Nullable
-  public Integer getProductId() {
+  public UUID getProductId() {
     return productId;
   }
 
-  public void setProductId(@javax.annotation.Nullable Integer productId) {
+  public void setProductId(@javax.annotation.Nullable UUID productId) {
     this.productId = productId;
   }
 
@@ -197,6 +198,9 @@ public class OrderItem {
         }
       }
         JsonObject jsonObj = jsonElement.getAsJsonObject();
+      if ((jsonObj.get("product_id") != null && !jsonObj.get("product_id").isJsonNull()) && !jsonObj.get("product_id").isJsonPrimitive()) {
+        throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "Expected the field `product_id` to be a primitive type in the JSON string but got `%s`", jsonObj.get("product_id").toString()));
+      }
   }
 
   public static class CustomTypeAdapterFactory implements TypeAdapterFactory {

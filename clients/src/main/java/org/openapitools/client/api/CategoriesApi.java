@@ -30,6 +30,7 @@ import java.io.IOException;
 import org.openapitools.client.model.Category;
 import org.openapitools.client.model.CategoryInput;
 import org.openapitools.client.model.Error;
+import java.util.UUID;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
@@ -214,7 +215,7 @@ public class CategoriesApi {
         <tr><td> 403 </td><td> Accès refusé (rôle insuffisant) </td><td>  -  </td></tr>
      </table>
      */
-    public okhttp3.Call categoriesIdDeleteCall(@javax.annotation.Nonnull Integer id, final ApiCallback _callback) throws ApiException {
+    public okhttp3.Call categoriesIdDeleteCall(@javax.annotation.Nonnull UUID id, final ApiCallback _callback) throws ApiException {
         String basePath = null;
         // Operation Servers
         String[] localBasePaths = new String[] {  };
@@ -260,7 +261,7 @@ public class CategoriesApi {
     }
 
     @SuppressWarnings("rawtypes")
-    private okhttp3.Call categoriesIdDeleteValidateBeforeCall(@javax.annotation.Nonnull Integer id, final ApiCallback _callback) throws ApiException {
+    private okhttp3.Call categoriesIdDeleteValidateBeforeCall(@javax.annotation.Nonnull UUID id, final ApiCallback _callback) throws ApiException {
         // verify the required parameter 'id' is set
         if (id == null) {
             throw new ApiException("Missing the required parameter 'id' when calling categoriesIdDelete(Async)");
@@ -284,7 +285,7 @@ public class CategoriesApi {
         <tr><td> 403 </td><td> Accès refusé (rôle insuffisant) </td><td>  -  </td></tr>
      </table>
      */
-    public void categoriesIdDelete(@javax.annotation.Nonnull Integer id) throws ApiException {
+    public void categoriesIdDelete(@javax.annotation.Nonnull UUID id) throws ApiException {
         categoriesIdDeleteWithHttpInfo(id);
     }
 
@@ -303,7 +304,7 @@ public class CategoriesApi {
         <tr><td> 403 </td><td> Accès refusé (rôle insuffisant) </td><td>  -  </td></tr>
      </table>
      */
-    public ApiResponse<Void> categoriesIdDeleteWithHttpInfo(@javax.annotation.Nonnull Integer id) throws ApiException {
+    public ApiResponse<Void> categoriesIdDeleteWithHttpInfo(@javax.annotation.Nonnull UUID id) throws ApiException {
         okhttp3.Call localVarCall = categoriesIdDeleteValidateBeforeCall(id, null);
         return localVarApiClient.execute(localVarCall);
     }
@@ -324,7 +325,7 @@ public class CategoriesApi {
         <tr><td> 403 </td><td> Accès refusé (rôle insuffisant) </td><td>  -  </td></tr>
      </table>
      */
-    public okhttp3.Call categoriesIdDeleteAsync(@javax.annotation.Nonnull Integer id, final ApiCallback<Void> _callback) throws ApiException {
+    public okhttp3.Call categoriesIdDeleteAsync(@javax.annotation.Nonnull UUID id, final ApiCallback<Void> _callback) throws ApiException {
 
         okhttp3.Call localVarCall = categoriesIdDeleteValidateBeforeCall(id, _callback);
         localVarApiClient.executeAsync(localVarCall, _callback);
@@ -344,7 +345,7 @@ public class CategoriesApi {
         <tr><td> 404 </td><td> Ressource introuvable </td><td>  -  </td></tr>
      </table>
      */
-    public okhttp3.Call categoriesIdGetCall(@javax.annotation.Nonnull Integer id, final ApiCallback _callback) throws ApiException {
+    public okhttp3.Call categoriesIdGetCall(@javax.annotation.Nonnull UUID id, final ApiCallback _callback) throws ApiException {
         String basePath = null;
         // Operation Servers
         String[] localBasePaths = new String[] {  };
@@ -390,7 +391,7 @@ public class CategoriesApi {
     }
 
     @SuppressWarnings("rawtypes")
-    private okhttp3.Call categoriesIdGetValidateBeforeCall(@javax.annotation.Nonnull Integer id, final ApiCallback _callback) throws ApiException {
+    private okhttp3.Call categoriesIdGetValidateBeforeCall(@javax.annotation.Nonnull UUID id, final ApiCallback _callback) throws ApiException {
         // verify the required parameter 'id' is set
         if (id == null) {
             throw new ApiException("Missing the required parameter 'id' when calling categoriesIdGet(Async)");
@@ -414,7 +415,7 @@ public class CategoriesApi {
         <tr><td> 404 </td><td> Ressource introuvable </td><td>  -  </td></tr>
      </table>
      */
-    public Category categoriesIdGet(@javax.annotation.Nonnull Integer id) throws ApiException {
+    public Category categoriesIdGet(@javax.annotation.Nonnull UUID id) throws ApiException {
         ApiResponse<Category> localVarResp = categoriesIdGetWithHttpInfo(id);
         return localVarResp.getData();
     }
@@ -433,7 +434,7 @@ public class CategoriesApi {
         <tr><td> 404 </td><td> Ressource introuvable </td><td>  -  </td></tr>
      </table>
      */
-    public ApiResponse<Category> categoriesIdGetWithHttpInfo(@javax.annotation.Nonnull Integer id) throws ApiException {
+    public ApiResponse<Category> categoriesIdGetWithHttpInfo(@javax.annotation.Nonnull UUID id) throws ApiException {
         okhttp3.Call localVarCall = categoriesIdGetValidateBeforeCall(id, null);
         Type localVarReturnType = new TypeToken<Category>(){}.getType();
         return localVarApiClient.execute(localVarCall, localVarReturnType);
@@ -454,7 +455,7 @@ public class CategoriesApi {
         <tr><td> 404 </td><td> Ressource introuvable </td><td>  -  </td></tr>
      </table>
      */
-    public okhttp3.Call categoriesIdGetAsync(@javax.annotation.Nonnull Integer id, final ApiCallback<Category> _callback) throws ApiException {
+    public okhttp3.Call categoriesIdGetAsync(@javax.annotation.Nonnull UUID id, final ApiCallback<Category> _callback) throws ApiException {
 
         okhttp3.Call localVarCall = categoriesIdGetValidateBeforeCall(id, _callback);
         Type localVarReturnType = new TypeToken<Category>(){}.getType();
@@ -479,7 +480,7 @@ public class CategoriesApi {
         <tr><td> 404 </td><td> Ressource introuvable </td><td>  -  </td></tr>
      </table>
      */
-    public okhttp3.Call categoriesIdPutCall(@javax.annotation.Nonnull Integer id, @javax.annotation.Nonnull CategoryInput categoryInput, final ApiCallback _callback) throws ApiException {
+    public okhttp3.Call categoriesIdPutCall(@javax.annotation.Nonnull UUID id, @javax.annotation.Nonnull CategoryInput categoryInput, final ApiCallback _callback) throws ApiException {
         String basePath = null;
         // Operation Servers
         String[] localBasePaths = new String[] {  };
@@ -526,7 +527,7 @@ public class CategoriesApi {
     }
 
     @SuppressWarnings("rawtypes")
-    private okhttp3.Call categoriesIdPutValidateBeforeCall(@javax.annotation.Nonnull Integer id, @javax.annotation.Nonnull CategoryInput categoryInput, final ApiCallback _callback) throws ApiException {
+    private okhttp3.Call categoriesIdPutValidateBeforeCall(@javax.annotation.Nonnull UUID id, @javax.annotation.Nonnull CategoryInput categoryInput, final ApiCallback _callback) throws ApiException {
         // verify the required parameter 'id' is set
         if (id == null) {
             throw new ApiException("Missing the required parameter 'id' when calling categoriesIdPut(Async)");
@@ -559,7 +560,7 @@ public class CategoriesApi {
         <tr><td> 404 </td><td> Ressource introuvable </td><td>  -  </td></tr>
      </table>
      */
-    public Category categoriesIdPut(@javax.annotation.Nonnull Integer id, @javax.annotation.Nonnull CategoryInput categoryInput) throws ApiException {
+    public Category categoriesIdPut(@javax.annotation.Nonnull UUID id, @javax.annotation.Nonnull CategoryInput categoryInput) throws ApiException {
         ApiResponse<Category> localVarResp = categoriesIdPutWithHttpInfo(id, categoryInput);
         return localVarResp.getData();
     }
@@ -582,7 +583,7 @@ public class CategoriesApi {
         <tr><td> 404 </td><td> Ressource introuvable </td><td>  -  </td></tr>
      </table>
      */
-    public ApiResponse<Category> categoriesIdPutWithHttpInfo(@javax.annotation.Nonnull Integer id, @javax.annotation.Nonnull CategoryInput categoryInput) throws ApiException {
+    public ApiResponse<Category> categoriesIdPutWithHttpInfo(@javax.annotation.Nonnull UUID id, @javax.annotation.Nonnull CategoryInput categoryInput) throws ApiException {
         okhttp3.Call localVarCall = categoriesIdPutValidateBeforeCall(id, categoryInput, null);
         Type localVarReturnType = new TypeToken<Category>(){}.getType();
         return localVarApiClient.execute(localVarCall, localVarReturnType);
@@ -607,7 +608,7 @@ public class CategoriesApi {
         <tr><td> 404 </td><td> Ressource introuvable </td><td>  -  </td></tr>
      </table>
      */
-    public okhttp3.Call categoriesIdPutAsync(@javax.annotation.Nonnull Integer id, @javax.annotation.Nonnull CategoryInput categoryInput, final ApiCallback<Category> _callback) throws ApiException {
+    public okhttp3.Call categoriesIdPutAsync(@javax.annotation.Nonnull UUID id, @javax.annotation.Nonnull CategoryInput categoryInput, final ApiCallback<Category> _callback) throws ApiException {
 
         okhttp3.Call localVarCall = categoriesIdPutValidateBeforeCall(id, categoryInput, _callback);
         Type localVarReturnType = new TypeToken<Category>(){}.getType();

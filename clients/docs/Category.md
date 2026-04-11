@@ -7,11 +7,11 @@
 
 | Name | Type | Description | Notes |
 |------------ | ------------- | ------------- | -------------|
-|**id** | **Integer** |  |  [optional] |
+|**id** | **UUID** |  |  [optional] |
 |**label** | **String** |  |  [optional] |
 |**slug** | **String** |  |  [optional] |
 |**map** | **String** |  |  [optional] |
-|**parentId** | **Integer** |  |  [optional] |
+|**parentId** | **UUID** |  |  [optional] |
 |**children** | [**List&lt;Category&gt;**](Category.md) |  |  [optional] |
 
 

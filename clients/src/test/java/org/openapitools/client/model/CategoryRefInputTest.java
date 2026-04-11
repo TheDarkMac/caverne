@@ -25,33 +25,25 @@ import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 /**
- * Model tests for OrderInputItemsInner
+ * Model tests for CategoryRefInput
  */
-public class OrderInputItemsInnerTest {
-    private final OrderInputItemsInner model = new OrderInputItemsInner();
+public class CategoryRefInputTest {
+    private final CategoryRefInput model = new CategoryRefInput();
 
     /**
-     * Model tests for OrderInputItemsInner
+     * Model tests for CategoryRefInput
      */
     @Test
-    public void testOrderInputItemsInner() {
-        // TODO: test OrderInputItemsInner
+    public void testCategoryRefInput() {
+        // TODO: test CategoryRefInput
     }
 
     /**
-     * Test the property 'productId'
+     * Test the property 'id'
      */
     @Test
-    public void productIdTest() {
-        // TODO: test productId
-    }
-
-    /**
-     * Test the property 'quantity'
-     */
-    @Test
-    public void quantityTest() {
-        // TODO: test quantity
+    public void idTest() {
+        // TODO: test id
     }
 
 }

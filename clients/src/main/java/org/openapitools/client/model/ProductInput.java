@@ -23,6 +23,8 @@ import java.io.IOException;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.Arrays;
+import java.util.UUID;
+import org.openapitools.client.model.CategoryRefInput;
 import org.openapitools.jackson.nullable.JsonNullable;
 
 import com.google.gson.Gson;
@@ -51,17 +53,17 @@ import org.openapitools.client.JSON;
 /**
  * ProductInput
  */
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2026-04-10T11:26:52.676581797+03:00[Indian/Antananarivo]", comments = "Generator version: 7.21.0")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2026-04-11T07:12:32.659476305+03:00[Indian/Antananarivo]", comments = "Generator version: 7.21.0")
 public class ProductInput {
   public static final String SERIALIZED_NAME_ID = "id";
   @SerializedName(SERIALIZED_NAME_ID)
   @javax.annotation.Nullable
-  private Integer id;
+  private UUID id;
 
-  public static final String SERIALIZED_NAME_CATEGORY_ID = "category_id";
-  @SerializedName(SERIALIZED_NAME_CATEGORY_ID)
+  public static final String SERIALIZED_NAME_CATEGORY = "category";
+  @SerializedName(SERIALIZED_NAME_CATEGORY)
   @javax.annotation.Nonnull
-  private Integer categoryId;
+  private CategoryRefInput category;
 
   public static final String SERIALIZED_NAME_LABEL = "label";
   @SerializedName(SERIALIZED_NAME_LABEL)
@@ -96,7 +98,7 @@ public class ProductInput {
   public ProductInput() {
   }
 
-  public ProductInput id(@javax.annotation.Nullable Integer id) {
+  public ProductInput id(@javax.annotation.Nullable UUID id) {
     this.id = id;
     return this;
   }
@@ -106,31 +108,31 @@ public class ProductInput {
    * @return id
    */
   @javax.annotation.Nullable
-  public Integer getId() {
+  public UUID getId() {
     return id;
   }
 
-  public void setId(@javax.annotation.Nullable Integer id) {
+  public void setId(@javax.annotation.Nullable UUID id) {
     this.id = id;
   }
 
 
-  public ProductInput categoryId(@javax.annotation.Nonnull Integer categoryId) {
-    this.categoryId = categoryId;
+  public ProductInput category(@javax.annotation.Nonnull CategoryRefInput category) {
+    this.category = category;
     return this;
   }
 
   /**
-   * Get categoryId
-   * @return categoryId
+   * Get category
+   * @return category
    */
   @javax.annotation.Nonnull
-  public Integer getCategoryId() {
-    return categoryId;
+  public CategoryRefInput getCategory() {
+    return category;
   }
 
-  public void setCategoryId(@javax.annotation.Nonnull Integer categoryId) {
-    this.categoryId = categoryId;
+  public void setCategory(@javax.annotation.Nonnull CategoryRefInput category) {
+    this.category = category;
   }
 
 
@@ -259,7 +261,7 @@ public class ProductInput {
     }
     ProductInput productInput = (ProductInput) o;
     return Objects.equals(this.id, productInput.id) &&
-        Objects.equals(this.categoryId, productInput.categoryId) &&
+        Objects.equals(this.category, productInput.category) &&
         Objects.equals(this.label, productInput.label) &&
         Objects.equals(this.reference, productInput.reference) &&
         Objects.equals(this.limitDate, productInput.limitDate) &&
@@ -274,7 +276,7 @@ public class ProductInput {
 
   @Override
   public int hashCode() {
-    return Objects.hash(id, categoryId, label, reference, limitDate, description, size, isActive);
+    return Objects.hash(id, category, label, reference, limitDate, description, size, isActive);
   }
 
   private static <T> int hashCodeNullable(JsonNullable<T> a) {
@@ -289,7 +291,7 @@ public class ProductInput {
     StringBuilder sb = new StringBuilder();
     sb.append("class ProductInput {\n");
     sb.append("    id: ").append(toIndentedString(id)).append("\n");
-    sb.append("    categoryId: ").append(toIndentedString(categoryId)).append("\n");
+    sb.append("    category: ").append(toIndentedString(category)).append("\n");
     sb.append("    label: ").append(toIndentedString(label)).append("\n");
     sb.append("    reference: ").append(toIndentedString(reference)).append("\n");
     sb.append("    limitDate: ").append(toIndentedString(limitDate)).append("\n");
@@ -314,10 +316,10 @@ public class ProductInput {
 
   static {
     // a set of all properties/fields (JSON key names)
-    openapiFields = new HashSet<String>(Arrays.asList("id", "category_id", "label", "reference", "limit_date", "description", "size", "is_active"));
+    openapiFields = new HashSet<String>(Arrays.asList("id", "category", "label", "reference", "limit_date", "description", "size", "is_active"));
 
     // a set of required properties/fields (JSON key names)
-    openapiRequiredFields = new HashSet<String>(Arrays.asList("category_id", "label", "reference"));
+    openapiRequiredFields = new HashSet<String>(Arrays.asList("category", "label", "reference"));
   }
 
   /**
@@ -348,6 +350,11 @@ public class ProductInput {
         }
       }
         JsonObject jsonObj = jsonElement.getAsJsonObject();
+      if ((jsonObj.get("id") != null && !jsonObj.get("id").isJsonNull()) && !jsonObj.get("id").isJsonPrimitive()) {
+        throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "Expected the field `id` to be a primitive type in the JSON string but got `%s`", jsonObj.get("id").toString()));
+      }
+      // validate the required field `category`
+      CategoryRefInput.validateJsonElement(jsonObj.get("category"));
       if (!jsonObj.get("label").isJsonPrimitive()) {
         throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "Expected the field `label` to be a primitive type in the JSON string but got `%s`", jsonObj.get("label").toString()));
       }

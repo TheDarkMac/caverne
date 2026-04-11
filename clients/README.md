@@ -2,7 +2,7 @@
 
 La Caverne Malgache API
 - API version: 1.0.0
-  - Build date: 2026-04-10T11:26:52.676581797+03:00[Indian/Antananarivo]
+  - Build date: 2026-04-11T07:12:32.659476305+03:00[Indian/Antananarivo]
   - Generator version: 7.21.0
 
 Documentation OpenAPI de La Caverne Malagasy.
@@ -93,7 +93,7 @@ import org.openapitools.client.api.AddressesApi;
 public class Example {
   public static void main(String[] args) {
     ApiClient defaultClient = Configuration.getDefaultApiClient();
-    defaultClient.setBasePath("http://localhost:8080");
+    defaultClient.setBasePath("http://localhost:8080/api/v1");
     
     // Configure HTTP bearer authorization: BearerAuth
     HttpBearerAuth BearerAuth = (HttpBearerAuth) defaultClient.getAuthentication("BearerAuth");
@@ -117,7 +117,7 @@ public class Example {
 
 ## Documentation for API Endpoints
 
-All URIs are relative to *http://localhost:8080*
+All URIs are relative to *http://localhost:8080/api/v1*
 
 Class | Method | HTTP request | Description
 ------------ | ------------- | ------------- | -------------
@@ -168,6 +168,7 @@ Class | Method | HTTP request | Description
  - [AddressInput](docs/AddressInput.md)
  - [Category](docs/Category.md)
  - [CategoryInput](docs/CategoryInput.md)
+ - [CategoryRefInput](docs/CategoryRefInput.md)
  - [DeliverCost](docs/DeliverCost.md)
  - [DeliverCostInput](docs/DeliverCostInput.md)
  - [Error](docs/Error.md)

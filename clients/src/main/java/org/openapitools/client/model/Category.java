@@ -23,6 +23,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.UUID;
 import org.openapitools.jackson.nullable.JsonNullable;
 
 import com.google.gson.Gson;
@@ -51,12 +52,12 @@ import org.openapitools.client.JSON;
 /**
  * Category
  */
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2026-04-10T11:26:52.676581797+03:00[Indian/Antananarivo]", comments = "Generator version: 7.21.0")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2026-04-11T07:12:32.659476305+03:00[Indian/Antananarivo]", comments = "Generator version: 7.21.0")
 public class Category {
   public static final String SERIALIZED_NAME_ID = "id";
   @SerializedName(SERIALIZED_NAME_ID)
   @javax.annotation.Nullable
-  private Integer id;
+  private UUID id;
 
   public static final String SERIALIZED_NAME_LABEL = "label";
   @SerializedName(SERIALIZED_NAME_LABEL)
@@ -76,7 +77,7 @@ public class Category {
   public static final String SERIALIZED_NAME_PARENT_ID = "parent_id";
   @SerializedName(SERIALIZED_NAME_PARENT_ID)
   @javax.annotation.Nullable
-  private Integer parentId;
+  private UUID parentId;
 
   public static final String SERIALIZED_NAME_CHILDREN = "children";
   @SerializedName(SERIALIZED_NAME_CHILDREN)
@@ -86,7 +87,7 @@ public class Category {
   public Category() {
   }
 
-  public Category id(@javax.annotation.Nullable Integer id) {
+  public Category id(@javax.annotation.Nullable UUID id) {
     this.id = id;
     return this;
   }
@@ -96,11 +97,11 @@ public class Category {
    * @return id
    */
   @javax.annotation.Nullable
-  public Integer getId() {
+  public UUID getId() {
     return id;
   }
 
-  public void setId(@javax.annotation.Nullable Integer id) {
+  public void setId(@javax.annotation.Nullable UUID id) {
     this.id = id;
   }
 
@@ -162,7 +163,7 @@ public class Category {
   }
 
 
-  public Category parentId(@javax.annotation.Nullable Integer parentId) {
+  public Category parentId(@javax.annotation.Nullable UUID parentId) {
     this.parentId = parentId;
     return this;
   }
@@ -172,11 +173,11 @@ public class Category {
    * @return parentId
    */
   @javax.annotation.Nullable
-  public Integer getParentId() {
+  public UUID getParentId() {
     return parentId;
   }
 
-  public void setParentId(@javax.annotation.Nullable Integer parentId) {
+  public void setParentId(@javax.annotation.Nullable UUID parentId) {
     this.parentId = parentId;
   }
 
@@ -297,6 +298,9 @@ public class Category {
         }
       }
         JsonObject jsonObj = jsonElement.getAsJsonObject();
+      if ((jsonObj.get("id") != null && !jsonObj.get("id").isJsonNull()) && !jsonObj.get("id").isJsonPrimitive()) {
+        throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "Expected the field `id` to be a primitive type in the JSON string but got `%s`", jsonObj.get("id").toString()));
+      }
       if ((jsonObj.get("label") != null && !jsonObj.get("label").isJsonNull()) && !jsonObj.get("label").isJsonPrimitive()) {
         throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "Expected the field `label` to be a primitive type in the JSON string but got `%s`", jsonObj.get("label").toString()));
       }
@@ -305,6 +309,9 @@ public class Category {
       }
       if ((jsonObj.get("map") != null && !jsonObj.get("map").isJsonNull()) && !jsonObj.get("map").isJsonPrimitive()) {
         throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "Expected the field `map` to be a primitive type in the JSON string but got `%s`", jsonObj.get("map").toString()));
+      }
+      if ((jsonObj.get("parent_id") != null && !jsonObj.get("parent_id").isJsonNull()) && !jsonObj.get("parent_id").isJsonPrimitive()) {
+        throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "Expected the field `parent_id` to be a primitive type in the JSON string but got `%s`", jsonObj.get("parent_id").toString()));
       }
       if (jsonObj.get("children") != null && !jsonObj.get("children").isJsonNull()) {
         JsonArray jsonArraychildren = jsonObj.getAsJsonArray("children");

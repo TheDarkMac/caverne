@@ -31,6 +31,7 @@ import org.openapitools.client.model.Error;
 import org.openapitools.client.model.Product;
 import org.openapitools.client.model.ProductInput;
 import org.openapitools.client.model.ProductsGet200Response;
+import java.util.UUID;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
@@ -93,7 +94,7 @@ public class ProductsApi {
         <tr><td> 200 </td><td> Liste paginée </td><td>  -  </td></tr>
      </table>
      */
-    public okhttp3.Call productsGetCall(@javax.annotation.Nullable Integer page, @javax.annotation.Nullable Integer perPage, @javax.annotation.Nullable Integer categoryId, @javax.annotation.Nullable Boolean isActive, @javax.annotation.Nullable String search, @javax.annotation.Nullable String currency, final ApiCallback _callback) throws ApiException {
+    public okhttp3.Call productsGetCall(@javax.annotation.Nullable Integer page, @javax.annotation.Nullable Integer perPage, @javax.annotation.Nullable UUID categoryId, @javax.annotation.Nullable Boolean isActive, @javax.annotation.Nullable String search, @javax.annotation.Nullable String currency, final ApiCallback _callback) throws ApiException {
         String basePath = null;
         // Operation Servers
         String[] localBasePaths = new String[] {  };
@@ -162,7 +163,7 @@ public class ProductsApi {
     }
 
     @SuppressWarnings("rawtypes")
-    private okhttp3.Call productsGetValidateBeforeCall(@javax.annotation.Nullable Integer page, @javax.annotation.Nullable Integer perPage, @javax.annotation.Nullable Integer categoryId, @javax.annotation.Nullable Boolean isActive, @javax.annotation.Nullable String search, @javax.annotation.Nullable String currency, final ApiCallback _callback) throws ApiException {
+    private okhttp3.Call productsGetValidateBeforeCall(@javax.annotation.Nullable Integer page, @javax.annotation.Nullable Integer perPage, @javax.annotation.Nullable UUID categoryId, @javax.annotation.Nullable Boolean isActive, @javax.annotation.Nullable String search, @javax.annotation.Nullable String currency, final ApiCallback _callback) throws ApiException {
         return productsGetCall(page, perPage, categoryId, isActive, search, currency, _callback);
 
     }
@@ -185,7 +186,7 @@ public class ProductsApi {
         <tr><td> 200 </td><td> Liste paginée </td><td>  -  </td></tr>
      </table>
      */
-    public ProductsGet200Response productsGet(@javax.annotation.Nullable Integer page, @javax.annotation.Nullable Integer perPage, @javax.annotation.Nullable Integer categoryId, @javax.annotation.Nullable Boolean isActive, @javax.annotation.Nullable String search, @javax.annotation.Nullable String currency) throws ApiException {
+    public ProductsGet200Response productsGet(@javax.annotation.Nullable Integer page, @javax.annotation.Nullable Integer perPage, @javax.annotation.Nullable UUID categoryId, @javax.annotation.Nullable Boolean isActive, @javax.annotation.Nullable String search, @javax.annotation.Nullable String currency) throws ApiException {
         ApiResponse<ProductsGet200Response> localVarResp = productsGetWithHttpInfo(page, perPage, categoryId, isActive, search, currency);
         return localVarResp.getData();
     }
@@ -208,7 +209,7 @@ public class ProductsApi {
         <tr><td> 200 </td><td> Liste paginée </td><td>  -  </td></tr>
      </table>
      */
-    public ApiResponse<ProductsGet200Response> productsGetWithHttpInfo(@javax.annotation.Nullable Integer page, @javax.annotation.Nullable Integer perPage, @javax.annotation.Nullable Integer categoryId, @javax.annotation.Nullable Boolean isActive, @javax.annotation.Nullable String search, @javax.annotation.Nullable String currency) throws ApiException {
+    public ApiResponse<ProductsGet200Response> productsGetWithHttpInfo(@javax.annotation.Nullable Integer page, @javax.annotation.Nullable Integer perPage, @javax.annotation.Nullable UUID categoryId, @javax.annotation.Nullable Boolean isActive, @javax.annotation.Nullable String search, @javax.annotation.Nullable String currency) throws ApiException {
         okhttp3.Call localVarCall = productsGetValidateBeforeCall(page, perPage, categoryId, isActive, search, currency, null);
         Type localVarReturnType = new TypeToken<ProductsGet200Response>(){}.getType();
         return localVarApiClient.execute(localVarCall, localVarReturnType);
@@ -233,7 +234,7 @@ public class ProductsApi {
         <tr><td> 200 </td><td> Liste paginée </td><td>  -  </td></tr>
      </table>
      */
-    public okhttp3.Call productsGetAsync(@javax.annotation.Nullable Integer page, @javax.annotation.Nullable Integer perPage, @javax.annotation.Nullable Integer categoryId, @javax.annotation.Nullable Boolean isActive, @javax.annotation.Nullable String search, @javax.annotation.Nullable String currency, final ApiCallback<ProductsGet200Response> _callback) throws ApiException {
+    public okhttp3.Call productsGetAsync(@javax.annotation.Nullable Integer page, @javax.annotation.Nullable Integer perPage, @javax.annotation.Nullable UUID categoryId, @javax.annotation.Nullable Boolean isActive, @javax.annotation.Nullable String search, @javax.annotation.Nullable String currency, final ApiCallback<ProductsGet200Response> _callback) throws ApiException {
 
         okhttp3.Call localVarCall = productsGetValidateBeforeCall(page, perPage, categoryId, isActive, search, currency, _callback);
         Type localVarReturnType = new TypeToken<ProductsGet200Response>(){}.getType();
@@ -255,7 +256,7 @@ public class ProductsApi {
         <tr><td> 403 </td><td> Accès refusé (rôle insuffisant) </td><td>  -  </td></tr>
      </table>
      */
-    public okhttp3.Call productsIdDeleteCall(@javax.annotation.Nonnull Integer id, final ApiCallback _callback) throws ApiException {
+    public okhttp3.Call productsIdDeleteCall(@javax.annotation.Nonnull UUID id, final ApiCallback _callback) throws ApiException {
         String basePath = null;
         // Operation Servers
         String[] localBasePaths = new String[] {  };
@@ -301,7 +302,7 @@ public class ProductsApi {
     }
 
     @SuppressWarnings("rawtypes")
-    private okhttp3.Call productsIdDeleteValidateBeforeCall(@javax.annotation.Nonnull Integer id, final ApiCallback _callback) throws ApiException {
+    private okhttp3.Call productsIdDeleteValidateBeforeCall(@javax.annotation.Nonnull UUID id, final ApiCallback _callback) throws ApiException {
         // verify the required parameter 'id' is set
         if (id == null) {
             throw new ApiException("Missing the required parameter 'id' when calling productsIdDelete(Async)");
@@ -325,7 +326,7 @@ public class ProductsApi {
         <tr><td> 403 </td><td> Accès refusé (rôle insuffisant) </td><td>  -  </td></tr>
      </table>
      */
-    public void productsIdDelete(@javax.annotation.Nonnull Integer id) throws ApiException {
+    public void productsIdDelete(@javax.annotation.Nonnull UUID id) throws ApiException {
         productsIdDeleteWithHttpInfo(id);
     }
 
@@ -344,7 +345,7 @@ public class ProductsApi {
         <tr><td> 403 </td><td> Accès refusé (rôle insuffisant) </td><td>  -  </td></tr>
      </table>
      */
-    public ApiResponse<Void> productsIdDeleteWithHttpInfo(@javax.annotation.Nonnull Integer id) throws ApiException {
+    public ApiResponse<Void> productsIdDeleteWithHttpInfo(@javax.annotation.Nonnull UUID id) throws ApiException {
         okhttp3.Call localVarCall = productsIdDeleteValidateBeforeCall(id, null);
         return localVarApiClient.execute(localVarCall);
     }
@@ -365,7 +366,7 @@ public class ProductsApi {
         <tr><td> 403 </td><td> Accès refusé (rôle insuffisant) </td><td>  -  </td></tr>
      </table>
      */
-    public okhttp3.Call productsIdDeleteAsync(@javax.annotation.Nonnull Integer id, final ApiCallback<Void> _callback) throws ApiException {
+    public okhttp3.Call productsIdDeleteAsync(@javax.annotation.Nonnull UUID id, final ApiCallback<Void> _callback) throws ApiException {
 
         okhttp3.Call localVarCall = productsIdDeleteValidateBeforeCall(id, _callback);
         localVarApiClient.executeAsync(localVarCall, _callback);
@@ -385,7 +386,7 @@ public class ProductsApi {
         <tr><td> 404 </td><td> Ressource introuvable </td><td>  -  </td></tr>
      </table>
      */
-    public okhttp3.Call productsIdGetCall(@javax.annotation.Nonnull Integer id, final ApiCallback _callback) throws ApiException {
+    public okhttp3.Call productsIdGetCall(@javax.annotation.Nonnull UUID id, final ApiCallback _callback) throws ApiException {
         String basePath = null;
         // Operation Servers
         String[] localBasePaths = new String[] {  };
@@ -431,7 +432,7 @@ public class ProductsApi {
     }
 
     @SuppressWarnings("rawtypes")
-    private okhttp3.Call productsIdGetValidateBeforeCall(@javax.annotation.Nonnull Integer id, final ApiCallback _callback) throws ApiException {
+    private okhttp3.Call productsIdGetValidateBeforeCall(@javax.annotation.Nonnull UUID id, final ApiCallback _callback) throws ApiException {
         // verify the required parameter 'id' is set
         if (id == null) {
             throw new ApiException("Missing the required parameter 'id' when calling productsIdGet(Async)");
@@ -455,7 +456,7 @@ public class ProductsApi {
         <tr><td> 404 </td><td> Ressource introuvable </td><td>  -  </td></tr>
      </table>
      */
-    public Product productsIdGet(@javax.annotation.Nonnull Integer id) throws ApiException {
+    public Product productsIdGet(@javax.annotation.Nonnull UUID id) throws ApiException {
         ApiResponse<Product> localVarResp = productsIdGetWithHttpInfo(id);
         return localVarResp.getData();
     }
@@ -474,7 +475,7 @@ public class ProductsApi {
         <tr><td> 404 </td><td> Ressource introuvable </td><td>  -  </td></tr>
      </table>
      */
-    public ApiResponse<Product> productsIdGetWithHttpInfo(@javax.annotation.Nonnull Integer id) throws ApiException {
+    public ApiResponse<Product> productsIdGetWithHttpInfo(@javax.annotation.Nonnull UUID id) throws ApiException {
         okhttp3.Call localVarCall = productsIdGetValidateBeforeCall(id, null);
         Type localVarReturnType = new TypeToken<Product>(){}.getType();
         return localVarApiClient.execute(localVarCall, localVarReturnType);
@@ -495,7 +496,7 @@ public class ProductsApi {
         <tr><td> 404 </td><td> Ressource introuvable </td><td>  -  </td></tr>
      </table>
      */
-    public okhttp3.Call productsIdGetAsync(@javax.annotation.Nonnull Integer id, final ApiCallback<Product> _callback) throws ApiException {
+    public okhttp3.Call productsIdGetAsync(@javax.annotation.Nonnull UUID id, final ApiCallback<Product> _callback) throws ApiException {
 
         okhttp3.Call localVarCall = productsIdGetValidateBeforeCall(id, _callback);
         Type localVarReturnType = new TypeToken<Product>(){}.getType();
@@ -519,7 +520,7 @@ public class ProductsApi {
         <tr><td> 403 </td><td> Accès refusé (rôle insuffisant) </td><td>  -  </td></tr>
      </table>
      */
-    public okhttp3.Call productsIdPutCall(@javax.annotation.Nonnull Integer id, @javax.annotation.Nonnull ProductInput productInput, final ApiCallback _callback) throws ApiException {
+    public okhttp3.Call productsIdPutCall(@javax.annotation.Nonnull UUID id, @javax.annotation.Nonnull ProductInput productInput, final ApiCallback _callback) throws ApiException {
         String basePath = null;
         // Operation Servers
         String[] localBasePaths = new String[] {  };
@@ -566,7 +567,7 @@ public class ProductsApi {
     }
 
     @SuppressWarnings("rawtypes")
-    private okhttp3.Call productsIdPutValidateBeforeCall(@javax.annotation.Nonnull Integer id, @javax.annotation.Nonnull ProductInput productInput, final ApiCallback _callback) throws ApiException {
+    private okhttp3.Call productsIdPutValidateBeforeCall(@javax.annotation.Nonnull UUID id, @javax.annotation.Nonnull ProductInput productInput, final ApiCallback _callback) throws ApiException {
         // verify the required parameter 'id' is set
         if (id == null) {
             throw new ApiException("Missing the required parameter 'id' when calling productsIdPut(Async)");
@@ -598,7 +599,7 @@ public class ProductsApi {
         <tr><td> 403 </td><td> Accès refusé (rôle insuffisant) </td><td>  -  </td></tr>
      </table>
      */
-    public Product productsIdPut(@javax.annotation.Nonnull Integer id, @javax.annotation.Nonnull ProductInput productInput) throws ApiException {
+    public Product productsIdPut(@javax.annotation.Nonnull UUID id, @javax.annotation.Nonnull ProductInput productInput) throws ApiException {
         ApiResponse<Product> localVarResp = productsIdPutWithHttpInfo(id, productInput);
         return localVarResp.getData();
     }
@@ -620,7 +621,7 @@ public class ProductsApi {
         <tr><td> 403 </td><td> Accès refusé (rôle insuffisant) </td><td>  -  </td></tr>
      </table>
      */
-    public ApiResponse<Product> productsIdPutWithHttpInfo(@javax.annotation.Nonnull Integer id, @javax.annotation.Nonnull ProductInput productInput) throws ApiException {
+    public ApiResponse<Product> productsIdPutWithHttpInfo(@javax.annotation.Nonnull UUID id, @javax.annotation.Nonnull ProductInput productInput) throws ApiException {
         okhttp3.Call localVarCall = productsIdPutValidateBeforeCall(id, productInput, null);
         Type localVarReturnType = new TypeToken<Product>(){}.getType();
         return localVarApiClient.execute(localVarCall, localVarReturnType);
@@ -644,7 +645,7 @@ public class ProductsApi {
         <tr><td> 403 </td><td> Accès refusé (rôle insuffisant) </td><td>  -  </td></tr>
      </table>
      */
-    public okhttp3.Call productsIdPutAsync(@javax.annotation.Nonnull Integer id, @javax.annotation.Nonnull ProductInput productInput, final ApiCallback<Product> _callback) throws ApiException {
+    public okhttp3.Call productsIdPutAsync(@javax.annotation.Nonnull UUID id, @javax.annotation.Nonnull ProductInput productInput, final ApiCallback<Product> _callback) throws ApiException {
 
         okhttp3.Call localVarCall = productsIdPutValidateBeforeCall(id, productInput, _callback);
         Type localVarReturnType = new TypeToken<Product>(){}.getType();

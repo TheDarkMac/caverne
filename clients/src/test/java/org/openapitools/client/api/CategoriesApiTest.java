@@ -17,6 +17,7 @@ import org.openapitools.client.ApiException;
 import org.openapitools.client.model.Category;
 import org.openapitools.client.model.CategoryInput;
 import org.openapitools.client.model.Error;
+import java.util.UUID;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
@@ -52,7 +53,7 @@ public class CategoriesApiTest {
      */
     @Test
     public void categoriesIdDeleteTest() throws ApiException {
-        Integer id = null;
+        UUID id = null;
         api.categoriesIdDelete(id);
         // TODO: test validations
     }
@@ -64,7 +65,7 @@ public class CategoriesApiTest {
      */
     @Test
     public void categoriesIdGetTest() throws ApiException {
-        Integer id = null;
+        UUID id = null;
         Category response = api.categoriesIdGet(id);
         // TODO: test validations
     }
@@ -78,7 +79,7 @@ public class CategoriesApiTest {
      */
     @Test
     public void categoriesIdPutTest() throws ApiException {
-        Integer id = null;
+        UUID id = null;
         CategoryInput categoryInput = null;
         Category response = api.categoriesIdPut(id, categoryInput);
         // TODO: test validations

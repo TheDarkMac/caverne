@@ -24,6 +24,7 @@ import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.UUID;
 import org.openapitools.client.model.OrderItem;
 import org.openapitools.client.model.RecipientInput;
 import org.openapitools.jackson.nullable.JsonNullable;
@@ -54,22 +55,22 @@ import org.openapitools.client.JSON;
 /**
  * Order
  */
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2026-04-10T11:26:52.676581797+03:00[Indian/Antananarivo]", comments = "Generator version: 7.21.0")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2026-04-11T07:12:32.659476305+03:00[Indian/Antananarivo]", comments = "Generator version: 7.21.0")
 public class Order {
   public static final String SERIALIZED_NAME_ID = "id";
   @SerializedName(SERIALIZED_NAME_ID)
   @javax.annotation.Nullable
-  private Integer id;
+  private UUID id;
 
   public static final String SERIALIZED_NAME_USER_ID = "user_id";
   @SerializedName(SERIALIZED_NAME_USER_ID)
   @javax.annotation.Nullable
-  private Integer userId;
+  private UUID userId;
 
   public static final String SERIALIZED_NAME_ADDRESS_ID = "address_id";
   @SerializedName(SERIALIZED_NAME_ADDRESS_ID)
   @javax.annotation.Nullable
-  private Integer addressId;
+  private UUID addressId;
 
   public static final String SERIALIZED_NAME_CURRENCY_CODE = "currency_code";
   @SerializedName(SERIALIZED_NAME_CURRENCY_CODE)
@@ -155,7 +156,7 @@ public class Order {
   public static final String SERIALIZED_NAME_DELIVERY_COST_ID = "delivery_cost_id";
   @SerializedName(SERIALIZED_NAME_DELIVERY_COST_ID)
   @javax.annotation.Nullable
-  private Integer deliveryCostId;
+  private UUID deliveryCostId;
 
   public static final String SERIALIZED_NAME_ITEMS = "items";
   @SerializedName(SERIALIZED_NAME_ITEMS)
@@ -175,7 +176,7 @@ public class Order {
   public Order() {
   }
 
-  public Order id(@javax.annotation.Nullable Integer id) {
+  public Order id(@javax.annotation.Nullable UUID id) {
     this.id = id;
     return this;
   }
@@ -185,16 +186,16 @@ public class Order {
    * @return id
    */
   @javax.annotation.Nullable
-  public Integer getId() {
+  public UUID getId() {
     return id;
   }
 
-  public void setId(@javax.annotation.Nullable Integer id) {
+  public void setId(@javax.annotation.Nullable UUID id) {
     this.id = id;
   }
 
 
-  public Order userId(@javax.annotation.Nullable Integer userId) {
+  public Order userId(@javax.annotation.Nullable UUID userId) {
     this.userId = userId;
     return this;
   }
@@ -204,16 +205,16 @@ public class Order {
    * @return userId
    */
   @javax.annotation.Nullable
-  public Integer getUserId() {
+  public UUID getUserId() {
     return userId;
   }
 
-  public void setUserId(@javax.annotation.Nullable Integer userId) {
+  public void setUserId(@javax.annotation.Nullable UUID userId) {
     this.userId = userId;
   }
 
 
-  public Order addressId(@javax.annotation.Nullable Integer addressId) {
+  public Order addressId(@javax.annotation.Nullable UUID addressId) {
     this.addressId = addressId;
     return this;
   }
@@ -223,11 +224,11 @@ public class Order {
    * @return addressId
    */
   @javax.annotation.Nullable
-  public Integer getAddressId() {
+  public UUID getAddressId() {
     return addressId;
   }
 
-  public void setAddressId(@javax.annotation.Nullable Integer addressId) {
+  public void setAddressId(@javax.annotation.Nullable UUID addressId) {
     this.addressId = addressId;
   }
 
@@ -327,7 +328,7 @@ public class Order {
   }
 
 
-  public Order deliveryCostId(@javax.annotation.Nullable Integer deliveryCostId) {
+  public Order deliveryCostId(@javax.annotation.Nullable UUID deliveryCostId) {
     this.deliveryCostId = deliveryCostId;
     return this;
   }
@@ -337,11 +338,11 @@ public class Order {
    * @return deliveryCostId
    */
   @javax.annotation.Nullable
-  public Integer getDeliveryCostId() {
+  public UUID getDeliveryCostId() {
     return deliveryCostId;
   }
 
-  public void setDeliveryCostId(@javax.annotation.Nullable Integer deliveryCostId) {
+  public void setDeliveryCostId(@javax.annotation.Nullable UUID deliveryCostId) {
     this.deliveryCostId = deliveryCostId;
   }
 
@@ -512,6 +513,15 @@ public class Order {
         }
       }
         JsonObject jsonObj = jsonElement.getAsJsonObject();
+      if ((jsonObj.get("id") != null && !jsonObj.get("id").isJsonNull()) && !jsonObj.get("id").isJsonPrimitive()) {
+        throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "Expected the field `id` to be a primitive type in the JSON string but got `%s`", jsonObj.get("id").toString()));
+      }
+      if ((jsonObj.get("user_id") != null && !jsonObj.get("user_id").isJsonNull()) && !jsonObj.get("user_id").isJsonPrimitive()) {
+        throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "Expected the field `user_id` to be a primitive type in the JSON string but got `%s`", jsonObj.get("user_id").toString()));
+      }
+      if ((jsonObj.get("address_id") != null && !jsonObj.get("address_id").isJsonNull()) && !jsonObj.get("address_id").isJsonPrimitive()) {
+        throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "Expected the field `address_id` to be a primitive type in the JSON string but got `%s`", jsonObj.get("address_id").toString()));
+      }
       if ((jsonObj.get("currency_code") != null && !jsonObj.get("currency_code").isJsonNull()) && !jsonObj.get("currency_code").isJsonPrimitive()) {
         throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "Expected the field `currency_code` to be a primitive type in the JSON string but got `%s`", jsonObj.get("currency_code").toString()));
       }
@@ -524,6 +534,9 @@ public class Order {
       // validate the optional field `status`
       if (jsonObj.get("status") != null && !jsonObj.get("status").isJsonNull()) {
         StatusEnum.validateJsonElement(jsonObj.get("status"));
+      }
+      if ((jsonObj.get("delivery_cost_id") != null && !jsonObj.get("delivery_cost_id").isJsonNull()) && !jsonObj.get("delivery_cost_id").isJsonPrimitive()) {
+        throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "Expected the field `delivery_cost_id` to be a primitive type in the JSON string but got `%s`", jsonObj.get("delivery_cost_id").toString()));
       }
       if (jsonObj.get("items") != null && !jsonObj.get("items").isJsonNull()) {
         JsonArray jsonArrayitems = jsonObj.getAsJsonArray("items");

@@ -8,8 +8,12 @@ info:
   title: La Caverne Malgache API
   version: 1.0.0
 servers:
-- description: Serveur de production
-  url: http://localhost:8080/
+- description: Serveur avec préfixe API versionné
+  url: "http://localhost:8080/api/{version}"
+  variables:
+    version:
+      default: v1
+      description: Version HTTP exposée sous le préfixe `/api`
 security:
 - BearerAuth: []
 tags:
@@ -251,7 +255,8 @@ paths:
         name: id
         required: true
         schema:
-          type: integer
+          format: uuid
+          type: string
         style: simple
       responses:
         "204":
@@ -280,7 +285,8 @@ paths:
         name: id
         required: true
         schema:
-          type: integer
+          format: uuid
+          type: string
         style: simple
       responses:
         "200":
@@ -364,7 +370,8 @@ paths:
         name: id
         required: true
         schema:
-          type: integer
+          format: uuid
+          type: string
         style: simple
       responses:
         "204":
@@ -395,7 +402,8 @@ paths:
         name: id
         required: true
         schema:
-          type: integer
+          format: uuid
+          type: string
         style: simple
       requestBody:
         content:
@@ -442,7 +450,8 @@ paths:
         name: id
         required: true
         schema:
-          type: integer
+          format: uuid
+          type: string
         style: simple
       responses:
         "200":
@@ -536,7 +545,8 @@ paths:
         name: id
         required: true
         schema:
-          type: integer
+          format: uuid
+          type: string
         style: simple
       responses:
         "204":
@@ -565,7 +575,8 @@ paths:
         name: id
         required: true
         schema:
-          type: integer
+          format: uuid
+          type: string
         style: simple
       responses:
         "200":
@@ -595,7 +606,8 @@ paths:
         name: id
         required: true
         schema:
-          type: integer
+          format: uuid
+          type: string
         style: simple
       requestBody:
         content:
@@ -664,7 +676,8 @@ paths:
         name: category_id
         required: false
         schema:
-          type: integer
+          format: uuid
+          type: string
         style: form
       - explode: true
         in: query
@@ -749,7 +762,8 @@ paths:
         name: id
         required: true
         schema:
-          type: integer
+          format: uuid
+          type: string
         style: simple
       responses:
         "204":
@@ -778,7 +792,8 @@ paths:
         name: id
         required: true
         schema:
-          type: integer
+          format: uuid
+          type: string
         style: simple
       responses:
         "200":
@@ -808,7 +823,8 @@ paths:
         name: id
         required: true
         schema:
-          type: integer
+          format: uuid
+          type: string
         style: simple
       requestBody:
         content:
@@ -910,7 +926,8 @@ paths:
         name: id
         required: true
         schema:
-          type: integer
+          format: uuid
+          type: string
         style: simple
       responses:
         "204":
@@ -945,7 +962,8 @@ paths:
         name: id
         required: true
         schema:
-          type: integer
+          format: uuid
+          type: string
         style: simple
       responses:
         "200":
@@ -973,7 +991,8 @@ paths:
         name: id
         required: true
         schema:
-          type: integer
+          format: uuid
+          type: string
         style: simple
       requestBody:
         content:
@@ -1116,7 +1135,8 @@ paths:
         name: user_id
         required: false
         schema:
-          type: integer
+          format: uuid
+          type: string
         style: form
       responses:
         "200":
@@ -1152,7 +1172,8 @@ paths:
         name: id
         required: true
         schema:
-          type: integer
+          format: uuid
+          type: string
         style: simple
       responses:
         "200":
@@ -1187,7 +1208,8 @@ paths:
         name: id
         required: true
         schema:
-          type: integer
+          format: uuid
+          type: string
         style: simple
       requestBody:
         content:
@@ -1228,7 +1250,8 @@ paths:
         name: id
         required: true
         schema:
-          type: integer
+          format: uuid
+          type: string
         style: simple
       responses:
         "200":
@@ -1299,7 +1322,8 @@ paths:
         name: id
         required: true
         schema:
-          type: integer
+          format: uuid
+          type: string
         style: simple
       responses:
         "200":
@@ -1323,7 +1347,8 @@ paths:
         name: id
         required: true
         schema:
-          type: integer
+          format: uuid
+          type: string
         style: simple
       requestBody:
         content:
@@ -1359,7 +1384,8 @@ components:
       name: id
       required: true
       schema:
-        type: integer
+        format: uuid
+        type: string
       style: simple
     queryPage:
       explode: true
@@ -1476,13 +1502,14 @@ components:
         firstname: firstname
         role: admin
         phone: phone
-        id: 0
+        id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
         email: email
         lastname: lastname
         status: status
       properties:
         id:
-          type: integer
+          format: uuid
+          type: string
         firstname:
           type: string
         lastname:
@@ -1555,16 +1582,18 @@ components:
     Address:
       example:
         country_code: country_code
-        user_id: 6
+        user_id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
         location: location
-        id: 0
+        id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
         postal_code: postal_code
         is_default: false
       properties:
         id:
-          type: integer
+          format: uuid
+          type: string
         user_id:
-          type: integer
+          format: uuid
+          type: string
         location:
           type: string
         postal_code:
@@ -1580,13 +1609,14 @@ components:
       example:
         country_code: country_code
         location: location
-        id: 0
+        id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
         postal_code: postal_code
         is_default: true
       properties:
         id:
+          format: uuid
           nullable: true
-          type: integer
+          type: string
         location:
           type: string
         postal_code:
@@ -1637,14 +1667,15 @@ components:
         children:
         - null
         - null
-        parent_id: 6
-        id: 0
+        parent_id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+        id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
         label: label
         map: map
         slug: slug
       properties:
         id:
-          type: integer
+          format: uuid
+          type: string
         label:
           type: string
         slug:
@@ -1653,8 +1684,9 @@ components:
           maxLength: 100
           type: string
         parent_id:
+          format: uuid
           nullable: true
-          type: integer
+          type: string
         children:
           items:
             $ref: "#/components/schemas/Category"
@@ -1662,15 +1694,16 @@ components:
       type: object
     CategoryInput:
       example:
-        parent_id: 6
-        id: 0
+        parent_id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+        id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
         label: label
         map: map
         slug: slug
       properties:
         id:
+          format: uuid
           nullable: true
-          type: integer
+          type: string
         label:
           type: string
         slug:
@@ -1678,40 +1711,60 @@ components:
         map:
           type: string
         parent_id:
+          format: uuid
           nullable: true
-          type: integer
+          type: string
       required:
       - label
       - slug
+      type: object
+    CategoryRefInput:
+      example:
+        id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+      properties:
+        id:
+          format: uuid
+          type: string
+      required:
+      - id
       type: object
     Product:
       example:
         reference: reference
         is_active: true
-        category_id: 6
-        size: 1.4658129805029452
+        size: 0.8008281904610115
         limit_date: 2000-01-23
         description: description
-        id: 0
+        id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
         label: label
+        category:
+          children:
+          - null
+          - null
+          parent_id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+          id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+          label: label
+          map: map
+          slug: slug
         prices:
         - unit: unit
-          product_id: 5
+          product_id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
           valid_from: 2000-01-23
-          id: 5
-          value: 2.3021358869347655
+          id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+          value: 6.027456183070403
           currency_code: currency_code
         - unit: unit
-          product_id: 5
+          product_id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
           valid_from: 2000-01-23
-          id: 5
-          value: 2.3021358869347655
+          id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+          value: 6.027456183070403
           currency_code: currency_code
       properties:
         id:
-          type: integer
-        category_id:
-          type: integer
+          format: uuid
+          type: string
+        category:
+          $ref: "#/components/schemas/Category"
         label:
           maxLength: 255
           type: string
@@ -1738,18 +1791,20 @@ components:
       example:
         reference: reference
         is_active: true
-        category_id: 6
-        size: 1.4658129805029452
+        size: 0.8008281904610115
         limit_date: 2000-01-23
         description: description
-        id: 0
+        id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
         label: label
+        category:
+          id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
       properties:
         id:
+          format: uuid
           nullable: true
-          type: integer
-        category_id:
-          type: integer
+          type: string
+        category:
+          $ref: "#/components/schemas/CategoryRefInput"
         label:
           type: string
         reference:
@@ -1764,23 +1819,25 @@ components:
         is_active:
           type: boolean
       required:
-      - category_id
+      - category
       - label
       - reference
       type: object
     Price:
       example:
         unit: unit
-        product_id: 5
+        product_id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
         valid_from: 2000-01-23
-        id: 5
-        value: 2.3021358869347655
+        id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+        value: 6.027456183070403
         currency_code: currency_code
       properties:
         id:
-          type: integer
+          format: uuid
+          type: string
         product_id:
-          type: integer
+          format: uuid
+          type: string
         currency_code:
           maxLength: 3
           type: string
@@ -1795,12 +1852,13 @@ components:
       type: object
     OrderItem:
       example:
-        quantity: 7.061401241503109
-        product_id: 2
-        unit_price: 9.301444243932576
+        quantity: 6.027456183070403
+        product_id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+        unit_price: 1.4658129805029452
       properties:
         product_id:
-          type: integer
+          format: uuid
+          type: string
         quantity:
           format: double
           type: number
@@ -1812,10 +1870,10 @@ components:
       example:
         reference: reference
         date: 2000-01-23T04:56:07.000+00:00
-        delivery_cost_id: 5
-        user_id: 6
-        total_amount: 5.962133916683182
-        address_id: 1
+        delivery_cost_id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+        user_id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+        total_amount: 0.8008281904610115
+        address_id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
         recipient:
           country_code: country_code
           recipient_email: recipient_email
@@ -1823,24 +1881,27 @@ components:
           postal_code: postal_code
           recipient_name: recipient_name
           recipient_phone: recipient_phone
-        id: 0
+        id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
         items:
-        - quantity: 7.061401241503109
-          product_id: 2
-          unit_price: 9.301444243932576
-        - quantity: 7.061401241503109
-          product_id: 2
-          unit_price: 9.301444243932576
+        - quantity: 6.027456183070403
+          product_id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+          unit_price: 1.4658129805029452
+        - quantity: 6.027456183070403
+          product_id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+          unit_price: 1.4658129805029452
         currency_code: currency_code
         provider_response: "{}"
         status: pending
       properties:
         id:
-          type: integer
+          format: uuid
+          type: string
         user_id:
-          type: integer
+          format: uuid
+          type: string
         address_id:
-          type: integer
+          format: uuid
+          type: string
         currency_code:
           type: string
         reference:
@@ -1859,8 +1920,9 @@ components:
           format: double
           type: number
         delivery_cost_id:
+          format: uuid
           nullable: true
-          type: integer
+          type: string
         items:
           items:
             $ref: "#/components/schemas/OrderItem"
@@ -1875,8 +1937,8 @@ components:
       type: object
     OrderInput:
       example:
-        delivery_cost_id: 6
-        address_id: 0
+        delivery_cost_id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+        address_id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
         recipient:
           country_code: country_code
           recipient_email: recipient_email
@@ -1885,18 +1947,20 @@ components:
           recipient_name: recipient_name
           recipient_phone: recipient_phone
         items:
-        - quantity: 5.962133916683182
-          product_id: 1
-        - quantity: 5.962133916683182
-          product_id: 1
+        - quantity: 0.8008281904610115
+          product_id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+        - quantity: 0.8008281904610115
+          product_id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
         currency_code: currency_code
       properties:
         address_id:
+          format: uuid
           nullable: true
-          type: integer
+          type: string
         delivery_cost_id:
+          format: uuid
           nullable: true
-          type: integer
+          type: string
         currency_code:
           type: string
         items:
@@ -1928,12 +1992,13 @@ components:
     DeliverCost:
       example:
         response_provider: "{}"
-        amount: 6.027456183070403
+        amount: 0.8008281904610115
         provider: provider
-        id: 0
+        id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
       properties:
         id:
-          type: integer
+          format: uuid
+          type: string
         amount:
           format: double
           type: number
@@ -2005,19 +2070,21 @@ components:
     Payment:
       example:
         date: 2000-01-23T04:56:07.000+00:00
-        amount: 1.4658129805029452
-        id: 0
+        amount: 0.8008281904610115
+        id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
         method_code: method_code
-        order_id: 6
+        order_id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
         internal_reference: internal_reference
         currency_code: currency_code
         provider_response: "{}"
         status: pending
       properties:
         id:
-          type: integer
+          format: uuid
+          type: string
         order_id:
-          type: integer
+          format: uuid
+          type: string
         method_code:
           type: string
         currency_code:
@@ -2081,7 +2148,7 @@ components:
       type: object
     Error:
       example:
-        code: 6
+        code: 0
         message: message
       properties:
         code:
@@ -2095,14 +2162,14 @@ components:
         - firstname: firstname
           role: admin
           phone: phone
-          id: 0
+          id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
           email: email
           lastname: lastname
           status: status
         - firstname: firstname
           role: admin
           phone: phone
-          id: 0
+          id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
           email: email
           lastname: lastname
           status: status
@@ -2124,45 +2191,61 @@ components:
         data:
         - reference: reference
           is_active: true
-          category_id: 6
-          size: 1.4658129805029452
+          size: 0.8008281904610115
           limit_date: 2000-01-23
           description: description
-          id: 0
+          id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
           label: label
+          category:
+            children:
+            - null
+            - null
+            parent_id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+            id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+            label: label
+            map: map
+            slug: slug
           prices:
           - unit: unit
-            product_id: 5
+            product_id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
             valid_from: 2000-01-23
-            id: 5
-            value: 2.3021358869347655
+            id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+            value: 6.027456183070403
             currency_code: currency_code
           - unit: unit
-            product_id: 5
+            product_id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
             valid_from: 2000-01-23
-            id: 5
-            value: 2.3021358869347655
+            id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+            value: 6.027456183070403
             currency_code: currency_code
         - reference: reference
           is_active: true
-          category_id: 6
-          size: 1.4658129805029452
+          size: 0.8008281904610115
           limit_date: 2000-01-23
           description: description
-          id: 0
+          id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
           label: label
+          category:
+            children:
+            - null
+            - null
+            parent_id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+            id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+            label: label
+            map: map
+            slug: slug
           prices:
           - unit: unit
-            product_id: 5
+            product_id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
             valid_from: 2000-01-23
-            id: 5
-            value: 2.3021358869347655
+            id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+            value: 6.027456183070403
             currency_code: currency_code
           - unit: unit
-            product_id: 5
+            product_id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
             valid_from: 2000-01-23
-            id: 5
-            value: 2.3021358869347655
+            id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+            value: 6.027456183070403
             currency_code: currency_code
         meta:
           per_page: 1
@@ -2182,10 +2265,10 @@ components:
         data:
         - reference: reference
           date: 2000-01-23T04:56:07.000+00:00
-          delivery_cost_id: 5
-          user_id: 6
-          total_amount: 5.962133916683182
-          address_id: 1
+          delivery_cost_id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+          user_id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+          total_amount: 0.8008281904610115
+          address_id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
           recipient:
             country_code: country_code
             recipient_email: recipient_email
@@ -2193,23 +2276,23 @@ components:
             postal_code: postal_code
             recipient_name: recipient_name
             recipient_phone: recipient_phone
-          id: 0
+          id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
           items:
-          - quantity: 7.061401241503109
-            product_id: 2
-            unit_price: 9.301444243932576
-          - quantity: 7.061401241503109
-            product_id: 2
-            unit_price: 9.301444243932576
+          - quantity: 6.027456183070403
+            product_id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+            unit_price: 1.4658129805029452
+          - quantity: 6.027456183070403
+            product_id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+            unit_price: 1.4658129805029452
           currency_code: currency_code
           provider_response: "{}"
           status: pending
         - reference: reference
           date: 2000-01-23T04:56:07.000+00:00
-          delivery_cost_id: 5
-          user_id: 6
-          total_amount: 5.962133916683182
-          address_id: 1
+          delivery_cost_id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+          user_id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+          total_amount: 0.8008281904610115
+          address_id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
           recipient:
             country_code: country_code
             recipient_email: recipient_email
@@ -2217,14 +2300,14 @@ components:
             postal_code: postal_code
             recipient_name: recipient_name
             recipient_phone: recipient_phone
-          id: 0
+          id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
           items:
-          - quantity: 7.061401241503109
-            product_id: 2
-            unit_price: 9.301444243932576
-          - quantity: 7.061401241503109
-            product_id: 2
-            unit_price: 9.301444243932576
+          - quantity: 6.027456183070403
+            product_id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+            unit_price: 1.4658129805029452
+          - quantity: 6.027456183070403
+            product_id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+            unit_price: 1.4658129805029452
           currency_code: currency_code
           provider_response: "{}"
           status: pending
@@ -2243,11 +2326,12 @@ components:
       type: object
     OrderInput_items_inner:
       example:
-        quantity: 5.962133916683182
-        product_id: 1
+        quantity: 0.8008281904610115
+        product_id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
       properties:
         product_id:
-          type: integer
+          format: uuid
+          type: string
         quantity:
           format: double
           type: number

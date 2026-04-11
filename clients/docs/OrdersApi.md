@@ -1,6 +1,6 @@
 # OrdersApi
 
-All URIs are relative to *http://localhost:8080*
+All URIs are relative to *http://localhost:8080/api/v1*
 
 | Method | HTTP request | Description |
 |------------- | ------------- | -------------|
@@ -31,7 +31,7 @@ import org.openapitools.client.api.OrdersApi;
 public class Example {
   public static void main(String[] args) {
     ApiClient defaultClient = Configuration.getDefaultApiClient();
-    defaultClient.setBasePath("http://localhost:8080");
+    defaultClient.setBasePath("http://localhost:8080/api/v1");
     
     // Configure HTTP bearer authorization: BearerAuth
     HttpBearerAuth BearerAuth = (HttpBearerAuth) defaultClient.getAuthentication("BearerAuth");
@@ -41,7 +41,7 @@ public class Example {
     Integer page = 1; // Integer | 
     Integer perPage = 20; // Integer | 
     String status = "pending"; // String | 
-    Integer userId = 56; // Integer | 
+    UUID userId = UUID.randomUUID(); // UUID | 
     try {
       OrdersGet200Response result = apiInstance.ordersAllGet(page, perPage, status, userId);
       System.out.println(result);
@@ -63,7 +63,7 @@ public class Example {
 | **page** | **Integer**|  | [optional] [default to 1] |
 | **perPage** | **Integer**|  | [optional] [default to 20] |
 | **status** | **String**|  | [optional] [enum: pending, confirmed, delivered, cancelled] |
-| **userId** | **Integer**|  | [optional] |
+| **userId** | **UUID**|  | [optional] |
 
 ### Return type
 
@@ -104,7 +104,7 @@ import org.openapitools.client.api.OrdersApi;
 public class Example {
   public static void main(String[] args) {
     ApiClient defaultClient = Configuration.getDefaultApiClient();
-    defaultClient.setBasePath("http://localhost:8080");
+    defaultClient.setBasePath("http://localhost:8080/api/v1");
     
     // Configure HTTP bearer authorization: BearerAuth
     HttpBearerAuth BearerAuth = (HttpBearerAuth) defaultClient.getAuthentication("BearerAuth");
@@ -170,10 +170,10 @@ import org.openapitools.client.api.OrdersApi;
 public class Example {
   public static void main(String[] args) {
     ApiClient defaultClient = Configuration.getDefaultApiClient();
-    defaultClient.setBasePath("http://localhost:8080");
+    defaultClient.setBasePath("http://localhost:8080/api/v1");
 
     OrdersApi apiInstance = new OrdersApi(defaultClient);
-    Integer id = 56; // Integer | 
+    UUID id = UUID.randomUUID(); // UUID | 
     try {
       Order result = apiInstance.ordersIdCancelPost(id);
       System.out.println(result);
@@ -192,7 +192,7 @@ public class Example {
 
 | Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
-| **id** | **Integer**|  | |
+| **id** | **UUID**|  | |
 
 ### Return type
 
@@ -233,10 +233,10 @@ import org.openapitools.client.api.OrdersApi;
 public class Example {
   public static void main(String[] args) {
     ApiClient defaultClient = Configuration.getDefaultApiClient();
-    defaultClient.setBasePath("http://localhost:8080");
+    defaultClient.setBasePath("http://localhost:8080/api/v1");
 
     OrdersApi apiInstance = new OrdersApi(defaultClient);
-    Integer id = 56; // Integer | 
+    UUID id = UUID.randomUUID(); // UUID | 
     try {
       Order result = apiInstance.ordersIdGet(id);
       System.out.println(result);
@@ -255,7 +255,7 @@ public class Example {
 
 | Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
-| **id** | **Integer**|  | |
+| **id** | **UUID**|  | |
 
 ### Return type
 
@@ -296,14 +296,14 @@ import org.openapitools.client.api.OrdersApi;
 public class Example {
   public static void main(String[] args) {
     ApiClient defaultClient = Configuration.getDefaultApiClient();
-    defaultClient.setBasePath("http://localhost:8080");
+    defaultClient.setBasePath("http://localhost:8080/api/v1");
     
     // Configure HTTP bearer authorization: BearerAuth
     HttpBearerAuth BearerAuth = (HttpBearerAuth) defaultClient.getAuthentication("BearerAuth");
     BearerAuth.setBearerToken("BEARER TOKEN");
 
     OrdersApi apiInstance = new OrdersApi(defaultClient);
-    Integer id = 56; // Integer | 
+    UUID id = UUID.randomUUID(); // UUID | 
     OrderStatusUpdate orderStatusUpdate = new OrderStatusUpdate(); // OrderStatusUpdate | 
     try {
       Order result = apiInstance.ordersIdStatusPut(id, orderStatusUpdate);
@@ -323,7 +323,7 @@ public class Example {
 
 | Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
-| **id** | **Integer**|  | |
+| **id** | **UUID**|  | |
 | **orderStatusUpdate** | [**OrderStatusUpdate**](OrderStatusUpdate.md)|  | |
 
 ### Return type
@@ -364,7 +364,7 @@ import org.openapitools.client.api.OrdersApi;
 public class Example {
   public static void main(String[] args) {
     ApiClient defaultClient = Configuration.getDefaultApiClient();
-    defaultClient.setBasePath("http://localhost:8080");
+    defaultClient.setBasePath("http://localhost:8080/api/v1");
 
     OrdersApi apiInstance = new OrdersApi(defaultClient);
     OrderInput orderInput = new OrderInput(); // OrderInput | 

@@ -15,6 +15,7 @@ package org.openapitools.client.api;
 
 import org.openapitools.client.ApiException;
 import org.openapitools.client.model.Error;
+import java.util.UUID;
 import org.openapitools.client.model.User;
 import org.openapitools.client.model.UserCreateInput;
 import org.openapitools.client.model.UserUpdate;
@@ -56,7 +57,7 @@ public class UsersApiTest {
      */
     @Test
     public void usersIdDeleteTest() throws ApiException {
-        Integer id = null;
+        UUID id = null;
         api.usersIdDelete(id);
         // TODO: test validations
     }
@@ -68,7 +69,7 @@ public class UsersApiTest {
      */
     @Test
     public void usersIdGetTest() throws ApiException {
-        Integer id = null;
+        UUID id = null;
         User response = api.usersIdGet(id);
         // TODO: test validations
     }

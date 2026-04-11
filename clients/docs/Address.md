@@ -7,8 +7,8 @@
 
 | Name | Type | Description | Notes |
 |------------ | ------------- | ------------- | -------------|
-|**id** | **Integer** |  |  [optional] |
-|**userId** | **Integer** |  |  [optional] |
+|**id** | **UUID** |  |  [optional] |
+|**userId** | **UUID** |  |  [optional] |
 |**location** | **String** |  |  [optional] |
 |**postalCode** | **String** |  |  [optional] |
 |**countryCode** | **String** |  |  [optional] |

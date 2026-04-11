@@ -30,6 +30,7 @@ import java.io.IOException;
 import org.openapitools.client.model.DeliverCost;
 import org.openapitools.client.model.DeliverCostInput;
 import org.openapitools.client.model.Error;
+import java.util.UUID;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
@@ -207,7 +208,7 @@ public class DeliveryCostsApi {
         <tr><td> 404 </td><td> Ressource introuvable </td><td>  -  </td></tr>
      </table>
      */
-    public okhttp3.Call deliveryCostsIdDeleteCall(@javax.annotation.Nonnull Integer id, final ApiCallback _callback) throws ApiException {
+    public okhttp3.Call deliveryCostsIdDeleteCall(@javax.annotation.Nonnull UUID id, final ApiCallback _callback) throws ApiException {
         String basePath = null;
         // Operation Servers
         String[] localBasePaths = new String[] {  };
@@ -253,7 +254,7 @@ public class DeliveryCostsApi {
     }
 
     @SuppressWarnings("rawtypes")
-    private okhttp3.Call deliveryCostsIdDeleteValidateBeforeCall(@javax.annotation.Nonnull Integer id, final ApiCallback _callback) throws ApiException {
+    private okhttp3.Call deliveryCostsIdDeleteValidateBeforeCall(@javax.annotation.Nonnull UUID id, final ApiCallback _callback) throws ApiException {
         // verify the required parameter 'id' is set
         if (id == null) {
             throw new ApiException("Missing the required parameter 'id' when calling deliveryCostsIdDelete(Async)");
@@ -278,7 +279,7 @@ public class DeliveryCostsApi {
         <tr><td> 404 </td><td> Ressource introuvable </td><td>  -  </td></tr>
      </table>
      */
-    public void deliveryCostsIdDelete(@javax.annotation.Nonnull Integer id) throws ApiException {
+    public void deliveryCostsIdDelete(@javax.annotation.Nonnull UUID id) throws ApiException {
         deliveryCostsIdDeleteWithHttpInfo(id);
     }
 
@@ -298,7 +299,7 @@ public class DeliveryCostsApi {
         <tr><td> 404 </td><td> Ressource introuvable </td><td>  -  </td></tr>
      </table>
      */
-    public ApiResponse<Void> deliveryCostsIdDeleteWithHttpInfo(@javax.annotation.Nonnull Integer id) throws ApiException {
+    public ApiResponse<Void> deliveryCostsIdDeleteWithHttpInfo(@javax.annotation.Nonnull UUID id) throws ApiException {
         okhttp3.Call localVarCall = deliveryCostsIdDeleteValidateBeforeCall(id, null);
         return localVarApiClient.execute(localVarCall);
     }
@@ -320,7 +321,7 @@ public class DeliveryCostsApi {
         <tr><td> 404 </td><td> Ressource introuvable </td><td>  -  </td></tr>
      </table>
      */
-    public okhttp3.Call deliveryCostsIdDeleteAsync(@javax.annotation.Nonnull Integer id, final ApiCallback<Void> _callback) throws ApiException {
+    public okhttp3.Call deliveryCostsIdDeleteAsync(@javax.annotation.Nonnull UUID id, final ApiCallback<Void> _callback) throws ApiException {
 
         okhttp3.Call localVarCall = deliveryCostsIdDeleteValidateBeforeCall(id, _callback);
         localVarApiClient.executeAsync(localVarCall, _callback);
@@ -340,7 +341,7 @@ public class DeliveryCostsApi {
         <tr><td> 404 </td><td> Ressource introuvable </td><td>  -  </td></tr>
      </table>
      */
-    public okhttp3.Call deliveryCostsIdGetCall(@javax.annotation.Nonnull Integer id, final ApiCallback _callback) throws ApiException {
+    public okhttp3.Call deliveryCostsIdGetCall(@javax.annotation.Nonnull UUID id, final ApiCallback _callback) throws ApiException {
         String basePath = null;
         // Operation Servers
         String[] localBasePaths = new String[] {  };
@@ -386,7 +387,7 @@ public class DeliveryCostsApi {
     }
 
     @SuppressWarnings("rawtypes")
-    private okhttp3.Call deliveryCostsIdGetValidateBeforeCall(@javax.annotation.Nonnull Integer id, final ApiCallback _callback) throws ApiException {
+    private okhttp3.Call deliveryCostsIdGetValidateBeforeCall(@javax.annotation.Nonnull UUID id, final ApiCallback _callback) throws ApiException {
         // verify the required parameter 'id' is set
         if (id == null) {
             throw new ApiException("Missing the required parameter 'id' when calling deliveryCostsIdGet(Async)");
@@ -410,7 +411,7 @@ public class DeliveryCostsApi {
         <tr><td> 404 </td><td> Ressource introuvable </td><td>  -  </td></tr>
      </table>
      */
-    public DeliverCost deliveryCostsIdGet(@javax.annotation.Nonnull Integer id) throws ApiException {
+    public DeliverCost deliveryCostsIdGet(@javax.annotation.Nonnull UUID id) throws ApiException {
         ApiResponse<DeliverCost> localVarResp = deliveryCostsIdGetWithHttpInfo(id);
         return localVarResp.getData();
     }
@@ -429,7 +430,7 @@ public class DeliveryCostsApi {
         <tr><td> 404 </td><td> Ressource introuvable </td><td>  -  </td></tr>
      </table>
      */
-    public ApiResponse<DeliverCost> deliveryCostsIdGetWithHttpInfo(@javax.annotation.Nonnull Integer id) throws ApiException {
+    public ApiResponse<DeliverCost> deliveryCostsIdGetWithHttpInfo(@javax.annotation.Nonnull UUID id) throws ApiException {
         okhttp3.Call localVarCall = deliveryCostsIdGetValidateBeforeCall(id, null);
         Type localVarReturnType = new TypeToken<DeliverCost>(){}.getType();
         return localVarApiClient.execute(localVarCall, localVarReturnType);
@@ -450,7 +451,7 @@ public class DeliveryCostsApi {
         <tr><td> 404 </td><td> Ressource introuvable </td><td>  -  </td></tr>
      </table>
      */
-    public okhttp3.Call deliveryCostsIdGetAsync(@javax.annotation.Nonnull Integer id, final ApiCallback<DeliverCost> _callback) throws ApiException {
+    public okhttp3.Call deliveryCostsIdGetAsync(@javax.annotation.Nonnull UUID id, final ApiCallback<DeliverCost> _callback) throws ApiException {
 
         okhttp3.Call localVarCall = deliveryCostsIdGetValidateBeforeCall(id, _callback);
         Type localVarReturnType = new TypeToken<DeliverCost>(){}.getType();
@@ -475,7 +476,7 @@ public class DeliveryCostsApi {
         <tr><td> 422 </td><td> Données invalides </td><td>  -  </td></tr>
      </table>
      */
-    public okhttp3.Call deliveryCostsIdPutCall(@javax.annotation.Nonnull Integer id, @javax.annotation.Nonnull DeliverCostInput deliverCostInput, final ApiCallback _callback) throws ApiException {
+    public okhttp3.Call deliveryCostsIdPutCall(@javax.annotation.Nonnull UUID id, @javax.annotation.Nonnull DeliverCostInput deliverCostInput, final ApiCallback _callback) throws ApiException {
         String basePath = null;
         // Operation Servers
         String[] localBasePaths = new String[] {  };
@@ -522,7 +523,7 @@ public class DeliveryCostsApi {
     }
 
     @SuppressWarnings("rawtypes")
-    private okhttp3.Call deliveryCostsIdPutValidateBeforeCall(@javax.annotation.Nonnull Integer id, @javax.annotation.Nonnull DeliverCostInput deliverCostInput, final ApiCallback _callback) throws ApiException {
+    private okhttp3.Call deliveryCostsIdPutValidateBeforeCall(@javax.annotation.Nonnull UUID id, @javax.annotation.Nonnull DeliverCostInput deliverCostInput, final ApiCallback _callback) throws ApiException {
         // verify the required parameter 'id' is set
         if (id == null) {
             throw new ApiException("Missing the required parameter 'id' when calling deliveryCostsIdPut(Async)");
@@ -555,7 +556,7 @@ public class DeliveryCostsApi {
         <tr><td> 422 </td><td> Données invalides </td><td>  -  </td></tr>
      </table>
      */
-    public DeliverCost deliveryCostsIdPut(@javax.annotation.Nonnull Integer id, @javax.annotation.Nonnull DeliverCostInput deliverCostInput) throws ApiException {
+    public DeliverCost deliveryCostsIdPut(@javax.annotation.Nonnull UUID id, @javax.annotation.Nonnull DeliverCostInput deliverCostInput) throws ApiException {
         ApiResponse<DeliverCost> localVarResp = deliveryCostsIdPutWithHttpInfo(id, deliverCostInput);
         return localVarResp.getData();
     }
@@ -578,7 +579,7 @@ public class DeliveryCostsApi {
         <tr><td> 422 </td><td> Données invalides </td><td>  -  </td></tr>
      </table>
      */
-    public ApiResponse<DeliverCost> deliveryCostsIdPutWithHttpInfo(@javax.annotation.Nonnull Integer id, @javax.annotation.Nonnull DeliverCostInput deliverCostInput) throws ApiException {
+    public ApiResponse<DeliverCost> deliveryCostsIdPutWithHttpInfo(@javax.annotation.Nonnull UUID id, @javax.annotation.Nonnull DeliverCostInput deliverCostInput) throws ApiException {
         okhttp3.Call localVarCall = deliveryCostsIdPutValidateBeforeCall(id, deliverCostInput, null);
         Type localVarReturnType = new TypeToken<DeliverCost>(){}.getType();
         return localVarApiClient.execute(localVarCall, localVarReturnType);
@@ -603,7 +604,7 @@ public class DeliveryCostsApi {
         <tr><td> 422 </td><td> Données invalides </td><td>  -  </td></tr>
      </table>
      */
-    public okhttp3.Call deliveryCostsIdPutAsync(@javax.annotation.Nonnull Integer id, @javax.annotation.Nonnull DeliverCostInput deliverCostInput, final ApiCallback<DeliverCost> _callback) throws ApiException {
+    public okhttp3.Call deliveryCostsIdPutAsync(@javax.annotation.Nonnull UUID id, @javax.annotation.Nonnull DeliverCostInput deliverCostInput, final ApiCallback<DeliverCost> _callback) throws ApiException {
 
         okhttp3.Call localVarCall = deliveryCostsIdPutValidateBeforeCall(id, deliverCostInput, _callback);
         Type localVarReturnType = new TypeToken<DeliverCost>(){}.getType();

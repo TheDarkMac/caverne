@@ -7,7 +7,7 @@
 
 | Name | Type | Description | Notes |
 |------------ | ------------- | ------------- | -------------|
-|**productId** | **Integer** |  |  [optional] |
+|**productId** | **UUID** |  |  [optional] |
 |**quantity** | **Double** |  |  [optional] |
 |**unitPrice** | **Double** |  |  [optional] |
 
