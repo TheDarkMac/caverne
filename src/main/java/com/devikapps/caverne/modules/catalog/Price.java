@@ -3,7 +3,9 @@ package com.devikapps.caverne.modules.catalog;
 import jakarta.persistence.*;
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.UUID;
 import lombok.*;
+import org.hibernate.annotations.UuidGenerator;
 
 @Entity
 @Table(name = "prices")
@@ -13,9 +15,7 @@ import lombok.*;
 @AllArgsConstructor
 @Builder
 public class Price {
-  @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private Long id;
+  @Id @UuidGenerator private UUID id;
 
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "product_id")

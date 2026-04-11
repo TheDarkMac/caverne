@@ -1,5 +1,6 @@
 package com.devikapps.caverne.modules.catalog;
 
+import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.openapitools.client.JSON;
 import org.springframework.data.domain.PageRequest;
@@ -16,7 +17,7 @@ public class ProductController {
 
   @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
   public String listProducts(
-      @RequestParam(required = false) Long category_id,
+      @RequestParam(required = false) UUID category_id,
       @RequestParam(required = false) Boolean is_active,
       @RequestParam(required = false) String search,
       @RequestParam(required = false) String currency,
@@ -49,13 +50,13 @@ public class ProductController {
   }
 
   @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-  public String getProduct(@PathVariable Long id) {
+  public String getProduct(@PathVariable UUID id) {
     return JSON.getGson().toJson(productService.findResponseById(id));
   }
 
   @PutMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
   public org.springframework.http.ResponseEntity<String> updateProduct(
-      @PathVariable Long id, @RequestBody String rawBody) {
+      @PathVariable UUID id, @RequestBody String rawBody) {
     ProductService.UpsertProductResult result =
         productService.updateProduct(id, parseProductInput(rawBody));
     return org.springframework.http.ResponseEntity.status(
@@ -65,7 +66,7 @@ public class ProductController {
 
   @DeleteMapping("/{id}")
   @ResponseStatus(HttpStatus.NO_CONTENT)
-  public void deleteProduct(@PathVariable Long id) {
+  public void deleteProduct(@PathVariable UUID id) {
     productService.deleteProduct(id);
   }
 

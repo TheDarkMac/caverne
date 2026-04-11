@@ -15,6 +15,7 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 import org.junit.jupiter.api.Assumptions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -64,7 +65,7 @@ class RealStripePaymentIntegrationTest {
     Product product =
         productRepository.save(
             product("Cardamom", "CAR-001", true, "Priced per kg", category, "MGA", "kg", 15000));
-    Long orderId = createOrder(product);
+    UUID orderId = createOrder(product);
 
     String payload =
         objectMapper.writeValueAsString(
@@ -102,7 +103,7 @@ class RealStripePaymentIntegrationTest {
         productRepository.save(
             product("Black Tea", "TEA-001", true, "Loose black tea", teas, "MGA", "box", 8000));
 
-    Long orderId = createOrder(List.of(item(cloves, 2), item(tea, 1)));
+    UUID orderId = createOrder(List.of(item(cloves, 2), item(tea, 1)));
 
     String payload =
         objectMapper.writeValueAsString(
@@ -126,11 +127,11 @@ class RealStripePaymentIntegrationTest {
         .andExpect(jsonPath("$.provider_response.payment_status").exists());
   }
 
-  private Long createOrder(Product product) throws Exception {
+  private UUID createOrder(Product product) throws Exception {
     return createOrder(List.of(item(product, 1)));
   }
 
-  private Long createOrder(List<Map<String, Object>> items) throws Exception {
+  private UUID createOrder(List<Map<String, Object>> items) throws Exception {
     String payload =
         objectMapper.writeValueAsString(
             Map.of(
@@ -152,7 +153,7 @@ class RealStripePaymentIntegrationTest {
             .andReturn()
             .getResponse()
             .getContentAsString();
-    return objectMapper.readTree(response).get("id").asLong();
+    return UUID.fromString(objectMapper.readTree(response).get("id").asText());
   }
 
   private Map<String, Object> item(Product product, int quantity) {

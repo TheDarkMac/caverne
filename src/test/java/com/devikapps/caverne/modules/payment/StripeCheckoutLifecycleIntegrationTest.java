@@ -19,8 +19,10 @@ import java.time.LocalDate;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc;
@@ -29,7 +31,6 @@ import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.beans.factory.annotation.Autowired;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -66,7 +67,7 @@ class StripeCheckoutLifecycleIntegrationTest {
     registerSimpleUser("lifecycle@example.com", "Life", "Cycle", "secret123");
     String token = login("lifecycle@example.com", "secret123");
 
-    Long orderId = createOwnedOrder(product, token);
+    UUID orderId = createOwnedOrder(product, token);
 
     String paymentPayload =
         objectMapper.writeValueAsString(
@@ -86,8 +87,7 @@ class StripeCheckoutLifecycleIntegrationTest {
                 jsonPath("$.provider_response.checkout_url")
                     .value("https://checkout.stripe.test/session/cs_test_lifecycle_123"))
             .andExpect(
-                jsonPath("$.provider_response.checkout_session_id")
-                    .value("cs_test_lifecycle_123"))
+                jsonPath("$.provider_response.checkout_session_id").value("cs_test_lifecycle_123"))
             .andReturn()
             .getResponse()
             .getContentAsString();
@@ -97,8 +97,7 @@ class StripeCheckoutLifecycleIntegrationTest {
         paymentResponse.path("provider_response").path("checkout_session_id").asText();
 
     String webhookPayload =
-        buildWebhookPayload(
-            "checkout.session.completed", checkoutSessionId, "complete", "paid");
+        buildWebhookPayload("checkout.session.completed", checkoutSessionId, "complete", "paid");
     String signature = buildSignature(webhookPayload, "whsec_test_secret");
 
     mockMvc
@@ -112,7 +111,7 @@ class StripeCheckoutLifecycleIntegrationTest {
     mockMvc
         .perform(get("/orders/{id}", orderId).header("Authorization", bearer(token)))
         .andExpect(status().isOk())
-        .andExpect(jsonPath("$.id").value(orderId))
+        .andExpect(jsonPath("$.id").value(orderId.toString()))
         .andExpect(jsonPath("$.status").value("confirmed"));
 
     mockMvc
@@ -121,8 +120,7 @@ class StripeCheckoutLifecycleIntegrationTest {
         .andExpect(jsonPath("$[0].method_code").value("STRIPE"))
         .andExpect(jsonPath("$[0].status").value("confirmed"))
         .andExpect(jsonPath("$[0].internal_reference").value(checkoutSessionId))
-        .andExpect(
-            jsonPath("$[0].provider_response.checkout_session_id").value(checkoutSessionId))
+        .andExpect(jsonPath("$[0].provider_response.checkout_session_id").value(checkoutSessionId))
         .andExpect(jsonPath("$[0].provider_response.checkout_status").value("complete"))
         .andExpect(jsonPath("$[0].provider_response.payment_status").value("paid"))
         .andExpect(
@@ -191,7 +189,7 @@ class StripeCheckoutLifecycleIntegrationTest {
     return objectMapper.readTree(response).get("access_token").asText();
   }
 
-  private Long createOwnedOrder(Product product, String token) throws Exception {
+  private UUID createOwnedOrder(Product product, String token) throws Exception {
     String payload =
         objectMapper.writeValueAsString(
             Map.of(
@@ -220,7 +218,7 @@ class StripeCheckoutLifecycleIntegrationTest {
             .getResponse()
             .getContentAsString();
 
-    return objectMapper.readTree(response).get("id").asLong();
+    return UUID.fromString(objectMapper.readTree(response).get("id").asText());
   }
 
   private String buildWebhookPayload(

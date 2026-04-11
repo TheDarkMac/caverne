@@ -23,6 +23,7 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -100,9 +101,9 @@ class CheckoutApiIntegrationTest {
         .andExpect(status().isCreated())
         .andExpect(jsonPath("$.status").value("pending"))
         .andExpect(jsonPath("$.currency_code").value("MGA"))
-        .andExpect(jsonPath("$.delivery_cost_id").value(deliveryCost.getId()))
+        .andExpect(jsonPath("$.delivery_cost_id").value(deliveryCost.getId().toString()))
         .andExpect(jsonPath("$.total_amount").value(55000))
-        .andExpect(jsonPath("$.items[0].product_id").value(product.getId()))
+        .andExpect(jsonPath("$.items[0].product_id").value(product.getId().toString()))
         .andExpect(jsonPath("$.items[0].unit_price").value(25000))
         .andExpect(jsonPath("$.recipient.recipient_email").value("jean@example.com"));
   }
@@ -110,7 +111,7 @@ class CheckoutApiIntegrationTest {
   @Test
   void shouldInitiateManualPaymentForOrder() throws Exception {
     Product product = saveProduct("Cloves", "CLO-001", 12000);
-    Long orderId = createOrder(product);
+    UUID orderId = createOrder(product);
 
     String payload =
         objectMapper.writeValueAsString(
@@ -139,7 +140,7 @@ class CheckoutApiIntegrationTest {
   @Test
   void shouldInitiatePaymentWithMockStripeProvider() throws Exception {
     Product product = saveProduct("Lavender", "LAV-001", 8000);
-    Long orderId = createOrder(product);
+    UUID orderId = createOrder(product);
 
     String payload =
         objectMapper.writeValueAsString(
@@ -166,7 +167,7 @@ class CheckoutApiIntegrationTest {
   @Test
   void shouldUpdateOrderStatusUsingContractPayload() throws Exception {
     Product product = saveProduct("Cinnamon", "CIN-001", 9000);
-    Long orderId = createOrder(product);
+    UUID orderId = createOrder(product);
     String adminToken = loginAsAdmin("admin-status@example.com", "secret123");
 
     String payload = objectMapper.writeValueAsString(Map.of("status", "confirmed"));
@@ -178,15 +179,15 @@ class CheckoutApiIntegrationTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(payload))
         .andExpect(status().isOk())
-        .andExpect(jsonPath("$.id").value(orderId))
+        .andExpect(jsonPath("$.id").value(orderId.toString()))
         .andExpect(jsonPath("$.status").value("confirmed"));
   }
 
   @Test
   void shouldListAllOrdersWithStatusFilter() throws Exception {
     Product product = saveProduct("Vanilla", "VAN-002", 15000);
-    Long pendingOrderId = createOrder(product);
-    Long confirmedOrderId = createOrder(product);
+    UUID pendingOrderId = createOrder(product);
+    UUID confirmedOrderId = createOrder(product);
     String adminToken = loginAsAdmin("admin-list@example.com", "secret123");
 
     String statusPayload = objectMapper.writeValueAsString(Map.of("status", "confirmed"));
@@ -208,24 +209,24 @@ class CheckoutApiIntegrationTest {
                 .queryParam("per_page", "10"))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.meta.total").value(1))
-        .andExpect(jsonPath("$.data[0].id").value(confirmedOrderId))
+        .andExpect(jsonPath("$.data[0].id").value(confirmedOrderId.toString()))
         .andExpect(jsonPath("$.data[0].status").value("confirmed"));
 
     mockMvc
         .perform(get("/orders/{id}", pendingOrderId))
         .andExpect(status().isOk())
-        .andExpect(jsonPath("$.id").value(pendingOrderId));
+        .andExpect(jsonPath("$.id").value(pendingOrderId.toString()));
   }
 
   @Test
   void shouldCancelOrder() throws Exception {
     Product product = saveProduct("Ginger", "GIN-001", 7000);
-    Long orderId = createOrder(product);
+    UUID orderId = createOrder(product);
 
     mockMvc
         .perform(post("/orders/{id}/cancel", orderId))
         .andExpect(status().isOk())
-        .andExpect(jsonPath("$.id").value(orderId))
+        .andExpect(jsonPath("$.id").value(orderId.toString()))
         .andExpect(jsonPath("$.status").value("cancelled"));
   }
 
@@ -238,8 +239,8 @@ class CheckoutApiIntegrationTest {
     String otherToken = login("other@example.com", "secret123");
     String adminToken = loginAsAdmin("admin-owner@example.com", "secret123");
 
-    Long ownedOrderId = createOrder(product, ownerToken);
-    Long guestOrderId = createOrder(product);
+    UUID ownedOrderId = createOrder(product, ownerToken);
+    UUID guestOrderId = createOrder(product);
 
     mockMvc
         .perform(
@@ -249,13 +250,13 @@ class CheckoutApiIntegrationTest {
                 .queryParam("per_page", "10"))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.meta.total").value(1))
-        .andExpect(jsonPath("$.data[0].id").value(ownedOrderId))
+        .andExpect(jsonPath("$.data[0].id").value(ownedOrderId.toString()))
         .andExpect(jsonPath("$.data[0].user_id").exists());
 
     mockMvc
         .perform(get("/orders/{id}", ownedOrderId).header("Authorization", bearer(ownerToken)))
         .andExpect(status().isOk())
-        .andExpect(jsonPath("$.id").value(ownedOrderId))
+        .andExpect(jsonPath("$.id").value(ownedOrderId.toString()))
         .andExpect(jsonPath("$.user_id").exists());
 
     mockMvc
@@ -270,7 +271,7 @@ class CheckoutApiIntegrationTest {
     mockMvc
         .perform(get("/orders/{id}", ownedOrderId).header("Authorization", bearer(adminToken)))
         .andExpect(status().isOk())
-        .andExpect(jsonPath("$.id").value(ownedOrderId));
+        .andExpect(jsonPath("$.id").value(ownedOrderId.toString()));
 
     String manualPaymentPayload =
         objectMapper.writeValueAsString(
@@ -308,7 +309,7 @@ class CheckoutApiIntegrationTest {
                 .queryParam("per_page", "10"))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.meta.total").value(1))
-        .andExpect(jsonPath("$.data[0].id").value(ownedOrderId));
+        .andExpect(jsonPath("$.data[0].id").value(ownedOrderId.toString()));
 
     mockMvc
         .perform(
@@ -356,11 +357,11 @@ class CheckoutApiIntegrationTest {
     return productRepository.save(product);
   }
 
-  private Long createOrder(Product product) throws Exception {
+  private UUID createOrder(Product product) throws Exception {
     return createOrder(product, null);
   }
 
-  private Long createOrder(Product product, String token) throws Exception {
+  private UUID createOrder(Product product, String token) throws Exception {
     String payload =
         objectMapper.writeValueAsString(
             Map.of(
@@ -388,7 +389,7 @@ class CheckoutApiIntegrationTest {
             .getResponse()
             .getContentAsString();
 
-    return objectMapper.readTree(response).get("id").asLong();
+    return UUID.fromString(objectMapper.readTree(response).get("id").asText());
   }
 
   private void registerSimpleUser(String email, String firstname, String lastname, String password)

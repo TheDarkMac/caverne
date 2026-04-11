@@ -39,7 +39,7 @@ public class OrderService {
 
   @Transactional(readOnly = true)
   public Page<org.openapitools.client.model.Order> findAll(
-      OrderStatus status, Long userId, Pageable pageable) {
+      OrderStatus status, UUID userId, Pageable pageable) {
     return orderRepository
         .findAll(withStatus(status).and(withUserId(userId)), pageable)
         .map(orderApiMapper::toOrderModel);
@@ -63,8 +63,7 @@ public class OrderService {
             .date(LocalDateTime.now())
             .status(OrderStatus.PENDING)
             .currencyCode(input.getCurrencyCode())
-            .deliveryCostId(
-                input.getDeliveryCostId() == null ? null : input.getDeliveryCostId().longValue())
+            .deliveryCostId(input.getDeliveryCostId())
             .recipientName(input.getRecipient().getRecipientName())
             .recipientEmail(input.getRecipient().getRecipientEmail())
             .recipientPhone(input.getRecipient().getRecipientPhone())
@@ -81,7 +80,7 @@ public class OrderService {
         input.getItems().stream()
             .map(
                 itemReq -> {
-                  Product product = productService.findById(itemReq.getProductId().longValue());
+                  Product product = productService.findById(itemReq.getProductId());
                   BigDecimal unitPrice =
                       product.getPrices().stream()
                           .filter(
@@ -118,7 +117,7 @@ public class OrderService {
     return orderApiMapper.toOrderModel(orderRepository.save(order));
   }
 
-  public List<org.openapitools.client.model.Payment> listPayments(Long orderId, UserAccount actor) {
+  public List<org.openapitools.client.model.Payment> listPayments(UUID orderId, UserAccount actor) {
     Order order = requireOrderAccess(findOrder(orderId), actor);
     return order.getPayments().stream()
         .map(payment -> orderApiMapper.toPaymentModel(order, payment))
@@ -126,7 +125,7 @@ public class OrderService {
   }
 
   public org.openapitools.client.model.Payment processPayment(
-      Long orderId, org.openapitools.client.model.PaymentInput input, UserAccount actor) {
+      UUID orderId, org.openapitools.client.model.PaymentInput input, UserAccount actor) {
     validatePaymentInput(input);
     Order order = requireOrderAccess(findOrder(orderId), actor);
 
@@ -143,19 +142,11 @@ public class OrderService {
         provider.initiatePayment(
             BigDecimal.valueOf(input.getAmount()), input.getCurrencyCode(), order.getReference());
 
-    int nextPaymentId =
-        order.getPayments().stream()
-                .map(OrderPayment::getPaymentId)
-                .filter(java.util.Objects::nonNull)
-                .max(Integer::compareTo)
-                .orElse(0)
-            + 1;
-
     order
         .getPayments()
         .add(
             OrderPayment.builder()
-                .paymentId(nextPaymentId)
+                .paymentId(UUID.randomUUID())
                 .methodCode(input.getMethodCode())
                 .currencyCode(input.getCurrencyCode())
                 .amount(BigDecimal.valueOf(input.getAmount()))
@@ -168,30 +159,30 @@ public class OrderService {
     return orderApiMapper.toPaymentModel(order, order.getPayments().getLast());
   }
 
-  public org.openapitools.client.model.Order getOrder(Long id) {
+  public org.openapitools.client.model.Order getOrder(UUID id) {
     return orderApiMapper.toOrderModel(findOrder(id));
   }
 
   @Transactional(readOnly = true)
-  public org.openapitools.client.model.Order getOrderForActor(Long id, UserAccount actor) {
+  public org.openapitools.client.model.Order getOrderForActor(UUID id, UserAccount actor) {
     return orderApiMapper.toOrderModel(requireOrderAccess(findOrder(id), actor));
   }
 
   @Transactional
-  public org.openapitools.client.model.Order updateStatus(Long id, OrderStatus status) {
+  public org.openapitools.client.model.Order updateStatus(UUID id, OrderStatus status) {
     Order order = findOrder(id);
     order.setStatus(status);
     return orderApiMapper.toOrderModel(orderRepository.save(order));
   }
 
   @Transactional
-  public org.openapitools.client.model.Order cancelOrder(Long id, UserAccount actor) {
+  public org.openapitools.client.model.Order cancelOrder(UUID id, UserAccount actor) {
     Order order = requireOrderAccess(findOrder(id), actor);
     order.setStatus(OrderStatus.CANCELLED);
     return orderApiMapper.toOrderModel(orderRepository.save(order));
   }
 
-  private Order findOrder(Long id) {
+  private Order findOrder(UUID id) {
     return orderRepository
         .findById(id)
         .orElseThrow(() -> new ResponseStatusException(NOT_FOUND, "Order not found"));
@@ -206,7 +197,7 @@ public class OrderService {
     return (root, query, builder) -> builder.equal(root.get("user").get("id"), user.getId());
   }
 
-  private Specification<Order> withUserId(Long userId) {
+  private Specification<Order> withUserId(UUID userId) {
     return (root, query, builder) ->
         userId == null ? null : builder.equal(root.get("user").get("id"), userId);
   }
@@ -264,8 +255,7 @@ public class OrderService {
     if (input.getDeliveryCostId() == null) {
       return BigDecimal.ZERO;
     }
-    DeliveryCost deliveryCost =
-        deliveryCostService.requireEntityById(input.getDeliveryCostId().longValue());
+    DeliveryCost deliveryCost = deliveryCostService.requireEntityById(input.getDeliveryCostId());
     return deliveryCost.getAmount();
   }
 

@@ -7,7 +7,7 @@ public class UserApiMapper {
 
   public org.openapitools.client.model.User toResponse(UserAccount user) {
     return new org.openapitools.client.model.User()
-        .id(user.getId().intValue())
+        .id(user.getId())
         .firstname(user.getFirstname())
         .lastname(user.getLastname())
         .email(user.getEmail())

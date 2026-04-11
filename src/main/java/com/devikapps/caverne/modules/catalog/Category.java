@@ -2,7 +2,9 @@ package com.devikapps.caverne.modules.catalog;
 
 import jakarta.persistence.*;
 import java.util.List;
+import java.util.UUID;
 import lombok.*;
+import org.hibernate.annotations.UuidGenerator;
 
 @Entity
 @Table(name = "categories")
@@ -12,9 +14,7 @@ import lombok.*;
 @AllArgsConstructor
 @Builder
 public class Category {
-  @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private Long id;
+  @Id @UuidGenerator private UUID id;
 
   private String label;
   private String slug;

@@ -20,8 +20,8 @@ public class ProductApiMapper {
             .map(
                 price ->
                     new org.openapitools.client.model.Price()
-                        .id(price.getId().intValue())
-                        .productId(product.getId().intValue())
+                        .id(price.getId())
+                        .productId(product.getId())
                         .currencyCode(price.getCurrencyCode())
                         .value(price.getValue().doubleValue())
                         .validFrom(price.getValidFrom())
@@ -29,8 +29,20 @@ public class ProductApiMapper {
             .toList();
 
     return new org.openapitools.client.model.Product()
-        .id(product.getId().intValue())
-        .categoryId(product.getCategory() == null ? null : product.getCategory().getId().intValue())
+        .id(product.getId())
+        .category(
+            product.getCategory() == null
+                ? null
+                : new org.openapitools.client.model.Category()
+                    .id(product.getCategory().getId())
+                    .label(product.getCategory().getLabel())
+                    .slug(product.getCategory().getSlug())
+                    .map(product.getCategory().getMap())
+                    .parentId(
+                        product.getCategory().getParent() == null
+                            ? null
+                            : product.getCategory().getParent().getId())
+                    .children(java.util.List.of()))
         .label(product.getLabel())
         .reference(product.getReference())
         .limitDate(product.getLimitDate())
@@ -49,9 +61,9 @@ public class ProductApiMapper {
     product.setSize(input.getSize() == null ? null : input.getSize().toPlainString());
     product.setActive(Boolean.TRUE.equals(input.getIsActive()));
 
-    if (input.getCategoryId() != null) {
+    if (input.getCategory() != null && input.getCategory().getId() != null) {
       Category category = new Category();
-      category.setId(input.getCategoryId().longValue());
+      category.setId(input.getCategory().getId());
       product.setCategory(category);
     } else {
       product.setCategory(null);

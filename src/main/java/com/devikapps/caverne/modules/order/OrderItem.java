@@ -2,7 +2,9 @@ package com.devikapps.caverne.modules.order;
 
 import jakarta.persistence.*;
 import java.math.BigDecimal;
+import java.util.UUID;
 import lombok.*;
+import org.hibernate.annotations.UuidGenerator;
 
 @Entity
 @Table(name = "order_items")
@@ -12,15 +14,13 @@ import lombok.*;
 @AllArgsConstructor
 @Builder
 public class OrderItem {
-  @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private Long id;
+  @Id @UuidGenerator private UUID id;
 
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "order_id")
   private Order order;
 
-  private Long productId; // Reference to product in catalog module
+  private UUID productId; // Reference to product in catalog module
   private String productLabel;
 
   private BigDecimal quantity;

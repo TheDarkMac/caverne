@@ -4,6 +4,7 @@ import static org.springframework.http.HttpStatus.NOT_FOUND;
 import static org.springframework.http.HttpStatus.UNPROCESSABLE_ENTITY;
 
 import java.util.List;
+import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -26,12 +27,11 @@ public class UserAddressService {
 
   public UpsertAddressResult createOrUpdateForUser(
       UserAccount user, org.openapitools.client.model.AddressInput input) {
-    return createOrUpdateForUser(
-        user, input, input.getId() == null ? null : input.getId().longValue());
+    return createOrUpdateForUser(user, input, input.getId());
   }
 
   public UpsertAddressResult createOrUpdateForUser(
-      UserAccount user, org.openapitools.client.model.AddressInput input, Long requestedId) {
+      UserAccount user, org.openapitools.client.model.AddressInput input, UUID requestedId) {
     validate(input);
     UserAddress address =
         requestedId == null
@@ -57,15 +57,15 @@ public class UserAddressService {
   }
 
   public UpsertAddressResult updateForUser(
-      UserAccount user, Long id, org.openapitools.client.model.AddressInput input) {
-    if (input.getId() != null && !id.equals(input.getId().longValue())) {
+      UserAccount user, UUID id, org.openapitools.client.model.AddressInput input) {
+    if (input.getId() != null && !id.equals(input.getId())) {
       throw new ResponseStatusException(
           UNPROCESSABLE_ENTITY, "Address payload id does not match path id");
     }
     return createOrUpdateForUser(user, input, id);
   }
 
-  public void deleteForUser(UserAccount user, Long id) {
+  public void deleteForUser(UserAccount user, UUID id) {
     UserAddress address = findOwnedAddress(user, id);
     boolean wasDefault = address.isDefault();
     userAddressRepository.delete(address);
@@ -84,14 +84,14 @@ public class UserAddressService {
             });
   }
 
-  public org.openapitools.client.model.Address setDefaultForUser(UserAccount user, Long id) {
+  public org.openapitools.client.model.Address setDefaultForUser(UserAccount user, UUID id) {
     UserAddress address = findOwnedAddress(user, id);
     userAddressRepository.clearDefaultForUser(user.getId());
     address.setDefault(true);
     return userAddressApiMapper.toResponse(userAddressRepository.save(address));
   }
 
-  private UserAddress findOwnedAddress(UserAccount user, Long id) {
+  private UserAddress findOwnedAddress(UserAccount user, UUID id) {
     return userAddressRepository
         .findByIdAndUserId(id, user.getId())
         .orElseThrow(() -> new ResponseStatusException(NOT_FOUND, "Address not found"));

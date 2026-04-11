@@ -6,6 +6,7 @@ import static org.springframework.http.HttpStatus.UNPROCESSABLE_ENTITY;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.util.List;
+import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,7 +24,7 @@ public class DeliveryCostService {
     return deliveryCostRepository.findAll().stream().map(this::toModel).toList();
   }
 
-  public org.openapitools.client.model.DeliverCost findById(Long id) {
+  public org.openapitools.client.model.DeliverCost findById(UUID id) {
     return toModel(findEntityById(id));
   }
 
@@ -35,21 +36,21 @@ public class DeliveryCostService {
 
   @Transactional
   public org.openapitools.client.model.DeliverCost update(
-      Long id, org.openapitools.client.model.DeliverCostInput input) {
+      UUID id, org.openapitools.client.model.DeliverCostInput input) {
     DeliveryCost existing = findEntityById(id);
     return toModel(deliveryCostRepository.save(fromInput(input, existing)));
   }
 
   @Transactional
-  public void delete(Long id) {
+  public void delete(UUID id) {
     deliveryCostRepository.delete(findEntityById(id));
   }
 
-  public DeliveryCost requireEntityById(Long id) {
+  public DeliveryCost requireEntityById(UUID id) {
     return findEntityById(id);
   }
 
-  private DeliveryCost findEntityById(Long id) {
+  private DeliveryCost findEntityById(UUID id) {
     return deliveryCostRepository
         .findById(id)
         .orElseThrow(() -> new ResponseStatusException(NOT_FOUND, "Delivery cost not found"));
@@ -72,7 +73,7 @@ public class DeliveryCostService {
 
   private org.openapitools.client.model.DeliverCost toModel(DeliveryCost deliveryCost) {
     return new org.openapitools.client.model.DeliverCost()
-        .id(deliveryCost.getId().intValue())
+        .id(deliveryCost.getId())
         .amount(deliveryCost.getAmount().doubleValue())
         .provider(deliveryCost.getProvider())
         .responseProvider(readResponseProvider(deliveryCost.getResponseProvider()));

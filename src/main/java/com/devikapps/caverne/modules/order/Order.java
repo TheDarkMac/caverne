@@ -6,7 +6,9 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 import lombok.*;
+import org.hibernate.annotations.UuidGenerator;
 
 @Entity
 @Table(name = "orders")
@@ -17,9 +19,7 @@ import lombok.*;
 @Builder
 @ToString
 public class Order {
-  @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private Long id;
+  @Id @UuidGenerator private UUID id;
 
   private String reference;
   private LocalDateTime date;
@@ -29,7 +29,7 @@ public class Order {
 
   private String currencyCode;
 
-  private Long deliveryCostId;
+  private UUID deliveryCostId;
 
   // Recipient info stored in the existing order contact columns.
   @Column(name = "customer_name")

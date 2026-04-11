@@ -4,6 +4,7 @@ import static org.springframework.http.HttpStatus.NOT_FOUND;
 import static org.springframework.http.HttpStatus.UNPROCESSABLE_ENTITY;
 
 import java.util.List;
+import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -27,7 +28,7 @@ public class CategoryService {
     return categoryRepository.findAll().stream().map(categoryApiMapper::toFlatResponse).toList();
   }
 
-  public org.openapitools.client.model.Category findById(Long id) {
+  public org.openapitools.client.model.Category findById(UUID id) {
     return categoryRepository
         .findById(id)
         .map(categoryApiMapper::toTreeResponse)
@@ -39,7 +40,7 @@ public class CategoryService {
     if (input.getId() != null) {
       Category existing =
           categoryRepository
-              .findById(input.getId().longValue())
+              .findById(input.getId())
               .orElseThrow(() -> new ResponseStatusException(NOT_FOUND, "Category not found"));
       Category category = categoryApiMapper.fromInput(input, existing);
       return new UpsertCategoryResult(
@@ -53,8 +54,8 @@ public class CategoryService {
 
   @Transactional
   public UpsertCategoryResult updateCategory(
-      Long id, org.openapitools.client.model.CategoryInput input) {
-    if (input.getId() != null && !id.equals(input.getId().longValue())) {
+      UUID id, org.openapitools.client.model.CategoryInput input) {
+    if (input.getId() != null && !id.equals(input.getId())) {
       throw new ResponseStatusException(
           UNPROCESSABLE_ENTITY, "Category payload id does not match path id");
     }
@@ -67,7 +68,7 @@ public class CategoryService {
   }
 
   @Transactional
-  public void delete(Long id) {
+  public void delete(UUID id) {
     categoryRepository.deleteById(id);
   }
 

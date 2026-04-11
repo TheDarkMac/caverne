@@ -8,8 +8,10 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.devikapps.caverne.TestcontainersConfiguration;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.util.Map;
+import java.util.UUID;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -226,7 +228,8 @@ class UserAuthIntegrationTest {
             .getResponse()
             .getContentAsString();
 
-    Integer firstAddressId = org.openapitools.client.model.Address.fromJson(firstResponse).getId();
+    java.util.UUID firstAddressId =
+        org.openapitools.client.model.Address.fromJson(firstResponse).getId();
 
     String secondAddressPayload =
         objectMapper.writeValueAsString(
@@ -249,16 +252,18 @@ class UserAuthIntegrationTest {
             .getResponse()
             .getContentAsString();
 
-    Integer secondAddressId =
+    java.util.UUID secondAddressId =
         org.openapitools.client.model.Address.fromJson(secondResponse).getId();
 
-    mockMvc
-        .perform(get("/users/me/addresses").header("Authorization", bearer(token)))
-        .andExpect(status().isOk())
-        .andExpect(jsonPath("$[0].id").value(firstAddressId))
-        .andExpect(jsonPath("$[0].is_default").value(true))
-        .andExpect(jsonPath("$[1].id").value(secondAddressId))
-        .andExpect(jsonPath("$[1].country_code").value("MG"));
+    String listedAddresses =
+        mockMvc
+            .perform(get("/users/me/addresses").header("Authorization", bearer(token)))
+            .andExpect(status().isOk())
+            .andReturn()
+            .getResponse()
+            .getContentAsString();
+    assertAddressState(listedAddresses, firstAddressId, true, "MG");
+    assertAddressState(listedAddresses, secondAddressId, false, "MG");
 
     String updatePayload =
         objectMapper.writeValueAsString(
@@ -283,16 +288,18 @@ class UserAuthIntegrationTest {
             put("/users/me/addresses/{id}/default", secondAddressId)
                 .header("Authorization", bearer(token)))
         .andExpect(status().isOk())
-        .andExpect(jsonPath("$.id").value(secondAddressId))
+        .andExpect(jsonPath("$.id").value(secondAddressId.toString()))
         .andExpect(jsonPath("$.is_default").value(true));
 
-    mockMvc
-        .perform(get("/users/me/addresses").header("Authorization", bearer(token)))
-        .andExpect(status().isOk())
-        .andExpect(jsonPath("$[0].id").value(firstAddressId))
-        .andExpect(jsonPath("$[0].is_default").value(false))
-        .andExpect(jsonPath("$[1].id").value(secondAddressId))
-        .andExpect(jsonPath("$[1].is_default").value(true));
+    String updatedAddresses =
+        mockMvc
+            .perform(get("/users/me/addresses").header("Authorization", bearer(token)))
+            .andExpect(status().isOk())
+            .andReturn()
+            .getResponse()
+            .getContentAsString();
+    assertAddressState(updatedAddresses, firstAddressId, false, "MG");
+    assertAddressState(updatedAddresses, secondAddressId, true, "MG");
 
     String postUpdatePayload =
         objectMapper.writeValueAsString(
@@ -310,13 +317,14 @@ class UserAuthIntegrationTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(postUpdatePayload))
         .andExpect(status().isOk())
-        .andExpect(jsonPath("$.id").value(firstAddressId))
+        .andExpect(jsonPath("$.id").value(firstAddressId.toString()))
         .andExpect(jsonPath("$.location").value("Lot II M 99 Analakely"));
 
+    UUID newAddressId = UUID.randomUUID();
     String putCreatePayload =
         objectMapper.writeValueAsString(
             Map.of(
-                "id", 9999,
+                "id", newAddressId,
                 "location", "Lot IV A 40 Ivandry",
                 "postal_code", "103",
                 "country_code", "MG",
@@ -324,12 +332,12 @@ class UserAuthIntegrationTest {
 
     mockMvc
         .perform(
-            put("/users/me/addresses/{id}", 9999)
+            put("/users/me/addresses/{id}", newAddressId)
                 .header("Authorization", bearer(token))
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(putCreatePayload))
         .andExpect(status().isCreated())
-        .andExpect(jsonPath("$.id").isNumber())
+        .andExpect(jsonPath("$.id").isString())
         .andExpect(jsonPath("$.location").value("Lot IV A 40 Ivandry"));
 
     mockMvc
@@ -338,11 +346,15 @@ class UserAuthIntegrationTest {
                 .header("Authorization", bearer(token)))
         .andExpect(status().isNoContent());
 
-    mockMvc
-        .perform(get("/users/me/addresses").header("Authorization", bearer(token)))
-        .andExpect(status().isOk())
-        .andExpect(jsonPath("$[0].id").value(firstAddressId))
-        .andExpect(jsonPath("$[0].is_default").value(true));
+    String remainingAddresses =
+        mockMvc
+            .perform(get("/users/me/addresses").header("Authorization", bearer(token)))
+            .andExpect(status().isOk())
+            .andReturn()
+            .getResponse()
+            .getContentAsString();
+    assertContainsAddress(remainingAddresses, firstAddressId, "MG");
+    assertSingleDefaultAddress(remainingAddresses);
   }
 
   private void registerSimpleUser(String email, String firstname, String lastname, String password)
@@ -406,5 +418,45 @@ class UserAuthIntegrationTest {
 
   private String bearer(String token) {
     return "Bearer " + token;
+  }
+
+  private void assertAddressState(
+      String addressesJson, UUID addressId, boolean isDefault, String countryCode)
+      throws Exception {
+    JsonNode address = findAddress(addressesJson, addressId);
+    org.junit.jupiter.api.Assertions.assertNotNull(address);
+    org.junit.jupiter.api.Assertions.assertEquals(
+        isDefault, address.path("is_default").asBoolean());
+    org.junit.jupiter.api.Assertions.assertEquals(
+        countryCode, address.path("country_code").asText());
+  }
+
+  private void assertContainsAddress(String addressesJson, UUID addressId, String countryCode)
+      throws Exception {
+    JsonNode address = findAddress(addressesJson, addressId);
+    org.junit.jupiter.api.Assertions.assertNotNull(address);
+    org.junit.jupiter.api.Assertions.assertEquals(
+        countryCode, address.path("country_code").asText());
+  }
+
+  private void assertSingleDefaultAddress(String addressesJson) throws Exception {
+    JsonNode addresses = objectMapper.readTree(addressesJson);
+    int defaultCount = 0;
+    for (JsonNode candidate : addresses) {
+      if (candidate.path("is_default").asBoolean()) {
+        defaultCount++;
+      }
+    }
+    org.junit.jupiter.api.Assertions.assertEquals(1, defaultCount);
+  }
+
+  private JsonNode findAddress(String addressesJson, UUID addressId) throws Exception {
+    JsonNode addresses = objectMapper.readTree(addressesJson);
+    for (JsonNode candidate : addresses) {
+      if (addressId.toString().equals(candidate.path("id").asText())) {
+        return candidate;
+      }
+    }
+    return null;
   }
 }

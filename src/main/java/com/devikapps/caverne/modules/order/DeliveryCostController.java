@@ -4,6 +4,7 @@ import static org.springframework.http.HttpStatus.UNPROCESSABLE_ENTITY;
 
 import com.devikapps.caverne.modules.user.SecurityActorResolver;
 import java.io.IOException;
+import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.openapitools.client.JSON;
 import org.springframework.http.HttpStatus;
@@ -33,7 +34,7 @@ public class DeliveryCostController {
   }
 
   @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-  public String getDeliveryCost(@PathVariable Long id) {
+  public String getDeliveryCost(@PathVariable UUID id) {
     return JSON.getGson().toJson(deliveryCostService.findById(id));
   }
 
@@ -45,14 +46,14 @@ public class DeliveryCostController {
   }
 
   @PutMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-  public String updateDeliveryCost(@PathVariable Long id, @RequestBody String rawBody) {
+  public String updateDeliveryCost(@PathVariable UUID id, @RequestBody String rawBody) {
     securityActorResolver.requireAdmin();
     return JSON.getGson().toJson(deliveryCostService.update(id, parseInput(rawBody)));
   }
 
   @DeleteMapping("/{id}")
   @ResponseStatus(HttpStatus.NO_CONTENT)
-  public void deleteDeliveryCost(@PathVariable Long id) {
+  public void deleteDeliveryCost(@PathVariable UUID id) {
     securityActorResolver.requireAdmin();
     deliveryCostService.delete(id);
   }

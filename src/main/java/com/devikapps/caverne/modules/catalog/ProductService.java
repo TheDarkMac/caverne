@@ -3,6 +3,7 @@ package com.devikapps.caverne.modules.catalog;
 import static org.springframework.http.HttpStatus.NOT_FOUND;
 import static org.springframework.http.HttpStatus.UNPROCESSABLE_ENTITY;
 
+import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -20,7 +21,7 @@ public class ProductService {
   private final ProductApiMapper productApiMapper;
 
   public Page<org.openapitools.client.model.Product> findAll(
-      Long categoryId, Boolean isActive, String search, String currency, Pageable pageable) {
+      UUID categoryId, Boolean isActive, String search, String currency, Pageable pageable) {
     Page<Product> page =
         productRepository.findAll(
             Specification.where(withCategory(categoryId))
@@ -35,7 +36,7 @@ public class ProductService {
   @Transactional
   public UpsertProductResult createProduct(org.openapitools.client.model.ProductInput input) {
     if (input.getId() != null) {
-      Product existing = productRepository.findById(input.getId().longValue()).orElse(null);
+      Product existing = productRepository.findById(input.getId()).orElse(null);
       Product product = productApiMapper.fromInput(input, existing);
       return new UpsertProductResult(
           productApiMapper.toResponse(productRepository.save(product), null), existing == null);
@@ -48,8 +49,8 @@ public class ProductService {
 
   @Transactional
   public UpsertProductResult updateProduct(
-      Long id, org.openapitools.client.model.ProductInput input) {
-    if (input.getId() != null && !id.equals(input.getId().longValue())) {
+      UUID id, org.openapitools.client.model.ProductInput input) {
+    if (input.getId() != null && !id.equals(input.getId())) {
       throw new ResponseStatusException(
           UNPROCESSABLE_ENTITY, "Product payload id does not match path id");
     }
@@ -60,22 +61,22 @@ public class ProductService {
         productApiMapper.toResponse(productRepository.save(product), null), existing == null);
   }
 
-  public Product findById(Long id) {
+  public Product findById(UUID id) {
     return productRepository
         .findById(id)
         .orElseThrow(() -> new ResponseStatusException(NOT_FOUND, "Product not found"));
   }
 
-  public org.openapitools.client.model.Product findResponseById(Long id) {
+  public org.openapitools.client.model.Product findResponseById(UUID id) {
     return productApiMapper.toResponse(findById(id), null);
   }
 
   @Transactional
-  public void deleteProduct(Long id) {
+  public void deleteProduct(UUID id) {
     productRepository.deleteById(id);
   }
 
-  private Specification<Product> withCategory(Long categoryId) {
+  private Specification<Product> withCategory(UUID categoryId) {
     return (root, query, builder) ->
         categoryId == null ? null : builder.equal(root.get("category").get("id"), categoryId);
   }

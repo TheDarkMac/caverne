@@ -15,6 +15,7 @@ import java.time.LocalDateTime;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -66,7 +67,7 @@ class StripeWebhookIntegrationTest {
                 .payments(
                     List.of(
                         OrderPayment.builder()
-                            .paymentId(1)
+                            .paymentId(UUID.randomUUID())
                             .methodCode("STRIPE")
                             .currencyCode("MGA")
                             .amount(BigDecimal.valueOf(15000))
