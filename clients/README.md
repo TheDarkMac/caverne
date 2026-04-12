@@ -2,7 +2,7 @@
 
 La Caverne Malgache API
 - API version: 1.0.0
-  - Build date: 2026-04-11T07:12:32.659476305+03:00[Indian/Antananarivo]
+  - Build date: 2026-04-12T22:28:25.090854047+03:00[Indian/Antananarivo]
   - Generator version: 7.21.0
 
 Documentation OpenAPI de La Caverne Malagasy.
@@ -187,6 +187,8 @@ Class | Method | HTTP request | Description
  - [PaymentMethodInput](docs/PaymentMethodInput.md)
  - [Price](docs/Price.md)
  - [Product](docs/Product.md)
+ - [ProductImage](docs/ProductImage.md)
+ - [ProductImageInput](docs/ProductImageInput.md)
  - [ProductInput](docs/ProductInput.md)
  - [ProductsGet200Response](docs/ProductsGet200Response.md)
  - [RecipientInput](docs/RecipientInput.md)

@@ -140,7 +140,7 @@ public class OrderService {
 
     PaymentResponse response =
         provider.initiatePayment(
-            BigDecimal.valueOf(input.getAmount()), input.getCurrencyCode(), order.getReference());
+            resolvePaymentAmount(order, input), input.getCurrencyCode(), order.getReference());
 
     order
         .getPayments()
@@ -149,7 +149,7 @@ public class OrderService {
                 .paymentId(UUID.randomUUID())
                 .methodCode(input.getMethodCode())
                 .currencyCode(input.getCurrencyCode())
-                .amount(BigDecimal.valueOf(input.getAmount()))
+                .amount(resolvePaymentAmount(order, input))
                 .date(LocalDateTime.now())
                 .status(response.status())
                 .internalReference(response.transactionId())
@@ -267,6 +267,16 @@ public class OrderService {
         || input.getAmount() <= 0) {
       throw new ResponseStatusException(UNPROCESSABLE_ENTITY, "payment input is invalid");
     }
+  }
+
+  private BigDecimal resolvePaymentAmount(Order order, org.openapitools.client.model.PaymentInput input) {
+    BigDecimal totalAmount = order.getTotalAmount() == null ? BigDecimal.ZERO : order.getTotalAmount();
+    BigDecimal requestedAmount = BigDecimal.valueOf(input.getAmount());
+    if (requestedAmount.compareTo(totalAmount) != 0) {
+      throw new ResponseStatusException(
+          UNPROCESSABLE_ENTITY, "payment amount must match the order total amount");
+    }
+    return totalAmount;
   }
 
   private boolean isBlank(String value) {

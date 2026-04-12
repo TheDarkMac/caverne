@@ -9,7 +9,6 @@
 |------------ | ------------- | ------------- | -------------|
 |**id** | **UUID** |  |  [optional] |
 |**userId** | **UUID** |  |  [optional] |
-|**addressId** | **UUID** |  |  [optional] |
 |**currencyCode** | **String** |  |  [optional] |
 |**reference** | **String** |  |  [optional] |
 |**date** | **OffsetDateTime** |  |  [optional] |

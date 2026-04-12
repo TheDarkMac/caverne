@@ -64,6 +64,14 @@ public class CategoryInputTest {
     }
 
     /**
+     * Test the property 'icon'
+     */
+    @Test
+    public void iconTest() {
+        // TODO: test icon
+    }
+
+    /**
      * Test the property 'map'
      */
     @Test

@@ -20,6 +20,7 @@ import com.google.gson.annotations.SerializedName;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
 import java.io.IOException;
+import java.net.URI;
 import java.util.Arrays;
 import java.util.UUID;
 
@@ -47,29 +48,53 @@ import java.util.Set;
 import org.openapitools.client.JSON;
 
 /**
- * OrderItem
+ * ProductImage
  */
 @javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2026-04-12T22:28:25.090854047+03:00[Indian/Antananarivo]", comments = "Generator version: 7.21.0")
-public class OrderItem {
+public class ProductImage {
+  public static final String SERIALIZED_NAME_ID = "id";
+  @SerializedName(SERIALIZED_NAME_ID)
+  @javax.annotation.Nullable
+  private UUID id;
+
   public static final String SERIALIZED_NAME_PRODUCT_ID = "product_id";
   @SerializedName(SERIALIZED_NAME_PRODUCT_ID)
   @javax.annotation.Nullable
   private UUID productId;
 
-  public static final String SERIALIZED_NAME_QUANTITY = "quantity";
-  @SerializedName(SERIALIZED_NAME_QUANTITY)
+  public static final String SERIALIZED_NAME_URL = "url";
+  @SerializedName(SERIALIZED_NAME_URL)
   @javax.annotation.Nullable
-  private Double quantity;
+  private URI url;
 
-  public static final String SERIALIZED_NAME_UNIT_PRICE = "unit_price";
-  @SerializedName(SERIALIZED_NAME_UNIT_PRICE)
+  public static final String SERIALIZED_NAME_IS_MAIN = "is_main";
+  @SerializedName(SERIALIZED_NAME_IS_MAIN)
   @javax.annotation.Nullable
-  private Double unitPrice;
+  private Boolean isMain = false;
 
-  public OrderItem() {
+  public ProductImage() {
   }
 
-  public OrderItem productId(@javax.annotation.Nullable UUID productId) {
+  public ProductImage id(@javax.annotation.Nullable UUID id) {
+    this.id = id;
+    return this;
+  }
+
+  /**
+   * Get id
+   * @return id
+   */
+  @javax.annotation.Nullable
+  public UUID getId() {
+    return id;
+  }
+
+  public void setId(@javax.annotation.Nullable UUID id) {
+    this.id = id;
+  }
+
+
+  public ProductImage productId(@javax.annotation.Nullable UUID productId) {
     this.productId = productId;
     return this;
   }
@@ -88,41 +113,41 @@ public class OrderItem {
   }
 
 
-  public OrderItem quantity(@javax.annotation.Nullable Double quantity) {
-    this.quantity = quantity;
+  public ProductImage url(@javax.annotation.Nullable URI url) {
+    this.url = url;
     return this;
   }
 
   /**
-   * Get quantity
-   * @return quantity
+   * Get url
+   * @return url
    */
   @javax.annotation.Nullable
-  public Double getQuantity() {
-    return quantity;
+  public URI getUrl() {
+    return url;
   }
 
-  public void setQuantity(@javax.annotation.Nullable Double quantity) {
-    this.quantity = quantity;
+  public void setUrl(@javax.annotation.Nullable URI url) {
+    this.url = url;
   }
 
 
-  public OrderItem unitPrice(@javax.annotation.Nullable Double unitPrice) {
-    this.unitPrice = unitPrice;
+  public ProductImage isMain(@javax.annotation.Nullable Boolean isMain) {
+    this.isMain = isMain;
     return this;
   }
 
   /**
-   * Get unitPrice
-   * @return unitPrice
+   * Get isMain
+   * @return isMain
    */
   @javax.annotation.Nullable
-  public Double getUnitPrice() {
-    return unitPrice;
+  public Boolean getIsMain() {
+    return isMain;
   }
 
-  public void setUnitPrice(@javax.annotation.Nullable Double unitPrice) {
-    this.unitPrice = unitPrice;
+  public void setIsMain(@javax.annotation.Nullable Boolean isMain) {
+    this.isMain = isMain;
   }
 
 
@@ -135,24 +160,26 @@ public class OrderItem {
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    OrderItem orderItem = (OrderItem) o;
-    return Objects.equals(this.productId, orderItem.productId) &&
-        Objects.equals(this.quantity, orderItem.quantity) &&
-        Objects.equals(this.unitPrice, orderItem.unitPrice);
+    ProductImage productImage = (ProductImage) o;
+    return Objects.equals(this.id, productImage.id) &&
+        Objects.equals(this.productId, productImage.productId) &&
+        Objects.equals(this.url, productImage.url) &&
+        Objects.equals(this.isMain, productImage.isMain);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(productId, quantity, unitPrice);
+    return Objects.hash(id, productId, url, isMain);
   }
 
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
-    sb.append("class OrderItem {\n");
+    sb.append("class ProductImage {\n");
+    sb.append("    id: ").append(toIndentedString(id)).append("\n");
     sb.append("    productId: ").append(toIndentedString(productId)).append("\n");
-    sb.append("    quantity: ").append(toIndentedString(quantity)).append("\n");
-    sb.append("    unitPrice: ").append(toIndentedString(unitPrice)).append("\n");
+    sb.append("    url: ").append(toIndentedString(url)).append("\n");
+    sb.append("    isMain: ").append(toIndentedString(isMain)).append("\n");
     sb.append("}");
     return sb.toString();
   }
@@ -171,7 +198,7 @@ public class OrderItem {
 
   static {
     // a set of all properties/fields (JSON key names)
-    openapiFields = new HashSet<String>(Arrays.asList("product_id", "quantity", "unit_price"));
+    openapiFields = new HashSet<String>(Arrays.asList("id", "product_id", "url", "is_main"));
 
     // a set of required properties/fields (JSON key names)
     openapiRequiredFields = new HashSet<String>(0);
@@ -181,25 +208,31 @@ public class OrderItem {
    * Validates the JSON Element and throws an exception if issues found
    *
    * @param jsonElement JSON Element
-   * @throws IOException if the JSON Element is invalid with respect to OrderItem
+   * @throws IOException if the JSON Element is invalid with respect to ProductImage
    */
   public static void validateJsonElement(JsonElement jsonElement) throws IOException {
       if (jsonElement == null) {
-        if (!OrderItem.openapiRequiredFields.isEmpty()) { // has required fields but JSON element is null
-          throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "The required field(s) %s in OrderItem is not found in the empty JSON string", OrderItem.openapiRequiredFields.toString()));
+        if (!ProductImage.openapiRequiredFields.isEmpty()) { // has required fields but JSON element is null
+          throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "The required field(s) %s in ProductImage is not found in the empty JSON string", ProductImage.openapiRequiredFields.toString()));
         }
       }
 
       Set<Map.Entry<String, JsonElement>> entries = jsonElement.getAsJsonObject().entrySet();
       // check to see if the JSON string contains additional fields
       for (Map.Entry<String, JsonElement> entry : entries) {
-        if (!OrderItem.openapiFields.contains(entry.getKey())) {
-          throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "The field `%s` in the JSON string is not defined in the `OrderItem` properties. JSON: %s", entry.getKey(), jsonElement.toString()));
+        if (!ProductImage.openapiFields.contains(entry.getKey())) {
+          throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "The field `%s` in the JSON string is not defined in the `ProductImage` properties. JSON: %s", entry.getKey(), jsonElement.toString()));
         }
       }
         JsonObject jsonObj = jsonElement.getAsJsonObject();
+      if ((jsonObj.get("id") != null && !jsonObj.get("id").isJsonNull()) && !jsonObj.get("id").isJsonPrimitive()) {
+        throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "Expected the field `id` to be a primitive type in the JSON string but got `%s`", jsonObj.get("id").toString()));
+      }
       if ((jsonObj.get("product_id") != null && !jsonObj.get("product_id").isJsonNull()) && !jsonObj.get("product_id").isJsonPrimitive()) {
         throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "Expected the field `product_id` to be a primitive type in the JSON string but got `%s`", jsonObj.get("product_id").toString()));
+      }
+      if ((jsonObj.get("url") != null && !jsonObj.get("url").isJsonNull()) && !jsonObj.get("url").isJsonPrimitive()) {
+        throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "Expected the field `url` to be a primitive type in the JSON string but got `%s`", jsonObj.get("url").toString()));
       }
   }
 
@@ -207,22 +240,22 @@ public class OrderItem {
     @SuppressWarnings("unchecked")
     @Override
     public <T> TypeAdapter<T> create(Gson gson, TypeToken<T> type) {
-       if (!OrderItem.class.isAssignableFrom(type.getRawType())) {
-         return null; // this class only serializes 'OrderItem' and its subtypes
+       if (!ProductImage.class.isAssignableFrom(type.getRawType())) {
+         return null; // this class only serializes 'ProductImage' and its subtypes
        }
        final TypeAdapter<JsonElement> elementAdapter = gson.getAdapter(JsonElement.class);
-       final TypeAdapter<OrderItem> thisAdapter
-                        = gson.getDelegateAdapter(this, TypeToken.get(OrderItem.class));
+       final TypeAdapter<ProductImage> thisAdapter
+                        = gson.getDelegateAdapter(this, TypeToken.get(ProductImage.class));
 
-       return (TypeAdapter<T>) new TypeAdapter<OrderItem>() {
+       return (TypeAdapter<T>) new TypeAdapter<ProductImage>() {
            @Override
-           public void write(JsonWriter out, OrderItem value) throws IOException {
+           public void write(JsonWriter out, ProductImage value) throws IOException {
              JsonObject obj = thisAdapter.toJsonTree(value).getAsJsonObject();
              elementAdapter.write(out, obj);
            }
 
            @Override
-           public OrderItem read(JsonReader in) throws IOException {
+           public ProductImage read(JsonReader in) throws IOException {
              JsonElement jsonElement = elementAdapter.read(in);
              validateJsonElement(jsonElement);
              return thisAdapter.fromJsonTree(jsonElement);
@@ -233,18 +266,18 @@ public class OrderItem {
   }
 
   /**
-   * Create an instance of OrderItem given an JSON string
+   * Create an instance of ProductImage given an JSON string
    *
    * @param jsonString JSON string
-   * @return An instance of OrderItem
-   * @throws IOException if the JSON string is invalid with respect to OrderItem
+   * @return An instance of ProductImage
+   * @throws IOException if the JSON string is invalid with respect to ProductImage
    */
-  public static OrderItem fromJson(String jsonString) throws IOException {
-    return JSON.getGson().fromJson(jsonString, OrderItem.class);
+  public static ProductImage fromJson(String jsonString) throws IOException {
+    return JSON.getGson().fromJson(jsonString, ProductImage.class);
   }
 
   /**
-   * Convert an instance of OrderItem to an JSON string
+   * Convert an instance of ProductImage to an JSON string
    *
    * @return JSON string
    */

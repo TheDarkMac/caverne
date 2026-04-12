@@ -55,7 +55,7 @@ import org.openapitools.client.JSON;
 /**
  * Order
  */
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2026-04-11T07:12:32.659476305+03:00[Indian/Antananarivo]", comments = "Generator version: 7.21.0")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2026-04-12T22:28:25.090854047+03:00[Indian/Antananarivo]", comments = "Generator version: 7.21.0")
 public class Order {
   public static final String SERIALIZED_NAME_ID = "id";
   @SerializedName(SERIALIZED_NAME_ID)
@@ -66,11 +66,6 @@ public class Order {
   @SerializedName(SERIALIZED_NAME_USER_ID)
   @javax.annotation.Nullable
   private UUID userId;
-
-  public static final String SERIALIZED_NAME_ADDRESS_ID = "address_id";
-  @SerializedName(SERIALIZED_NAME_ADDRESS_ID)
-  @javax.annotation.Nullable
-  private UUID addressId;
 
   public static final String SERIALIZED_NAME_CURRENCY_CODE = "currency_code";
   @SerializedName(SERIALIZED_NAME_CURRENCY_CODE)
@@ -211,25 +206,6 @@ public class Order {
 
   public void setUserId(@javax.annotation.Nullable UUID userId) {
     this.userId = userId;
-  }
-
-
-  public Order addressId(@javax.annotation.Nullable UUID addressId) {
-    this.addressId = addressId;
-    return this;
-  }
-
-  /**
-   * Get addressId
-   * @return addressId
-   */
-  @javax.annotation.Nullable
-  public UUID getAddressId() {
-    return addressId;
-  }
-
-  public void setAddressId(@javax.annotation.Nullable UUID addressId) {
-    this.addressId = addressId;
   }
 
 
@@ -424,7 +400,6 @@ public class Order {
     Order order = (Order) o;
     return Objects.equals(this.id, order.id) &&
         Objects.equals(this.userId, order.userId) &&
-        Objects.equals(this.addressId, order.addressId) &&
         Objects.equals(this.currencyCode, order.currencyCode) &&
         Objects.equals(this.reference, order.reference) &&
         Objects.equals(this.date, order.date) &&
@@ -442,7 +417,7 @@ public class Order {
 
   @Override
   public int hashCode() {
-    return Objects.hash(id, userId, addressId, currencyCode, reference, date, status, totalAmount, deliveryCostId, items, recipient, providerResponse);
+    return Objects.hash(id, userId, currencyCode, reference, date, status, totalAmount, deliveryCostId, items, recipient, providerResponse);
   }
 
   private static <T> int hashCodeNullable(JsonNullable<T> a) {
@@ -458,7 +433,6 @@ public class Order {
     sb.append("class Order {\n");
     sb.append("    id: ").append(toIndentedString(id)).append("\n");
     sb.append("    userId: ").append(toIndentedString(userId)).append("\n");
-    sb.append("    addressId: ").append(toIndentedString(addressId)).append("\n");
     sb.append("    currencyCode: ").append(toIndentedString(currencyCode)).append("\n");
     sb.append("    reference: ").append(toIndentedString(reference)).append("\n");
     sb.append("    date: ").append(toIndentedString(date)).append("\n");
@@ -486,7 +460,7 @@ public class Order {
 
   static {
     // a set of all properties/fields (JSON key names)
-    openapiFields = new HashSet<String>(Arrays.asList("id", "user_id", "address_id", "currency_code", "reference", "date", "status", "total_amount", "delivery_cost_id", "items", "recipient", "provider_response"));
+    openapiFields = new HashSet<String>(Arrays.asList("id", "user_id", "currency_code", "reference", "date", "status", "total_amount", "delivery_cost_id", "items", "recipient", "provider_response"));
 
     // a set of required properties/fields (JSON key names)
     openapiRequiredFields = new HashSet<String>(0);
@@ -518,9 +492,6 @@ public class Order {
       }
       if ((jsonObj.get("user_id") != null && !jsonObj.get("user_id").isJsonNull()) && !jsonObj.get("user_id").isJsonPrimitive()) {
         throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "Expected the field `user_id` to be a primitive type in the JSON string but got `%s`", jsonObj.get("user_id").toString()));
-      }
-      if ((jsonObj.get("address_id") != null && !jsonObj.get("address_id").isJsonNull()) && !jsonObj.get("address_id").isJsonPrimitive()) {
-        throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "Expected the field `address_id` to be a primitive type in the JSON string but got `%s`", jsonObj.get("address_id").toString()));
       }
       if ((jsonObj.get("currency_code") != null && !jsonObj.get("currency_code").isJsonNull()) && !jsonObj.get("currency_code").isJsonPrimitive()) {
         throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "Expected the field `currency_code` to be a primitive type in the JSON string but got `%s`", jsonObj.get("currency_code").toString()));

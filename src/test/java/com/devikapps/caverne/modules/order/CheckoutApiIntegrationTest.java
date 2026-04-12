@@ -165,6 +165,66 @@ class CheckoutApiIntegrationTest {
   }
 
   @Test
+  void shouldUseComputedOrderTotalIncludingDeliveryCostForStripePayment() throws Exception {
+    Product product = saveProduct("Pepper", "PEP-DELIVERY", 25000);
+    DeliveryCost deliveryCost =
+        deliveryCostRepository.save(
+            DeliveryCost.builder().amount(BigDecimal.valueOf(5000)).provider("STANDARD").build());
+
+    String orderPayload =
+        objectMapper.writeValueAsString(
+            Map.of(
+                "delivery_cost_id",
+                deliveryCost.getId(),
+                "currency_code",
+                "MGA",
+                "items",
+                List.of(Map.of("product_id", product.getId(), "quantity", 1)),
+                "recipient",
+                Map.of(
+                    "location", "Analakely",
+                    "postal_code", "101",
+                    "country_code", "MDG",
+                    "recipient_name", "Guest Buyer",
+                    "recipient_email", "guest@example.com",
+                    "recipient_phone", "+261340000000")));
+
+    String orderResponse =
+        mockMvc
+            .perform(post("/orders").contentType(MediaType.APPLICATION_JSON).content(orderPayload))
+            .andExpect(status().isCreated())
+            .andExpect(jsonPath("$.total_amount").value(30000))
+            .andReturn()
+            .getResponse()
+            .getContentAsString();
+    UUID orderId = UUID.fromString(objectMapper.readTree(orderResponse).get("id").asText());
+
+    String paymentPayload =
+        objectMapper.writeValueAsString(
+            Map.of("method_code", "STRIPE", "currency_code", "MGA", "amount", 30000));
+
+    mockMvc
+        .perform(
+            post("/orders/{id}/payments", orderId)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(paymentPayload))
+        .andExpect(status().isCreated())
+        .andExpect(jsonPath("$.amount").value(30000))
+        .andExpect(jsonPath("$.provider_response.checkout_url").exists());
+
+    String wrongAmountPayload =
+        objectMapper.writeValueAsString(
+            Map.of("method_code", "STRIPE", "currency_code", "MGA", "amount", 25000));
+
+    mockMvc
+        .perform(
+            post("/orders/{id}/payments", orderId)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(wrongAmountPayload))
+        .andExpect(status().isUnprocessableEntity());
+  }
+
+  @Test
   void shouldUpdateOrderStatusUsingContractPayload() throws Exception {
     Product product = saveProduct("Cinnamon", "CIN-001", 9000);
     UUID orderId = createOrder(product);

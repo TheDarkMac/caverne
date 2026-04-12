@@ -9,7 +9,7 @@ info:
   version: 1.0.0
 servers:
 - description: Serveur avec préfixe API versionné
-  url: "http://localhost:8080/api/{version}"
+  url: http://localhost:8080/api/v1
   variables:
     version:
       default: v1
@@ -1668,6 +1668,7 @@ components:
         - null
         - null
         parent_id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+        icon: icon
         id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
         label: label
         map: map
@@ -1679,6 +1680,9 @@ components:
         label:
           type: string
         slug:
+          type: string
+        icon:
+          nullable: true
           type: string
         map:
           maxLength: 100
@@ -1695,6 +1699,7 @@ components:
     CategoryInput:
       example:
         parent_id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+        icon: icon
         id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
         label: label
         map: map
@@ -1707,6 +1712,9 @@ components:
         label:
           type: string
         slug:
+          type: string
+        icon:
+          nullable: true
           type: string
         map:
           type: string
@@ -1731,6 +1739,15 @@ components:
     Product:
       example:
         reference: reference
+        images:
+        - product_id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+          is_main: false
+          id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+          url: https://openapi-generator.tech
+        - product_id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+          is_main: false
+          id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+          url: https://openapi-generator.tech
         is_active: true
         size: 0.8008281904610115
         limit_date: 2000-01-23
@@ -1742,6 +1759,7 @@ components:
           - null
           - null
           parent_id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+          icon: icon
           id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
           label: label
           map: map
@@ -1782,6 +1800,10 @@ components:
         is_active:
           default: true
           type: boolean
+        images:
+          items:
+            $ref: "#/components/schemas/ProductImage"
+          type: array
         prices:
           items:
             $ref: "#/components/schemas/Price"
@@ -1790,6 +1812,13 @@ components:
     ProductInput:
       example:
         reference: reference
+        images:
+        - is_main: true
+          id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+          url: https://openapi-generator.tech
+        - is_main: true
+          id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+          url: https://openapi-generator.tech
         is_active: true
         size: 0.8008281904610115
         limit_date: 2000-01-23
@@ -1818,10 +1847,52 @@ components:
           type: number
         is_active:
           type: boolean
+        images:
+          items:
+            $ref: "#/components/schemas/ProductImageInput"
+          type: array
       required:
       - category
       - label
       - reference
+      type: object
+    ProductImage:
+      example:
+        product_id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+        is_main: false
+        id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+        url: https://openapi-generator.tech
+      properties:
+        id:
+          format: uuid
+          type: string
+        product_id:
+          format: uuid
+          type: string
+        url:
+          format: uri
+          type: string
+        is_main:
+          default: false
+          type: boolean
+      type: object
+    ProductImageInput:
+      example:
+        is_main: true
+        id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+        url: https://openapi-generator.tech
+      properties:
+        id:
+          format: uuid
+          nullable: true
+          type: string
+        url:
+          format: uri
+          type: string
+        is_main:
+          type: boolean
+      required:
+      - url
       type: object
     Price:
       example:
@@ -1873,7 +1944,6 @@ components:
         delivery_cost_id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
         user_id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
         total_amount: 0.8008281904610115
-        address_id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
         recipient:
           country_code: country_code
           recipient_email: recipient_email
@@ -1897,9 +1967,6 @@ components:
           format: uuid
           type: string
         user_id:
-          format: uuid
-          type: string
-        address_id:
           format: uuid
           type: string
         currency_code:
@@ -2190,6 +2257,15 @@ components:
       example:
         data:
         - reference: reference
+          images:
+          - product_id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+            is_main: false
+            id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+            url: https://openapi-generator.tech
+          - product_id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+            is_main: false
+            id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+            url: https://openapi-generator.tech
           is_active: true
           size: 0.8008281904610115
           limit_date: 2000-01-23
@@ -2201,6 +2277,7 @@ components:
             - null
             - null
             parent_id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+            icon: icon
             id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
             label: label
             map: map
@@ -2219,6 +2296,15 @@ components:
             value: 6.027456183070403
             currency_code: currency_code
         - reference: reference
+          images:
+          - product_id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+            is_main: false
+            id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+            url: https://openapi-generator.tech
+          - product_id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+            is_main: false
+            id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+            url: https://openapi-generator.tech
           is_active: true
           size: 0.8008281904610115
           limit_date: 2000-01-23
@@ -2230,6 +2316,7 @@ components:
             - null
             - null
             parent_id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+            icon: icon
             id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
             label: label
             map: map
@@ -2268,7 +2355,6 @@ components:
           delivery_cost_id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
           user_id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
           total_amount: 0.8008281904610115
-          address_id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
           recipient:
             country_code: country_code
             recipient_email: recipient_email
@@ -2292,7 +2378,6 @@ components:
           delivery_cost_id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
           user_id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
           total_amount: 0.8008281904610115
-          address_id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
           recipient:
             country_code: country_code
             recipient_email: recipient_email

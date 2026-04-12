@@ -50,7 +50,7 @@ import org.openapitools.client.JSON;
 /**
  * CategoryInput
  */
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2026-04-11T07:12:32.659476305+03:00[Indian/Antananarivo]", comments = "Generator version: 7.21.0")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2026-04-12T22:28:25.090854047+03:00[Indian/Antananarivo]", comments = "Generator version: 7.21.0")
 public class CategoryInput {
   public static final String SERIALIZED_NAME_ID = "id";
   @SerializedName(SERIALIZED_NAME_ID)
@@ -66,6 +66,11 @@ public class CategoryInput {
   @SerializedName(SERIALIZED_NAME_SLUG)
   @javax.annotation.Nonnull
   private String slug;
+
+  public static final String SERIALIZED_NAME_ICON = "icon";
+  @SerializedName(SERIALIZED_NAME_ICON)
+  @javax.annotation.Nullable
+  private String icon;
 
   public static final String SERIALIZED_NAME_MAP = "map";
   @SerializedName(SERIALIZED_NAME_MAP)
@@ -137,6 +142,25 @@ public class CategoryInput {
   }
 
 
+  public CategoryInput icon(@javax.annotation.Nullable String icon) {
+    this.icon = icon;
+    return this;
+  }
+
+  /**
+   * Get icon
+   * @return icon
+   */
+  @javax.annotation.Nullable
+  public String getIcon() {
+    return icon;
+  }
+
+  public void setIcon(@javax.annotation.Nullable String icon) {
+    this.icon = icon;
+  }
+
+
   public CategoryInput map(@javax.annotation.Nullable String map) {
     this.map = map;
     return this;
@@ -188,6 +212,7 @@ public class CategoryInput {
     return Objects.equals(this.id, categoryInput.id) &&
         Objects.equals(this.label, categoryInput.label) &&
         Objects.equals(this.slug, categoryInput.slug) &&
+        Objects.equals(this.icon, categoryInput.icon) &&
         Objects.equals(this.map, categoryInput.map) &&
         Objects.equals(this.parentId, categoryInput.parentId);
   }
@@ -198,7 +223,7 @@ public class CategoryInput {
 
   @Override
   public int hashCode() {
-    return Objects.hash(id, label, slug, map, parentId);
+    return Objects.hash(id, label, slug, icon, map, parentId);
   }
 
   private static <T> int hashCodeNullable(JsonNullable<T> a) {
@@ -215,6 +240,7 @@ public class CategoryInput {
     sb.append("    id: ").append(toIndentedString(id)).append("\n");
     sb.append("    label: ").append(toIndentedString(label)).append("\n");
     sb.append("    slug: ").append(toIndentedString(slug)).append("\n");
+    sb.append("    icon: ").append(toIndentedString(icon)).append("\n");
     sb.append("    map: ").append(toIndentedString(map)).append("\n");
     sb.append("    parentId: ").append(toIndentedString(parentId)).append("\n");
     sb.append("}");
@@ -235,7 +261,7 @@ public class CategoryInput {
 
   static {
     // a set of all properties/fields (JSON key names)
-    openapiFields = new HashSet<String>(Arrays.asList("id", "label", "slug", "map", "parent_id"));
+    openapiFields = new HashSet<String>(Arrays.asList("id", "label", "slug", "icon", "map", "parent_id"));
 
     // a set of required properties/fields (JSON key names)
     openapiRequiredFields = new HashSet<String>(Arrays.asList("label", "slug"));
@@ -277,6 +303,9 @@ public class CategoryInput {
       }
       if (!jsonObj.get("slug").isJsonPrimitive()) {
         throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "Expected the field `slug` to be a primitive type in the JSON string but got `%s`", jsonObj.get("slug").toString()));
+      }
+      if ((jsonObj.get("icon") != null && !jsonObj.get("icon").isJsonNull()) && !jsonObj.get("icon").isJsonPrimitive()) {
+        throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "Expected the field `icon` to be a primitive type in the JSON string but got `%s`", jsonObj.get("icon").toString()));
       }
       if ((jsonObj.get("map") != null && !jsonObj.get("map").isJsonNull()) && !jsonObj.get("map").isJsonPrimitive()) {
         throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "Expected the field `map` to be a primitive type in the JSON string but got `%s`", jsonObj.get("map").toString()));

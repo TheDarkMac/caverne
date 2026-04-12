@@ -1,6 +1,7 @@
 package com.devikapps.caverne.modules.catalog;
 
 import java.math.BigDecimal;
+import java.net.URI;
 import java.util.Comparator;
 import java.util.List;
 import org.springframework.stereotype.Component;
@@ -37,6 +38,7 @@ public class ProductApiMapper {
                     .id(product.getCategory().getId())
                     .label(product.getCategory().getLabel())
                     .slug(product.getCategory().getSlug())
+                    .icon(product.getCategory().getIcon())
                     .map(product.getCategory().getMap())
                     .parentId(
                         product.getCategory().getParent() == null
@@ -49,6 +51,16 @@ public class ProductApiMapper {
         .description(product.getDescription())
         .size(parseSize(product.getSize()))
         .isActive(product.isActive())
+        .images(
+            product.getImages().stream()
+                .map(
+                    image ->
+                        new org.openapitools.client.model.ProductImage()
+                            .id(image.getId())
+                            .productId(product.getId())
+                            .url(parseUri(image.getUrl()))
+                            .isMain(image.isMain()))
+                .toList())
         .prices(prices);
   }
 
@@ -69,6 +81,29 @@ public class ProductApiMapper {
       product.setCategory(null);
     }
 
+    product.getImages().clear();
+    if (input.getImages() != null) {
+      boolean hasMainImage =
+          input.getImages().stream().anyMatch(image -> Boolean.TRUE.equals(image.getIsMain()));
+      for (int i = 0; i < input.getImages().size(); i++) {
+        org.openapitools.client.model.ProductImageInput imageInput = input.getImages().get(i);
+        if (imageInput.getUrl() == null) {
+          continue;
+        }
+        product
+            .getImages()
+            .add(
+                ProductImage.builder()
+                    .id(imageInput.getId())
+                    .product(product)
+                    .url(imageInput.getUrl().toString())
+                    .isMain(
+                        Boolean.TRUE.equals(imageInput.getIsMain())
+                            || (!hasMainImage && i == 0))
+                    .build());
+      }
+    }
+
     return product;
   }
 
@@ -81,5 +116,12 @@ public class ProductApiMapper {
     } catch (NumberFormatException exception) {
       return null;
     }
+  }
+
+  private URI parseUri(String value) {
+    if (value == null || value.isBlank()) {
+      return null;
+    }
+    return URI.create(value);
   }
 }

@@ -15,6 +15,7 @@
 |**description** | **String** |  |  [optional] |
 |**size** | **BigDecimal** |  |  [optional] |
 |**isActive** | **Boolean** |  |  [optional] |
+|**images** | [**List&lt;ProductImage&gt;**](ProductImage.md) |  |  [optional] |
 |**prices** | [**List&lt;Price&gt;**](Price.md) |  |  [optional] |
 
 

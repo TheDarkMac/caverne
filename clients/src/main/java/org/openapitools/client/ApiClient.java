@@ -64,7 +64,7 @@ public class ApiClient {
     protected String basePath = "http://localhost:8080/api/v1";
     protected List<ServerConfiguration> servers = new ArrayList<ServerConfiguration>(Arrays.asList(
     new ServerConfiguration(
-      "http://localhost:8080/api/{version}",
+      "http://localhost:8080/api/v1",
       "Serveur avec préfixe API versionné",
       new HashMap<String, ServerVariable>() {{
         put("version", new ServerVariable(
