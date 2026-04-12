@@ -19,26 +19,24 @@ import com.google.gson.annotations.SerializedName;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
 import java.io.IOException;
-import java.util.ArrayList;
+import java.net.URI;
 import java.util.Arrays;
-import java.util.List;
 import java.util.UUID;
-import org.openapitools.jackson.nullable.JsonNullable;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 /**
- * Model tests for Category
+ * Model tests for ProductImage
  */
-public class CategoryTest {
-    private final Category model = new Category();
+public class ProductImageTest {
+    private final ProductImage model = new ProductImage();
 
     /**
-     * Model tests for Category
+     * Model tests for ProductImage
      */
     @Test
-    public void testCategory() {
-        // TODO: test Category
+    public void testProductImage() {
+        // TODO: test ProductImage
     }
 
     /**
@@ -50,51 +48,27 @@ public class CategoryTest {
     }
 
     /**
-     * Test the property 'label'
+     * Test the property 'productId'
      */
     @Test
-    public void labelTest() {
-        // TODO: test label
+    public void productIdTest() {
+        // TODO: test productId
     }
 
     /**
-     * Test the property 'slug'
+     * Test the property 'url'
      */
     @Test
-    public void slugTest() {
-        // TODO: test slug
+    public void urlTest() {
+        // TODO: test url
     }
 
     /**
-     * Test the property 'icon'
+     * Test the property 'isMain'
      */
     @Test
-    public void iconTest() {
-        // TODO: test icon
-    }
-
-    /**
-     * Test the property 'map'
-     */
-    @Test
-    public void mapTest() {
-        // TODO: test map
-    }
-
-    /**
-     * Test the property 'parentId'
-     */
-    @Test
-    public void parentIdTest() {
-        // TODO: test parentId
-    }
-
-    /**
-     * Test the property 'children'
-     */
-    @Test
-    public void childrenTest() {
-        // TODO: test children
+    public void isMainTest() {
+        // TODO: test isMain
     }
 
 }

@@ -18,6 +18,7 @@ public class Category {
 
   private String label;
   private String slug;
+  private String icon;
   private String map;
 
   @ManyToOne(fetch = FetchType.LAZY)

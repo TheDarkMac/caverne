@@ -21,9 +21,12 @@ import com.google.gson.stream.JsonWriter;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.UUID;
 import org.openapitools.client.model.CategoryRefInput;
+import org.openapitools.client.model.ProductImageInput;
 import org.openapitools.jackson.nullable.JsonNullable;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
@@ -104,6 +107,14 @@ public class ProductInputTest {
     @Test
     public void isActiveTest() {
         // TODO: test isActive
+    }
+
+    /**
+     * Test the property 'images'
+     */
+    @Test
+    public void imagesTest() {
+        // TODO: test images
     }
 
 }

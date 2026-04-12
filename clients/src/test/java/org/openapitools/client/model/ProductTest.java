@@ -27,6 +27,7 @@ import java.util.List;
 import java.util.UUID;
 import org.openapitools.client.model.Category;
 import org.openapitools.client.model.Price;
+import org.openapitools.client.model.ProductImage;
 import org.openapitools.jackson.nullable.JsonNullable;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
@@ -107,6 +108,14 @@ public class ProductTest {
     @Test
     public void isActiveTest() {
         // TODO: test isActive
+    }
+
+    /**
+     * Test the property 'images'
+     */
+    @Test
+    public void imagesTest() {
+        // TODO: test images
     }
 
     /**

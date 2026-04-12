@@ -52,7 +52,7 @@ import org.openapitools.client.JSON;
 /**
  * Category
  */
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2026-04-11T07:12:32.659476305+03:00[Indian/Antananarivo]", comments = "Generator version: 7.21.0")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2026-04-12T22:28:25.090854047+03:00[Indian/Antananarivo]", comments = "Generator version: 7.21.0")
 public class Category {
   public static final String SERIALIZED_NAME_ID = "id";
   @SerializedName(SERIALIZED_NAME_ID)
@@ -68,6 +68,11 @@ public class Category {
   @SerializedName(SERIALIZED_NAME_SLUG)
   @javax.annotation.Nullable
   private String slug;
+
+  public static final String SERIALIZED_NAME_ICON = "icon";
+  @SerializedName(SERIALIZED_NAME_ICON)
+  @javax.annotation.Nullable
+  private String icon;
 
   public static final String SERIALIZED_NAME_MAP = "map";
   @SerializedName(SERIALIZED_NAME_MAP)
@@ -141,6 +146,25 @@ public class Category {
 
   public void setSlug(@javax.annotation.Nullable String slug) {
     this.slug = slug;
+  }
+
+
+  public Category icon(@javax.annotation.Nullable String icon) {
+    this.icon = icon;
+    return this;
+  }
+
+  /**
+   * Get icon
+   * @return icon
+   */
+  @javax.annotation.Nullable
+  public String getIcon() {
+    return icon;
+  }
+
+  public void setIcon(@javax.annotation.Nullable String icon) {
+    this.icon = icon;
   }
 
 
@@ -222,6 +246,7 @@ public class Category {
     return Objects.equals(this.id, category.id) &&
         Objects.equals(this.label, category.label) &&
         Objects.equals(this.slug, category.slug) &&
+        Objects.equals(this.icon, category.icon) &&
         Objects.equals(this.map, category.map) &&
         Objects.equals(this.parentId, category.parentId) &&
         Objects.equals(this.children, category.children);
@@ -233,7 +258,7 @@ public class Category {
 
   @Override
   public int hashCode() {
-    return Objects.hash(id, label, slug, map, parentId, children);
+    return Objects.hash(id, label, slug, icon, map, parentId, children);
   }
 
   private static <T> int hashCodeNullable(JsonNullable<T> a) {
@@ -250,6 +275,7 @@ public class Category {
     sb.append("    id: ").append(toIndentedString(id)).append("\n");
     sb.append("    label: ").append(toIndentedString(label)).append("\n");
     sb.append("    slug: ").append(toIndentedString(slug)).append("\n");
+    sb.append("    icon: ").append(toIndentedString(icon)).append("\n");
     sb.append("    map: ").append(toIndentedString(map)).append("\n");
     sb.append("    parentId: ").append(toIndentedString(parentId)).append("\n");
     sb.append("    children: ").append(toIndentedString(children)).append("\n");
@@ -271,7 +297,7 @@ public class Category {
 
   static {
     // a set of all properties/fields (JSON key names)
-    openapiFields = new HashSet<String>(Arrays.asList("id", "label", "slug", "map", "parent_id", "children"));
+    openapiFields = new HashSet<String>(Arrays.asList("id", "label", "slug", "icon", "map", "parent_id", "children"));
 
     // a set of required properties/fields (JSON key names)
     openapiRequiredFields = new HashSet<String>(0);
@@ -306,6 +332,9 @@ public class Category {
       }
       if ((jsonObj.get("slug") != null && !jsonObj.get("slug").isJsonNull()) && !jsonObj.get("slug").isJsonPrimitive()) {
         throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "Expected the field `slug` to be a primitive type in the JSON string but got `%s`", jsonObj.get("slug").toString()));
+      }
+      if ((jsonObj.get("icon") != null && !jsonObj.get("icon").isJsonNull()) && !jsonObj.get("icon").isJsonPrimitive()) {
+        throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "Expected the field `icon` to be a primitive type in the JSON string but got `%s`", jsonObj.get("icon").toString()));
       }
       if ((jsonObj.get("map") != null && !jsonObj.get("map").isJsonNull()) && !jsonObj.get("map").isJsonPrimitive()) {
         throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "Expected the field `map` to be a primitive type in the JSON string but got `%s`", jsonObj.get("map").toString()));

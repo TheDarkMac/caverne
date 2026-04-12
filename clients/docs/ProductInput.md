@@ -15,6 +15,7 @@
 |**description** | **String** |  |  [optional] |
 |**size** | **BigDecimal** |  |  [optional] |
 |**isActive** | **Boolean** |  |  [optional] |
+|**images** | [**List&lt;ProductImageInput&gt;**](ProductImageInput.md) |  |  [optional] |
 
 
 

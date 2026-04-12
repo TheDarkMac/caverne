@@ -28,6 +28,7 @@ import java.util.List;
 import java.util.UUID;
 import org.openapitools.client.model.Category;
 import org.openapitools.client.model.Price;
+import org.openapitools.client.model.ProductImage;
 import org.openapitools.jackson.nullable.JsonNullable;
 
 import com.google.gson.Gson;
@@ -56,7 +57,7 @@ import org.openapitools.client.JSON;
 /**
  * Product
  */
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2026-04-11T07:12:32.659476305+03:00[Indian/Antananarivo]", comments = "Generator version: 7.21.0")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2026-04-12T22:28:25.090854047+03:00[Indian/Antananarivo]", comments = "Generator version: 7.21.0")
 public class Product {
   public static final String SERIALIZED_NAME_ID = "id";
   @SerializedName(SERIALIZED_NAME_ID)
@@ -97,6 +98,11 @@ public class Product {
   @SerializedName(SERIALIZED_NAME_IS_ACTIVE)
   @javax.annotation.Nullable
   private Boolean isActive = true;
+
+  public static final String SERIALIZED_NAME_IMAGES = "images";
+  @SerializedName(SERIALIZED_NAME_IMAGES)
+  @javax.annotation.Nullable
+  private List<ProductImage> images = new ArrayList<>();
 
   public static final String SERIALIZED_NAME_PRICES = "prices";
   @SerializedName(SERIALIZED_NAME_PRICES)
@@ -258,6 +264,33 @@ public class Product {
   }
 
 
+  public Product images(@javax.annotation.Nullable List<ProductImage> images) {
+    this.images = images;
+    return this;
+  }
+
+  public Product addImagesItem(ProductImage imagesItem) {
+    if (this.images == null) {
+      this.images = new ArrayList<>();
+    }
+    this.images.add(imagesItem);
+    return this;
+  }
+
+  /**
+   * Get images
+   * @return images
+   */
+  @javax.annotation.Nullable
+  public List<ProductImage> getImages() {
+    return images;
+  }
+
+  public void setImages(@javax.annotation.Nullable List<ProductImage> images) {
+    this.images = images;
+  }
+
+
   public Product prices(@javax.annotation.Nullable List<Price> prices) {
     this.prices = prices;
     return this;
@@ -303,6 +336,7 @@ public class Product {
         Objects.equals(this.description, product.description) &&
         Objects.equals(this.size, product.size) &&
         Objects.equals(this.isActive, product.isActive) &&
+        Objects.equals(this.images, product.images) &&
         Objects.equals(this.prices, product.prices);
   }
 
@@ -312,7 +346,7 @@ public class Product {
 
   @Override
   public int hashCode() {
-    return Objects.hash(id, category, label, reference, limitDate, description, size, isActive, prices);
+    return Objects.hash(id, category, label, reference, limitDate, description, size, isActive, images, prices);
   }
 
   private static <T> int hashCodeNullable(JsonNullable<T> a) {
@@ -334,6 +368,7 @@ public class Product {
     sb.append("    description: ").append(toIndentedString(description)).append("\n");
     sb.append("    size: ").append(toIndentedString(size)).append("\n");
     sb.append("    isActive: ").append(toIndentedString(isActive)).append("\n");
+    sb.append("    images: ").append(toIndentedString(images)).append("\n");
     sb.append("    prices: ").append(toIndentedString(prices)).append("\n");
     sb.append("}");
     return sb.toString();
@@ -353,7 +388,7 @@ public class Product {
 
   static {
     // a set of all properties/fields (JSON key names)
-    openapiFields = new HashSet<String>(Arrays.asList("id", "category", "label", "reference", "limit_date", "description", "size", "is_active", "prices"));
+    openapiFields = new HashSet<String>(Arrays.asList("id", "category", "label", "reference", "limit_date", "description", "size", "is_active", "images", "prices"));
 
     // a set of required properties/fields (JSON key names)
     openapiRequiredFields = new HashSet<String>(0);
@@ -395,6 +430,20 @@ public class Product {
       }
       if ((jsonObj.get("description") != null && !jsonObj.get("description").isJsonNull()) && !jsonObj.get("description").isJsonPrimitive()) {
         throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "Expected the field `description` to be a primitive type in the JSON string but got `%s`", jsonObj.get("description").toString()));
+      }
+      if (jsonObj.get("images") != null && !jsonObj.get("images").isJsonNull()) {
+        JsonArray jsonArrayimages = jsonObj.getAsJsonArray("images");
+        if (jsonArrayimages != null) {
+          // ensure the json data is an array
+          if (!jsonObj.get("images").isJsonArray()) {
+            throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "Expected the field `images` to be an array in the JSON string but got `%s`", jsonObj.get("images").toString()));
+          }
+
+          // validate the optional field `images` (array)
+          for (int i = 0; i < jsonArrayimages.size(); i++) {
+            ProductImage.validateJsonElement(jsonArrayimages.get(i));
+          };
+        }
       }
       if (jsonObj.get("prices") != null && !jsonObj.get("prices").isJsonNull()) {
         JsonArray jsonArrayprices = jsonObj.getAsJsonArray("prices");
