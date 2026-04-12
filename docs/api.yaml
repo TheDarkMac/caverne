@@ -8,7 +8,7 @@ info:
   contact:
     name: Mr
 servers:
-  - url: http://localhost:8080/api/{version}
+  - url: http://localhost:8080/api/v1
     description: Serveur avec préfixe API versionné
     variables:
       version:
@@ -211,6 +211,9 @@ components:
           type: string
         slug:
           type: string
+        icon:
+          type: string
+          nullable: true
         map:
           type: string
           maxLength: 100
@@ -235,6 +238,9 @@ components:
           type: string
         slug:
           type: string
+        icon:
+          type: string
+          nullable: true
         map:
           type: string
         parent_id:
@@ -276,6 +282,10 @@ components:
         is_active:
           type: boolean
           default: true
+        images:
+          type: array
+          items:
+            $ref: '#/components/schemas/ProductImage'
         prices:
           type: array
           items:
@@ -303,6 +313,40 @@ components:
         size:
           type: number
         is_active:
+          type: boolean
+        images:
+          type: array
+          items:
+            $ref: '#/components/schemas/ProductImageInput'
+
+    ProductImage:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        product_id:
+          type: string
+          format: uuid
+        url:
+          type: string
+          format: uri
+        is_main:
+          type: boolean
+          default: false
+
+    ProductImageInput:
+      type: object
+      required: [url]
+      properties:
+        id:
+          type: string
+          format: uuid
+          nullable: true
+        url:
+          type: string
+          format: uri
+        is_main:
           type: boolean
 
     # ── PRICE ──
@@ -348,9 +392,6 @@ components:
           type: string
           format: uuid
         user_id:
-          type: string
-          format: uuid
-        address_id:
           type: string
           format: uuid
         currency_code:

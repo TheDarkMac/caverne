@@ -10,7 +10,7 @@
   },
   "servers" : [ {
     "description" : "Serveur avec préfixe API versionné",
-    "url" : "http://localhost:8080/api/{version}",
+    "url" : "http://localhost:8080/api/v1",
     "variables" : {
       "version" : {
         "default" : "v1",
@@ -2177,6 +2177,10 @@
           "slug" : {
             "type" : "string"
           },
+          "icon" : {
+            "nullable" : true,
+            "type" : "string"
+          },
           "map" : {
             "maxLength" : 100,
             "type" : "string"
@@ -2206,6 +2210,10 @@
             "type" : "string"
           },
           "slug" : {
+            "type" : "string"
+          },
+          "icon" : {
+            "nullable" : true,
             "type" : "string"
           },
           "map" : {
@@ -2262,6 +2270,12 @@
             "default" : true,
             "type" : "boolean"
           },
+          "images" : {
+            "items" : {
+              "$ref" : "#/components/schemas/ProductImage"
+            },
+            "type" : "array"
+          },
           "prices" : {
             "items" : {
               "$ref" : "#/components/schemas/Price"
@@ -2299,9 +2313,54 @@
           },
           "is_active" : {
             "type" : "boolean"
+          },
+          "images" : {
+            "items" : {
+              "$ref" : "#/components/schemas/ProductImageInput"
+            },
+            "type" : "array"
           }
         },
         "required" : [ "category", "label", "reference" ],
+        "type" : "object"
+      },
+      "ProductImage" : {
+        "properties" : {
+          "id" : {
+            "format" : "uuid",
+            "type" : "string"
+          },
+          "product_id" : {
+            "format" : "uuid",
+            "type" : "string"
+          },
+          "url" : {
+            "format" : "uri",
+            "type" : "string"
+          },
+          "is_main" : {
+            "default" : false,
+            "type" : "boolean"
+          }
+        },
+        "type" : "object"
+      },
+      "ProductImageInput" : {
+        "properties" : {
+          "id" : {
+            "format" : "uuid",
+            "nullable" : true,
+            "type" : "string"
+          },
+          "url" : {
+            "format" : "uri",
+            "type" : "string"
+          },
+          "is_main" : {
+            "type" : "boolean"
+          }
+        },
+        "required" : [ "url" ],
         "type" : "object"
       },
       "Price" : {
@@ -2356,10 +2415,6 @@
             "type" : "string"
           },
           "user_id" : {
-            "format" : "uuid",
-            "type" : "string"
-          },
-          "address_id" : {
             "format" : "uuid",
             "type" : "string"
           },

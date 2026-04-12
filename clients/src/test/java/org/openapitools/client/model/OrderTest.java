@@ -61,14 +61,6 @@ public class OrderTest {
     }
 
     /**
-     * Test the property 'addressId'
-     */
-    @Test
-    public void addressIdTest() {
-        // TODO: test addressId
-    }
-
-    /**
      * Test the property 'currencyCode'
      */
     @Test

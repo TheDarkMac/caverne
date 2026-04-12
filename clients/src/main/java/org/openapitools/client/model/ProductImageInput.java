@@ -20,8 +20,10 @@ import com.google.gson.annotations.SerializedName;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
 import java.io.IOException;
+import java.net.URI;
 import java.util.Arrays;
 import java.util.UUID;
+import org.openapitools.jackson.nullable.JsonNullable;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -47,19 +49,29 @@ import java.util.Set;
 import org.openapitools.client.JSON;
 
 /**
- * CategoryRefInput
+ * ProductImageInput
  */
 @javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2026-04-12T22:28:25.090854047+03:00[Indian/Antananarivo]", comments = "Generator version: 7.21.0")
-public class CategoryRefInput {
+public class ProductImageInput {
   public static final String SERIALIZED_NAME_ID = "id";
   @SerializedName(SERIALIZED_NAME_ID)
-  @javax.annotation.Nonnull
+  @javax.annotation.Nullable
   private UUID id;
 
-  public CategoryRefInput() {
+  public static final String SERIALIZED_NAME_URL = "url";
+  @SerializedName(SERIALIZED_NAME_URL)
+  @javax.annotation.Nonnull
+  private URI url;
+
+  public static final String SERIALIZED_NAME_IS_MAIN = "is_main";
+  @SerializedName(SERIALIZED_NAME_IS_MAIN)
+  @javax.annotation.Nullable
+  private Boolean isMain;
+
+  public ProductImageInput() {
   }
 
-  public CategoryRefInput id(@javax.annotation.Nonnull UUID id) {
+  public ProductImageInput id(@javax.annotation.Nullable UUID id) {
     this.id = id;
     return this;
   }
@@ -68,13 +80,51 @@ public class CategoryRefInput {
    * Get id
    * @return id
    */
-  @javax.annotation.Nonnull
+  @javax.annotation.Nullable
   public UUID getId() {
     return id;
   }
 
-  public void setId(@javax.annotation.Nonnull UUID id) {
+  public void setId(@javax.annotation.Nullable UUID id) {
     this.id = id;
+  }
+
+
+  public ProductImageInput url(@javax.annotation.Nonnull URI url) {
+    this.url = url;
+    return this;
+  }
+
+  /**
+   * Get url
+   * @return url
+   */
+  @javax.annotation.Nonnull
+  public URI getUrl() {
+    return url;
+  }
+
+  public void setUrl(@javax.annotation.Nonnull URI url) {
+    this.url = url;
+  }
+
+
+  public ProductImageInput isMain(@javax.annotation.Nullable Boolean isMain) {
+    this.isMain = isMain;
+    return this;
+  }
+
+  /**
+   * Get isMain
+   * @return isMain
+   */
+  @javax.annotation.Nullable
+  public Boolean getIsMain() {
+    return isMain;
+  }
+
+  public void setIsMain(@javax.annotation.Nullable Boolean isMain) {
+    this.isMain = isMain;
   }
 
 
@@ -87,20 +137,35 @@ public class CategoryRefInput {
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    CategoryRefInput categoryRefInput = (CategoryRefInput) o;
-    return Objects.equals(this.id, categoryRefInput.id);
+    ProductImageInput productImageInput = (ProductImageInput) o;
+    return Objects.equals(this.id, productImageInput.id) &&
+        Objects.equals(this.url, productImageInput.url) &&
+        Objects.equals(this.isMain, productImageInput.isMain);
+  }
+
+  private static <T> boolean equalsNullable(JsonNullable<T> a, JsonNullable<T> b) {
+    return a == b || (a != null && b != null && a.isPresent() && b.isPresent() && Objects.deepEquals(a.get(), b.get()));
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(id);
+    return Objects.hash(id, url, isMain);
+  }
+
+  private static <T> int hashCodeNullable(JsonNullable<T> a) {
+    if (a == null) {
+      return 1;
+    }
+    return a.isPresent() ? Arrays.deepHashCode(new Object[]{a.get()}) : 31;
   }
 
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
-    sb.append("class CategoryRefInput {\n");
+    sb.append("class ProductImageInput {\n");
     sb.append("    id: ").append(toIndentedString(id)).append("\n");
+    sb.append("    url: ").append(toIndentedString(url)).append("\n");
+    sb.append("    isMain: ").append(toIndentedString(isMain)).append("\n");
     sb.append("}");
     return sb.toString();
   }
@@ -119,42 +184,45 @@ public class CategoryRefInput {
 
   static {
     // a set of all properties/fields (JSON key names)
-    openapiFields = new HashSet<String>(Arrays.asList("id"));
+    openapiFields = new HashSet<String>(Arrays.asList("id", "url", "is_main"));
 
     // a set of required properties/fields (JSON key names)
-    openapiRequiredFields = new HashSet<String>(Arrays.asList("id"));
+    openapiRequiredFields = new HashSet<String>(Arrays.asList("url"));
   }
 
   /**
    * Validates the JSON Element and throws an exception if issues found
    *
    * @param jsonElement JSON Element
-   * @throws IOException if the JSON Element is invalid with respect to CategoryRefInput
+   * @throws IOException if the JSON Element is invalid with respect to ProductImageInput
    */
   public static void validateJsonElement(JsonElement jsonElement) throws IOException {
       if (jsonElement == null) {
-        if (!CategoryRefInput.openapiRequiredFields.isEmpty()) { // has required fields but JSON element is null
-          throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "The required field(s) %s in CategoryRefInput is not found in the empty JSON string", CategoryRefInput.openapiRequiredFields.toString()));
+        if (!ProductImageInput.openapiRequiredFields.isEmpty()) { // has required fields but JSON element is null
+          throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "The required field(s) %s in ProductImageInput is not found in the empty JSON string", ProductImageInput.openapiRequiredFields.toString()));
         }
       }
 
       Set<Map.Entry<String, JsonElement>> entries = jsonElement.getAsJsonObject().entrySet();
       // check to see if the JSON string contains additional fields
       for (Map.Entry<String, JsonElement> entry : entries) {
-        if (!CategoryRefInput.openapiFields.contains(entry.getKey())) {
-          throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "The field `%s` in the JSON string is not defined in the `CategoryRefInput` properties. JSON: %s", entry.getKey(), jsonElement.toString()));
+        if (!ProductImageInput.openapiFields.contains(entry.getKey())) {
+          throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "The field `%s` in the JSON string is not defined in the `ProductImageInput` properties. JSON: %s", entry.getKey(), jsonElement.toString()));
         }
       }
 
       // check to make sure all required properties/fields are present in the JSON string
-      for (String requiredField : CategoryRefInput.openapiRequiredFields) {
+      for (String requiredField : ProductImageInput.openapiRequiredFields) {
         if (jsonElement.getAsJsonObject().get(requiredField) == null) {
           throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "The required field `%s` is not found in the JSON string: %s", requiredField, jsonElement.toString()));
         }
       }
         JsonObject jsonObj = jsonElement.getAsJsonObject();
-      if (!jsonObj.get("id").isJsonPrimitive()) {
+      if ((jsonObj.get("id") != null && !jsonObj.get("id").isJsonNull()) && !jsonObj.get("id").isJsonPrimitive()) {
         throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "Expected the field `id` to be a primitive type in the JSON string but got `%s`", jsonObj.get("id").toString()));
+      }
+      if (!jsonObj.get("url").isJsonPrimitive()) {
+        throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "Expected the field `url` to be a primitive type in the JSON string but got `%s`", jsonObj.get("url").toString()));
       }
   }
 
@@ -162,22 +230,22 @@ public class CategoryRefInput {
     @SuppressWarnings("unchecked")
     @Override
     public <T> TypeAdapter<T> create(Gson gson, TypeToken<T> type) {
-       if (!CategoryRefInput.class.isAssignableFrom(type.getRawType())) {
-         return null; // this class only serializes 'CategoryRefInput' and its subtypes
+       if (!ProductImageInput.class.isAssignableFrom(type.getRawType())) {
+         return null; // this class only serializes 'ProductImageInput' and its subtypes
        }
        final TypeAdapter<JsonElement> elementAdapter = gson.getAdapter(JsonElement.class);
-       final TypeAdapter<CategoryRefInput> thisAdapter
-                        = gson.getDelegateAdapter(this, TypeToken.get(CategoryRefInput.class));
+       final TypeAdapter<ProductImageInput> thisAdapter
+                        = gson.getDelegateAdapter(this, TypeToken.get(ProductImageInput.class));
 
-       return (TypeAdapter<T>) new TypeAdapter<CategoryRefInput>() {
+       return (TypeAdapter<T>) new TypeAdapter<ProductImageInput>() {
            @Override
-           public void write(JsonWriter out, CategoryRefInput value) throws IOException {
+           public void write(JsonWriter out, ProductImageInput value) throws IOException {
              JsonObject obj = thisAdapter.toJsonTree(value).getAsJsonObject();
              elementAdapter.write(out, obj);
            }
 
            @Override
-           public CategoryRefInput read(JsonReader in) throws IOException {
+           public ProductImageInput read(JsonReader in) throws IOException {
              JsonElement jsonElement = elementAdapter.read(in);
              validateJsonElement(jsonElement);
              return thisAdapter.fromJsonTree(jsonElement);
@@ -188,18 +256,18 @@ public class CategoryRefInput {
   }
 
   /**
-   * Create an instance of CategoryRefInput given an JSON string
+   * Create an instance of ProductImageInput given an JSON string
    *
    * @param jsonString JSON string
-   * @return An instance of CategoryRefInput
-   * @throws IOException if the JSON string is invalid with respect to CategoryRefInput
+   * @return An instance of ProductImageInput
+   * @throws IOException if the JSON string is invalid with respect to ProductImageInput
    */
-  public static CategoryRefInput fromJson(String jsonString) throws IOException {
-    return JSON.getGson().fromJson(jsonString, CategoryRefInput.class);
+  public static ProductImageInput fromJson(String jsonString) throws IOException {
+    return JSON.getGson().fromJson(jsonString, ProductImageInput.class);
   }
 
   /**
-   * Convert an instance of CategoryRefInput to an JSON string
+   * Convert an instance of ProductImageInput to an JSON string
    *
    * @return JSON string
    */

@@ -57,7 +57,13 @@ class CatalogApiIntegrationTest {
   @Test
   void shouldListCategoriesAsTree() throws Exception {
     Category root =
-        categoryRepository.save(Category.builder().label("Tea").slug("tea").map("TEA").build());
+        categoryRepository.save(
+            Category.builder()
+                .label("Tea")
+                .slug("tea")
+                .icon("https://cdn.caverne.test/icons/tea.svg")
+                .map("TEA")
+                .build());
 
     categoryRepository.save(
         Category.builder().label("Green Tea").slug("green-tea").map("GREEN").parent(root).build());
@@ -66,6 +72,7 @@ class CatalogApiIntegrationTest {
         .perform(get("/categories").accept(MediaType.APPLICATION_JSON))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$[0].label").value("Tea"))
+        .andExpect(jsonPath("$[0].icon").value("https://cdn.caverne.test/icons/tea.svg"))
         .andExpect(jsonPath("$[0].children[0].label").value("Green Tea"))
         .andExpect(jsonPath("$[0].children[0].parent_id").value(root.getId().toString()));
   }
@@ -122,6 +129,7 @@ class CatalogApiIntegrationTest {
         .andExpect(jsonPath("$.id").value(product.getId().toString()))
         .andExpect(jsonPath("$.label").value("Forest Honey"))
         .andExpect(jsonPath("$.reference").value("HON-001"))
+        .andExpect(jsonPath("$.images[0].url").value("https://cdn.caverne.test/products/HON-001.jpg"))
         .andExpect(jsonPath("$.prices[0].value").value(18000));
   }
 
@@ -132,6 +140,7 @@ class CatalogApiIntegrationTest {
     Map<String, Object> payloadMap = new LinkedHashMap<>();
     payloadMap.put("label", "Tea");
     payloadMap.put("slug", "tea");
+    payloadMap.put("icon", "https://cdn.caverne.test/icons/tea.svg");
     payloadMap.put("map", "TEA");
 
     String payload = objectMapper.writeValueAsString(payloadMap);
@@ -146,6 +155,7 @@ class CatalogApiIntegrationTest {
         .andExpect(jsonPath("$.id").isString())
         .andExpect(jsonPath("$.label").value("Tea"))
         .andExpect(jsonPath("$.slug").value("tea"))
+        .andExpect(jsonPath("$.icon").value("https://cdn.caverne.test/icons/tea.svg"))
         .andExpect(jsonPath("$.map").value("TEA"))
         .andExpect(jsonPath("$.children").isArray());
   }
@@ -168,6 +178,7 @@ class CatalogApiIntegrationTest {
     Map<String, Object> payloadMap = new LinkedHashMap<>();
     payloadMap.put("label", "Black Tea");
     payloadMap.put("slug", "black-tea");
+    payloadMap.put("icon", "https://cdn.caverne.test/icons/black-tea.svg");
     payloadMap.put("map", "BLACK");
     payloadMap.put("parent_id", null);
 
@@ -183,6 +194,7 @@ class CatalogApiIntegrationTest {
         .andExpect(jsonPath("$.id").value(child.getId().toString()))
         .andExpect(jsonPath("$.label").value("Black Tea"))
         .andExpect(jsonPath("$.slug").value("black-tea"))
+        .andExpect(jsonPath("$.icon").value("https://cdn.caverne.test/icons/black-tea.svg"))
         .andExpect(jsonPath("$.parent_id").doesNotExist());
   }
 
@@ -202,6 +214,8 @@ class CatalogApiIntegrationTest {
                 "Herbal Tea",
                 "slug",
                 "herbal-tea",
+                "icon",
+                "https://cdn.caverne.test/icons/herbal-tea.svg",
                 "map",
                 "HERBAL"));
 
@@ -214,6 +228,7 @@ class CatalogApiIntegrationTest {
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.id").value(category.getId().toString()))
         .andExpect(jsonPath("$.label").value("Herbal Tea"))
+        .andExpect(jsonPath("$.icon").value("https://cdn.caverne.test/icons/herbal-tea.svg"))
         .andExpect(jsonPath("$.slug").value("herbal-tea"));
   }
 
@@ -224,7 +239,17 @@ class CatalogApiIntegrationTest {
     UUID newCategoryId = UUID.randomUUID();
     String payload =
         objectMapper.writeValueAsString(
-            Map.of("id", newCategoryId, "label", "Coffee", "slug", "coffee", "map", "COFFEE"));
+            Map.of(
+                "id",
+                newCategoryId,
+                "label",
+                "Coffee",
+                "slug",
+                "coffee",
+                "icon",
+                "https://cdn.caverne.test/icons/coffee.svg",
+                "map",
+                "COFFEE"));
 
     mockMvc
         .perform(
@@ -235,6 +260,7 @@ class CatalogApiIntegrationTest {
         .andExpect(status().isCreated())
         .andExpect(jsonPath("$.id").isString())
         .andExpect(jsonPath("$.label").value("Coffee"))
+        .andExpect(jsonPath("$.icon").value("https://cdn.caverne.test/icons/coffee.svg"))
         .andExpect(jsonPath("$.slug").value("coffee"));
   }
 
@@ -255,7 +281,8 @@ class CatalogApiIntegrationTest {
                 "limit_date", "2026-12-31",
                 "description", "Fresh pepper",
                 "size", 1,
-                "is_active", true));
+                "is_active", true,
+                "images", List.of(Map.of("url", "https://cdn.caverne.test/products/pepper-main.jpg", "is_main", true))));
 
     mockMvc
         .perform(
@@ -268,6 +295,8 @@ class CatalogApiIntegrationTest {
         .andExpect(jsonPath("$.category.id").value(category.getId().toString()))
         .andExpect(jsonPath("$.label").value("Wild Pepper"))
         .andExpect(jsonPath("$.reference").value("PEP-NEW"))
+        .andExpect(jsonPath("$.images[0].url").value("https://cdn.caverne.test/products/pepper-main.jpg"))
+        .andExpect(jsonPath("$.images[0].is_main").value(true))
         .andExpect(jsonPath("$.is_active").value(true));
   }
 
@@ -294,7 +323,8 @@ class CatalogApiIntegrationTest {
                 "limit_date", "2027-01-31",
                 "description", "Updated description",
                 "size", 2,
-                "is_active", false));
+                "is_active", false,
+                "images", List.of(Map.of("url", "https://cdn.caverne.test/products/tea-main.jpg", "is_main", true))));
 
     mockMvc
         .perform(
@@ -307,6 +337,7 @@ class CatalogApiIntegrationTest {
         .andExpect(jsonPath("$.category.id").value(updatedCategory.getId().toString()))
         .andExpect(jsonPath("$.label").value("Smoked Tea"))
         .andExpect(jsonPath("$.reference").value("TEA-001"))
+        .andExpect(jsonPath("$.images[0].url").value("https://cdn.caverne.test/products/tea-main.jpg"))
         .andExpect(jsonPath("$.is_active").value(false));
   }
 
@@ -339,7 +370,9 @@ class CatalogApiIntegrationTest {
                 "size",
                 1,
                 "is_active",
-                true));
+                true,
+                "images",
+                List.of(Map.of("url", "https://cdn.caverne.test/products/updated-pepper.jpg", "is_main", true))));
 
     mockMvc
         .perform(
@@ -350,6 +383,7 @@ class CatalogApiIntegrationTest {
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.id").value(product.getId().toString()))
         .andExpect(jsonPath("$.label").value("Updated Pepper"))
+        .andExpect(jsonPath("$.images[0].url").value("https://cdn.caverne.test/products/updated-pepper.jpg"))
         .andExpect(jsonPath("$.reference").value("PEP-002"));
   }
 
@@ -380,7 +414,9 @@ class CatalogApiIntegrationTest {
                 "size",
                 2,
                 "is_active",
-                true));
+                true,
+                "images",
+                List.of(Map.of("url", "https://cdn.caverne.test/products/new-product.jpg", "is_main", true))));
 
     mockMvc
         .perform(
@@ -391,6 +427,7 @@ class CatalogApiIntegrationTest {
         .andExpect(status().isCreated())
         .andExpect(jsonPath("$.id").isString())
         .andExpect(jsonPath("$.label").value("New Product"))
+        .andExpect(jsonPath("$.images[0].url").value("https://cdn.caverne.test/products/new-product.jpg"))
         .andExpect(jsonPath("$.reference").value("NEW-001"));
   }
 
@@ -557,6 +594,14 @@ class CatalogApiIntegrationTest {
             .value(BigDecimal.valueOf(amount))
             .build();
 
+    ProductImage image =
+        ProductImage.builder()
+            .product(product)
+            .url("https://cdn.caverne.test/products/" + reference + ".jpg")
+            .isMain(true)
+            .build();
+
+    product.setImages(List.of(image));
     product.setPrices(List.of(price));
     return product;
   }

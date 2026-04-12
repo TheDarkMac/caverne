@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.math.BigDecimal;
 import java.text.Normalizer;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -39,15 +40,15 @@ public class NichesCatalogImporter implements ApplicationRunner {
 
     for (NicheCategory nicheCategory : parse(path)) {
       Category category = findOrCreateCategory(nicheCategory.name());
-      for (String productLabel : nicheCategory.products()) {
-        findOrCreateProduct(category, productLabel);
+      for (NicheProduct nicheProduct : nicheCategory.products()) {
+        findOrCreateProduct(category, nicheProduct);
       }
     }
   }
 
   private List<NicheCategory> parse(Path path) throws IOException {
     List<String> lines = Files.readAllLines(path, StandardCharsets.UTF_8);
-    Map<String, List<String>> categories = new LinkedHashMap<>();
+    Map<String, List<NicheProduct>> categories = new LinkedHashMap<>();
     String currentCategory = null;
 
     for (String rawLine : lines) {
@@ -70,12 +71,25 @@ public class NichesCatalogImporter implements ApplicationRunner {
       if (cleaned.isBlank()) {
         continue;
       }
-      categories.get(currentCategory).add(normalizeLabel(cleaned));
+      categories.get(currentCategory).add(parseProduct(cleaned));
     }
 
     return categories.entrySet().stream()
         .map(entry -> new NicheCategory(entry.getKey(), entry.getValue()))
         .toList();
+  }
+
+  private NicheProduct parseProduct(String rawValue) {
+    String[] parts = rawValue.split("\\|");
+    String label = normalizeLabel(parts[0]);
+    if (parts.length == 1) {
+      return new NicheProduct(label, null, null, null);
+    }
+
+    BigDecimal amount = new BigDecimal(parts[1].trim());
+    String currency = parts.length >= 3 ? normalizeLabel(parts[2]).toUpperCase(Locale.ROOT) : "MGA";
+    String unit = parts.length >= 4 ? normalizeLabel(parts[3]) : "unit";
+    return new NicheProduct(label, amount, currency, unit);
   }
 
   private Category findOrCreateCategory(String label) {
@@ -92,22 +106,54 @@ public class NichesCatalogImporter implements ApplicationRunner {
                         .build()));
   }
 
-  private Product findOrCreateProduct(Category category, String label) {
-    return productRepository
-        .findByCategoryIdAndLabelIgnoreCase(category.getId(), label)
-        .orElseGet(() -> productRepository.save(buildProduct(category, label)));
+  private Product findOrCreateProduct(Category category, NicheProduct nicheProduct) {
+    Product product =
+        productRepository
+            .findByCategoryIdAndLabelIgnoreCase(category.getId(), nicheProduct.label())
+            .orElseGet(() -> buildProduct(category, nicheProduct));
+    if (nicheProduct.amount() != null
+        && product.getPrices().stream()
+            .noneMatch(
+                price ->
+                    nicheProduct.currency().equalsIgnoreCase(price.getCurrencyCode())
+                        && nicheProduct.unit().equalsIgnoreCase(price.getUnit()))) {
+      product
+          .getPrices()
+          .add(
+              Price.builder()
+                  .product(product)
+                  .currencyCode(nicheProduct.currency())
+                  .value(nicheProduct.amount())
+                  .validFrom(LocalDate.now())
+                  .unit(nicheProduct.unit())
+                  .build());
+    }
+    return productRepository.save(product);
   }
 
-  private Product buildProduct(Category category, String label) {
-    return Product.builder()
-        .category(category)
-        .label(label)
-        .reference(buildReference(category, label))
-        .description("Imported from niches.md")
-        .size("1")
-        .isActive(true)
-        .limitDate(LocalDate.now().plusYears(2))
-        .build();
+  private Product buildProduct(Category category, NicheProduct nicheProduct) {
+    Product product =
+        Product.builder()
+            .category(category)
+            .label(nicheProduct.label())
+            .reference(buildReference(category, nicheProduct.label()))
+            .description("Imported from niches.md")
+            .size("1")
+            .isActive(true)
+            .limitDate(LocalDate.now().plusYears(2))
+            .build();
+    if (nicheProduct.amount() != null) {
+      product.setPrices(
+          List.of(
+              Price.builder()
+                  .product(product)
+                  .currencyCode(nicheProduct.currency())
+                  .value(nicheProduct.amount())
+                  .validFrom(LocalDate.now())
+                  .unit(nicheProduct.unit())
+                  .build()));
+    }
+    return product;
   }
 
   private String buildReference(Category category, String productLabel) {
@@ -143,5 +189,7 @@ public class NichesCatalogImporter implements ApplicationRunner {
     return slug.isBlank() ? "catalog-item" : slug;
   }
 
-  private record NicheCategory(String name, List<String> products) {}
+  private record NicheCategory(String name, List<NicheProduct> products) {}
+
+  private record NicheProduct(String label, BigDecimal amount, String currency, String unit) {}
 }

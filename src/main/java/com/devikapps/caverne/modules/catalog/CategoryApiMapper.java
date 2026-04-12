@@ -1,6 +1,7 @@
 package com.devikapps.caverne.modules.catalog;
 
 import java.util.List;
+import java.net.URI;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -11,6 +12,7 @@ public class CategoryApiMapper {
         .id(category.getId())
         .label(category.getLabel())
         .slug(category.getSlug())
+        .icon(category.getIcon())
         .map(category.getMap())
         .parentId(category.getParent() == null ? null : category.getParent().getId())
         .children(
@@ -24,6 +26,7 @@ public class CategoryApiMapper {
         .id(category.getId())
         .label(category.getLabel())
         .slug(category.getSlug())
+        .icon(category.getIcon())
         .map(category.getMap())
         .parentId(category.getParent() == null ? null : category.getParent().getId())
         .children(List.of());
@@ -33,6 +36,7 @@ public class CategoryApiMapper {
     Category category = existing == null ? new Category() : existing;
     category.setLabel(input.getLabel());
     category.setSlug(input.getSlug());
+    category.setIcon(input.getIcon() == null || input.getIcon().isBlank() ? null : input.getIcon().trim());
     category.setMap(input.getMap());
 
     if (input.getParentId() != null) {
@@ -44,5 +48,12 @@ public class CategoryApiMapper {
     }
 
     return category;
+  }
+
+  private URI parseUri(String value) {
+    if (value == null || value.isBlank()) {
+      return null;
+    }
+    return URI.create(value.trim());
   }
 }

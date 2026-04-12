@@ -22,9 +22,12 @@ import com.google.gson.stream.JsonWriter;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.UUID;
 import org.openapitools.client.model.CategoryRefInput;
+import org.openapitools.client.model.ProductImageInput;
 import org.openapitools.jackson.nullable.JsonNullable;
 
 import com.google.gson.Gson;
@@ -53,7 +56,7 @@ import org.openapitools.client.JSON;
 /**
  * ProductInput
  */
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2026-04-11T07:12:32.659476305+03:00[Indian/Antananarivo]", comments = "Generator version: 7.21.0")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2026-04-12T22:28:25.090854047+03:00[Indian/Antananarivo]", comments = "Generator version: 7.21.0")
 public class ProductInput {
   public static final String SERIALIZED_NAME_ID = "id";
   @SerializedName(SERIALIZED_NAME_ID)
@@ -94,6 +97,11 @@ public class ProductInput {
   @SerializedName(SERIALIZED_NAME_IS_ACTIVE)
   @javax.annotation.Nullable
   private Boolean isActive;
+
+  public static final String SERIALIZED_NAME_IMAGES = "images";
+  @SerializedName(SERIALIZED_NAME_IMAGES)
+  @javax.annotation.Nullable
+  private List<ProductImageInput> images = new ArrayList<>();
 
   public ProductInput() {
   }
@@ -250,6 +258,33 @@ public class ProductInput {
   }
 
 
+  public ProductInput images(@javax.annotation.Nullable List<ProductImageInput> images) {
+    this.images = images;
+    return this;
+  }
+
+  public ProductInput addImagesItem(ProductImageInput imagesItem) {
+    if (this.images == null) {
+      this.images = new ArrayList<>();
+    }
+    this.images.add(imagesItem);
+    return this;
+  }
+
+  /**
+   * Get images
+   * @return images
+   */
+  @javax.annotation.Nullable
+  public List<ProductImageInput> getImages() {
+    return images;
+  }
+
+  public void setImages(@javax.annotation.Nullable List<ProductImageInput> images) {
+    this.images = images;
+  }
+
+
 
   @Override
   public boolean equals(Object o) {
@@ -267,7 +302,8 @@ public class ProductInput {
         Objects.equals(this.limitDate, productInput.limitDate) &&
         Objects.equals(this.description, productInput.description) &&
         Objects.equals(this.size, productInput.size) &&
-        Objects.equals(this.isActive, productInput.isActive);
+        Objects.equals(this.isActive, productInput.isActive) &&
+        Objects.equals(this.images, productInput.images);
   }
 
   private static <T> boolean equalsNullable(JsonNullable<T> a, JsonNullable<T> b) {
@@ -276,7 +312,7 @@ public class ProductInput {
 
   @Override
   public int hashCode() {
-    return Objects.hash(id, category, label, reference, limitDate, description, size, isActive);
+    return Objects.hash(id, category, label, reference, limitDate, description, size, isActive, images);
   }
 
   private static <T> int hashCodeNullable(JsonNullable<T> a) {
@@ -298,6 +334,7 @@ public class ProductInput {
     sb.append("    description: ").append(toIndentedString(description)).append("\n");
     sb.append("    size: ").append(toIndentedString(size)).append("\n");
     sb.append("    isActive: ").append(toIndentedString(isActive)).append("\n");
+    sb.append("    images: ").append(toIndentedString(images)).append("\n");
     sb.append("}");
     return sb.toString();
   }
@@ -316,7 +353,7 @@ public class ProductInput {
 
   static {
     // a set of all properties/fields (JSON key names)
-    openapiFields = new HashSet<String>(Arrays.asList("id", "category", "label", "reference", "limit_date", "description", "size", "is_active"));
+    openapiFields = new HashSet<String>(Arrays.asList("id", "category", "label", "reference", "limit_date", "description", "size", "is_active", "images"));
 
     // a set of required properties/fields (JSON key names)
     openapiRequiredFields = new HashSet<String>(Arrays.asList("category", "label", "reference"));
@@ -363,6 +400,20 @@ public class ProductInput {
       }
       if ((jsonObj.get("description") != null && !jsonObj.get("description").isJsonNull()) && !jsonObj.get("description").isJsonPrimitive()) {
         throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "Expected the field `description` to be a primitive type in the JSON string but got `%s`", jsonObj.get("description").toString()));
+      }
+      if (jsonObj.get("images") != null && !jsonObj.get("images").isJsonNull()) {
+        JsonArray jsonArrayimages = jsonObj.getAsJsonArray("images");
+        if (jsonArrayimages != null) {
+          // ensure the json data is an array
+          if (!jsonObj.get("images").isJsonArray()) {
+            throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "Expected the field `images` to be an array in the JSON string but got `%s`", jsonObj.get("images").toString()));
+          }
+
+          // validate the optional field `images` (array)
+          for (int i = 0; i < jsonArrayimages.size(); i++) {
+            ProductImageInput.validateJsonElement(jsonArrayimages.get(i));
+          };
+        }
       }
   }
 
