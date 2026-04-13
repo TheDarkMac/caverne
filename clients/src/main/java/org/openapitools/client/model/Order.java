@@ -55,7 +55,7 @@ import org.openapitools.client.JSON;
 /**
  * Order
  */
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2026-04-13T10:46:17.688086590+03:00[Indian/Antananarivo]", comments = "Generator version: 7.21.0")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2026-04-13T14:49:59.292048843+03:00[Indian/Antananarivo]", comments = "Generator version: 7.21.0")
 public class Order {
   public static final String SERIALIZED_NAME_ID = "id";
   @SerializedName(SERIALIZED_NAME_ID)
@@ -162,11 +162,6 @@ public class Order {
   @SerializedName(SERIALIZED_NAME_RECIPIENT)
   @javax.annotation.Nullable
   private RecipientInput recipient;
-
-  public static final String SERIALIZED_NAME_PROVIDER_RESPONSE = "provider_response";
-  @SerializedName(SERIALIZED_NAME_PROVIDER_RESPONSE)
-  @javax.annotation.Nullable
-  private Object providerResponse;
 
   public Order() {
   }
@@ -369,25 +364,6 @@ public class Order {
   }
 
 
-  public Order providerResponse(@javax.annotation.Nullable Object providerResponse) {
-    this.providerResponse = providerResponse;
-    return this;
-  }
-
-  /**
-   * Sous-ensemble contrôlé de la réponse du provider. L&#39;API ne renvoie pas l&#39;objet Stripe complet. Pour Stripe Checkout, contient notamment &#x60;checkout_url&#x60;, &#x60;checkout_session_id&#x60;, &#x60;checkout_status&#x60; et &#x60;payment_status&#x60;. 
-   * @return providerResponse
-   */
-  @javax.annotation.Nullable
-  public Object getProviderResponse() {
-    return providerResponse;
-  }
-
-  public void setProviderResponse(@javax.annotation.Nullable Object providerResponse) {
-    this.providerResponse = providerResponse;
-  }
-
-
 
   @Override
   public boolean equals(Object o) {
@@ -407,8 +383,7 @@ public class Order {
         Objects.equals(this.totalAmount, order.totalAmount) &&
         Objects.equals(this.deliveryCostId, order.deliveryCostId) &&
         Objects.equals(this.items, order.items) &&
-        Objects.equals(this.recipient, order.recipient) &&
-        Objects.equals(this.providerResponse, order.providerResponse);
+        Objects.equals(this.recipient, order.recipient);
   }
 
   private static <T> boolean equalsNullable(JsonNullable<T> a, JsonNullable<T> b) {
@@ -417,7 +392,7 @@ public class Order {
 
   @Override
   public int hashCode() {
-    return Objects.hash(id, userId, currencyCode, reference, date, status, totalAmount, deliveryCostId, items, recipient, providerResponse);
+    return Objects.hash(id, userId, currencyCode, reference, date, status, totalAmount, deliveryCostId, items, recipient);
   }
 
   private static <T> int hashCodeNullable(JsonNullable<T> a) {
@@ -441,7 +416,6 @@ public class Order {
     sb.append("    deliveryCostId: ").append(toIndentedString(deliveryCostId)).append("\n");
     sb.append("    items: ").append(toIndentedString(items)).append("\n");
     sb.append("    recipient: ").append(toIndentedString(recipient)).append("\n");
-    sb.append("    providerResponse: ").append(toIndentedString(providerResponse)).append("\n");
     sb.append("}");
     return sb.toString();
   }
@@ -460,7 +434,7 @@ public class Order {
 
   static {
     // a set of all properties/fields (JSON key names)
-    openapiFields = new HashSet<String>(Arrays.asList("id", "user_id", "currency_code", "reference", "date", "status", "total_amount", "delivery_cost_id", "items", "recipient", "provider_response"));
+    openapiFields = new HashSet<String>(Arrays.asList("id", "user_id", "currency_code", "reference", "date", "status", "total_amount", "delivery_cost_id", "items", "recipient"));
 
     // a set of required properties/fields (JSON key names)
     openapiRequiredFields = new HashSet<String>(0);

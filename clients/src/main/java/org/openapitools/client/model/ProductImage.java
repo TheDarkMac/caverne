@@ -50,7 +50,7 @@ import org.openapitools.client.JSON;
 /**
  * ProductImage
  */
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2026-04-13T10:46:17.688086590+03:00[Indian/Antananarivo]", comments = "Generator version: 7.21.0")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2026-04-13T14:49:59.292048843+03:00[Indian/Antananarivo]", comments = "Generator version: 7.21.0")
 public class ProductImage {
   public static final String SERIALIZED_NAME_ID = "id";
   @SerializedName(SERIALIZED_NAME_ID)
@@ -67,10 +67,10 @@ public class ProductImage {
   @javax.annotation.Nullable
   private URI url;
 
-  public static final String SERIALIZED_NAME_IS_MAIN = "is_main";
-  @SerializedName(SERIALIZED_NAME_IS_MAIN)
+  public static final String SERIALIZED_NAME_MAIN = "main";
+  @SerializedName(SERIALIZED_NAME_MAIN)
   @javax.annotation.Nullable
-  private Boolean isMain = false;
+  private Boolean main = false;
 
   public ProductImage() {
   }
@@ -132,22 +132,22 @@ public class ProductImage {
   }
 
 
-  public ProductImage isMain(@javax.annotation.Nullable Boolean isMain) {
-    this.isMain = isMain;
+  public ProductImage main(@javax.annotation.Nullable Boolean main) {
+    this.main = main;
     return this;
   }
 
   /**
-   * Get isMain
-   * @return isMain
+   * Get main
+   * @return main
    */
   @javax.annotation.Nullable
-  public Boolean getIsMain() {
-    return isMain;
+  public Boolean getMain() {
+    return main;
   }
 
-  public void setIsMain(@javax.annotation.Nullable Boolean isMain) {
-    this.isMain = isMain;
+  public void setMain(@javax.annotation.Nullable Boolean main) {
+    this.main = main;
   }
 
 
@@ -164,12 +164,12 @@ public class ProductImage {
     return Objects.equals(this.id, productImage.id) &&
         Objects.equals(this.productId, productImage.productId) &&
         Objects.equals(this.url, productImage.url) &&
-        Objects.equals(this.isMain, productImage.isMain);
+        Objects.equals(this.main, productImage.main);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(id, productId, url, isMain);
+    return Objects.hash(id, productId, url, main);
   }
 
   @Override
@@ -179,7 +179,7 @@ public class ProductImage {
     sb.append("    id: ").append(toIndentedString(id)).append("\n");
     sb.append("    productId: ").append(toIndentedString(productId)).append("\n");
     sb.append("    url: ").append(toIndentedString(url)).append("\n");
-    sb.append("    isMain: ").append(toIndentedString(isMain)).append("\n");
+    sb.append("    main: ").append(toIndentedString(main)).append("\n");
     sb.append("}");
     return sb.toString();
   }
@@ -198,7 +198,7 @@ public class ProductImage {
 
   static {
     // a set of all properties/fields (JSON key names)
-    openapiFields = new HashSet<String>(Arrays.asList("id", "product_id", "url", "is_main"));
+    openapiFields = new HashSet<String>(Arrays.asList("id", "product_id", "url", "main"));
 
     // a set of required properties/fields (JSON key names)
     openapiRequiredFields = new HashSet<String>(0);

@@ -1,13 +1,24 @@
 package com.devikapps.caverne.modules.order;
 
 import jakarta.persistence.Column;
-import jakarta.persistence.Embeddable;
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.UUID;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 
-@Embeddable
+@Entity
+@Table(name = "order_payments")
 @Getter
 @Setter
 @NoArgsConstructor
@@ -16,7 +27,12 @@ import lombok.*;
 @ToString
 public class OrderPayment {
 
-  private UUID paymentId;
+  @Id private UUID paymentId;
+
+  @ManyToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "order_id", nullable = false)
+  @ToString.Exclude
+  private Order order;
 
   private String methodCode;
   private String currencyCode;

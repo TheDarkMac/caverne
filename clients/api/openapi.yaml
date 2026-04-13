@@ -1824,11 +1824,11 @@ components:
         reference: reference
         images:
         - product_id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
-          is_main: false
+          main: false
           id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
           url: https://openapi-generator.tech
         - product_id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
-          is_main: false
+          main: false
           id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
           url: https://openapi-generator.tech
         is_active: true
@@ -1900,10 +1900,10 @@ components:
       example:
         reference: reference
         images:
-        - is_main: true
+        - main: true
           id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
           url: https://openapi-generator.tech
-        - is_main: true
+        - main: true
           id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
           url: https://openapi-generator.tech
         is_active: true
@@ -1965,7 +1965,7 @@ components:
     ProductImage:
       example:
         product_id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
-        is_main: false
+        main: false
         id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
         url: https://openapi-generator.tech
       properties:
@@ -1978,13 +1978,13 @@ components:
         url:
           format: uri
           type: string
-        is_main:
+        main:
           default: false
           type: boolean
       type: object
     ProductImageInput:
       example:
-        is_main: true
+        main: true
         id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
         url: https://openapi-generator.tech
       properties:
@@ -1995,7 +1995,7 @@ components:
         url:
           format: uri
           type: string
-        is_main:
+        main:
           type: boolean
       required:
       - url
@@ -2084,11 +2084,11 @@ components:
           reference: reference
           images:
           - product_id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
-            is_main: false
+            main: false
             id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
             url: https://openapi-generator.tech
           - product_id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
-            is_main: false
+            main: false
             id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
             url: https://openapi-generator.tech
           is_active: true
@@ -2161,11 +2161,11 @@ components:
             reference: reference
             images:
             - product_id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
-              is_main: false
+              main: false
               id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
               url: https://openapi-generator.tech
             - product_id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
-              is_main: false
+              main: false
               id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
               url: https://openapi-generator.tech
             is_active: true
@@ -2206,11 +2206,11 @@ components:
             reference: reference
             images:
             - product_id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
-              is_main: false
+              main: false
               id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
               url: https://openapi-generator.tech
             - product_id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
-              is_main: false
+              main: false
               id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
               url: https://openapi-generator.tech
             is_active: true
@@ -2248,7 +2248,6 @@ components:
           product_id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
           unit_price: 1.4658129805029452
         currency_code: currency_code
-        provider_response: "{}"
         status: pending
       properties:
         id:
@@ -2284,11 +2283,6 @@ components:
           type: array
         recipient:
           $ref: "#/components/schemas/RecipientInput"
-        provider_response:
-          description: |
-            Sous-ensemble contrôlé de la réponse du provider. L'API ne renvoie pas l'objet Stripe complet. Pour Stripe Checkout, contient notamment `checkout_url`, `checkout_session_id`, `checkout_status` et `payment_status`.
-          nullable: true
-          type: object
       type: object
     OrderInput:
       example:
@@ -2547,11 +2541,11 @@ components:
         - reference: reference
           images:
           - product_id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
-            is_main: false
+            main: false
             id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
             url: https://openapi-generator.tech
           - product_id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
-            is_main: false
+            main: false
             id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
             url: https://openapi-generator.tech
           is_active: true
@@ -2587,11 +2581,11 @@ components:
         - reference: reference
           images:
           - product_id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
-            is_main: false
+            main: false
             id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
             url: https://openapi-generator.tech
           - product_id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
-            is_main: false
+            main: false
             id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
             url: https://openapi-generator.tech
           is_active: true
@@ -2658,11 +2652,11 @@ components:
               reference: reference
               images:
               - product_id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
-                is_main: false
+                main: false
                 id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
                 url: https://openapi-generator.tech
               - product_id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
-                is_main: false
+                main: false
                 id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
                 url: https://openapi-generator.tech
               is_active: true
@@ -2703,11 +2697,11 @@ components:
               reference: reference
               images:
               - product_id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
-                is_main: false
+                main: false
                 id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
                 url: https://openapi-generator.tech
               - product_id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
-                is_main: false
+                main: false
                 id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
                 url: https://openapi-generator.tech
               is_active: true
@@ -2745,7 +2739,6 @@ components:
             product_id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
             unit_price: 1.4658129805029452
           currency_code: currency_code
-          provider_response: "{}"
           status: pending
         - reference: reference
           date: 2000-01-23T04:56:07.000+00:00
@@ -2765,11 +2758,11 @@ components:
               reference: reference
               images:
               - product_id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
-                is_main: false
+                main: false
                 id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
                 url: https://openapi-generator.tech
               - product_id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
-                is_main: false
+                main: false
                 id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
                 url: https://openapi-generator.tech
               is_active: true
@@ -2810,11 +2803,11 @@ components:
               reference: reference
               images:
               - product_id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
-                is_main: false
+                main: false
                 id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
                 url: https://openapi-generator.tech
               - product_id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
-                is_main: false
+                main: false
                 id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
                 url: https://openapi-generator.tech
               is_active: true
@@ -2852,7 +2845,6 @@ components:
             product_id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
             unit_price: 1.4658129805029452
           currency_code: currency_code
-          provider_response: "{}"
           status: pending
         meta:
           per_page: 1

@@ -144,6 +144,7 @@ public class OrderService {
         .add(
             OrderPayment.builder()
                 .paymentId(UUID.randomUUID())
+                .order(order)
                 .methodCode(input.getMethodCode())
                 .currencyCode(input.getCurrencyCode())
                 .amount(resolvePaymentAmount(order, input))

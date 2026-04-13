@@ -1,11 +1,11 @@
 package com.devikapps.caverne.modules.payment;
 
-import static org.springframework.http.HttpStatus.NOT_FOUND;
 import static org.springframework.http.HttpStatus.SERVICE_UNAVAILABLE;
 import static org.springframework.http.HttpStatus.UNPROCESSABLE_ENTITY;
 
 import com.devikapps.caverne.modules.order.Order;
 import com.devikapps.caverne.modules.order.OrderPayment;
+import com.devikapps.caverne.modules.order.OrderPaymentRepository;
 import com.devikapps.caverne.modules.order.OrderRepository;
 import com.devikapps.caverne.modules.order.OrderStatus;
 import com.devikapps.caverne.payment.StripeProperties;
@@ -30,6 +30,7 @@ public class StripeWebhookService {
 
   private final StripeProperties stripeProperties;
   private final OrderRepository orderRepository;
+  private final OrderPaymentRepository orderPaymentRepository;
   private final ObjectMapper objectMapper;
 
   @Transactional
@@ -47,14 +48,18 @@ public class StripeWebhookService {
       String sessionId =
           requiredText(objectNode.path("id"), "Stripe checkout session id is missing");
 
-      Order order =
-          orderRepository
-              .findByPaymentInternalReference(sessionId)
+      OrderPayment payment =
+          orderPaymentRepository
+              .findByInternalReference(sessionId)
               .orElseThrow(
-                  () -> new ResponseStatusException(NOT_FOUND, "Stripe payment not found"));
+                  () ->
+                      new ResponseStatusException(
+                          org.springframework.http.HttpStatus.NOT_FOUND,
+                          "Stripe payment not found"));
 
-      OrderPayment payment = findPayment(order, sessionId);
+      Order order = payment.getOrder();
       updatePaymentFromEvent(payment, eventType, objectNode);
+      orderPaymentRepository.save(payment);
       updateOrderFromPayment(order, payment);
       orderRepository.save(order);
     } catch (SignatureVerificationException exception) {
@@ -64,13 +69,6 @@ public class StripeWebhookService {
     } catch (Exception exception) {
       throw new ResponseStatusException(UNPROCESSABLE_ENTITY, "Invalid Stripe webhook payload");
     }
-  }
-
-  private OrderPayment findPayment(Order order, String sessionId) {
-    return order.getPayments().stream()
-        .filter(payment -> sessionId.equalsIgnoreCase(payment.getInternalReference()))
-        .findFirst()
-        .orElseThrow(() -> new ResponseStatusException(NOT_FOUND, "Stripe payment not found"));
   }
 
   private void updatePaymentFromEvent(OrderPayment payment, String eventType, JsonNode objectNode)

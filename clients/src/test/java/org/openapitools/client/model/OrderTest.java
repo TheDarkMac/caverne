@@ -124,12 +124,4 @@ public class OrderTest {
         // TODO: test recipient
     }
 
-    /**
-     * Test the property 'providerResponse'
-     */
-    @Test
-    public void providerResponseTest() {
-        // TODO: test providerResponse
-    }
-
 }

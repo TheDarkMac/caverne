@@ -51,7 +51,7 @@ import org.openapitools.client.JSON;
 /**
  * ProductImageInput
  */
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2026-04-13T10:46:17.688086590+03:00[Indian/Antananarivo]", comments = "Generator version: 7.21.0")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2026-04-13T14:49:59.292048843+03:00[Indian/Antananarivo]", comments = "Generator version: 7.21.0")
 public class ProductImageInput {
   public static final String SERIALIZED_NAME_ID = "id";
   @SerializedName(SERIALIZED_NAME_ID)
@@ -63,10 +63,10 @@ public class ProductImageInput {
   @javax.annotation.Nonnull
   private URI url;
 
-  public static final String SERIALIZED_NAME_IS_MAIN = "is_main";
-  @SerializedName(SERIALIZED_NAME_IS_MAIN)
+  public static final String SERIALIZED_NAME_MAIN = "main";
+  @SerializedName(SERIALIZED_NAME_MAIN)
   @javax.annotation.Nullable
-  private Boolean isMain;
+  private Boolean main;
 
   public ProductImageInput() {
   }
@@ -109,22 +109,22 @@ public class ProductImageInput {
   }
 
 
-  public ProductImageInput isMain(@javax.annotation.Nullable Boolean isMain) {
-    this.isMain = isMain;
+  public ProductImageInput main(@javax.annotation.Nullable Boolean main) {
+    this.main = main;
     return this;
   }
 
   /**
-   * Get isMain
-   * @return isMain
+   * Get main
+   * @return main
    */
   @javax.annotation.Nullable
-  public Boolean getIsMain() {
-    return isMain;
+  public Boolean getMain() {
+    return main;
   }
 
-  public void setIsMain(@javax.annotation.Nullable Boolean isMain) {
-    this.isMain = isMain;
+  public void setMain(@javax.annotation.Nullable Boolean main) {
+    this.main = main;
   }
 
 
@@ -140,7 +140,7 @@ public class ProductImageInput {
     ProductImageInput productImageInput = (ProductImageInput) o;
     return Objects.equals(this.id, productImageInput.id) &&
         Objects.equals(this.url, productImageInput.url) &&
-        Objects.equals(this.isMain, productImageInput.isMain);
+        Objects.equals(this.main, productImageInput.main);
   }
 
   private static <T> boolean equalsNullable(JsonNullable<T> a, JsonNullable<T> b) {
@@ -149,7 +149,7 @@ public class ProductImageInput {
 
   @Override
   public int hashCode() {
-    return Objects.hash(id, url, isMain);
+    return Objects.hash(id, url, main);
   }
 
   private static <T> int hashCodeNullable(JsonNullable<T> a) {
@@ -165,7 +165,7 @@ public class ProductImageInput {
     sb.append("class ProductImageInput {\n");
     sb.append("    id: ").append(toIndentedString(id)).append("\n");
     sb.append("    url: ").append(toIndentedString(url)).append("\n");
-    sb.append("    isMain: ").append(toIndentedString(isMain)).append("\n");
+    sb.append("    main: ").append(toIndentedString(main)).append("\n");
     sb.append("}");
     return sb.toString();
   }
@@ -184,7 +184,7 @@ public class ProductImageInput {
 
   static {
     // a set of all properties/fields (JSON key names)
-    openapiFields = new HashSet<String>(Arrays.asList("id", "url", "is_main"));
+    openapiFields = new HashSet<String>(Arrays.asList("id", "url", "main"));
 
     // a set of required properties/fields (JSON key names)
     openapiRequiredFields = new HashSet<String>(Arrays.asList("url"));

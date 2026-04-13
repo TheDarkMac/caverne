@@ -33,11 +33,14 @@ public class AuthBearerFilter extends OncePerRequestFilter {
     }
 
     try {
+      String rawToken = authSessionResolver.extractBearerToken(authorizationHeader);
       UserAccount user = authSessionResolver.resolveUserOrNull(authorizationHeader);
       if (user != null) {
         UsernamePasswordAuthenticationToken authentication =
             new UsernamePasswordAuthenticationToken(
-                user, null, List.of(new SimpleGrantedAuthority("ROLE_" + user.getRole().name())));
+                user,
+                rawToken,
+                List.of(new SimpleGrantedAuthority("ROLE_" + user.getRole().name())));
         SecurityContextHolder.getContext().setAuthentication(authentication);
       }
       filterChain.doFilter(request, response);

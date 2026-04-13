@@ -40,8 +40,7 @@ public class AuthSessionResolver {
     return requireUser(authorizationHeader);
   }
 
-  public void logout(String authorizationHeader) {
-    String token = extractBearerToken(authorizationHeader);
+  public void logout(String token) {
     for (AuthenticationProvider provider : authenticationProviders) {
       if (!provider.supportsToken(token)) {
         continue;

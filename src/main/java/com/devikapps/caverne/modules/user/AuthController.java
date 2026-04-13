@@ -16,6 +16,7 @@ import org.springframework.web.server.ResponseStatusException;
 public class AuthController {
 
   private final AuthService authService;
+  private final SecurityActorResolver securityActorResolver;
 
   @PostMapping(value = "/register", produces = MediaType.APPLICATION_JSON_VALUE)
   @ResponseStatus(HttpStatus.CREATED)
@@ -30,8 +31,8 @@ public class AuthController {
 
   @PostMapping("/logout")
   @ResponseStatus(HttpStatus.NO_CONTENT)
-  public void logout(@RequestHeader("Authorization") String authorizationHeader) {
-    authService.logout(authorizationHeader);
+  public void logout() {
+    authService.logout(securityActorResolver.requireBearerToken());
   }
 
   private org.openapitools.client.model.RegisterRequest parseRegisterRequest(String rawBody) {

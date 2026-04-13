@@ -60,7 +60,7 @@ public class ProductApiMapper {
                             .id(image.getId())
                             .productId(product.getId())
                             .url(parseUri(image.getUrl()))
-                            .isMain(image.isMain()))
+                            .main(image.isMain()))
                 .toList());
   }
 
@@ -88,7 +88,7 @@ public class ProductApiMapper {
     product.getImages().clear();
     if (input.getImages() != null) {
       boolean hasMainImage =
-          input.getImages().stream().anyMatch(image -> Boolean.TRUE.equals(image.getIsMain()));
+          input.getImages().stream().anyMatch(image -> Boolean.TRUE.equals(image.getMain()));
       for (int i = 0; i < input.getImages().size(); i++) {
         org.openapitools.client.model.ProductImageInput imageInput = input.getImages().get(i);
         if (imageInput.getUrl() == null) {
@@ -101,8 +101,7 @@ public class ProductApiMapper {
                     .id(imageInput.getId())
                     .product(product)
                     .url(imageInput.getUrl().toString())
-                    .isMain(
-                        Boolean.TRUE.equals(imageInput.getIsMain()) || (!hasMainImage && i == 0))
+                    .isMain(Boolean.TRUE.equals(imageInput.getMain()) || (!hasMainImage && i == 0))
                     .build());
       }
     }
