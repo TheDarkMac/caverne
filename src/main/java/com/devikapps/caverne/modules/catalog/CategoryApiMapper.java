@@ -1,7 +1,7 @@
 package com.devikapps.caverne.modules.catalog;
 
-import java.util.List;
 import java.net.URI;
+import java.util.List;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -36,7 +36,8 @@ public class CategoryApiMapper {
     Category category = existing == null ? new Category() : existing;
     category.setLabel(input.getLabel());
     category.setSlug(input.getSlug());
-    category.setIcon(input.getIcon() == null || input.getIcon().isBlank() ? null : input.getIcon().trim());
+    category.setIcon(
+        input.getIcon() == null || input.getIcon().isBlank() ? null : input.getIcon().trim());
     category.setMap(input.getMap());
 
     if (input.getParentId() != null) {

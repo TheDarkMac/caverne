@@ -95,7 +95,8 @@ class DeliveryCostApiIntegrationTest {
 
     String response =
         mockMvc
-            .perform(post("/delivery-costs").contentType(MediaType.APPLICATION_JSON).content(payload))
+            .perform(
+                post("/delivery-costs").contentType(MediaType.APPLICATION_JSON).content(payload))
             .andExpect(status().isCreated())
             .andExpect(jsonPath("$.amount").value(5000))
             .andReturn()

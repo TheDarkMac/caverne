@@ -406,8 +406,10 @@ class CheckoutApiIntegrationTest {
     String payload =
         objectMapper.writeValueAsString(
             Map.of(
-                "currency_code", "MGA",
-                "items", List.of(Map.of("product_id", product.getId(), "quantity", 2)),
+                "currency_code",
+                "MGA",
+                "items",
+                List.of(Map.of("product_id", product.getId(), "quantity", 2)),
                 "recipient",
                 Map.of(
                     "location", "Analakely",
@@ -450,8 +452,10 @@ class CheckoutApiIntegrationTest {
     String tooLargePayload =
         objectMapper.writeValueAsString(
             Map.of(
-                "currency_code", "MGA",
-                "items", List.of(Map.of("product_id", product.getId(), "quantity", 3)),
+                "currency_code",
+                "MGA",
+                "items",
+                List.of(Map.of("product_id", product.getId(), "quantity", 3)),
                 "recipient",
                 Map.of(
                     "location", "Analakely",
@@ -468,8 +472,10 @@ class CheckoutApiIntegrationTest {
     String validPayload =
         objectMapper.writeValueAsString(
             Map.of(
-                "currency_code", "MGA",
-                "items", List.of(Map.of("product_id", product.getId(), "quantity", 2)),
+                "currency_code",
+                "MGA",
+                "items",
+                List.of(Map.of("product_id", product.getId(), "quantity", 2)),
                 "recipient",
                 Map.of(
                     "location", "Analakely",
