@@ -57,11 +57,11 @@ public class ProductImageInputTest {
     }
 
     /**
-     * Test the property 'isMain'
+     * Test the property 'main'
      */
     @Test
-    public void isMainTest() {
-        // TODO: test isMain
+    public void mainTest() {
+        // TODO: test main
     }
 
 }

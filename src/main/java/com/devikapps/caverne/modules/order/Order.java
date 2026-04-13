@@ -1,7 +1,17 @@
 package com.devikapps.caverne.modules.order;
 
 import com.devikapps.caverne.modules.user.UserAccount;
-import jakarta.persistence.*;
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -57,8 +67,8 @@ public class Order {
 
   private BigDecimal totalAmount;
 
-  @ElementCollection(fetch = FetchType.EAGER)
-  @CollectionTable(name = "order_payments", joinColumns = @JoinColumn(name = "order_id"))
+  @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
   @Builder.Default
+  @ToString.Exclude
   private List<OrderPayment> payments = new ArrayList<>();
 }

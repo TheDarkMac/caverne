@@ -117,16 +117,7 @@ public class NichesCatalogImporter implements ApplicationRunner {
                 price ->
                     nicheProduct.currency().equalsIgnoreCase(price.getCurrencyCode())
                         && nicheProduct.unit().equalsIgnoreCase(price.getUnit()))) {
-      product
-          .getPrices()
-          .add(
-              Price.builder()
-                  .product(product)
-                  .currencyCode(nicheProduct.currency())
-                  .value(nicheProduct.amount())
-                  .validFrom(LocalDate.now())
-                  .unit(nicheProduct.unit())
-                  .build());
+      product.getPrices().addAll(buildBootstrapPriceHistory(product, nicheProduct));
     }
     return productRepository.save(product);
   }
@@ -144,17 +135,41 @@ public class NichesCatalogImporter implements ApplicationRunner {
             .limitDate(LocalDate.now().plusYears(2))
             .build();
     if (nicheProduct.amount() != null) {
-      product.setPrices(
-          List.of(
-              Price.builder()
-                  .product(product)
-                  .currencyCode(nicheProduct.currency())
-                  .value(nicheProduct.amount())
-                  .validFrom(LocalDate.now())
-                  .unit(nicheProduct.unit())
-                  .build()));
+      product.setPrices(buildBootstrapPriceHistory(product, nicheProduct));
     }
     return product;
+  }
+
+  private List<Price> buildBootstrapPriceHistory(Product product, NicheProduct nicheProduct) {
+    LocalDate today = LocalDate.now();
+    BigDecimal currentAmount = nicheProduct.amount();
+    return List.of(
+        buildBootstrapPrice(
+            product,
+            nicheProduct,
+            currentAmount
+                .multiply(BigDecimal.valueOf(0.85))
+                .setScale(2, java.math.RoundingMode.HALF_UP),
+            today.minusMonths(12)),
+        buildBootstrapPrice(
+            product,
+            nicheProduct,
+            currentAmount
+                .multiply(BigDecimal.valueOf(0.93))
+                .setScale(2, java.math.RoundingMode.HALF_UP),
+            today.minusMonths(6)),
+        buildBootstrapPrice(product, nicheProduct, currentAmount, today));
+  }
+
+  private Price buildBootstrapPrice(
+      Product product, NicheProduct nicheProduct, BigDecimal amount, LocalDate validFrom) {
+    return Price.builder()
+        .product(product)
+        .currencyCode(nicheProduct.currency())
+        .value(amount)
+        .validFrom(validFrom)
+        .unit(nicheProduct.unit())
+        .build();
   }
 
   private String buildReference(Category category, String productLabel) {

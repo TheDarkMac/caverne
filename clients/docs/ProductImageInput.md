@@ -9,7 +9,7 @@
 |------------ | ------------- | ------------- | -------------|
 |**id** | **UUID** |  |  [optional] |
 |**url** | **URI** |  |  |
-|**isMain** | **Boolean** |  |  [optional] |
+|**main** | **Boolean** |  |  [optional] |
 
 
 

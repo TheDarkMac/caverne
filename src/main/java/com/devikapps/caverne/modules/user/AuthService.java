@@ -83,8 +83,8 @@ public class AuthService {
         .expiresIn(TOKEN_EXPIRATION_SECONDS);
   }
 
-  public void logout(String authorizationHeader) {
-    authSessionResolver.logout(authorizationHeader);
+  public void logout(String token) {
+    authSessionResolver.logout(token);
   }
 
   private void validateRegistration(org.openapitools.client.model.RegisterRequest input) {

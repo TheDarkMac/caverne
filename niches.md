@@ -1,6 +1,7 @@
 Format produit pris en charge par l'import:
 - libelle | montant | devise | unite
 - exemple: poivre noir | 12000 | MGA | sachet
+- lorsqu'un montant est fourni, l'import bootstrap génère un petit historique de prix sur plusieurs dates
 
 # EPICERIE FINE :
     -épices locales (poivres, girofle, cannelle) | 18000 | MGA | sachet

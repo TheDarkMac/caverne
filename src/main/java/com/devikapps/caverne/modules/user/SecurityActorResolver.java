@@ -27,6 +27,14 @@ public class SecurityActorResolver {
     return user;
   }
 
+  public String requireBearerToken() {
+    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+    if (authentication == null || !(authentication.getCredentials() instanceof String token)) {
+      throw new ResponseStatusException(UNAUTHORIZED, "Authentication required");
+    }
+    return token;
+  }
+
   public UserAccount resolveUserOrNull() {
     Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
     if (authentication == null || !authentication.isAuthenticated()) {

@@ -2469,7 +2469,7 @@
             "format" : "uri",
             "type" : "string"
           },
-          "is_main" : {
+          "main" : {
             "default" : false,
             "type" : "boolean"
           }
@@ -2487,7 +2487,7 @@
             "format" : "uri",
             "type" : "string"
           },
-          "is_main" : {
+          "main" : {
             "type" : "boolean"
           }
         },
@@ -2636,11 +2636,6 @@
           },
           "recipient" : {
             "$ref" : "#/components/schemas/RecipientInput"
-          },
-          "provider_response" : {
-            "description" : "Sous-ensemble contrôlé de la réponse du provider. L'API ne renvoie pas l'objet Stripe complet. Pour Stripe Checkout, contient notamment `checkout_url`, `checkout_session_id`, `checkout_status` et `payment_status`.\n",
-            "nullable" : true,
-            "type" : "object"
           }
         },
         "type" : "object"

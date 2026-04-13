@@ -10,7 +10,7 @@
 |**id** | **UUID** |  |  [optional] |
 |**productId** | **UUID** |  |  [optional] |
 |**url** | **URI** |  |  [optional] |
-|**isMain** | **Boolean** |  |  [optional] |
+|**main** | **Boolean** |  |  [optional] |
 
 
 
