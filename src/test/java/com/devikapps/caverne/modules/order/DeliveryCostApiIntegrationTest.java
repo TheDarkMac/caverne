@@ -54,7 +54,6 @@ class DeliveryCostApiIntegrationTest {
         mockMvc
             .perform(
                 post("/delivery-costs")
-                    .header("Authorization", bearer(adminToken))
                     .contentType(MediaType.APPLICATION_JSON)
                     .content(createPayload))
             .andExpect(status().isCreated())
@@ -89,14 +88,26 @@ class DeliveryCostApiIntegrationTest {
   }
 
   @Test
-  void shouldRejectDeliveryCostWritesForSimpleUser() throws Exception {
+  void shouldAllowGuestToCreateDeliveryCostButKeepAdminWritesProtected() throws Exception {
     String token = loginAsSimpleUser("delivery-user@example.com", "secret123");
     String payload =
         objectMapper.writeValueAsString(Map.of("amount", 5000, "provider", "STANDARD"));
 
+    String response =
+        mockMvc
+            .perform(post("/delivery-costs").contentType(MediaType.APPLICATION_JSON).content(payload))
+            .andExpect(status().isCreated())
+            .andExpect(jsonPath("$.amount").value(5000))
+            .andReturn()
+            .getResponse()
+            .getContentAsString();
+
+    java.util.UUID deliveryCostId =
+        org.openapitools.client.model.DeliverCost.fromJson(response).getId();
+
     mockMvc
         .perform(
-            post("/delivery-costs")
+            put("/delivery-costs/{id}", deliveryCostId)
                 .header("Authorization", bearer(token))
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(payload))

@@ -5,7 +5,9 @@ import static org.springframework.http.HttpStatus.NOT_FOUND;
 import static org.springframework.http.HttpStatus.UNPROCESSABLE_ENTITY;
 
 import com.devikapps.caverne.modules.catalog.Product;
+import com.devikapps.caverne.modules.catalog.ProductApiMapper;
 import com.devikapps.caverne.modules.catalog.ProductService;
+import com.devikapps.caverne.modules.catalog.Price;
 import com.devikapps.caverne.modules.payment.PaymentProvider;
 import com.devikapps.caverne.modules.payment.PaymentResponse;
 import com.devikapps.caverne.modules.user.UserAccount;
@@ -32,6 +34,7 @@ public class OrderService {
 
   private final OrderRepository orderRepository;
   private final ProductService productService;
+  private final ProductApiMapper productApiMapper;
   private final DeliveryCostService deliveryCostService;
   private final List<PaymentProvider> paymentProviders;
   private final ObjectMapper objectMapper;
@@ -81,28 +84,21 @@ public class OrderService {
             .map(
                 itemReq -> {
                   Product product = productService.findById(itemReq.getProductId());
-                  BigDecimal unitPrice =
-                      product.getPrices().stream()
-                          .filter(
-                              price ->
-                                  input.getCurrencyCode().equalsIgnoreCase(price.getCurrencyCode()))
-                          .max(java.util.Comparator.comparing(price -> price.getValidFrom()))
-                          .map(price -> price.getValue())
-                          .orElseThrow(
-                              () ->
-                                  new ResponseStatusException(
-                                      UNPROCESSABLE_ENTITY,
-                                      "No price available for product "
-                                          + product.getId()
-                                          + " in currency "
-                                          + input.getCurrencyCode()));
+                  BigDecimal quantity = BigDecimal.valueOf(itemReq.getQuantity());
+                  ensureSufficientStock(product, quantity);
+                  Price price = resolveCurrentPrice(product, input.getCurrencyCode(), order.getDate());
+                  BigDecimal unitPrice = price.getValue();
+                  org.openapitools.client.model.Product productSnapshot =
+                      productApiMapper.toOrderSnapshot(product, price);
+                  product.setStockQuantity(product.getStockQuantity().subtract(quantity));
                   return OrderItem.builder()
                       .order(order)
                       .productId(product.getId())
                       .productLabel(product.getLabel())
-                      .quantity(BigDecimal.valueOf(itemReq.getQuantity()))
+                      .quantity(quantity)
                       .unitPrice(unitPrice)
-                      .totalPrice(unitPrice.multiply(BigDecimal.valueOf(itemReq.getQuantity())))
+                      .totalPrice(unitPrice.multiply(quantity))
+                      .productSnapshot(writeProductSnapshot(productSnapshot))
                       .build();
                 })
             .toList();
@@ -281,6 +277,52 @@ public class OrderService {
 
   private boolean isBlank(String value) {
     return value == null || value.isBlank();
+  }
+
+  private Price resolveCurrentPrice(Product product, String currencyCode, LocalDateTime at) {
+    return product.getPrices().stream()
+        .filter(price -> currencyCode.equalsIgnoreCase(price.getCurrencyCode()))
+        .max((left, right) -> comparePriceRecency(left, right, at.toLocalDate()))
+        .orElseThrow(
+            () ->
+                new ResponseStatusException(
+                    UNPROCESSABLE_ENTITY,
+                    "No price available for product "
+                        + product.getId()
+                        + " in currency "
+                        + currencyCode));
+  }
+
+  private int comparePriceRecency(Price left, Price right, java.time.LocalDate effectiveDate) {
+    java.time.LocalDate leftDate = normalizeApplicableDate(left.getValidFrom(), effectiveDate);
+    java.time.LocalDate rightDate = normalizeApplicableDate(right.getValidFrom(), effectiveDate);
+    return leftDate.compareTo(rightDate);
+  }
+
+  private java.time.LocalDate normalizeApplicableDate(
+      java.time.LocalDate validFrom, java.time.LocalDate effectiveDate) {
+    if (validFrom == null) {
+      return java.time.LocalDate.MIN;
+    }
+    return validFrom.isAfter(effectiveDate) ? java.time.LocalDate.MIN : validFrom;
+  }
+
+  private void ensureSufficientStock(Product product, BigDecimal requestedQuantity) {
+    BigDecimal stockQuantity =
+        product.getStockQuantity() == null ? BigDecimal.ZERO : product.getStockQuantity();
+    if (requestedQuantity.compareTo(stockQuantity) > 0) {
+      throw new ResponseStatusException(
+          UNPROCESSABLE_ENTITY,
+          "Requested quantity exceeds available stock for product " + product.getId());
+    }
+  }
+
+  private String writeProductSnapshot(org.openapitools.client.model.Product productSnapshot) {
+    try {
+      return productSnapshot.toJson();
+    } catch (RuntimeException exception) {
+      throw new IllegalArgumentException("Unable to serialize product snapshot");
+    }
   }
 
   private String writeProviderResponse(Map<String, Object> providerData) {

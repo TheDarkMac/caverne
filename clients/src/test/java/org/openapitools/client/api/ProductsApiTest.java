@@ -17,6 +17,8 @@ import org.openapitools.client.ApiException;
 import org.openapitools.client.model.Error;
 import org.openapitools.client.model.Product;
 import org.openapitools.client.model.ProductInput;
+import org.openapitools.client.model.ProductStock;
+import org.openapitools.client.model.ProductStockInput;
 import org.openapitools.client.model.ProductsGet200Response;
 import java.util.UUID;
 import org.junit.jupiter.api.Disabled;
@@ -88,6 +90,31 @@ public class ProductsApiTest {
         UUID id = null;
         ProductInput productInput = null;
         Product response = api.productsIdPut(id, productInput);
+        // TODO: test validations
+    }
+
+    /**
+     * Consulter le stock d&#39;un produit (admin)
+     *
+     * @throws ApiException if the Api call fails
+     */
+    @Test
+    public void productsIdStockGetTest() throws ApiException {
+        UUID id = null;
+        ProductStock response = api.productsIdStockGet(id);
+        // TODO: test validations
+    }
+
+    /**
+     * Mettre à jour le stock d&#39;un produit (admin)
+     *
+     * @throws ApiException if the Api call fails
+     */
+    @Test
+    public void productsIdStockPutTest() throws ApiException {
+        UUID id = null;
+        ProductStockInput productStockInput = null;
+        ProductStock response = api.productsIdStockPut(id, productStockInput);
         // TODO: test validations
     }
 

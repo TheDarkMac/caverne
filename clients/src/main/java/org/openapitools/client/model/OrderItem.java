@@ -22,6 +22,7 @@ import com.google.gson.stream.JsonWriter;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.UUID;
+import org.openapitools.client.model.Product;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -49,12 +50,17 @@ import org.openapitools.client.JSON;
 /**
  * OrderItem
  */
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2026-04-12T22:28:25.090854047+03:00[Indian/Antananarivo]", comments = "Generator version: 7.21.0")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2026-04-13T10:46:17.688086590+03:00[Indian/Antananarivo]", comments = "Generator version: 7.21.0")
 public class OrderItem {
   public static final String SERIALIZED_NAME_PRODUCT_ID = "product_id";
   @SerializedName(SERIALIZED_NAME_PRODUCT_ID)
   @javax.annotation.Nullable
   private UUID productId;
+
+  public static final String SERIALIZED_NAME_PRODUCT = "product";
+  @SerializedName(SERIALIZED_NAME_PRODUCT)
+  @javax.annotation.Nullable
+  private Product product;
 
   public static final String SERIALIZED_NAME_QUANTITY = "quantity";
   @SerializedName(SERIALIZED_NAME_QUANTITY)
@@ -65,6 +71,11 @@ public class OrderItem {
   @SerializedName(SERIALIZED_NAME_UNIT_PRICE)
   @javax.annotation.Nullable
   private Double unitPrice;
+
+  public static final String SERIALIZED_NAME_TOTAL_PRICE = "total_price";
+  @SerializedName(SERIALIZED_NAME_TOTAL_PRICE)
+  @javax.annotation.Nullable
+  private Double totalPrice;
 
   public OrderItem() {
   }
@@ -85,6 +96,25 @@ public class OrderItem {
 
   public void setProductId(@javax.annotation.Nullable UUID productId) {
     this.productId = productId;
+  }
+
+
+  public OrderItem product(@javax.annotation.Nullable Product product) {
+    this.product = product;
+    return this;
+  }
+
+  /**
+   * Get product
+   * @return product
+   */
+  @javax.annotation.Nullable
+  public Product getProduct() {
+    return product;
+  }
+
+  public void setProduct(@javax.annotation.Nullable Product product) {
+    this.product = product;
   }
 
 
@@ -126,6 +156,25 @@ public class OrderItem {
   }
 
 
+  public OrderItem totalPrice(@javax.annotation.Nullable Double totalPrice) {
+    this.totalPrice = totalPrice;
+    return this;
+  }
+
+  /**
+   * Get totalPrice
+   * @return totalPrice
+   */
+  @javax.annotation.Nullable
+  public Double getTotalPrice() {
+    return totalPrice;
+  }
+
+  public void setTotalPrice(@javax.annotation.Nullable Double totalPrice) {
+    this.totalPrice = totalPrice;
+  }
+
+
 
   @Override
   public boolean equals(Object o) {
@@ -137,13 +186,15 @@ public class OrderItem {
     }
     OrderItem orderItem = (OrderItem) o;
     return Objects.equals(this.productId, orderItem.productId) &&
+        Objects.equals(this.product, orderItem.product) &&
         Objects.equals(this.quantity, orderItem.quantity) &&
-        Objects.equals(this.unitPrice, orderItem.unitPrice);
+        Objects.equals(this.unitPrice, orderItem.unitPrice) &&
+        Objects.equals(this.totalPrice, orderItem.totalPrice);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(productId, quantity, unitPrice);
+    return Objects.hash(productId, product, quantity, unitPrice, totalPrice);
   }
 
   @Override
@@ -151,8 +202,10 @@ public class OrderItem {
     StringBuilder sb = new StringBuilder();
     sb.append("class OrderItem {\n");
     sb.append("    productId: ").append(toIndentedString(productId)).append("\n");
+    sb.append("    product: ").append(toIndentedString(product)).append("\n");
     sb.append("    quantity: ").append(toIndentedString(quantity)).append("\n");
     sb.append("    unitPrice: ").append(toIndentedString(unitPrice)).append("\n");
+    sb.append("    totalPrice: ").append(toIndentedString(totalPrice)).append("\n");
     sb.append("}");
     return sb.toString();
   }
@@ -171,7 +224,7 @@ public class OrderItem {
 
   static {
     // a set of all properties/fields (JSON key names)
-    openapiFields = new HashSet<String>(Arrays.asList("product_id", "quantity", "unit_price"));
+    openapiFields = new HashSet<String>(Arrays.asList("product_id", "product", "quantity", "unit_price", "total_price"));
 
     // a set of required properties/fields (JSON key names)
     openapiRequiredFields = new HashSet<String>(0);
@@ -200,6 +253,10 @@ public class OrderItem {
         JsonObject jsonObj = jsonElement.getAsJsonObject();
       if ((jsonObj.get("product_id") != null && !jsonObj.get("product_id").isJsonNull()) && !jsonObj.get("product_id").isJsonPrimitive()) {
         throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "Expected the field `product_id` to be a primitive type in the JSON string but got `%s`", jsonObj.get("product_id").toString()));
+      }
+      // validate the optional field `product`
+      if (jsonObj.get("product") != null && !jsonObj.get("product").isJsonNull()) {
+        Product.validateJsonElement(jsonObj.get("product"));
       }
   }
 

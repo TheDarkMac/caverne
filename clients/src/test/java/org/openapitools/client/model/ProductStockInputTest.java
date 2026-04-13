@@ -20,39 +20,21 @@ import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
 import java.io.IOException;
 import java.util.Arrays;
-import java.util.UUID;
-import org.openapitools.client.model.Product;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 /**
- * Model tests for OrderItem
+ * Model tests for ProductStockInput
  */
-public class OrderItemTest {
-    private final OrderItem model = new OrderItem();
+public class ProductStockInputTest {
+    private final ProductStockInput model = new ProductStockInput();
 
     /**
-     * Model tests for OrderItem
+     * Model tests for ProductStockInput
      */
     @Test
-    public void testOrderItem() {
-        // TODO: test OrderItem
-    }
-
-    /**
-     * Test the property 'productId'
-     */
-    @Test
-    public void productIdTest() {
-        // TODO: test productId
-    }
-
-    /**
-     * Test the property 'product'
-     */
-    @Test
-    public void productTest() {
-        // TODO: test product
+    public void testProductStockInput() {
+        // TODO: test ProductStockInput
     }
 
     /**
@@ -61,22 +43,6 @@ public class OrderItemTest {
     @Test
     public void quantityTest() {
         // TODO: test quantity
-    }
-
-    /**
-     * Test the property 'unitPrice'
-     */
-    @Test
-    public void unitPriceTest() {
-        // TODO: test unitPrice
-    }
-
-    /**
-     * Test the property 'totalPrice'
-     */
-    @Test
-    public void totalPriceTest() {
-        // TODO: test totalPrice
     }
 
 }

@@ -2,8 +2,13 @@ package com.devikapps.caverne.modules.catalog;
 
 import java.math.BigDecimal;
 import java.net.URI;
+import java.time.LocalDate;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -11,24 +16,20 @@ public class ProductApiMapper {
 
   public org.openapitools.client.model.Product toResponse(Product product, String currency) {
     List<org.openapitools.client.model.Price> prices =
-        product.getPrices().stream()
-            .filter(
-                price ->
-                    currency == null
-                        || currency.isBlank()
-                        || currency.equalsIgnoreCase(price.getCurrencyCode()))
-            .sorted(Comparator.comparing(Price::getValidFrom).reversed())
-            .map(
-                price ->
-                    new org.openapitools.client.model.Price()
-                        .id(price.getId())
-                        .productId(product.getId())
-                        .currencyCode(price.getCurrencyCode())
-                        .value(price.getValue().doubleValue())
-                        .validFrom(price.getValidFrom())
-                        .unit(price.getUnit()))
+        selectCurrentPrices(product.getPrices(), currency).stream()
+            .map(price -> toPriceModel(product, price))
             .toList();
 
+    return baseProductModel(product)
+        .prices(prices);
+  }
+
+  public org.openapitools.client.model.Product toOrderSnapshot(Product product, Price price) {
+    return baseProductModel(product)
+        .prices(List.of(toPriceModel(product, price)));
+  }
+
+  private org.openapitools.client.model.Product baseProductModel(Product product) {
     return new org.openapitools.client.model.Product()
         .id(product.getId())
         .category(
@@ -50,6 +51,8 @@ public class ProductApiMapper {
         .limitDate(product.getLimitDate())
         .description(product.getDescription())
         .size(parseSize(product.getSize()))
+        .stockQuantity(
+            product.getStockQuantity() == null ? null : product.getStockQuantity().doubleValue())
         .isActive(product.isActive())
         .images(
             product.getImages().stream()
@@ -60,8 +63,7 @@ public class ProductApiMapper {
                             .productId(product.getId())
                             .url(parseUri(image.getUrl()))
                             .isMain(image.isMain()))
-                .toList())
-        .prices(prices);
+                .toList());
   }
 
   public Product fromInput(org.openapitools.client.model.ProductInput input, Product existing) {
@@ -71,6 +73,10 @@ public class ProductApiMapper {
     product.setLimitDate(input.getLimitDate());
     product.setDescription(input.getDescription());
     product.setSize(input.getSize() == null ? null : input.getSize().toPlainString());
+    product.setStockQuantity(
+        input.getStockQuantity() == null
+            ? existing == null ? BigDecimal.ZERO : product.getStockQuantity()
+            : BigDecimal.valueOf(input.getStockQuantity()));
     product.setActive(Boolean.TRUE.equals(input.getIsActive()));
 
     if (input.getCategory() != null && input.getCategory().getId() != null) {
@@ -104,7 +110,85 @@ public class ProductApiMapper {
       }
     }
 
+    if (input.getPrices() != null) {
+      product.getPrices().clear();
+      for (org.openapitools.client.model.PriceInput priceInput : input.getPrices()) {
+        if (priceInput.getCurrencyCode() == null
+            || priceInput.getValue() == null
+            || priceInput.getValidFrom() == null
+            || priceInput.getUnit() == null) {
+          continue;
+        }
+        product
+            .getPrices()
+            .add(
+                Price.builder()
+                    .id(priceInput.getId())
+                    .product(product)
+                    .currencyCode(priceInput.getCurrencyCode())
+                    .value(BigDecimal.valueOf(priceInput.getValue()))
+                    .validFrom(priceInput.getValidFrom())
+                    .unit(priceInput.getUnit())
+                    .build());
+      }
+    }
+
     return product;
+  }
+
+  private List<Price> selectCurrentPrices(List<Price> prices, String currency) {
+    LocalDate today = LocalDate.now();
+    Map<String, Price> currentByKey =
+        prices.stream()
+            .filter(
+                price ->
+                    currency == null
+                        || currency.isBlank()
+                        || currency.equalsIgnoreCase(price.getCurrencyCode()))
+            .collect(
+                Collectors.toMap(
+                    price -> currentPriceKey(price.getCurrencyCode(), price.getUnit()),
+                    Function.identity(),
+                    (left, right) -> newerApplicablePrice(left, right, today)));
+
+    return currentByKey.values().stream()
+        .sorted(
+            Comparator.comparing(Price::getCurrencyCode, Comparator.nullsLast(String::compareTo))
+                .thenComparing(Price::getUnit, Comparator.nullsLast(String::compareTo)))
+        .toList();
+  }
+
+  private Price newerApplicablePrice(Price left, Price right, LocalDate today) {
+    return comparePriceRecency(left, right, today) >= 0 ? left : right;
+  }
+
+  private int comparePriceRecency(Price left, Price right, LocalDate today) {
+    LocalDate leftDate = normalizeApplicableDate(left.getValidFrom(), today);
+    LocalDate rightDate = normalizeApplicableDate(right.getValidFrom(), today);
+    return leftDate.compareTo(rightDate);
+  }
+
+  private LocalDate normalizeApplicableDate(LocalDate validFrom, LocalDate today) {
+    if (validFrom == null) {
+      return LocalDate.MIN;
+    }
+    return validFrom.isAfter(today) ? LocalDate.MIN : validFrom;
+  }
+
+  private String currentPriceKey(String currencyCode, String unit) {
+    return (currencyCode == null ? "" : currencyCode.toUpperCase())
+        + "::"
+        + Objects.toString(unit, "");
+  }
+
+  private org.openapitools.client.model.Price toPriceModel(Product product, Price price) {
+    return new org.openapitools.client.model.Price()
+        .id(price.getId())
+        .productId(product.getId())
+        .currencyCode(price.getCurrencyCode())
+        .value(price.getValue().doubleValue())
+        .validFrom(price.getValidFrom())
+        .unit(price.getUnit());
   }
 
   private BigDecimal parseSize(String size) {

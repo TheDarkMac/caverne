@@ -622,8 +622,6 @@ public class DeliveryCostsApi {
        <caption>Response Details</caption>
         <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
         <tr><td> 201 </td><td> Coût de livraison créé </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Token JWT manquant ou invalide </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Accès refusé (rôle insuffisant) </td><td>  -  </td></tr>
         <tr><td> 422 </td><td> Données invalides </td><td>  -  </td></tr>
      </table>
      */
@@ -668,7 +666,7 @@ public class DeliveryCostsApi {
             localVarHeaderParams.put("Content-Type", localVarContentType);
         }
 
-        String[] localVarAuthNames = new String[] { "BearerAuth" };
+        String[] localVarAuthNames = new String[] {  };
         return localVarApiClient.buildCall(basePath, localVarPath, "POST", localVarQueryParams, localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams, localVarCookieParams, localVarFormParams, localVarAuthNames, _callback);
     }
 
@@ -684,7 +682,7 @@ public class DeliveryCostsApi {
     }
 
     /**
-     * Créer un coût de livraison (admin)
+     * Créer un coût de livraison
      * 
      * @param deliverCostInput  (required)
      * @return DeliverCost
@@ -694,8 +692,6 @@ public class DeliveryCostsApi {
        <caption>Response Details</caption>
         <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
         <tr><td> 201 </td><td> Coût de livraison créé </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Token JWT manquant ou invalide </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Accès refusé (rôle insuffisant) </td><td>  -  </td></tr>
         <tr><td> 422 </td><td> Données invalides </td><td>  -  </td></tr>
      </table>
      */
@@ -705,7 +701,7 @@ public class DeliveryCostsApi {
     }
 
     /**
-     * Créer un coût de livraison (admin)
+     * Créer un coût de livraison
      * 
      * @param deliverCostInput  (required)
      * @return ApiResponse&lt;DeliverCost&gt;
@@ -715,8 +711,6 @@ public class DeliveryCostsApi {
        <caption>Response Details</caption>
         <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
         <tr><td> 201 </td><td> Coût de livraison créé </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Token JWT manquant ou invalide </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Accès refusé (rôle insuffisant) </td><td>  -  </td></tr>
         <tr><td> 422 </td><td> Données invalides </td><td>  -  </td></tr>
      </table>
      */
@@ -727,7 +721,7 @@ public class DeliveryCostsApi {
     }
 
     /**
-     * Créer un coût de livraison (admin) (asynchronously)
+     * Créer un coût de livraison (asynchronously)
      * 
      * @param deliverCostInput  (required)
      * @param _callback The callback to be executed when the API call finishes
@@ -738,8 +732,6 @@ public class DeliveryCostsApi {
        <caption>Response Details</caption>
         <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
         <tr><td> 201 </td><td> Coût de livraison créé </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Token JWT manquant ou invalide </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Accès refusé (rôle insuffisant) </td><td>  -  </td></tr>
         <tr><td> 422 </td><td> Données invalides </td><td>  -  </td></tr>
      </table>
      */

@@ -103,6 +103,14 @@ public class ProductTest {
     }
 
     /**
+     * Test the property 'stockQuantity'
+     */
+    @Test
+    public void stockQuantityTest() {
+        // TODO: test stockQuantity
+    }
+
+    /**
      * Test the property 'isActive'
      */
     @Test

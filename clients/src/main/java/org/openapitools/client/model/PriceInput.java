@@ -23,6 +23,7 @@ import java.io.IOException;
 import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.UUID;
+import org.openapitools.jackson.nullable.JsonNullable;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -48,44 +49,39 @@ import java.util.Set;
 import org.openapitools.client.JSON;
 
 /**
- * Price
+ * PriceInput
  */
 @javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2026-04-13T10:46:17.688086590+03:00[Indian/Antananarivo]", comments = "Generator version: 7.21.0")
-public class Price {
+public class PriceInput {
   public static final String SERIALIZED_NAME_ID = "id";
   @SerializedName(SERIALIZED_NAME_ID)
   @javax.annotation.Nullable
   private UUID id;
 
-  public static final String SERIALIZED_NAME_PRODUCT_ID = "product_id";
-  @SerializedName(SERIALIZED_NAME_PRODUCT_ID)
-  @javax.annotation.Nullable
-  private UUID productId;
-
   public static final String SERIALIZED_NAME_CURRENCY_CODE = "currency_code";
   @SerializedName(SERIALIZED_NAME_CURRENCY_CODE)
-  @javax.annotation.Nullable
+  @javax.annotation.Nonnull
   private String currencyCode;
 
   public static final String SERIALIZED_NAME_VALUE = "value";
   @SerializedName(SERIALIZED_NAME_VALUE)
-  @javax.annotation.Nullable
+  @javax.annotation.Nonnull
   private Double value;
 
   public static final String SERIALIZED_NAME_VALID_FROM = "valid_from";
   @SerializedName(SERIALIZED_NAME_VALID_FROM)
-  @javax.annotation.Nullable
+  @javax.annotation.Nonnull
   private LocalDate validFrom;
 
   public static final String SERIALIZED_NAME_UNIT = "unit";
   @SerializedName(SERIALIZED_NAME_UNIT)
-  @javax.annotation.Nullable
+  @javax.annotation.Nonnull
   private String unit;
 
-  public Price() {
+  public PriceInput() {
   }
 
-  public Price id(@javax.annotation.Nullable UUID id) {
+  public PriceInput id(@javax.annotation.Nullable UUID id) {
     this.id = id;
     return this;
   }
@@ -104,26 +100,7 @@ public class Price {
   }
 
 
-  public Price productId(@javax.annotation.Nullable UUID productId) {
-    this.productId = productId;
-    return this;
-  }
-
-  /**
-   * Get productId
-   * @return productId
-   */
-  @javax.annotation.Nullable
-  public UUID getProductId() {
-    return productId;
-  }
-
-  public void setProductId(@javax.annotation.Nullable UUID productId) {
-    this.productId = productId;
-  }
-
-
-  public Price currencyCode(@javax.annotation.Nullable String currencyCode) {
+  public PriceInput currencyCode(@javax.annotation.Nonnull String currencyCode) {
     this.currencyCode = currencyCode;
     return this;
   }
@@ -132,17 +109,17 @@ public class Price {
    * Get currencyCode
    * @return currencyCode
    */
-  @javax.annotation.Nullable
+  @javax.annotation.Nonnull
   public String getCurrencyCode() {
     return currencyCode;
   }
 
-  public void setCurrencyCode(@javax.annotation.Nullable String currencyCode) {
+  public void setCurrencyCode(@javax.annotation.Nonnull String currencyCode) {
     this.currencyCode = currencyCode;
   }
 
 
-  public Price value(@javax.annotation.Nullable Double value) {
+  public PriceInput value(@javax.annotation.Nonnull Double value) {
     this.value = value;
     return this;
   }
@@ -151,17 +128,17 @@ public class Price {
    * Get value
    * @return value
    */
-  @javax.annotation.Nullable
+  @javax.annotation.Nonnull
   public Double getValue() {
     return value;
   }
 
-  public void setValue(@javax.annotation.Nullable Double value) {
+  public void setValue(@javax.annotation.Nonnull Double value) {
     this.value = value;
   }
 
 
-  public Price validFrom(@javax.annotation.Nullable LocalDate validFrom) {
+  public PriceInput validFrom(@javax.annotation.Nonnull LocalDate validFrom) {
     this.validFrom = validFrom;
     return this;
   }
@@ -170,17 +147,17 @@ public class Price {
    * Get validFrom
    * @return validFrom
    */
-  @javax.annotation.Nullable
+  @javax.annotation.Nonnull
   public LocalDate getValidFrom() {
     return validFrom;
   }
 
-  public void setValidFrom(@javax.annotation.Nullable LocalDate validFrom) {
+  public void setValidFrom(@javax.annotation.Nonnull LocalDate validFrom) {
     this.validFrom = validFrom;
   }
 
 
-  public Price unit(@javax.annotation.Nullable String unit) {
+  public PriceInput unit(@javax.annotation.Nonnull String unit) {
     this.unit = unit;
     return this;
   }
@@ -189,12 +166,12 @@ public class Price {
    * Get unit
    * @return unit
    */
-  @javax.annotation.Nullable
+  @javax.annotation.Nonnull
   public String getUnit() {
     return unit;
   }
 
-  public void setUnit(@javax.annotation.Nullable String unit) {
+  public void setUnit(@javax.annotation.Nonnull String unit) {
     this.unit = unit;
   }
 
@@ -208,26 +185,35 @@ public class Price {
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    Price price = (Price) o;
-    return Objects.equals(this.id, price.id) &&
-        Objects.equals(this.productId, price.productId) &&
-        Objects.equals(this.currencyCode, price.currencyCode) &&
-        Objects.equals(this.value, price.value) &&
-        Objects.equals(this.validFrom, price.validFrom) &&
-        Objects.equals(this.unit, price.unit);
+    PriceInput priceInput = (PriceInput) o;
+    return Objects.equals(this.id, priceInput.id) &&
+        Objects.equals(this.currencyCode, priceInput.currencyCode) &&
+        Objects.equals(this.value, priceInput.value) &&
+        Objects.equals(this.validFrom, priceInput.validFrom) &&
+        Objects.equals(this.unit, priceInput.unit);
+  }
+
+  private static <T> boolean equalsNullable(JsonNullable<T> a, JsonNullable<T> b) {
+    return a == b || (a != null && b != null && a.isPresent() && b.isPresent() && Objects.deepEquals(a.get(), b.get()));
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(id, productId, currencyCode, value, validFrom, unit);
+    return Objects.hash(id, currencyCode, value, validFrom, unit);
+  }
+
+  private static <T> int hashCodeNullable(JsonNullable<T> a) {
+    if (a == null) {
+      return 1;
+    }
+    return a.isPresent() ? Arrays.deepHashCode(new Object[]{a.get()}) : 31;
   }
 
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
-    sb.append("class Price {\n");
+    sb.append("class PriceInput {\n");
     sb.append("    id: ").append(toIndentedString(id)).append("\n");
-    sb.append("    productId: ").append(toIndentedString(productId)).append("\n");
     sb.append("    currencyCode: ").append(toIndentedString(currencyCode)).append("\n");
     sb.append("    value: ").append(toIndentedString(value)).append("\n");
     sb.append("    validFrom: ").append(toIndentedString(validFrom)).append("\n");
@@ -250,43 +236,47 @@ public class Price {
 
   static {
     // a set of all properties/fields (JSON key names)
-    openapiFields = new HashSet<String>(Arrays.asList("id", "product_id", "currency_code", "value", "valid_from", "unit"));
+    openapiFields = new HashSet<String>(Arrays.asList("id", "currency_code", "value", "valid_from", "unit"));
 
     // a set of required properties/fields (JSON key names)
-    openapiRequiredFields = new HashSet<String>(0);
+    openapiRequiredFields = new HashSet<String>(Arrays.asList("currency_code", "value", "valid_from", "unit"));
   }
 
   /**
    * Validates the JSON Element and throws an exception if issues found
    *
    * @param jsonElement JSON Element
-   * @throws IOException if the JSON Element is invalid with respect to Price
+   * @throws IOException if the JSON Element is invalid with respect to PriceInput
    */
   public static void validateJsonElement(JsonElement jsonElement) throws IOException {
       if (jsonElement == null) {
-        if (!Price.openapiRequiredFields.isEmpty()) { // has required fields but JSON element is null
-          throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "The required field(s) %s in Price is not found in the empty JSON string", Price.openapiRequiredFields.toString()));
+        if (!PriceInput.openapiRequiredFields.isEmpty()) { // has required fields but JSON element is null
+          throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "The required field(s) %s in PriceInput is not found in the empty JSON string", PriceInput.openapiRequiredFields.toString()));
         }
       }
 
       Set<Map.Entry<String, JsonElement>> entries = jsonElement.getAsJsonObject().entrySet();
       // check to see if the JSON string contains additional fields
       for (Map.Entry<String, JsonElement> entry : entries) {
-        if (!Price.openapiFields.contains(entry.getKey())) {
-          throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "The field `%s` in the JSON string is not defined in the `Price` properties. JSON: %s", entry.getKey(), jsonElement.toString()));
+        if (!PriceInput.openapiFields.contains(entry.getKey())) {
+          throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "The field `%s` in the JSON string is not defined in the `PriceInput` properties. JSON: %s", entry.getKey(), jsonElement.toString()));
+        }
+      }
+
+      // check to make sure all required properties/fields are present in the JSON string
+      for (String requiredField : PriceInput.openapiRequiredFields) {
+        if (jsonElement.getAsJsonObject().get(requiredField) == null) {
+          throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "The required field `%s` is not found in the JSON string: %s", requiredField, jsonElement.toString()));
         }
       }
         JsonObject jsonObj = jsonElement.getAsJsonObject();
       if ((jsonObj.get("id") != null && !jsonObj.get("id").isJsonNull()) && !jsonObj.get("id").isJsonPrimitive()) {
         throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "Expected the field `id` to be a primitive type in the JSON string but got `%s`", jsonObj.get("id").toString()));
       }
-      if ((jsonObj.get("product_id") != null && !jsonObj.get("product_id").isJsonNull()) && !jsonObj.get("product_id").isJsonPrimitive()) {
-        throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "Expected the field `product_id` to be a primitive type in the JSON string but got `%s`", jsonObj.get("product_id").toString()));
-      }
-      if ((jsonObj.get("currency_code") != null && !jsonObj.get("currency_code").isJsonNull()) && !jsonObj.get("currency_code").isJsonPrimitive()) {
+      if (!jsonObj.get("currency_code").isJsonPrimitive()) {
         throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "Expected the field `currency_code` to be a primitive type in the JSON string but got `%s`", jsonObj.get("currency_code").toString()));
       }
-      if ((jsonObj.get("unit") != null && !jsonObj.get("unit").isJsonNull()) && !jsonObj.get("unit").isJsonPrimitive()) {
+      if (!jsonObj.get("unit").isJsonPrimitive()) {
         throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "Expected the field `unit` to be a primitive type in the JSON string but got `%s`", jsonObj.get("unit").toString()));
       }
   }
@@ -295,22 +285,22 @@ public class Price {
     @SuppressWarnings("unchecked")
     @Override
     public <T> TypeAdapter<T> create(Gson gson, TypeToken<T> type) {
-       if (!Price.class.isAssignableFrom(type.getRawType())) {
-         return null; // this class only serializes 'Price' and its subtypes
+       if (!PriceInput.class.isAssignableFrom(type.getRawType())) {
+         return null; // this class only serializes 'PriceInput' and its subtypes
        }
        final TypeAdapter<JsonElement> elementAdapter = gson.getAdapter(JsonElement.class);
-       final TypeAdapter<Price> thisAdapter
-                        = gson.getDelegateAdapter(this, TypeToken.get(Price.class));
+       final TypeAdapter<PriceInput> thisAdapter
+                        = gson.getDelegateAdapter(this, TypeToken.get(PriceInput.class));
 
-       return (TypeAdapter<T>) new TypeAdapter<Price>() {
+       return (TypeAdapter<T>) new TypeAdapter<PriceInput>() {
            @Override
-           public void write(JsonWriter out, Price value) throws IOException {
+           public void write(JsonWriter out, PriceInput value) throws IOException {
              JsonObject obj = thisAdapter.toJsonTree(value).getAsJsonObject();
              elementAdapter.write(out, obj);
            }
 
            @Override
-           public Price read(JsonReader in) throws IOException {
+           public PriceInput read(JsonReader in) throws IOException {
              JsonElement jsonElement = elementAdapter.read(in);
              validateJsonElement(jsonElement);
              return thisAdapter.fromJsonTree(jsonElement);
@@ -321,18 +311,18 @@ public class Price {
   }
 
   /**
-   * Create an instance of Price given an JSON string
+   * Create an instance of PriceInput given an JSON string
    *
    * @param jsonString JSON string
-   * @return An instance of Price
-   * @throws IOException if the JSON string is invalid with respect to Price
+   * @return An instance of PriceInput
+   * @throws IOException if the JSON string is invalid with respect to PriceInput
    */
-  public static Price fromJson(String jsonString) throws IOException {
-    return JSON.getGson().fromJson(jsonString, Price.class);
+  public static PriceInput fromJson(String jsonString) throws IOException {
+    return JSON.getGson().fromJson(jsonString, PriceInput.class);
   }
 
   /**
-   * Convert an instance of Price to an JSON string
+   * Convert an instance of PriceInput to an JSON string
    *
    * @return JSON string
    */

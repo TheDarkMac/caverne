@@ -15,7 +15,9 @@
 |**description** | **String** |  |  [optional] |
 |**size** | **BigDecimal** |  |  [optional] |
 |**isActive** | **Boolean** |  |  [optional] |
+|**stockQuantity** | **Double** |  |  [optional] |
 |**images** | [**List&lt;ProductImageInput&gt;**](ProductImageInput.md) |  |  [optional] |
+|**prices** | [**List&lt;PriceInput&gt;**](PriceInput.md) |  |  [optional] |
 
 
 

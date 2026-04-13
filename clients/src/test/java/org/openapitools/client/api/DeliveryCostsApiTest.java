@@ -83,7 +83,7 @@ public class DeliveryCostsApiTest {
     }
 
     /**
-     * Créer un coût de livraison (admin)
+     * Créer un coût de livraison
      *
      * @throws ApiException if the Api call fails
      */

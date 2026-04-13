@@ -176,6 +176,7 @@ class RealStripePaymentIntegrationTest {
             .reference(reference)
             .description(description)
             .size(unit)
+            .stockQuantity(BigDecimal.valueOf(20))
             .isActive(isActive)
             .limitDate(LocalDate.of(2026, 12, 31))
             .build();

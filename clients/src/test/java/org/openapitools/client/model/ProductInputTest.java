@@ -26,6 +26,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 import org.openapitools.client.model.CategoryRefInput;
+import org.openapitools.client.model.PriceInput;
 import org.openapitools.client.model.ProductImageInput;
 import org.openapitools.jackson.nullable.JsonNullable;
 import org.junit.jupiter.api.Disabled;
@@ -110,11 +111,27 @@ public class ProductInputTest {
     }
 
     /**
+     * Test the property 'stockQuantity'
+     */
+    @Test
+    public void stockQuantityTest() {
+        // TODO: test stockQuantity
+    }
+
+    /**
      * Test the property 'images'
      */
     @Test
     public void imagesTest() {
         // TODO: test images
+    }
+
+    /**
+     * Test the property 'prices'
+     */
+    @Test
+    public void pricesTest() {
+        // TODO: test prices
     }
 
 }

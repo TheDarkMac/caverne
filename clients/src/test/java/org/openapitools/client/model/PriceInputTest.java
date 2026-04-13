@@ -19,64 +19,65 @@ import com.google.gson.annotations.SerializedName;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
 import java.io.IOException;
+import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.UUID;
-import org.openapitools.client.model.Product;
+import org.openapitools.jackson.nullable.JsonNullable;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 /**
- * Model tests for OrderItem
+ * Model tests for PriceInput
  */
-public class OrderItemTest {
-    private final OrderItem model = new OrderItem();
+public class PriceInputTest {
+    private final PriceInput model = new PriceInput();
 
     /**
-     * Model tests for OrderItem
+     * Model tests for PriceInput
      */
     @Test
-    public void testOrderItem() {
-        // TODO: test OrderItem
+    public void testPriceInput() {
+        // TODO: test PriceInput
     }
 
     /**
-     * Test the property 'productId'
+     * Test the property 'id'
      */
     @Test
-    public void productIdTest() {
-        // TODO: test productId
+    public void idTest() {
+        // TODO: test id
     }
 
     /**
-     * Test the property 'product'
+     * Test the property 'currencyCode'
      */
     @Test
-    public void productTest() {
-        // TODO: test product
+    public void currencyCodeTest() {
+        // TODO: test currencyCode
     }
 
     /**
-     * Test the property 'quantity'
+     * Test the property 'value'
      */
     @Test
-    public void quantityTest() {
-        // TODO: test quantity
+    public void valueTest() {
+        // TODO: test value
     }
 
     /**
-     * Test the property 'unitPrice'
+     * Test the property 'validFrom'
      */
     @Test
-    public void unitPriceTest() {
-        // TODO: test unitPrice
+    public void validFromTest() {
+        // TODO: test validFrom
     }
 
     /**
-     * Test the property 'totalPrice'
+     * Test the property 'unit'
      */
     @Test
-    public void totalPriceTest() {
-        // TODO: test totalPrice
+    public void unitTest() {
+        // TODO: test unit
     }
 
 }
