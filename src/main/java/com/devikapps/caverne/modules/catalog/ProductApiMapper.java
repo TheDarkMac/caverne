@@ -20,13 +20,11 @@ public class ProductApiMapper {
             .map(price -> toPriceModel(product, price))
             .toList();
 
-    return baseProductModel(product)
-        .prices(prices);
+    return baseProductModel(product).prices(prices);
   }
 
   public org.openapitools.client.model.Product toOrderSnapshot(Product product, Price price) {
-    return baseProductModel(product)
-        .prices(List.of(toPriceModel(product, price)));
+    return baseProductModel(product).prices(List.of(toPriceModel(product, price)));
   }
 
   private org.openapitools.client.model.Product baseProductModel(Product product) {
@@ -104,8 +102,7 @@ public class ProductApiMapper {
                     .product(product)
                     .url(imageInput.getUrl().toString())
                     .isMain(
-                        Boolean.TRUE.equals(imageInput.getIsMain())
-                            || (!hasMainImage && i == 0))
+                        Boolean.TRUE.equals(imageInput.getIsMain()) || (!hasMainImage && i == 0))
                     .build());
       }
     }

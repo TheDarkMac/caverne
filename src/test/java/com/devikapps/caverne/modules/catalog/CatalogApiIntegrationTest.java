@@ -152,7 +152,8 @@ class CatalogApiIntegrationTest {
         .andExpect(jsonPath("$.id").value(product.getId().toString()))
         .andExpect(jsonPath("$.label").value("Forest Honey"))
         .andExpect(jsonPath("$.reference").value("HON-001"))
-        .andExpect(jsonPath("$.images[0].url").value("https://cdn.caverne.test/products/HON-001.jpg"))
+        .andExpect(
+            jsonPath("$.images[0].url").value("https://cdn.caverne.test/products/HON-001.jpg"))
         .andExpect(jsonPath("$.stock_quantity").value(9))
         .andExpect(jsonPath("$.prices[0].value").value(18000));
   }
@@ -299,15 +300,29 @@ class CatalogApiIntegrationTest {
     String payload =
         objectMapper.writeValueAsString(
             Map.of(
-                "category", Map.of("id", category.getId()),
-                "label", "Wild Pepper",
-                "reference", "PEP-NEW",
-                "limit_date", "2026-12-31",
-                "description", "Fresh pepper",
-                "size", 1,
-                "is_active", true,
-                "stock_quantity", 12,
-                "images", List.of(Map.of("url", "https://cdn.caverne.test/products/pepper-main.jpg", "is_main", true))));
+                "category",
+                Map.of("id", category.getId()),
+                "label",
+                "Wild Pepper",
+                "reference",
+                "PEP-NEW",
+                "limit_date",
+                "2026-12-31",
+                "description",
+                "Fresh pepper",
+                "size",
+                1,
+                "is_active",
+                true,
+                "stock_quantity",
+                12,
+                "images",
+                List.of(
+                    Map.of(
+                        "url",
+                        "https://cdn.caverne.test/products/pepper-main.jpg",
+                        "is_main",
+                        true))));
 
     mockMvc
         .perform(
@@ -320,7 +335,8 @@ class CatalogApiIntegrationTest {
         .andExpect(jsonPath("$.category.id").value(category.getId().toString()))
         .andExpect(jsonPath("$.label").value("Wild Pepper"))
         .andExpect(jsonPath("$.reference").value("PEP-NEW"))
-        .andExpect(jsonPath("$.images[0].url").value("https://cdn.caverne.test/products/pepper-main.jpg"))
+        .andExpect(
+            jsonPath("$.images[0].url").value("https://cdn.caverne.test/products/pepper-main.jpg"))
         .andExpect(jsonPath("$.images[0].is_main").value(true))
         .andExpect(jsonPath("$.stock_quantity").value(12))
         .andExpect(jsonPath("$.is_active").value(true));
@@ -349,15 +365,29 @@ class CatalogApiIntegrationTest {
     String payload =
         objectMapper.writeValueAsString(
             Map.of(
-                "category", Map.of("id", updatedCategory.getId()),
-                "label", "Smoked Tea",
-                "reference", "TEA-001",
-                "limit_date", "2027-01-31",
-                "description", "Updated description",
-                "size", 2,
-                "is_active", false,
-                "stock_quantity", 5,
-                "images", List.of(Map.of("url", "https://cdn.caverne.test/products/tea-main.jpg", "is_main", true))));
+                "category",
+                Map.of("id", updatedCategory.getId()),
+                "label",
+                "Smoked Tea",
+                "reference",
+                "TEA-001",
+                "limit_date",
+                "2027-01-31",
+                "description",
+                "Updated description",
+                "size",
+                2,
+                "is_active",
+                false,
+                "stock_quantity",
+                5,
+                "images",
+                List.of(
+                    Map.of(
+                        "url",
+                        "https://cdn.caverne.test/products/tea-main.jpg",
+                        "is_main",
+                        true))));
 
     mockMvc
         .perform(
@@ -370,7 +400,8 @@ class CatalogApiIntegrationTest {
         .andExpect(jsonPath("$.category.id").value(updatedCategory.getId().toString()))
         .andExpect(jsonPath("$.label").value("Smoked Tea"))
         .andExpect(jsonPath("$.reference").value("TEA-001"))
-        .andExpect(jsonPath("$.images[0].url").value("https://cdn.caverne.test/products/tea-main.jpg"))
+        .andExpect(
+            jsonPath("$.images[0].url").value("https://cdn.caverne.test/products/tea-main.jpg"))
         .andExpect(jsonPath("$.stock_quantity").value(5))
         .andExpect(jsonPath("$.is_active").value(false));
   }
@@ -415,7 +446,12 @@ class CatalogApiIntegrationTest {
                 "stock_quantity",
                 3,
                 "images",
-                List.of(Map.of("url", "https://cdn.caverne.test/products/updated-pepper.jpg", "is_main", true))));
+                List.of(
+                    Map.of(
+                        "url",
+                        "https://cdn.caverne.test/products/updated-pepper.jpg",
+                        "is_main",
+                        true))));
 
     mockMvc
         .perform(
@@ -426,7 +462,9 @@ class CatalogApiIntegrationTest {
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.id").value(product.getId().toString()))
         .andExpect(jsonPath("$.label").value("Updated Pepper"))
-        .andExpect(jsonPath("$.images[0].url").value("https://cdn.caverne.test/products/updated-pepper.jpg"))
+        .andExpect(
+            jsonPath("$.images[0].url")
+                .value("https://cdn.caverne.test/products/updated-pepper.jpg"))
         .andExpect(jsonPath("$.stock_quantity").value(3))
         .andExpect(jsonPath("$.reference").value("PEP-002"));
   }
@@ -462,7 +500,12 @@ class CatalogApiIntegrationTest {
                 "stock_quantity",
                 7,
                 "images",
-                List.of(Map.of("url", "https://cdn.caverne.test/products/new-product.jpg", "is_main", true))));
+                List.of(
+                    Map.of(
+                        "url",
+                        "https://cdn.caverne.test/products/new-product.jpg",
+                        "is_main",
+                        true))));
 
     mockMvc
         .perform(
@@ -473,7 +516,8 @@ class CatalogApiIntegrationTest {
         .andExpect(status().isCreated())
         .andExpect(jsonPath("$.id").isString())
         .andExpect(jsonPath("$.label").value("New Product"))
-        .andExpect(jsonPath("$.images[0].url").value("https://cdn.caverne.test/products/new-product.jpg"))
+        .andExpect(
+            jsonPath("$.images[0].url").value("https://cdn.caverne.test/products/new-product.jpg"))
         .andExpect(jsonPath("$.stock_quantity").value(7))
         .andExpect(jsonPath("$.reference").value("NEW-001"));
   }
@@ -567,7 +611,8 @@ class CatalogApiIntegrationTest {
 
     mockMvc
         .perform(
-            get("/products/{id}/stock", product.getId()).header("Authorization", bearer(adminToken)))
+            get("/products/{id}/stock", product.getId())
+                .header("Authorization", bearer(adminToken)))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.product_id").value(product.getId().toString()))
         .andExpect(jsonPath("$.quantity").value(8));
