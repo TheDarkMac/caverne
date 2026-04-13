@@ -384,10 +384,7 @@ class CatalogApiIntegrationTest {
                 "images",
                 List.of(
                     Map.of(
-                        "url",
-                        "https://cdn.caverne.test/products/tea-main.jpg",
-                        "main",
-                        true))));
+                        "url", "https://cdn.caverne.test/products/tea-main.jpg", "main", true))));
 
     mockMvc
         .perform(

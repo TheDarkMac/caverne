@@ -67,7 +67,11 @@ public class Order {
 
   private BigDecimal totalAmount;
 
-  @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+  @OneToMany(
+      mappedBy = "order",
+      cascade = CascadeType.ALL,
+      orphanRemoval = true,
+      fetch = FetchType.EAGER)
   @Builder.Default
   @ToString.Exclude
   private List<OrderPayment> payments = new ArrayList<>();
