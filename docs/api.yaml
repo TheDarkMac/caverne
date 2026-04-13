@@ -279,6 +279,9 @@ components:
           type: string
         size:
           type: number
+        stock_quantity:
+          type: number
+          format: double
         is_active:
           type: boolean
           default: true
@@ -314,10 +317,17 @@ components:
           type: number
         is_active:
           type: boolean
+        stock_quantity:
+          type: number
+          format: double
         images:
           type: array
           items:
             $ref: '#/components/schemas/ProductImageInput'
+        prices:
+          type: array
+          items:
+            $ref: '#/components/schemas/PriceInput'
 
     ProductImage:
       type: object
@@ -349,6 +359,24 @@ components:
         is_main:
           type: boolean
 
+    ProductStock:
+      type: object
+      properties:
+        product_id:
+          type: string
+          format: uuid
+        quantity:
+          type: number
+          format: double
+
+    ProductStockInput:
+      type: object
+      required: [quantity]
+      properties:
+        quantity:
+          type: number
+          format: double
+
     # ── PRICE ──
     Price:
       type: object
@@ -371,6 +399,26 @@ components:
         unit:
           type: string
 
+    PriceInput:
+      type: object
+      required: [currency_code, value, valid_from, unit]
+      properties:
+        id:
+          type: string
+          format: uuid
+          nullable: true
+        currency_code:
+          type: string
+          maxLength: 3
+        value:
+          type: number
+          format: double
+        valid_from:
+          type: string
+          format: date
+        unit:
+          type: string
+
     # ── ORDER ──
     OrderItem:
       type: object
@@ -378,10 +426,15 @@ components:
         product_id:
           type: string
           format: uuid
+        product:
+          $ref: '#/components/schemas/Product'
         quantity:
           type: number
           format: double
         unit_price:
+          type: number
+          format: double
+        total_price:
           type: number
           format: double
 
@@ -1165,6 +1218,50 @@ paths:
         '403':
           $ref: '#/components/responses/Forbidden'
 
+  /products/{id}/stock:
+    parameters:
+      - $ref: '#/components/parameters/pathId'
+    get:
+      tags: [Products]
+      summary: Consulter le stock d'un produit (admin)
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProductStock'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    put:
+      tags: [Products]
+      summary: Mettre à jour le stock d'un produit (admin)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProductStockInput'
+      responses:
+        '200':
+          description: Stock mis à jour
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProductStock'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '422':
+          $ref: '#/components/responses/UnprocessableEntity'
+
   # ═══════════════════════════
   # DELIVERY COSTS
   # ═══════════════════════════
@@ -1184,7 +1281,8 @@ paths:
                   $ref: '#/components/schemas/DeliverCost'
     post:
       tags: [DeliveryCosts]
-      summary: Créer un coût de livraison (admin)
+      summary: Créer un coût de livraison
+      security: []
       requestBody:
         required: true
         content:
@@ -1198,10 +1296,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/DeliverCost'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-        '403':
-          $ref: '#/components/responses/Forbidden'
         '422':
           $ref: '#/components/responses/UnprocessableEntity'
 

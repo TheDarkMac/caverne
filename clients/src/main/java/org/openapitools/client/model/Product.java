@@ -57,7 +57,7 @@ import org.openapitools.client.JSON;
 /**
  * Product
  */
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2026-04-12T22:28:25.090854047+03:00[Indian/Antananarivo]", comments = "Generator version: 7.21.0")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2026-04-13T10:46:17.688086590+03:00[Indian/Antananarivo]", comments = "Generator version: 7.21.0")
 public class Product {
   public static final String SERIALIZED_NAME_ID = "id";
   @SerializedName(SERIALIZED_NAME_ID)
@@ -93,6 +93,11 @@ public class Product {
   @SerializedName(SERIALIZED_NAME_SIZE)
   @javax.annotation.Nullable
   private BigDecimal size;
+
+  public static final String SERIALIZED_NAME_STOCK_QUANTITY = "stock_quantity";
+  @SerializedName(SERIALIZED_NAME_STOCK_QUANTITY)
+  @javax.annotation.Nullable
+  private Double stockQuantity;
 
   public static final String SERIALIZED_NAME_IS_ACTIVE = "is_active";
   @SerializedName(SERIALIZED_NAME_IS_ACTIVE)
@@ -245,6 +250,25 @@ public class Product {
   }
 
 
+  public Product stockQuantity(@javax.annotation.Nullable Double stockQuantity) {
+    this.stockQuantity = stockQuantity;
+    return this;
+  }
+
+  /**
+   * Get stockQuantity
+   * @return stockQuantity
+   */
+  @javax.annotation.Nullable
+  public Double getStockQuantity() {
+    return stockQuantity;
+  }
+
+  public void setStockQuantity(@javax.annotation.Nullable Double stockQuantity) {
+    this.stockQuantity = stockQuantity;
+  }
+
+
   public Product isActive(@javax.annotation.Nullable Boolean isActive) {
     this.isActive = isActive;
     return this;
@@ -335,6 +359,7 @@ public class Product {
         Objects.equals(this.limitDate, product.limitDate) &&
         Objects.equals(this.description, product.description) &&
         Objects.equals(this.size, product.size) &&
+        Objects.equals(this.stockQuantity, product.stockQuantity) &&
         Objects.equals(this.isActive, product.isActive) &&
         Objects.equals(this.images, product.images) &&
         Objects.equals(this.prices, product.prices);
@@ -346,7 +371,7 @@ public class Product {
 
   @Override
   public int hashCode() {
-    return Objects.hash(id, category, label, reference, limitDate, description, size, isActive, images, prices);
+    return Objects.hash(id, category, label, reference, limitDate, description, size, stockQuantity, isActive, images, prices);
   }
 
   private static <T> int hashCodeNullable(JsonNullable<T> a) {
@@ -367,6 +392,7 @@ public class Product {
     sb.append("    limitDate: ").append(toIndentedString(limitDate)).append("\n");
     sb.append("    description: ").append(toIndentedString(description)).append("\n");
     sb.append("    size: ").append(toIndentedString(size)).append("\n");
+    sb.append("    stockQuantity: ").append(toIndentedString(stockQuantity)).append("\n");
     sb.append("    isActive: ").append(toIndentedString(isActive)).append("\n");
     sb.append("    images: ").append(toIndentedString(images)).append("\n");
     sb.append("    prices: ").append(toIndentedString(prices)).append("\n");
@@ -388,7 +414,7 @@ public class Product {
 
   static {
     // a set of all properties/fields (JSON key names)
-    openapiFields = new HashSet<String>(Arrays.asList("id", "category", "label", "reference", "limit_date", "description", "size", "is_active", "images", "prices"));
+    openapiFields = new HashSet<String>(Arrays.asList("id", "category", "label", "reference", "limit_date", "description", "size", "stock_quantity", "is_active", "images", "prices"));
 
     // a set of required properties/fields (JSON key names)
     openapiRequiredFields = new HashSet<String>(0);

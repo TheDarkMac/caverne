@@ -49,7 +49,7 @@ import org.openapitools.client.JSON;
 /**
  * Fournir &#x60;email&#x60; ou &#x60;phone&#x60;, ou les deux.
  */
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2026-04-12T22:28:25.090854047+03:00[Indian/Antananarivo]", comments = "Generator version: 7.21.0")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2026-04-13T10:46:17.688086590+03:00[Indian/Antananarivo]", comments = "Generator version: 7.21.0")
 public class LoginRequest {
   public static final String SERIALIZED_NAME_EMAIL = "email";
   @SerializedName(SERIALIZED_NAME_EMAIL)

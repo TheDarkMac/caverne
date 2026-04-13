@@ -2,7 +2,7 @@
 
 La Caverne Malgache API
 - API version: 1.0.0
-  - Build date: 2026-04-12T22:28:25.090854047+03:00[Indian/Antananarivo]
+  - Build date: 2026-04-13T10:46:17.688086590+03:00[Indian/Antananarivo]
   - Generator version: 7.21.0
 
 Documentation OpenAPI de La Caverne Malagasy.
@@ -138,7 +138,7 @@ Class | Method | HTTP request | Description
 *DeliveryCostsApi* | [**deliveryCostsIdDelete**](docs/DeliveryCostsApi.md#deliveryCostsIdDelete) | **DELETE** /delivery-costs/{id} | Supprimer un coût de livraison (admin)
 *DeliveryCostsApi* | [**deliveryCostsIdGet**](docs/DeliveryCostsApi.md#deliveryCostsIdGet) | **GET** /delivery-costs/{id} | Détail d&#39;un coût de livraison
 *DeliveryCostsApi* | [**deliveryCostsIdPut**](docs/DeliveryCostsApi.md#deliveryCostsIdPut) | **PUT** /delivery-costs/{id} | Mettre à jour un coût de livraison (admin)
-*DeliveryCostsApi* | [**deliveryCostsPost**](docs/DeliveryCostsApi.md#deliveryCostsPost) | **POST** /delivery-costs | Créer un coût de livraison (admin)
+*DeliveryCostsApi* | [**deliveryCostsPost**](docs/DeliveryCostsApi.md#deliveryCostsPost) | **POST** /delivery-costs | Créer un coût de livraison
 *OrdersApi* | [**ordersAllGet**](docs/OrdersApi.md#ordersAllGet) | **GET** /orders/all | Toutes les commandes (admin)
 *OrdersApi* | [**ordersGet**](docs/OrdersApi.md#ordersGet) | **GET** /orders | Mes commandes (utilisateur connecté)
 *OrdersApi* | [**ordersIdCancelPost**](docs/OrdersApi.md#ordersIdCancelPost) | **POST** /orders/{id}/cancel | Annuler une commande (owner ou admin)
@@ -153,6 +153,8 @@ Class | Method | HTTP request | Description
 *ProductsApi* | [**productsIdDelete**](docs/ProductsApi.md#productsIdDelete) | **DELETE** /products/{id} | Supprimer un produit (admin)
 *ProductsApi* | [**productsIdGet**](docs/ProductsApi.md#productsIdGet) | **GET** /products/{id} | Détail d&#39;un produit
 *ProductsApi* | [**productsIdPut**](docs/ProductsApi.md#productsIdPut) | **PUT** /products/{id} | Créer ou mettre à jour un produit par identifiant (admin)
+*ProductsApi* | [**productsIdStockGet**](docs/ProductsApi.md#productsIdStockGet) | **GET** /products/{id}/stock | Consulter le stock d&#39;un produit (admin)
+*ProductsApi* | [**productsIdStockPut**](docs/ProductsApi.md#productsIdStockPut) | **PUT** /products/{id}/stock | Mettre à jour le stock d&#39;un produit (admin)
 *ProductsApi* | [**productsPost**](docs/ProductsApi.md#productsPost) | **POST** /products | Créer ou mettre à jour un produit (admin)
 *UsersApi* | [**usersGet**](docs/UsersApi.md#usersGet) | **GET** /users | Liste des utilisateurs (admin)
 *UsersApi* | [**usersIdDelete**](docs/UsersApi.md#usersIdDelete) | **DELETE** /users/{id} | Suppression d&#39;un utilisateur (admin)
@@ -186,10 +188,13 @@ Class | Method | HTTP request | Description
  - [PaymentMethod](docs/PaymentMethod.md)
  - [PaymentMethodInput](docs/PaymentMethodInput.md)
  - [Price](docs/Price.md)
+ - [PriceInput](docs/PriceInput.md)
  - [Product](docs/Product.md)
  - [ProductImage](docs/ProductImage.md)
  - [ProductImageInput](docs/ProductImageInput.md)
  - [ProductInput](docs/ProductInput.md)
+ - [ProductStock](docs/ProductStock.md)
+ - [ProductStockInput](docs/ProductStockInput.md)
  - [ProductsGet200Response](docs/ProductsGet200Response.md)
  - [RecipientInput](docs/RecipientInput.md)
  - [RegisterRequest](docs/RegisterRequest.md)

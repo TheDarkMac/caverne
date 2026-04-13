@@ -3,6 +3,7 @@ package com.devikapps.caverne.modules.catalog;
 import static org.springframework.http.HttpStatus.NOT_FOUND;
 import static org.springframework.http.HttpStatus.UNPROCESSABLE_ENTITY;
 
+import java.math.BigDecimal;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -69,6 +70,32 @@ public class ProductService {
 
   public org.openapitools.client.model.Product findResponseById(UUID id) {
     return productApiMapper.toResponse(findById(id), null);
+  }
+
+  public org.openapitools.client.model.ProductStock findStockById(UUID id) {
+    Product product = findById(id);
+    return new org.openapitools.client.model.ProductStock()
+        .productId(product.getId())
+        .quantity(product.getStockQuantity().doubleValue());
+  }
+
+  @Transactional
+  public org.openapitools.client.model.ProductStock updateStock(
+      UUID id, org.openapitools.client.model.ProductStockInput input) {
+    if (input.getQuantity() == null) {
+      throw new ResponseStatusException(UNPROCESSABLE_ENTITY, "Stock quantity is required");
+    }
+    if (input.getQuantity() < 0) {
+      throw new ResponseStatusException(UNPROCESSABLE_ENTITY, "Stock quantity cannot be negative");
+    }
+
+    Product product = findById(id);
+    product.setStockQuantity(BigDecimal.valueOf(input.getQuantity()));
+    Product saved = productRepository.save(product);
+
+    return new org.openapitools.client.model.ProductStock()
+        .productId(saved.getId())
+        .quantity(saved.getStockQuantity().doubleValue());
   }
 
   @Transactional

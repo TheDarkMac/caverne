@@ -1179,6 +1179,142 @@
         "tags" : [ "Products" ]
       }
     },
+    "/products/{id}/stock" : {
+      "get" : {
+        "parameters" : [ {
+          "explode" : false,
+          "in" : "path",
+          "name" : "id",
+          "required" : true,
+          "schema" : {
+            "format" : "uuid",
+            "type" : "string"
+          },
+          "style" : "simple"
+        } ],
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ProductStock"
+                }
+              }
+            },
+            "description" : "OK"
+          },
+          "401" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Error"
+                }
+              }
+            },
+            "description" : "Token JWT manquant ou invalide"
+          },
+          "403" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Error"
+                }
+              }
+            },
+            "description" : "Accès refusé (rôle insuffisant)"
+          },
+          "404" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Error"
+                }
+              }
+            },
+            "description" : "Ressource introuvable"
+          }
+        },
+        "summary" : "Consulter le stock d'un produit (admin)",
+        "tags" : [ "Products" ]
+      },
+      "put" : {
+        "parameters" : [ {
+          "explode" : false,
+          "in" : "path",
+          "name" : "id",
+          "required" : true,
+          "schema" : {
+            "format" : "uuid",
+            "type" : "string"
+          },
+          "style" : "simple"
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/ProductStockInput"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ProductStock"
+                }
+              }
+            },
+            "description" : "Stock mis à jour"
+          },
+          "401" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Error"
+                }
+              }
+            },
+            "description" : "Token JWT manquant ou invalide"
+          },
+          "403" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Error"
+                }
+              }
+            },
+            "description" : "Accès refusé (rôle insuffisant)"
+          },
+          "404" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Error"
+                }
+              }
+            },
+            "description" : "Ressource introuvable"
+          },
+          "422" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Error"
+                }
+              }
+            },
+            "description" : "Données invalides"
+          }
+        },
+        "summary" : "Mettre à jour le stock d'un produit (admin)",
+        "tags" : [ "Products" ]
+      }
+    },
     "/delivery-costs" : {
       "get" : {
         "responses" : {
@@ -1222,26 +1358,6 @@
             },
             "description" : "Coût de livraison créé"
           },
-          "401" : {
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/Error"
-                }
-              }
-            },
-            "description" : "Token JWT manquant ou invalide"
-          },
-          "403" : {
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/Error"
-                }
-              }
-            },
-            "description" : "Accès refusé (rôle insuffisant)"
-          },
           "422" : {
             "content" : {
               "application/json" : {
@@ -1253,7 +1369,8 @@
             "description" : "Données invalides"
           }
         },
-        "summary" : "Créer un coût de livraison (admin)",
+        "security" : [ ],
+        "summary" : "Créer un coût de livraison",
         "tags" : [ "DeliveryCosts" ]
       }
     },
@@ -2266,6 +2383,10 @@
           "size" : {
             "type" : "number"
           },
+          "stock_quantity" : {
+            "format" : "double",
+            "type" : "number"
+          },
           "is_active" : {
             "default" : true,
             "type" : "boolean"
@@ -2314,9 +2435,19 @@
           "is_active" : {
             "type" : "boolean"
           },
+          "stock_quantity" : {
+            "format" : "double",
+            "type" : "number"
+          },
           "images" : {
             "items" : {
               "$ref" : "#/components/schemas/ProductImageInput"
+            },
+            "type" : "array"
+          },
+          "prices" : {
+            "items" : {
+              "$ref" : "#/components/schemas/PriceInput"
             },
             "type" : "array"
           }
@@ -2363,6 +2494,29 @@
         "required" : [ "url" ],
         "type" : "object"
       },
+      "ProductStock" : {
+        "properties" : {
+          "product_id" : {
+            "format" : "uuid",
+            "type" : "string"
+          },
+          "quantity" : {
+            "format" : "double",
+            "type" : "number"
+          }
+        },
+        "type" : "object"
+      },
+      "ProductStockInput" : {
+        "properties" : {
+          "quantity" : {
+            "format" : "double",
+            "type" : "number"
+          }
+        },
+        "required" : [ "quantity" ],
+        "type" : "object"
+      },
       "Price" : {
         "properties" : {
           "id" : {
@@ -2391,17 +2545,50 @@
         },
         "type" : "object"
       },
+      "PriceInput" : {
+        "properties" : {
+          "id" : {
+            "format" : "uuid",
+            "nullable" : true,
+            "type" : "string"
+          },
+          "currency_code" : {
+            "maxLength" : 3,
+            "type" : "string"
+          },
+          "value" : {
+            "format" : "double",
+            "type" : "number"
+          },
+          "valid_from" : {
+            "format" : "date",
+            "type" : "string"
+          },
+          "unit" : {
+            "type" : "string"
+          }
+        },
+        "required" : [ "currency_code", "unit", "valid_from", "value" ],
+        "type" : "object"
+      },
       "OrderItem" : {
         "properties" : {
           "product_id" : {
             "format" : "uuid",
             "type" : "string"
           },
+          "product" : {
+            "$ref" : "#/components/schemas/Product"
+          },
           "quantity" : {
             "format" : "double",
             "type" : "number"
           },
           "unit_price" : {
+            "format" : "double",
+            "type" : "number"
+          },
+          "total_price" : {
             "format" : "double",
             "type" : "number"
           }

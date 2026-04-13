@@ -863,6 +863,100 @@ paths:
       x-content-type: application/json
       x-accepts:
       - application/json
+  /products/{id}/stock:
+    get:
+      parameters:
+      - explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          format: uuid
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProductStock"
+          description: OK
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+          description: Token JWT manquant ou invalide
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+          description: Accès refusé (rôle insuffisant)
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+          description: Ressource introuvable
+      summary: Consulter le stock d'un produit (admin)
+      tags:
+      - Products
+      x-accepts:
+      - application/json
+    put:
+      parameters:
+      - explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          format: uuid
+          type: string
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ProductStockInput"
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProductStock"
+          description: Stock mis à jour
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+          description: Token JWT manquant ou invalide
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+          description: Accès refusé (rôle insuffisant)
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+          description: Ressource introuvable
+        "422":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+          description: Données invalides
+      summary: Mettre à jour le stock d'un produit (admin)
+      tags:
+      - Products
+      x-content-type: application/json
+      x-accepts:
+      - application/json
   /delivery-costs:
     get:
       responses:
@@ -894,25 +988,14 @@ paths:
               schema:
                 $ref: "#/components/schemas/DeliverCost"
           description: Coût de livraison créé
-        "401":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Error"
-          description: Token JWT manquant ou invalide
-        "403":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Error"
-          description: Accès refusé (rôle insuffisant)
         "422":
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/Error"
           description: Données invalides
-      summary: Créer un coût de livraison (admin)
+      security: []
+      summary: Créer un coût de livraison
       tags:
       - DeliveryCosts
       x-content-type: application/json
@@ -1764,18 +1847,19 @@ components:
           label: label
           map: map
           slug: slug
+        stock_quantity: 6.027456183070403
         prices:
         - unit: unit
           product_id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
           valid_from: 2000-01-23
           id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
-          value: 6.027456183070403
+          value: 1.4658129805029452
           currency_code: currency_code
         - unit: unit
           product_id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
           valid_from: 2000-01-23
           id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
-          value: 6.027456183070403
+          value: 1.4658129805029452
           currency_code: currency_code
       properties:
         id:
@@ -1796,6 +1880,9 @@ components:
         description:
           type: string
         size:
+          type: number
+        stock_quantity:
+          format: double
           type: number
         is_active:
           default: true
@@ -1827,6 +1914,18 @@ components:
         label: label
         category:
           id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+        stock_quantity: 6.027456183070403
+        prices:
+        - unit: unit
+          valid_from: 2000-01-23
+          id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+          value: 1.4658129805029452
+          currency_code: currency_code
+        - unit: unit
+          valid_from: 2000-01-23
+          id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+          value: 1.4658129805029452
+          currency_code: currency_code
       properties:
         id:
           format: uuid
@@ -1847,9 +1946,16 @@ components:
           type: number
         is_active:
           type: boolean
+        stock_quantity:
+          format: double
+          type: number
         images:
           items:
             $ref: "#/components/schemas/ProductImageInput"
+          type: array
+        prices:
+          items:
+            $ref: "#/components/schemas/PriceInput"
           type: array
       required:
       - category
@@ -1894,13 +2000,35 @@ components:
       required:
       - url
       type: object
+    ProductStock:
+      example:
+        quantity: 0.8008281904610115
+        product_id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+      properties:
+        product_id:
+          format: uuid
+          type: string
+        quantity:
+          format: double
+          type: number
+      type: object
+    ProductStockInput:
+      example:
+        quantity: 0.8008281904610115
+      properties:
+        quantity:
+          format: double
+          type: number
+      required:
+      - quantity
+      type: object
     Price:
       example:
         unit: unit
         product_id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
         valid_from: 2000-01-23
         id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
-        value: 6.027456183070403
+        value: 1.4658129805029452
         currency_code: currency_code
       properties:
         id:
@@ -1921,19 +2049,95 @@ components:
         unit:
           type: string
       type: object
+    PriceInput:
+      example:
+        unit: unit
+        valid_from: 2000-01-23
+        id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+        value: 1.4658129805029452
+        currency_code: currency_code
+      properties:
+        id:
+          format: uuid
+          nullable: true
+          type: string
+        currency_code:
+          maxLength: 3
+          type: string
+        value:
+          format: double
+          type: number
+        valid_from:
+          format: date
+          type: string
+        unit:
+          type: string
+      required:
+      - currency_code
+      - unit
+      - valid_from
+      - value
+      type: object
     OrderItem:
       example:
+        product:
+          reference: reference
+          images:
+          - product_id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+            is_main: false
+            id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+            url: https://openapi-generator.tech
+          - product_id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+            is_main: false
+            id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+            url: https://openapi-generator.tech
+          is_active: true
+          size: 0.8008281904610115
+          limit_date: 2000-01-23
+          description: description
+          id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+          label: label
+          category:
+            children:
+            - null
+            - null
+            parent_id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+            icon: icon
+            id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+            label: label
+            map: map
+            slug: slug
+          stock_quantity: 6.027456183070403
+          prices:
+          - unit: unit
+            product_id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+            valid_from: 2000-01-23
+            id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+            value: 1.4658129805029452
+            currency_code: currency_code
+          - unit: unit
+            product_id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+            valid_from: 2000-01-23
+            id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+            value: 1.4658129805029452
+            currency_code: currency_code
         quantity: 6.027456183070403
+        total_price: 5.962133916683182
         product_id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
         unit_price: 1.4658129805029452
       properties:
         product_id:
           format: uuid
           type: string
+        product:
+          $ref: "#/components/schemas/Product"
         quantity:
           format: double
           type: number
         unit_price:
+          format: double
+          type: number
+        total_price:
           format: double
           type: number
       type: object
@@ -1953,10 +2157,94 @@ components:
           recipient_phone: recipient_phone
         id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
         items:
-        - quantity: 6.027456183070403
+        - product:
+            reference: reference
+            images:
+            - product_id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+              is_main: false
+              id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+              url: https://openapi-generator.tech
+            - product_id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+              is_main: false
+              id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+              url: https://openapi-generator.tech
+            is_active: true
+            size: 0.8008281904610115
+            limit_date: 2000-01-23
+            description: description
+            id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+            label: label
+            category:
+              children:
+              - null
+              - null
+              parent_id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+              icon: icon
+              id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+              label: label
+              map: map
+              slug: slug
+            stock_quantity: 6.027456183070403
+            prices:
+            - unit: unit
+              product_id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+              valid_from: 2000-01-23
+              id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+              value: 1.4658129805029452
+              currency_code: currency_code
+            - unit: unit
+              product_id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+              valid_from: 2000-01-23
+              id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+              value: 1.4658129805029452
+              currency_code: currency_code
+          quantity: 6.027456183070403
+          total_price: 5.962133916683182
           product_id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
           unit_price: 1.4658129805029452
-        - quantity: 6.027456183070403
+        - product:
+            reference: reference
+            images:
+            - product_id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+              is_main: false
+              id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+              url: https://openapi-generator.tech
+            - product_id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+              is_main: false
+              id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+              url: https://openapi-generator.tech
+            is_active: true
+            size: 0.8008281904610115
+            limit_date: 2000-01-23
+            description: description
+            id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+            label: label
+            category:
+              children:
+              - null
+              - null
+              parent_id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+              icon: icon
+              id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+              label: label
+              map: map
+              slug: slug
+            stock_quantity: 6.027456183070403
+            prices:
+            - unit: unit
+              product_id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+              valid_from: 2000-01-23
+              id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+              value: 1.4658129805029452
+              currency_code: currency_code
+            - unit: unit
+              product_id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+              valid_from: 2000-01-23
+              id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+              value: 1.4658129805029452
+              currency_code: currency_code
+          quantity: 6.027456183070403
+          total_price: 5.962133916683182
           product_id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
           unit_price: 1.4658129805029452
         currency_code: currency_code
@@ -2282,18 +2570,19 @@ components:
             label: label
             map: map
             slug: slug
+          stock_quantity: 6.027456183070403
           prices:
           - unit: unit
             product_id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
             valid_from: 2000-01-23
             id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
-            value: 6.027456183070403
+            value: 1.4658129805029452
             currency_code: currency_code
           - unit: unit
             product_id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
             valid_from: 2000-01-23
             id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
-            value: 6.027456183070403
+            value: 1.4658129805029452
             currency_code: currency_code
         - reference: reference
           images:
@@ -2321,18 +2610,19 @@ components:
             label: label
             map: map
             slug: slug
+          stock_quantity: 6.027456183070403
           prices:
           - unit: unit
             product_id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
             valid_from: 2000-01-23
             id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
-            value: 6.027456183070403
+            value: 1.4658129805029452
             currency_code: currency_code
           - unit: unit
             product_id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
             valid_from: 2000-01-23
             id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
-            value: 6.027456183070403
+            value: 1.4658129805029452
             currency_code: currency_code
         meta:
           per_page: 1
@@ -2364,10 +2654,94 @@ components:
             recipient_phone: recipient_phone
           id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
           items:
-          - quantity: 6.027456183070403
+          - product:
+              reference: reference
+              images:
+              - product_id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+                is_main: false
+                id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+                url: https://openapi-generator.tech
+              - product_id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+                is_main: false
+                id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+                url: https://openapi-generator.tech
+              is_active: true
+              size: 0.8008281904610115
+              limit_date: 2000-01-23
+              description: description
+              id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+              label: label
+              category:
+                children:
+                - null
+                - null
+                parent_id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+                icon: icon
+                id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+                label: label
+                map: map
+                slug: slug
+              stock_quantity: 6.027456183070403
+              prices:
+              - unit: unit
+                product_id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+                valid_from: 2000-01-23
+                id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+                value: 1.4658129805029452
+                currency_code: currency_code
+              - unit: unit
+                product_id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+                valid_from: 2000-01-23
+                id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+                value: 1.4658129805029452
+                currency_code: currency_code
+            quantity: 6.027456183070403
+            total_price: 5.962133916683182
             product_id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
             unit_price: 1.4658129805029452
-          - quantity: 6.027456183070403
+          - product:
+              reference: reference
+              images:
+              - product_id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+                is_main: false
+                id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+                url: https://openapi-generator.tech
+              - product_id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+                is_main: false
+                id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+                url: https://openapi-generator.tech
+              is_active: true
+              size: 0.8008281904610115
+              limit_date: 2000-01-23
+              description: description
+              id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+              label: label
+              category:
+                children:
+                - null
+                - null
+                parent_id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+                icon: icon
+                id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+                label: label
+                map: map
+                slug: slug
+              stock_quantity: 6.027456183070403
+              prices:
+              - unit: unit
+                product_id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+                valid_from: 2000-01-23
+                id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+                value: 1.4658129805029452
+                currency_code: currency_code
+              - unit: unit
+                product_id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+                valid_from: 2000-01-23
+                id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+                value: 1.4658129805029452
+                currency_code: currency_code
+            quantity: 6.027456183070403
+            total_price: 5.962133916683182
             product_id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
             unit_price: 1.4658129805029452
           currency_code: currency_code
@@ -2387,10 +2761,94 @@ components:
             recipient_phone: recipient_phone
           id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
           items:
-          - quantity: 6.027456183070403
+          - product:
+              reference: reference
+              images:
+              - product_id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+                is_main: false
+                id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+                url: https://openapi-generator.tech
+              - product_id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+                is_main: false
+                id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+                url: https://openapi-generator.tech
+              is_active: true
+              size: 0.8008281904610115
+              limit_date: 2000-01-23
+              description: description
+              id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+              label: label
+              category:
+                children:
+                - null
+                - null
+                parent_id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+                icon: icon
+                id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+                label: label
+                map: map
+                slug: slug
+              stock_quantity: 6.027456183070403
+              prices:
+              - unit: unit
+                product_id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+                valid_from: 2000-01-23
+                id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+                value: 1.4658129805029452
+                currency_code: currency_code
+              - unit: unit
+                product_id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+                valid_from: 2000-01-23
+                id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+                value: 1.4658129805029452
+                currency_code: currency_code
+            quantity: 6.027456183070403
+            total_price: 5.962133916683182
             product_id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
             unit_price: 1.4658129805029452
-          - quantity: 6.027456183070403
+          - product:
+              reference: reference
+              images:
+              - product_id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+                is_main: false
+                id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+                url: https://openapi-generator.tech
+              - product_id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+                is_main: false
+                id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+                url: https://openapi-generator.tech
+              is_active: true
+              size: 0.8008281904610115
+              limit_date: 2000-01-23
+              description: description
+              id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+              label: label
+              category:
+                children:
+                - null
+                - null
+                parent_id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+                icon: icon
+                id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+                label: label
+                map: map
+                slug: slug
+              stock_quantity: 6.027456183070403
+              prices:
+              - unit: unit
+                product_id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+                valid_from: 2000-01-23
+                id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+                value: 1.4658129805029452
+                currency_code: currency_code
+              - unit: unit
+                product_id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+                valid_from: 2000-01-23
+                id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+                value: 1.4658129805029452
+                currency_code: currency_code
+            quantity: 6.027456183070403
+            total_price: 5.962133916683182
             product_id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
             unit_price: 1.4658129805029452
           currency_code: currency_code

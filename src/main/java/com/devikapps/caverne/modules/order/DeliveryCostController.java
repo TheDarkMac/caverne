@@ -41,7 +41,6 @@ public class DeliveryCostController {
   @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
   @ResponseStatus(HttpStatus.CREATED)
   public String createDeliveryCost(@RequestBody String rawBody) {
-    securityActorResolver.requireAdmin();
     return JSON.getGson().toJson(deliveryCostService.create(parseInput(rawBody)));
   }
 

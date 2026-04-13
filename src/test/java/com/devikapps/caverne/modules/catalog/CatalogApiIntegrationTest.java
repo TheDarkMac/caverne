@@ -85,17 +85,30 @@ class CatalogApiIntegrationTest {
 
     productRepository.saveAll(
         List.of(
-            product("Wild Pepper", "PEP-001", true, "Hot spice", category, "MGA", "kg", 12000),
+            product(
+                "Wild Pepper",
+                "PEP-001",
+                true,
+                "Hot spice",
+                category,
+                List.of(price("MGA", "kg", 12000, LocalDate.of(2026, 1, 1))),
+                15),
             product(
                 "Smoked Pepper",
                 "PEP-002",
                 false,
                 "Inactive product",
                 category,
-                "MGA",
-                "kg",
-                13500),
-            product("Vanilla", "VAN-001", true, "Aromatic vanilla", category, "EUR", "unit", 8)));
+                List.of(price("MGA", "kg", 13500, LocalDate.of(2026, 1, 1))),
+                0),
+            product(
+                "Vanilla",
+                "VAN-001",
+                true,
+                "Aromatic vanilla",
+                category,
+                List.of(price("EUR", "unit", 8, LocalDate.of(2026, 1, 1))),
+                4)));
 
     mockMvc
         .perform(
@@ -110,6 +123,7 @@ class CatalogApiIntegrationTest {
         .andExpect(jsonPath("$.meta.page").value(1))
         .andExpect(jsonPath("$.data[0].label").value("Wild Pepper"))
         .andExpect(jsonPath("$.data[0].category.id").value(category.getId().toString()))
+        .andExpect(jsonPath("$.data[0].stock_quantity").value(15))
         .andExpect(jsonPath("$.data[0].prices[0].currency_code").value("MGA"));
   }
 
@@ -121,7 +135,16 @@ class CatalogApiIntegrationTest {
 
     Product product =
         productRepository.save(
-            product("Forest Honey", "HON-001", true, "Raw honey", category, "MGA", "jar", 18000));
+            product(
+                "Forest Honey",
+                "HON-001",
+                true,
+                "Raw honey",
+                category,
+                List.of(
+                    price("MGA", "jar", 16000, LocalDate.of(2025, 1, 1)),
+                    price("MGA", "jar", 18000, LocalDate.of(2026, 1, 1))),
+                9));
 
     mockMvc
         .perform(get("/products/{id}", product.getId()).accept(MediaType.APPLICATION_JSON))
@@ -130,6 +153,7 @@ class CatalogApiIntegrationTest {
         .andExpect(jsonPath("$.label").value("Forest Honey"))
         .andExpect(jsonPath("$.reference").value("HON-001"))
         .andExpect(jsonPath("$.images[0].url").value("https://cdn.caverne.test/products/HON-001.jpg"))
+        .andExpect(jsonPath("$.stock_quantity").value(9))
         .andExpect(jsonPath("$.prices[0].value").value(18000));
   }
 
@@ -282,6 +306,7 @@ class CatalogApiIntegrationTest {
                 "description", "Fresh pepper",
                 "size", 1,
                 "is_active", true,
+                "stock_quantity", 12,
                 "images", List.of(Map.of("url", "https://cdn.caverne.test/products/pepper-main.jpg", "is_main", true))));
 
     mockMvc
@@ -297,6 +322,7 @@ class CatalogApiIntegrationTest {
         .andExpect(jsonPath("$.reference").value("PEP-NEW"))
         .andExpect(jsonPath("$.images[0].url").value("https://cdn.caverne.test/products/pepper-main.jpg"))
         .andExpect(jsonPath("$.images[0].is_main").value(true))
+        .andExpect(jsonPath("$.stock_quantity").value(12))
         .andExpect(jsonPath("$.is_active").value(true));
   }
 
@@ -312,7 +338,13 @@ class CatalogApiIntegrationTest {
     Product product =
         productRepository.save(
             product(
-                "Wild Pepper", "PEP-001", true, "Hot spice", initialCategory, "MGA", "kg", 12000));
+                "Wild Pepper",
+                "PEP-001",
+                true,
+                "Hot spice",
+                initialCategory,
+                List.of(price("MGA", "kg", 12000, LocalDate.of(2026, 1, 1))),
+                8));
 
     String payload =
         objectMapper.writeValueAsString(
@@ -324,6 +356,7 @@ class CatalogApiIntegrationTest {
                 "description", "Updated description",
                 "size", 2,
                 "is_active", false,
+                "stock_quantity", 5,
                 "images", List.of(Map.of("url", "https://cdn.caverne.test/products/tea-main.jpg", "is_main", true))));
 
     mockMvc
@@ -338,6 +371,7 @@ class CatalogApiIntegrationTest {
         .andExpect(jsonPath("$.label").value("Smoked Tea"))
         .andExpect(jsonPath("$.reference").value("TEA-001"))
         .andExpect(jsonPath("$.images[0].url").value("https://cdn.caverne.test/products/tea-main.jpg"))
+        .andExpect(jsonPath("$.stock_quantity").value(5))
         .andExpect(jsonPath("$.is_active").value(false));
   }
 
@@ -350,7 +384,14 @@ class CatalogApiIntegrationTest {
             Category.builder().label("Spices").slug("spices").map("SPICES").build());
     Product product =
         productRepository.save(
-            product("Wild Pepper", "PEP-001", true, "Hot spice", category, "MGA", "kg", 12000));
+            product(
+                "Wild Pepper",
+                "PEP-001",
+                true,
+                "Hot spice",
+                category,
+                List.of(price("MGA", "kg", 12000, LocalDate.of(2026, 1, 1))),
+                6));
 
     String payload =
         objectMapper.writeValueAsString(
@@ -371,6 +412,8 @@ class CatalogApiIntegrationTest {
                 1,
                 "is_active",
                 true,
+                "stock_quantity",
+                3,
                 "images",
                 List.of(Map.of("url", "https://cdn.caverne.test/products/updated-pepper.jpg", "is_main", true))));
 
@@ -384,6 +427,7 @@ class CatalogApiIntegrationTest {
         .andExpect(jsonPath("$.id").value(product.getId().toString()))
         .andExpect(jsonPath("$.label").value("Updated Pepper"))
         .andExpect(jsonPath("$.images[0].url").value("https://cdn.caverne.test/products/updated-pepper.jpg"))
+        .andExpect(jsonPath("$.stock_quantity").value(3))
         .andExpect(jsonPath("$.reference").value("PEP-002"));
   }
 
@@ -415,6 +459,8 @@ class CatalogApiIntegrationTest {
                 2,
                 "is_active",
                 true,
+                "stock_quantity",
+                7,
                 "images",
                 List.of(Map.of("url", "https://cdn.caverne.test/products/new-product.jpg", "is_main", true))));
 
@@ -428,6 +474,7 @@ class CatalogApiIntegrationTest {
         .andExpect(jsonPath("$.id").isString())
         .andExpect(jsonPath("$.label").value("New Product"))
         .andExpect(jsonPath("$.images[0].url").value("https://cdn.caverne.test/products/new-product.jpg"))
+        .andExpect(jsonPath("$.stock_quantity").value(7))
         .andExpect(jsonPath("$.reference").value("NEW-001"));
   }
 
@@ -474,6 +521,97 @@ class CatalogApiIntegrationTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(productPayload))
         .andExpect(status().isUnauthorized());
+  }
+
+  @Test
+  void shouldAllowPublicProductListingWithInvalidBearerButRejectProtectedRoute() throws Exception {
+    Category category =
+        categoryRepository.save(
+            Category.builder().label("Spices").slug("spices").map("SPICES").build());
+    productRepository.save(
+        product(
+            "Wild Pepper",
+            "PEP-001",
+            true,
+            "Hot spice",
+            category,
+            List.of(price("MGA", "kg", 12000, LocalDate.of(2026, 1, 1))),
+            5));
+
+    mockMvc
+        .perform(get("/products").header("Authorization", "Bearer invalid-token"))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.meta.total").value(1));
+
+    mockMvc
+        .perform(get("/users/me").header("Authorization", "Bearer invalid-token"))
+        .andExpect(status().isUnauthorized());
+  }
+
+  @Test
+  void shouldAllowAdminToReadAndUpdateProductStock() throws Exception {
+    String adminToken = loginAsAdmin("catalog-admin-stock@example.com", "secret123");
+    Category category =
+        categoryRepository.save(
+            Category.builder().label("Spices").slug("spices").map("SPICES").build());
+    Product product =
+        productRepository.save(
+            product(
+                "Wild Pepper",
+                "PEP-001",
+                true,
+                "Hot spice",
+                category,
+                List.of(price("MGA", "kg", 12000, LocalDate.of(2026, 1, 1))),
+                8));
+
+    mockMvc
+        .perform(
+            get("/products/{id}/stock", product.getId()).header("Authorization", bearer(adminToken)))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.product_id").value(product.getId().toString()))
+        .andExpect(jsonPath("$.quantity").value(8));
+
+    mockMvc
+        .perform(
+            put("/products/{id}/stock", product.getId())
+                .header("Authorization", bearer(adminToken))
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(Map.of("quantity", 14))))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.product_id").value(product.getId().toString()))
+        .andExpect(jsonPath("$.quantity").value(14));
+  }
+
+  @Test
+  void shouldRejectNonAdminProductStockUpdates() throws Exception {
+    String userToken = loginAsSimpleUser("catalog-user-stock@example.com", "secret123");
+    Category category =
+        categoryRepository.save(
+            Category.builder().label("Spices").slug("spices").map("SPICES").build());
+    Product product =
+        productRepository.save(
+            product(
+                "Wild Pepper",
+                "PEP-001",
+                true,
+                "Hot spice",
+                category,
+                List.of(price("MGA", "kg", 12000, LocalDate.of(2026, 1, 1))),
+                8));
+
+    mockMvc
+        .perform(
+            get("/products/{id}/stock", product.getId()).header("Authorization", bearer(userToken)))
+        .andExpect(status().isForbidden());
+
+    mockMvc
+        .perform(
+            put("/products/{id}/stock", product.getId())
+                .header("Authorization", bearer(userToken))
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(Map.of("quantity", 14))))
+        .andExpect(status().isForbidden());
   }
 
   @Test
@@ -571,28 +709,20 @@ class CatalogApiIntegrationTest {
       boolean isActive,
       String description,
       Category category,
-      String currencyCode,
-      String unit,
-      int amount) {
+      List<Price> prices,
+      double stockQuantity) {
     Product product =
         Product.builder()
             .category(category)
             .label(label)
             .reference(reference)
             .description(description)
-            .size(unit)
+            .size("1")
+            .stockQuantity(BigDecimal.valueOf(stockQuantity))
             .isActive(isActive)
             .limitDate(LocalDate.of(2026, 12, 31))
             .build();
-
-    Price price =
-        Price.builder()
-            .product(product)
-            .currencyCode(currencyCode)
-            .unit(unit)
-            .validFrom(LocalDate.of(2026, 1, 1))
-            .value(BigDecimal.valueOf(amount))
-            .build();
+    prices.forEach(price -> price.setProduct(product));
 
     ProductImage image =
         ProductImage.builder()
@@ -602,7 +732,16 @@ class CatalogApiIntegrationTest {
             .build();
 
     product.setImages(List.of(image));
-    product.setPrices(List.of(price));
+    product.setPrices(prices);
     return product;
+  }
+
+  private Price price(String currencyCode, String unit, double amount, LocalDate validFrom) {
+    return Price.builder()
+        .currencyCode(currencyCode)
+        .unit(unit)
+        .validFrom(validFrom)
+        .value(BigDecimal.valueOf(amount))
+        .build();
   }
 }

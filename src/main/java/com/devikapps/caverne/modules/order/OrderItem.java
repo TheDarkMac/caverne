@@ -26,4 +26,7 @@ public class OrderItem {
   private BigDecimal quantity;
   private BigDecimal unitPrice;
   private BigDecimal totalPrice;
+
+  @Column(columnDefinition = "TEXT")
+  private String productSnapshot;
 }
