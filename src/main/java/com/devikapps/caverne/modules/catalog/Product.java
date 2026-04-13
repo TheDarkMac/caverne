@@ -35,6 +35,10 @@ public class Product {
 
   private String size;
 
+  @Column(name = "stock_quantity", precision = 19, scale = 4, nullable = false)
+  @Builder.Default
+  private java.math.BigDecimal stockQuantity = java.math.BigDecimal.ZERO;
+
   @Builder.Default private boolean isActive = true;
 
   @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)

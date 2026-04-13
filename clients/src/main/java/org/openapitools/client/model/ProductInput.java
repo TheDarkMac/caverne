@@ -27,6 +27,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 import org.openapitools.client.model.CategoryRefInput;
+import org.openapitools.client.model.PriceInput;
 import org.openapitools.client.model.ProductImageInput;
 import org.openapitools.jackson.nullable.JsonNullable;
 
@@ -56,7 +57,7 @@ import org.openapitools.client.JSON;
 /**
  * ProductInput
  */
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2026-04-12T22:28:25.090854047+03:00[Indian/Antananarivo]", comments = "Generator version: 7.21.0")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2026-04-13T10:46:17.688086590+03:00[Indian/Antananarivo]", comments = "Generator version: 7.21.0")
 public class ProductInput {
   public static final String SERIALIZED_NAME_ID = "id";
   @SerializedName(SERIALIZED_NAME_ID)
@@ -98,10 +99,20 @@ public class ProductInput {
   @javax.annotation.Nullable
   private Boolean isActive;
 
+  public static final String SERIALIZED_NAME_STOCK_QUANTITY = "stock_quantity";
+  @SerializedName(SERIALIZED_NAME_STOCK_QUANTITY)
+  @javax.annotation.Nullable
+  private Double stockQuantity;
+
   public static final String SERIALIZED_NAME_IMAGES = "images";
   @SerializedName(SERIALIZED_NAME_IMAGES)
   @javax.annotation.Nullable
   private List<ProductImageInput> images = new ArrayList<>();
+
+  public static final String SERIALIZED_NAME_PRICES = "prices";
+  @SerializedName(SERIALIZED_NAME_PRICES)
+  @javax.annotation.Nullable
+  private List<PriceInput> prices = new ArrayList<>();
 
   public ProductInput() {
   }
@@ -258,6 +269,25 @@ public class ProductInput {
   }
 
 
+  public ProductInput stockQuantity(@javax.annotation.Nullable Double stockQuantity) {
+    this.stockQuantity = stockQuantity;
+    return this;
+  }
+
+  /**
+   * Get stockQuantity
+   * @return stockQuantity
+   */
+  @javax.annotation.Nullable
+  public Double getStockQuantity() {
+    return stockQuantity;
+  }
+
+  public void setStockQuantity(@javax.annotation.Nullable Double stockQuantity) {
+    this.stockQuantity = stockQuantity;
+  }
+
+
   public ProductInput images(@javax.annotation.Nullable List<ProductImageInput> images) {
     this.images = images;
     return this;
@@ -285,6 +315,33 @@ public class ProductInput {
   }
 
 
+  public ProductInput prices(@javax.annotation.Nullable List<PriceInput> prices) {
+    this.prices = prices;
+    return this;
+  }
+
+  public ProductInput addPricesItem(PriceInput pricesItem) {
+    if (this.prices == null) {
+      this.prices = new ArrayList<>();
+    }
+    this.prices.add(pricesItem);
+    return this;
+  }
+
+  /**
+   * Get prices
+   * @return prices
+   */
+  @javax.annotation.Nullable
+  public List<PriceInput> getPrices() {
+    return prices;
+  }
+
+  public void setPrices(@javax.annotation.Nullable List<PriceInput> prices) {
+    this.prices = prices;
+  }
+
+
 
   @Override
   public boolean equals(Object o) {
@@ -303,7 +360,9 @@ public class ProductInput {
         Objects.equals(this.description, productInput.description) &&
         Objects.equals(this.size, productInput.size) &&
         Objects.equals(this.isActive, productInput.isActive) &&
-        Objects.equals(this.images, productInput.images);
+        Objects.equals(this.stockQuantity, productInput.stockQuantity) &&
+        Objects.equals(this.images, productInput.images) &&
+        Objects.equals(this.prices, productInput.prices);
   }
 
   private static <T> boolean equalsNullable(JsonNullable<T> a, JsonNullable<T> b) {
@@ -312,7 +371,7 @@ public class ProductInput {
 
   @Override
   public int hashCode() {
-    return Objects.hash(id, category, label, reference, limitDate, description, size, isActive, images);
+    return Objects.hash(id, category, label, reference, limitDate, description, size, isActive, stockQuantity, images, prices);
   }
 
   private static <T> int hashCodeNullable(JsonNullable<T> a) {
@@ -334,7 +393,9 @@ public class ProductInput {
     sb.append("    description: ").append(toIndentedString(description)).append("\n");
     sb.append("    size: ").append(toIndentedString(size)).append("\n");
     sb.append("    isActive: ").append(toIndentedString(isActive)).append("\n");
+    sb.append("    stockQuantity: ").append(toIndentedString(stockQuantity)).append("\n");
     sb.append("    images: ").append(toIndentedString(images)).append("\n");
+    sb.append("    prices: ").append(toIndentedString(prices)).append("\n");
     sb.append("}");
     return sb.toString();
   }
@@ -353,7 +414,7 @@ public class ProductInput {
 
   static {
     // a set of all properties/fields (JSON key names)
-    openapiFields = new HashSet<String>(Arrays.asList("id", "category", "label", "reference", "limit_date", "description", "size", "is_active", "images"));
+    openapiFields = new HashSet<String>(Arrays.asList("id", "category", "label", "reference", "limit_date", "description", "size", "is_active", "stock_quantity", "images", "prices"));
 
     // a set of required properties/fields (JSON key names)
     openapiRequiredFields = new HashSet<String>(Arrays.asList("category", "label", "reference"));
@@ -412,6 +473,20 @@ public class ProductInput {
           // validate the optional field `images` (array)
           for (int i = 0; i < jsonArrayimages.size(); i++) {
             ProductImageInput.validateJsonElement(jsonArrayimages.get(i));
+          };
+        }
+      }
+      if (jsonObj.get("prices") != null && !jsonObj.get("prices").isJsonNull()) {
+        JsonArray jsonArrayprices = jsonObj.getAsJsonArray("prices");
+        if (jsonArrayprices != null) {
+          // ensure the json data is an array
+          if (!jsonObj.get("prices").isJsonArray()) {
+            throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "Expected the field `prices` to be an array in the JSON string but got `%s`", jsonObj.get("prices").toString()));
+          }
+
+          // validate the optional field `prices` (array)
+          for (int i = 0; i < jsonArrayprices.size(); i++) {
+            PriceInput.validateJsonElement(jsonArrayprices.get(i));
           };
         }
       }

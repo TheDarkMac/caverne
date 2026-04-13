@@ -8,7 +8,7 @@ All URIs are relative to *http://localhost:8080/api/v1*
 | [**deliveryCostsIdDelete**](DeliveryCostsApi.md#deliveryCostsIdDelete) | **DELETE** /delivery-costs/{id} | Supprimer un coût de livraison (admin) |
 | [**deliveryCostsIdGet**](DeliveryCostsApi.md#deliveryCostsIdGet) | **GET** /delivery-costs/{id} | Détail d&#39;un coût de livraison |
 | [**deliveryCostsIdPut**](DeliveryCostsApi.md#deliveryCostsIdPut) | **PUT** /delivery-costs/{id} | Mettre à jour un coût de livraison (admin) |
-| [**deliveryCostsPost**](DeliveryCostsApi.md#deliveryCostsPost) | **POST** /delivery-costs | Créer un coût de livraison (admin) |
+| [**deliveryCostsPost**](DeliveryCostsApi.md#deliveryCostsPost) | **POST** /delivery-costs | Créer un coût de livraison |
 
 
 <a id="deliveryCostsGet"></a>
@@ -270,7 +270,7 @@ public class Example {
 # **deliveryCostsPost**
 > DeliverCost deliveryCostsPost(deliverCostInput)
 
-Créer un coût de livraison (admin)
+Créer un coût de livraison
 
 ### Example
 ```java
@@ -278,7 +278,6 @@ Créer un coût de livraison (admin)
 import org.openapitools.client.ApiClient;
 import org.openapitools.client.ApiException;
 import org.openapitools.client.Configuration;
-import org.openapitools.client.auth.*;
 import org.openapitools.client.models.*;
 import org.openapitools.client.api.DeliveryCostsApi;
 
@@ -286,10 +285,6 @@ public class Example {
   public static void main(String[] args) {
     ApiClient defaultClient = Configuration.getDefaultApiClient();
     defaultClient.setBasePath("http://localhost:8080/api/v1");
-    
-    // Configure HTTP bearer authorization: BearerAuth
-    HttpBearerAuth BearerAuth = (HttpBearerAuth) defaultClient.getAuthentication("BearerAuth");
-    BearerAuth.setBearerToken("BEARER TOKEN");
 
     DeliveryCostsApi apiInstance = new DeliveryCostsApi(defaultClient);
     DeliverCostInput deliverCostInput = new DeliverCostInput(); // DeliverCostInput | 
@@ -319,7 +314,7 @@ public class Example {
 
 ### Authorization
 
-[BearerAuth](../README.md#BearerAuth)
+No authorization required
 
 ### HTTP request headers
 
@@ -330,7 +325,5 @@ public class Example {
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
 | **201** | Coût de livraison créé |  -  |
-| **401** | Token JWT manquant ou invalide |  -  |
-| **403** | Accès refusé (rôle insuffisant) |  -  |
 | **422** | Données invalides |  -  |
 

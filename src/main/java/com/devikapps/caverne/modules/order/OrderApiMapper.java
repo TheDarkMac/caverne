@@ -32,8 +32,10 @@ public class OrderApiMapper {
                     item ->
                         new org.openapitools.client.model.OrderItem()
                             .productId(item.getProductId())
+                            .product(readProductSnapshot(item.getProductSnapshot()))
                             .quantity(item.getQuantity().doubleValue())
-                            .unitPrice(item.getUnitPrice().doubleValue()))
+                            .unitPrice(item.getUnitPrice().doubleValue())
+                            .totalPrice(item.getTotalPrice().doubleValue()))
                 .toList())
         .recipient(
             new org.openapitools.client.model.RecipientInput()
@@ -91,6 +93,18 @@ public class OrderApiMapper {
       return objectMapper.readValue(rawProviderResponse, new TypeReference<>() {});
     } catch (JsonProcessingException exception) {
       throw new IllegalArgumentException("Unable to read provider response");
+    }
+  }
+
+  private org.openapitools.client.model.Product readProductSnapshot(String rawProductSnapshot) {
+    if (rawProductSnapshot == null || rawProductSnapshot.isBlank()) {
+      return null;
+    }
+
+    try {
+      return org.openapitools.client.model.Product.fromJson(rawProductSnapshot);
+    } catch (java.io.IOException exception) {
+      throw new IllegalArgumentException("Unable to read product snapshot");
     }
   }
 }

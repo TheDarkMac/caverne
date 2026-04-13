@@ -1,5 +1,6 @@
 package com.devikapps.caverne.modules.catalog;
 
+import com.devikapps.caverne.modules.user.SecurityActorResolver;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.openapitools.client.JSON;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 public class ProductController {
 
   private final ProductService productService;
+  private final SecurityActorResolver securityActorResolver;
 
   @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
   public String listProducts(
@@ -54,6 +56,12 @@ public class ProductController {
     return JSON.getGson().toJson(productService.findResponseById(id));
   }
 
+  @GetMapping(value = "/{id}/stock", produces = MediaType.APPLICATION_JSON_VALUE)
+  public String getProductStock(@PathVariable UUID id) {
+    securityActorResolver.requireAdmin();
+    return JSON.getGson().toJson(productService.findStockById(id));
+  }
+
   @PutMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
   public org.springframework.http.ResponseEntity<String> updateProduct(
       @PathVariable UUID id, @RequestBody String rawBody) {
@@ -62,6 +70,12 @@ public class ProductController {
     return org.springframework.http.ResponseEntity.status(
             result.created() ? HttpStatus.CREATED : HttpStatus.OK)
         .body(JSON.getGson().toJson(result.product()));
+  }
+
+  @PutMapping(value = "/{id}/stock", produces = MediaType.APPLICATION_JSON_VALUE)
+  public String updateProductStock(@PathVariable UUID id, @RequestBody String rawBody) {
+    securityActorResolver.requireAdmin();
+    return JSON.getGson().toJson(productService.updateStock(id, parseProductStockInput(rawBody)));
   }
 
   @DeleteMapping("/{id}")
@@ -76,6 +90,15 @@ public class ProductController {
     } catch (Exception exception) {
       throw new org.springframework.web.server.ResponseStatusException(
           org.springframework.http.HttpStatus.UNPROCESSABLE_ENTITY, "Invalid product payload");
+    }
+  }
+
+  private org.openapitools.client.model.ProductStockInput parseProductStockInput(String rawBody) {
+    try {
+      return org.openapitools.client.model.ProductStockInput.fromJson(rawBody);
+    } catch (Exception exception) {
+      throw new org.springframework.web.server.ResponseStatusException(
+          org.springframework.http.HttpStatus.UNPROCESSABLE_ENTITY, "Invalid product stock payload");
     }
   }
 }

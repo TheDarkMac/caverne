@@ -21,6 +21,7 @@ import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.UUID;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -46,58 +47,58 @@ import java.util.Set;
 import org.openapitools.client.JSON;
 
 /**
- * Error
+ * ProductStock
  */
 @javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2026-04-13T10:46:17.688086590+03:00[Indian/Antananarivo]", comments = "Generator version: 7.21.0")
-public class Error {
-  public static final String SERIALIZED_NAME_CODE = "code";
-  @SerializedName(SERIALIZED_NAME_CODE)
+public class ProductStock {
+  public static final String SERIALIZED_NAME_PRODUCT_ID = "product_id";
+  @SerializedName(SERIALIZED_NAME_PRODUCT_ID)
   @javax.annotation.Nullable
-  private Integer code;
+  private UUID productId;
 
-  public static final String SERIALIZED_NAME_MESSAGE = "message";
-  @SerializedName(SERIALIZED_NAME_MESSAGE)
+  public static final String SERIALIZED_NAME_QUANTITY = "quantity";
+  @SerializedName(SERIALIZED_NAME_QUANTITY)
   @javax.annotation.Nullable
-  private String message;
+  private Double quantity;
 
-  public Error() {
+  public ProductStock() {
   }
 
-  public Error code(@javax.annotation.Nullable Integer code) {
-    this.code = code;
+  public ProductStock productId(@javax.annotation.Nullable UUID productId) {
+    this.productId = productId;
     return this;
   }
 
   /**
-   * Get code
-   * @return code
+   * Get productId
+   * @return productId
    */
   @javax.annotation.Nullable
-  public Integer getCode() {
-    return code;
+  public UUID getProductId() {
+    return productId;
   }
 
-  public void setCode(@javax.annotation.Nullable Integer code) {
-    this.code = code;
+  public void setProductId(@javax.annotation.Nullable UUID productId) {
+    this.productId = productId;
   }
 
 
-  public Error message(@javax.annotation.Nullable String message) {
-    this.message = message;
+  public ProductStock quantity(@javax.annotation.Nullable Double quantity) {
+    this.quantity = quantity;
     return this;
   }
 
   /**
-   * Get message
-   * @return message
+   * Get quantity
+   * @return quantity
    */
   @javax.annotation.Nullable
-  public String getMessage() {
-    return message;
+  public Double getQuantity() {
+    return quantity;
   }
 
-  public void setMessage(@javax.annotation.Nullable String message) {
-    this.message = message;
+  public void setQuantity(@javax.annotation.Nullable Double quantity) {
+    this.quantity = quantity;
   }
 
 
@@ -110,22 +111,22 @@ public class Error {
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    Error error = (Error) o;
-    return Objects.equals(this.code, error.code) &&
-        Objects.equals(this.message, error.message);
+    ProductStock productStock = (ProductStock) o;
+    return Objects.equals(this.productId, productStock.productId) &&
+        Objects.equals(this.quantity, productStock.quantity);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(code, message);
+    return Objects.hash(productId, quantity);
   }
 
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
-    sb.append("class Error {\n");
-    sb.append("    code: ").append(toIndentedString(code)).append("\n");
-    sb.append("    message: ").append(toIndentedString(message)).append("\n");
+    sb.append("class ProductStock {\n");
+    sb.append("    productId: ").append(toIndentedString(productId)).append("\n");
+    sb.append("    quantity: ").append(toIndentedString(quantity)).append("\n");
     sb.append("}");
     return sb.toString();
   }
@@ -144,7 +145,7 @@ public class Error {
 
   static {
     // a set of all properties/fields (JSON key names)
-    openapiFields = new HashSet<String>(Arrays.asList("code", "message"));
+    openapiFields = new HashSet<String>(Arrays.asList("product_id", "quantity"));
 
     // a set of required properties/fields (JSON key names)
     openapiRequiredFields = new HashSet<String>(0);
@@ -154,25 +155,25 @@ public class Error {
    * Validates the JSON Element and throws an exception if issues found
    *
    * @param jsonElement JSON Element
-   * @throws IOException if the JSON Element is invalid with respect to Error
+   * @throws IOException if the JSON Element is invalid with respect to ProductStock
    */
   public static void validateJsonElement(JsonElement jsonElement) throws IOException {
       if (jsonElement == null) {
-        if (!Error.openapiRequiredFields.isEmpty()) { // has required fields but JSON element is null
-          throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "The required field(s) %s in Error is not found in the empty JSON string", Error.openapiRequiredFields.toString()));
+        if (!ProductStock.openapiRequiredFields.isEmpty()) { // has required fields but JSON element is null
+          throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "The required field(s) %s in ProductStock is not found in the empty JSON string", ProductStock.openapiRequiredFields.toString()));
         }
       }
 
       Set<Map.Entry<String, JsonElement>> entries = jsonElement.getAsJsonObject().entrySet();
       // check to see if the JSON string contains additional fields
       for (Map.Entry<String, JsonElement> entry : entries) {
-        if (!Error.openapiFields.contains(entry.getKey())) {
-          throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "The field `%s` in the JSON string is not defined in the `Error` properties. JSON: %s", entry.getKey(), jsonElement.toString()));
+        if (!ProductStock.openapiFields.contains(entry.getKey())) {
+          throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "The field `%s` in the JSON string is not defined in the `ProductStock` properties. JSON: %s", entry.getKey(), jsonElement.toString()));
         }
       }
         JsonObject jsonObj = jsonElement.getAsJsonObject();
-      if ((jsonObj.get("message") != null && !jsonObj.get("message").isJsonNull()) && !jsonObj.get("message").isJsonPrimitive()) {
-        throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "Expected the field `message` to be a primitive type in the JSON string but got `%s`", jsonObj.get("message").toString()));
+      if ((jsonObj.get("product_id") != null && !jsonObj.get("product_id").isJsonNull()) && !jsonObj.get("product_id").isJsonPrimitive()) {
+        throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "Expected the field `product_id` to be a primitive type in the JSON string but got `%s`", jsonObj.get("product_id").toString()));
       }
   }
 
@@ -180,22 +181,22 @@ public class Error {
     @SuppressWarnings("unchecked")
     @Override
     public <T> TypeAdapter<T> create(Gson gson, TypeToken<T> type) {
-       if (!Error.class.isAssignableFrom(type.getRawType())) {
-         return null; // this class only serializes 'Error' and its subtypes
+       if (!ProductStock.class.isAssignableFrom(type.getRawType())) {
+         return null; // this class only serializes 'ProductStock' and its subtypes
        }
        final TypeAdapter<JsonElement> elementAdapter = gson.getAdapter(JsonElement.class);
-       final TypeAdapter<Error> thisAdapter
-                        = gson.getDelegateAdapter(this, TypeToken.get(Error.class));
+       final TypeAdapter<ProductStock> thisAdapter
+                        = gson.getDelegateAdapter(this, TypeToken.get(ProductStock.class));
 
-       return (TypeAdapter<T>) new TypeAdapter<Error>() {
+       return (TypeAdapter<T>) new TypeAdapter<ProductStock>() {
            @Override
-           public void write(JsonWriter out, Error value) throws IOException {
+           public void write(JsonWriter out, ProductStock value) throws IOException {
              JsonObject obj = thisAdapter.toJsonTree(value).getAsJsonObject();
              elementAdapter.write(out, obj);
            }
 
            @Override
-           public Error read(JsonReader in) throws IOException {
+           public ProductStock read(JsonReader in) throws IOException {
              JsonElement jsonElement = elementAdapter.read(in);
              validateJsonElement(jsonElement);
              return thisAdapter.fromJsonTree(jsonElement);
@@ -206,18 +207,18 @@ public class Error {
   }
 
   /**
-   * Create an instance of Error given an JSON string
+   * Create an instance of ProductStock given an JSON string
    *
    * @param jsonString JSON string
-   * @return An instance of Error
-   * @throws IOException if the JSON string is invalid with respect to Error
+   * @return An instance of ProductStock
+   * @throws IOException if the JSON string is invalid with respect to ProductStock
    */
-  public static Error fromJson(String jsonString) throws IOException {
-    return JSON.getGson().fromJson(jsonString, Error.class);
+  public static ProductStock fromJson(String jsonString) throws IOException {
+    return JSON.getGson().fromJson(jsonString, ProductStock.class);
   }
 
   /**
-   * Convert an instance of Error to an JSON string
+   * Convert an instance of ProductStock to an JSON string
    *
    * @return JSON string
    */

@@ -8,6 +8,8 @@ All URIs are relative to *http://localhost:8080/api/v1*
 | [**productsIdDelete**](ProductsApi.md#productsIdDelete) | **DELETE** /products/{id} | Supprimer un produit (admin) |
 | [**productsIdGet**](ProductsApi.md#productsIdGet) | **GET** /products/{id} | Détail d&#39;un produit |
 | [**productsIdPut**](ProductsApi.md#productsIdPut) | **PUT** /products/{id} | Créer ou mettre à jour un produit par identifiant (admin) |
+| [**productsIdStockGet**](ProductsApi.md#productsIdStockGet) | **GET** /products/{id}/stock | Consulter le stock d&#39;un produit (admin) |
+| [**productsIdStockPut**](ProductsApi.md#productsIdStockPut) | **PUT** /products/{id}/stock | Mettre à jour le stock d&#39;un produit (admin) |
 | [**productsPost**](ProductsApi.md#productsPost) | **POST** /products | Créer ou mettre à jour un produit (admin) |
 
 
@@ -279,6 +281,145 @@ public class Example {
 | **201** | Produit créé |  -  |
 | **401** | Token JWT manquant ou invalide |  -  |
 | **403** | Accès refusé (rôle insuffisant) |  -  |
+
+<a id="productsIdStockGet"></a>
+# **productsIdStockGet**
+> ProductStock productsIdStockGet(id)
+
+Consulter le stock d&#39;un produit (admin)
+
+### Example
+```java
+// Import classes:
+import org.openapitools.client.ApiClient;
+import org.openapitools.client.ApiException;
+import org.openapitools.client.Configuration;
+import org.openapitools.client.auth.*;
+import org.openapitools.client.models.*;
+import org.openapitools.client.api.ProductsApi;
+
+public class Example {
+  public static void main(String[] args) {
+    ApiClient defaultClient = Configuration.getDefaultApiClient();
+    defaultClient.setBasePath("http://localhost:8080/api/v1");
+    
+    // Configure HTTP bearer authorization: BearerAuth
+    HttpBearerAuth BearerAuth = (HttpBearerAuth) defaultClient.getAuthentication("BearerAuth");
+    BearerAuth.setBearerToken("BEARER TOKEN");
+
+    ProductsApi apiInstance = new ProductsApi(defaultClient);
+    UUID id = UUID.randomUUID(); // UUID | 
+    try {
+      ProductStock result = apiInstance.productsIdStockGet(id);
+      System.out.println(result);
+    } catch (ApiException e) {
+      System.err.println("Exception when calling ProductsApi#productsIdStockGet");
+      System.err.println("Status code: " + e.getCode());
+      System.err.println("Reason: " + e.getResponseBody());
+      System.err.println("Response headers: " + e.getResponseHeaders());
+      e.printStackTrace();
+    }
+  }
+}
+```
+
+### Parameters
+
+| Name | Type | Description  | Notes |
+|------------- | ------------- | ------------- | -------------|
+| **id** | **UUID**|  | |
+
+### Return type
+
+[**ProductStock**](ProductStock.md)
+
+### Authorization
+
+[BearerAuth](../README.md#BearerAuth)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **200** | OK |  -  |
+| **401** | Token JWT manquant ou invalide |  -  |
+| **403** | Accès refusé (rôle insuffisant) |  -  |
+| **404** | Ressource introuvable |  -  |
+
+<a id="productsIdStockPut"></a>
+# **productsIdStockPut**
+> ProductStock productsIdStockPut(id, productStockInput)
+
+Mettre à jour le stock d&#39;un produit (admin)
+
+### Example
+```java
+// Import classes:
+import org.openapitools.client.ApiClient;
+import org.openapitools.client.ApiException;
+import org.openapitools.client.Configuration;
+import org.openapitools.client.auth.*;
+import org.openapitools.client.models.*;
+import org.openapitools.client.api.ProductsApi;
+
+public class Example {
+  public static void main(String[] args) {
+    ApiClient defaultClient = Configuration.getDefaultApiClient();
+    defaultClient.setBasePath("http://localhost:8080/api/v1");
+    
+    // Configure HTTP bearer authorization: BearerAuth
+    HttpBearerAuth BearerAuth = (HttpBearerAuth) defaultClient.getAuthentication("BearerAuth");
+    BearerAuth.setBearerToken("BEARER TOKEN");
+
+    ProductsApi apiInstance = new ProductsApi(defaultClient);
+    UUID id = UUID.randomUUID(); // UUID | 
+    ProductStockInput productStockInput = new ProductStockInput(); // ProductStockInput | 
+    try {
+      ProductStock result = apiInstance.productsIdStockPut(id, productStockInput);
+      System.out.println(result);
+    } catch (ApiException e) {
+      System.err.println("Exception when calling ProductsApi#productsIdStockPut");
+      System.err.println("Status code: " + e.getCode());
+      System.err.println("Reason: " + e.getResponseBody());
+      System.err.println("Response headers: " + e.getResponseHeaders());
+      e.printStackTrace();
+    }
+  }
+}
+```
+
+### Parameters
+
+| Name | Type | Description  | Notes |
+|------------- | ------------- | ------------- | -------------|
+| **id** | **UUID**|  | |
+| **productStockInput** | [**ProductStockInput**](ProductStockInput.md)|  | |
+
+### Return type
+
+[**ProductStock**](ProductStock.md)
+
+### Authorization
+
+[BearerAuth](../README.md#BearerAuth)
+
+### HTTP request headers
+
+ - **Content-Type**: application/json
+ - **Accept**: application/json
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **200** | Stock mis à jour |  -  |
+| **401** | Token JWT manquant ou invalide |  -  |
+| **403** | Accès refusé (rôle insuffisant) |  -  |
+| **404** | Ressource introuvable |  -  |
+| **422** | Données invalides |  -  |
 
 <a id="productsPost"></a>
 # **productsPost**

@@ -139,6 +139,7 @@ public class NichesCatalogImporter implements ApplicationRunner {
             .reference(buildReference(category, nicheProduct.label()))
             .description("Imported from niches.md")
             .size("1")
+            .stockQuantity(BigDecimal.valueOf(100))
             .isActive(true)
             .limitDate(LocalDate.now().plusYears(2))
             .build();

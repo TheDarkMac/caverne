@@ -141,6 +141,7 @@ class StripeCheckoutLifecycleIntegrationTest {
             .reference(reference)
             .description(label + " description")
             .size("unit")
+            .stockQuantity(BigDecimal.valueOf(20))
             .isActive(true)
             .limitDate(LocalDate.of(2026, 12, 31))
             .build();
