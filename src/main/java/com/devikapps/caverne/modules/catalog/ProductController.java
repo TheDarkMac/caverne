@@ -98,7 +98,8 @@ public class ProductController {
       return org.openapitools.client.model.ProductStockInput.fromJson(rawBody);
     } catch (Exception exception) {
       throw new org.springframework.web.server.ResponseStatusException(
-          org.springframework.http.HttpStatus.UNPROCESSABLE_ENTITY, "Invalid product stock payload");
+          org.springframework.http.HttpStatus.UNPROCESSABLE_ENTITY,
+          "Invalid product stock payload");
     }
   }
 }

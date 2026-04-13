@@ -4,10 +4,10 @@ import static org.springframework.http.HttpStatus.FORBIDDEN;
 import static org.springframework.http.HttpStatus.NOT_FOUND;
 import static org.springframework.http.HttpStatus.UNPROCESSABLE_ENTITY;
 
+import com.devikapps.caverne.modules.catalog.Price;
 import com.devikapps.caverne.modules.catalog.Product;
 import com.devikapps.caverne.modules.catalog.ProductApiMapper;
 import com.devikapps.caverne.modules.catalog.ProductService;
-import com.devikapps.caverne.modules.catalog.Price;
 import com.devikapps.caverne.modules.payment.PaymentProvider;
 import com.devikapps.caverne.modules.payment.PaymentResponse;
 import com.devikapps.caverne.modules.user.UserAccount;
@@ -86,7 +86,8 @@ public class OrderService {
                   Product product = productService.findById(itemReq.getProductId());
                   BigDecimal quantity = BigDecimal.valueOf(itemReq.getQuantity());
                   ensureSufficientStock(product, quantity);
-                  Price price = resolveCurrentPrice(product, input.getCurrencyCode(), order.getDate());
+                  Price price =
+                      resolveCurrentPrice(product, input.getCurrencyCode(), order.getDate());
                   BigDecimal unitPrice = price.getValue();
                   org.openapitools.client.model.Product productSnapshot =
                       productApiMapper.toOrderSnapshot(product, price);
@@ -265,8 +266,10 @@ public class OrderService {
     }
   }
 
-  private BigDecimal resolvePaymentAmount(Order order, org.openapitools.client.model.PaymentInput input) {
-    BigDecimal totalAmount = order.getTotalAmount() == null ? BigDecimal.ZERO : order.getTotalAmount();
+  private BigDecimal resolvePaymentAmount(
+      Order order, org.openapitools.client.model.PaymentInput input) {
+    BigDecimal totalAmount =
+        order.getTotalAmount() == null ? BigDecimal.ZERO : order.getTotalAmount();
     BigDecimal requestedAmount = BigDecimal.valueOf(input.getAmount());
     if (requestedAmount.compareTo(totalAmount) != 0) {
       throw new ResponseStatusException(
