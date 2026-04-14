@@ -55,6 +55,7 @@ jobs:
           AUTH_PROVIDERS_SUPABASE_ENABLED: "false"
           BOOTSTRAP_ADMIN_ENABLED: "false"
           STRIPE_ENABLED: "false"
+          CATALOG_NICHES_IMPORT_ENABLED: "true"
         run: |
           java -jar build/libs/*.jar > app.log 2>&1 &
           echo $! > app.pid

@@ -19,15 +19,15 @@ public class PublicApiSimulation extends Simulation {
   private static final String BASE_URL =
       System.getProperty(
           "gatling.baseUrl",
-          System.getenv().getOrDefault("GATLING_BASE_URL", "http://127.0.0.1:8080/api/v1"));
+          System.getenv().getOrDefault("GATLING_BASE_URL", "http://localhost:8080/api/v1"));
 
   // Tunable load via -D flags or env vars so local runs can go bigger.
   private static final int BROWSE_USERS = intProp("gatling.users.browse", 50);
-  private static final int BROWSE_RATE = intProp("gatling.rate.browse", 10);
+  private static final int BROWSE_RATE = intProp("gatling.rate.browse", 60);
   private static final int BROWSE_RATE_DURATION = intProp("gatling.duration.browse", 60);
-  private static final int AUTH_USERS = intProp("gatling.users.auth", 20);
+  private static final int AUTH_USERS = intProp("gatling.users.auth", 40);
   private static final int CHECKOUT_USERS = intProp("gatling.users.checkout", 10);
-  private static final int CHECKOUT_RATE = intProp("gatling.rate.checkout", 2);
+  private static final int CHECKOUT_RATE = intProp("gatling.rate.checkout", 10);
   private static final int CHECKOUT_RATE_DURATION = intProp("gatling.duration.checkout", 60);
 
   private static final List<String> SEARCH_TERMS =
@@ -225,7 +225,7 @@ public class PublicApiSimulation extends Simulation {
                             return """
                                    {
                                      %s
-                                     "currency_code":"XAF",
+                                     "currency_code":"MGA",
                                      "items":[
                                        {"product_id":"%s","quantity":1}
                                      ],
