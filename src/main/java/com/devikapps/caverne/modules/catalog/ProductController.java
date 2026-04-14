@@ -16,6 +16,7 @@ public class ProductController {
 
   private final ProductService productService;
   private final SecurityActorResolver securityActorResolver;
+  private final StockMovementService stockMovementService;
 
   @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
   public String listProducts(
@@ -70,6 +71,41 @@ public class ProductController {
     return org.springframework.http.ResponseEntity.status(
             result.created() ? HttpStatus.CREATED : HttpStatus.OK)
         .body(JSON.getGson().toJson(result.product()));
+  }
+
+  @GetMapping(value = "/{id}/stock/movements", produces = MediaType.APPLICATION_JSON_VALUE)
+  public java.util.Map<String, Object> listStockMovements(
+      @PathVariable UUID id,
+      @RequestParam(defaultValue = "1") int page,
+      @RequestParam(defaultValue = "20") int per_page) {
+    securityActorResolver.requireAdmin();
+    org.springframework.data.domain.Page<StockMovement> p =
+        stockMovementService.listByProduct(id, PageRequest.of(page - 1, per_page));
+    java.util.List<java.util.Map<String, Object>> data =
+        p.getContent().stream().map(ProductController::stockMovementToMap).toList();
+    java.util.Map<String, Object> meta = new java.util.LinkedHashMap<>();
+    meta.put("total", Math.toIntExact(p.getTotalElements()));
+    meta.put("page", p.getNumber() + 1);
+    meta.put("per_page", p.getSize());
+    meta.put("last_page", p.getTotalPages());
+    java.util.Map<String, Object> out = new java.util.LinkedHashMap<>();
+    out.put("data", data);
+    out.put("meta", meta);
+    return out;
+  }
+
+  private static java.util.Map<String, Object> stockMovementToMap(StockMovement movement) {
+    java.util.Map<String, Object> map = new java.util.LinkedHashMap<>();
+    map.put("id", movement.getId());
+    map.put("product_id", movement.getProductId());
+    map.put("delta", movement.getDelta());
+    map.put("reason", movement.getReason() == null ? null : movement.getReason().name());
+    map.put("balance_after", movement.getBalanceAfter());
+    map.put(
+        "created_at", movement.getCreatedAt() == null ? null : movement.getCreatedAt().toString());
+    map.put("created_by", movement.getCreatedBy());
+    map.put("note", movement.getNote());
+    return map;
   }
 
   @PutMapping(value = "/{id}/stock", produces = MediaType.APPLICATION_JSON_VALUE)
