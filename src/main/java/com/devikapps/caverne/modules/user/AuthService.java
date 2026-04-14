@@ -4,6 +4,7 @@ import static org.springframework.http.HttpStatus.UNAUTHORIZED;
 import static org.springframework.http.HttpStatus.UNPROCESSABLE_ENTITY;
 
 import java.time.LocalDateTime;
+import java.util.Optional;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -23,6 +24,7 @@ public class AuthService {
   private final UserApiMapper userApiMapper;
   private final AuthSessionResolver authSessionResolver;
   private final PasswordEncoder passwordEncoder;
+  private final Optional<SupabaseAdminClient> supabaseAdminClient;
 
   public org.openapitools.client.model.User register(
       org.openapitools.client.model.RegisterRequest input) {
@@ -51,7 +53,22 @@ public class AuthService {
             .status("active")
             .build();
 
-    return userApiMapper.toResponse(userRepository.save(user));
+    userRepository.save(user);
+
+    supabaseAdminClient.ifPresent(
+        client -> {
+          String supabaseId =
+              client.createUser(
+                  normalizedEmail,
+                  normalizedPhone,
+                  input.getPassword(),
+                  user.getFirstname(),
+                  user.getLastname());
+          user.setExternalAuthId(supabaseId);
+          user.setAuthProvider(AuthProviderCode.SUPABASE);
+        });
+
+    return userApiMapper.toResponse(user);
   }
 
   public org.openapitools.client.model.LoginResponse login(

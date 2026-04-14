@@ -11,6 +11,8 @@ import org.springframework.stereotype.Component;
 @ConfigurationProperties(prefix = "auth.providers.supabase")
 public class SupabaseAuthProperties {
   private boolean enabled;
+  private String url;
+  private String serviceRoleKey;
   private String jwtSecret;
   private String issuer;
   private String audience = "authenticated";
