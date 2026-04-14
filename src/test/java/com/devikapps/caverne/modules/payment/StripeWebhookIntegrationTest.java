@@ -42,9 +42,11 @@ class StripeWebhookIntegrationTest {
   @Autowired private MockMvc mockMvc;
   @Autowired private OrderRepository orderRepository;
   @Autowired private ObjectMapper objectMapper;
+  @Autowired private StripeWebhookEventRepository stripeWebhookEventRepository;
 
   @BeforeEach
   void setUp() {
+    stripeWebhookEventRepository.deleteAll();
     orderRepository.deleteAll();
   }
 
@@ -103,6 +105,83 @@ class StripeWebhookIntegrationTest {
             .getFirst()
             .getProviderResponse()
             .contains("\"last_webhook_event\":\"checkout.session.completed\""));
+  }
+
+  @Test
+  void shouldConfirmStripePaymentFromPaymentIntentSucceededWebhook() throws Exception {
+    Order order =
+        orderRepository.save(
+            Order.builder()
+                .reference("ORD-WEBHOOK-PI-1")
+                .date(LocalDateTime.now())
+                .status(OrderStatus.PENDING)
+                .currencyCode("MGA")
+                .recipientName("PI User")
+                .recipientEmail("pi@example.com")
+                .recipientPhone("+261340000998")
+                .shippingLocation("Analakely")
+                .postalCode("101")
+                .countryCode("MDG")
+                .totalAmount(BigDecimal.valueOf(17000))
+                .payments(
+                    List.of(
+                        OrderPayment.builder()
+                            .paymentId(UUID.randomUUID())
+                            .methodCode("STRIPE")
+                            .currencyCode("MGA")
+                            .amount(BigDecimal.valueOf(17000))
+                            .date(LocalDateTime.now())
+                            .status("pending")
+                            .internalReference("cs_test_pi_123")
+                            .stripePaymentIntentId("pi_test_abc")
+                            .build()))
+                .build());
+
+    String payload = buildPaymentIntentPayload(
+        "evt_pi_success_1", "payment_intent.succeeded", "pi_test_abc");
+    String signature = buildSignature(payload, "whsec_test_secret");
+
+    mockMvc
+        .perform(
+            post("/payments/webhooks/stripe")
+                .contentType(MediaType.APPLICATION_JSON)
+                .header("Stripe-Signature", signature)
+                .content(payload))
+        .andExpect(status().isNoContent());
+
+    Order updated = orderRepository.findById(order.getId()).orElseThrow();
+    org.junit.jupiter.api.Assertions.assertEquals(OrderStatus.CONFIRMED, updated.getStatus());
+    org.junit.jupiter.api.Assertions.assertEquals(
+        "confirmed", updated.getPayments().getFirst().getStatus());
+
+    // Replay with the same event_id must be idempotent.
+    String replaySignature = buildSignature(payload, "whsec_test_secret");
+    mockMvc
+        .perform(
+            post("/payments/webhooks/stripe")
+                .contentType(MediaType.APPLICATION_JSON)
+                .header("Stripe-Signature", replaySignature)
+                .content(payload))
+        .andExpect(status().isNoContent());
+
+    Order afterReplay = orderRepository.findById(order.getId()).orElseThrow();
+    org.junit.jupiter.api.Assertions.assertEquals(OrderStatus.CONFIRMED, afterReplay.getStatus());
+  }
+
+  private String buildPaymentIntentPayload(String eventId, String eventType, String paymentIntentId)
+      throws Exception {
+    Map<String, Object> root = new LinkedHashMap<>();
+    root.put("id", eventId);
+    root.put("object", "event");
+    root.put("type", eventType);
+    Map<String, Object> data = new LinkedHashMap<>();
+    Map<String, Object> object = new LinkedHashMap<>();
+    object.put("id", paymentIntentId);
+    object.put("object", "payment_intent");
+    object.put("status", "succeeded");
+    data.put("object", object);
+    root.put("data", data);
+    return objectMapper.writeValueAsString(root);
   }
 
   private String buildPayload(

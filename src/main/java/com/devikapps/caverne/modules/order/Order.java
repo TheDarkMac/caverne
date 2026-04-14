@@ -11,6 +11,8 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.PrePersist;
+import jakarta.persistence.PreUpdate;
 import jakarta.persistence.Table;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -75,4 +77,15 @@ public class Order {
   @Builder.Default
   @ToString.Exclude
   private List<OrderPayment> payments = new ArrayList<>();
+
+  @PrePersist
+  @PreUpdate
+  void linkChildren() {
+    if (items != null) {
+      items.forEach(item -> item.setOrder(this));
+    }
+    if (payments != null) {
+      payments.forEach(payment -> payment.setOrder(this));
+    }
+  }
 }

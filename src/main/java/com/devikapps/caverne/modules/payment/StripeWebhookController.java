@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.server.ResponseStatusException;
 
 @RestController
 @RequestMapping("/payments/webhooks")
@@ -23,7 +24,7 @@ public class StripeWebhookController {
       @RequestHeader(value = "Stripe-Signature", required = false) String signatureHeader,
       @RequestBody String payload) {
     if (stripeWebhookService.isEmpty()) {
-      return;
+      throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Stripe webhook is disabled");
     }
     stripeWebhookService.get().handleWebhook(payload, signatureHeader);
   }

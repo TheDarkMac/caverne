@@ -43,6 +43,7 @@ dependencies {
 	implementation("org.springframework.boot:spring-boot-starter-security")
 	implementation("org.springframework.boot:spring-boot-starter-validation")
 	implementation("org.springframework.boot:spring-boot-starter-webmvc")
+	implementation("org.springframework.boot:spring-boot-starter-actuator")
 	implementation("org.springframework.security:spring-security-crypto")
 	implementation("com.google.code.findbugs:jsr305:3.0.2")
 	implementation("com.squareup.okhttp3:okhttp:4.12.0")
