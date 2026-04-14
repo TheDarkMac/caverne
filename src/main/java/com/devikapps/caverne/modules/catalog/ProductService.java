@@ -3,6 +3,8 @@ package com.devikapps.caverne.modules.catalog;
 import static org.springframework.http.HttpStatus.NOT_FOUND;
 import static org.springframework.http.HttpStatus.UNPROCESSABLE_ENTITY;
 
+import com.devikapps.caverne.modules.user.SecurityActorResolver;
+import com.devikapps.caverne.modules.user.UserAccount;
 import java.math.BigDecimal;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
@@ -20,6 +22,8 @@ public class ProductService {
 
   private final ProductRepository productRepository;
   private final ProductApiMapper productApiMapper;
+  private final StockMovementService stockMovementService;
+  private final SecurityActorResolver securityActorResolver;
 
   public Page<org.openapitools.client.model.Product> findAll(
       UUID categoryId, Boolean isActive, String search, String currency, Pageable pageable) {
@@ -90,8 +94,20 @@ public class ProductService {
     }
 
     Product product = findById(id);
-    product.setStockQuantity(BigDecimal.valueOf(input.getQuantity()));
+    BigDecimal previous =
+        product.getStockQuantity() == null ? BigDecimal.ZERO : product.getStockQuantity();
+    BigDecimal newBalance = BigDecimal.valueOf(input.getQuantity());
+    product.setStockQuantity(newBalance);
     Product saved = productRepository.save(product);
+
+    UserAccount actor = securityActorResolver.resolveUserOrNull();
+    stockMovementService.record(
+        saved.getId(),
+        newBalance,
+        newBalance.subtract(previous),
+        StockMovement.Reason.MANUAL_ADJUSTMENT,
+        actor == null ? null : actor.getId(),
+        null);
 
     return new org.openapitools.client.model.ProductStock()
         .productId(saved.getId())
