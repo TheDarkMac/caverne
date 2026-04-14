@@ -14,7 +14,10 @@ public class GlobalStripeExceptionHandler {
 
   @ExceptionHandler(StripeException.class)
   public ResponseEntity<Map<String, Object>> handleStripe(StripeException exception) {
-    log.error("Stripe API error: code={} message={}", exception.getCode(), exception.getMessage(),
+    log.error(
+        "Stripe API error: code={} message={}",
+        exception.getCode(),
+        exception.getMessage(),
         exception);
     return ResponseEntity.status(HttpStatus.BAD_GATEWAY)
         .body(Map.of("error", "payment provider error"));

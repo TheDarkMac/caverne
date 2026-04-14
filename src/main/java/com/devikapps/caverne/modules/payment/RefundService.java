@@ -104,7 +104,8 @@ public class RefundService {
         order.setStatus(OrderStatus.CANCELLED);
       } else {
         log.warn(
-            "Refund processed for order {} but status {} is not cancellable; leaving order status unchanged",
+            "Refund processed for order {} but status {} is not cancellable; leaving order status"
+                + " unchanged",
             order.getId(),
             order.getStatus());
       }

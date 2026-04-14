@@ -64,10 +64,7 @@ public class PublicApiSimulation extends Simulation {
                   .queryParam("per_page", "20")
                   .check(status().is(200))
                   .check(
-                      jsonPath("$.data[*].id")
-                          .findRandom()
-                          .optional()
-                          .saveAs("randomProductId")))
+                      jsonPath("$.data[*].id").findRandom().optional().saveAs("randomProductId")))
           .pause(THINK_MIN, THINK_MAX)
           .exec(
               http("product detail")
@@ -191,7 +188,10 @@ public class PublicApiSimulation extends Simulation {
               .get("/payment-methods")
               .check(status().is(200))
               .check(
-                  jsonPath("$[*].provider_code").findRandom().optional().saveAs("paymentProvider")));
+                  jsonPath("$[*].provider_code")
+                      .findRandom()
+                      .optional()
+                      .saveAs("paymentProvider")));
 
   private final ScenarioBuilder checkoutScenario =
       scenario("Checkout")
@@ -202,59 +202,54 @@ public class PublicApiSimulation extends Simulation {
           .exec(pickPaymentMethod)
           .pause(THINK_MIN, THINK_MAX)
           .exec(
-                  session -> {
-                        long uid = session.userId();
-                        String email = "guest+" + RUN_ID + "-" + uid + "@example.com";
-                        String phone =
-                            "+26135" + RUN_SUFFIX + String.format("%02d", uid % 100);
-                        return session.set("guestEmail", email).set("guestPhone", phone);
-                      })
+              session -> {
+                long uid = session.userId();
+                String email = "guest+" + RUN_ID + "-" + uid + "@example.com";
+                String phone = "+26135" + RUN_SUFFIX + String.format("%02d", uid % 100);
+                return session.set("guestEmail", email).set("guestPhone", phone);
+              })
           .exec(
-                      http("create order")
-                          .post("/orders")
-                          .body(
-                              StringBody(
-                                  session -> {
-                                    String productId = session.getString("productId");
-                                    String deliveryFragment =
-                                        session.contains("deliveryCostId")
-                                                && session.getString("deliveryCostId") != null
-                                            ? "\"delivery_cost_id\":\""
-                                                + session.getString("deliveryCostId")
-                                                + "\","
-                                            : "";
-                                    return """
-                                        {
-                                          %s
-                                          "currency_code":"XAF",
-                                          "items":[
-                                            {"product_id":"%s","quantity":1}
-                                          ],
-                                          "recipient":{
-                                            "country_code":"CMR",
-                                            "location":"Douala",
-                                            "postal_code":"00237",
-                                            "recipient_name":"Gatling Guest",
-                                            "recipient_email":"%s",
-                                            "recipient_phone":"%s"
-                                          }
-                                        }
-                                        """
-                                        .formatted(
-                                            deliveryFragment,
-                                            productId,
-                                            session.getString("guestEmail"),
-                                            session.getString("guestPhone"));
-                                  }))
-                          .check(status().in(201, 422))
-                          .check(jsonPath("$.id").optional().saveAs("orderId")))
+              http("create order")
+                  .post("/orders")
+                  .body(
+                      StringBody(
+                          session -> {
+                            String productId = session.getString("productId");
+                            String deliveryFragment =
+                                session.contains("deliveryCostId")
+                                        && session.getString("deliveryCostId") != null
+                                    ? "\"delivery_cost_id\":\""
+                                        + session.getString("deliveryCostId")
+                                        + "\","
+                                    : "";
+                            return """
+                                   {
+                                     %s
+                                     "currency_code":"XAF",
+                                     "items":[
+                                       {"product_id":"%s","quantity":1}
+                                     ],
+                                     "recipient":{
+                                       "country_code":"CMR",
+                                       "location":"Douala",
+                                       "postal_code":"00237",
+                                       "recipient_name":"Gatling Guest",
+                                       "recipient_email":"%s",
+                                       "recipient_phone":"%s"
+                                     }
+                                   }
+                                   """
+                                .formatted(
+                                    deliveryFragment,
+                                    productId,
+                                    session.getString("guestEmail"),
+                                    session.getString("guestPhone"));
+                          }))
+                  .check(status().in(201, 422))
+                  .check(jsonPath("$.id").optional().saveAs("orderId")))
           .pause(Duration.ofMillis(300), Duration.ofSeconds(1))
           .doIf(session -> session.contains("orderId"))
-          .then(
-              exec(
-                  http("get order")
-                      .get("/orders/#{orderId}")
-                      .check(status().in(200, 404))));
+          .then(exec(http("get order").get("/orders/#{orderId}").check(status().in(200, 404))));
 
   {
     setUp(
