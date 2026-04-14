@@ -53,8 +53,7 @@ public class ProductImageController {
   private static Map<String, Object> toMap(ProductImage image) {
     Map<String, Object> map = new LinkedHashMap<>();
     map.put("id", image.getId());
-    map.put(
-        "product_id", image.getProduct() == null ? null : image.getProduct().getId());
+    map.put("product_id", image.getProduct() == null ? null : image.getProduct().getId());
     map.put("url", image.getUrl());
     map.put("main", image.isMain());
     return map;

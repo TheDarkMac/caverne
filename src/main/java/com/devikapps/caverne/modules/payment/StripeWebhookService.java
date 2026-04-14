@@ -74,10 +74,7 @@ public class StripeWebhookService {
         return;
       }
       stripeWebhookEventRepository.saveAndFlush(
-          StripeWebhookEvent.builder()
-              .eventId(eventId)
-              .receivedAt(OffsetDateTime.now())
-              .build());
+          StripeWebhookEvent.builder().eventId(eventId).receivedAt(OffsetDateTime.now()).build());
     } catch (DataIntegrityViolationException duplicate) {
       log.info("Duplicate Stripe webhook event {} detected on insert", eventId);
       return;
@@ -93,8 +90,7 @@ public class StripeWebhookService {
       throw exception;
     } catch (RuntimeException exception) {
       log.error("Failed to process Stripe webhook event {} ({})", eventId, eventType, exception);
-      throw new ResponseStatusException(
-          INTERNAL_SERVER_ERROR, "Failed to process Stripe webhook");
+      throw new ResponseStatusException(INTERNAL_SERVER_ERROR, "Failed to process Stripe webhook");
     }
   }
 
@@ -140,14 +136,16 @@ public class StripeWebhookService {
 
     // Persist the payment_intent id when the session includes it.
     JsonNode piNode = objectNode.path("payment_intent");
-    if (piNode.isTextual() && !piNode.asText().isBlank()
+    if (piNode.isTextual()
+        && !piNode.asText().isBlank()
         && (payment.getStripePaymentIntentId() == null
             || payment.getStripePaymentIntentId().isBlank())) {
       payment.setStripePaymentIntentId(piNode.asText());
     }
     if (eventType.startsWith("payment_intent.")) {
       JsonNode idNode = objectNode.path("id");
-      if (idNode.isTextual() && !idNode.asText().isBlank()
+      if (idNode.isTextual()
+          && !idNode.asText().isBlank()
           && (payment.getStripePaymentIntentId() == null
               || payment.getStripePaymentIntentId().isBlank())) {
         payment.setStripePaymentIntentId(idNode.asText());

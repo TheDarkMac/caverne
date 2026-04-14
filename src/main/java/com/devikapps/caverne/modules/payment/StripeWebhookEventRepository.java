@@ -2,5 +2,4 @@ package com.devikapps.caverne.modules.payment;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface StripeWebhookEventRepository
-    extends JpaRepository<StripeWebhookEvent, String> {}
+public interface StripeWebhookEventRepository extends JpaRepository<StripeWebhookEvent, String> {}

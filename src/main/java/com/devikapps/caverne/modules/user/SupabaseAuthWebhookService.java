@@ -40,8 +40,7 @@ public class SupabaseAuthWebhookService {
       case "INSERT" -> upsertFromRecord(record);
       case "UPDATE" -> updateFromRecord(record);
       case "DELETE" -> deleteFromRecord(oldRecord != null ? oldRecord : record);
-      default -> {
-      }
+      default -> {}
     }
   }
 

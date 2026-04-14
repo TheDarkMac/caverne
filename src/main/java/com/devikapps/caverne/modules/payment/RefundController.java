@@ -25,7 +25,8 @@ public class RefundController {
       @PathVariable UUID orderId, @RequestBody(required = false) Map<String, Object> body) {
     securityActorResolver.requireAdmin();
     Number amountValue = body == null ? null : (Number) body.get("amount");
-    String reason = body == null || body.get("reason") == null ? null : body.get("reason").toString();
+    String reason =
+        body == null || body.get("reason") == null ? null : body.get("reason").toString();
     java.math.BigDecimal amount =
         amountValue == null ? null : new java.math.BigDecimal(amountValue.toString());
     return ResponseEntity.ok(refundService.refundOrder(orderId, amount, reason));

@@ -84,8 +84,7 @@ public class StripeRefundClientImpl implements StripeRefundClient {
   }
 
   private long toStripeAmount(BigDecimal amount, String currency) {
-    String normalized =
-        currency == null ? "" : currency.trim().toUpperCase(Locale.ROOT);
+    String normalized = currency == null ? "" : currency.trim().toUpperCase(Locale.ROOT);
     BigDecimal scaled =
         ZERO_DECIMAL_CURRENCIES.contains(normalized) ? amount : amount.movePointRight(2);
     return scaled.setScale(0, RoundingMode.HALF_UP).longValueExact();

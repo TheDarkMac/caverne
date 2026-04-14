@@ -137,8 +137,8 @@ class StripeWebhookIntegrationTest {
                             .build()))
                 .build());
 
-    String payload = buildPaymentIntentPayload(
-        "evt_pi_success_1", "payment_intent.succeeded", "pi_test_abc");
+    String payload =
+        buildPaymentIntentPayload("evt_pi_success_1", "payment_intent.succeeded", "pi_test_abc");
     String signature = buildSignature(payload, "whsec_test_secret");
 
     mockMvc
