@@ -62,7 +62,7 @@ jobs:
       - name: Wait for application
         run: |
           for i in {1..60}; do
-            if curl --silent --fail http://127.0.0.1:8080/categories >/dev/null; then
+            if curl --silent --fail http://127.0.0.1:8080/api/v1/actuator/health >/dev/null; then
               exit 0
             fi
             sleep 2
@@ -73,7 +73,7 @@ jobs:
 
       - name: Run Gatling simulation
         env:
-          GATLING_BASE_URL: http://127.0.0.1:8080
+          GATLING_BASE_URL: http://127.0.0.1:8080/api/v1
         run: ./gradlew --no-daemon gatlingRun
 
       - name: Upload Gatling reports

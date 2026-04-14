@@ -7,7 +7,10 @@ import static org.springframework.http.HttpStatus.UNPROCESSABLE_ENTITY;
 import com.devikapps.caverne.modules.catalog.Price;
 import com.devikapps.caverne.modules.catalog.Product;
 import com.devikapps.caverne.modules.catalog.ProductApiMapper;
+import com.devikapps.caverne.modules.catalog.ProductRepository;
 import com.devikapps.caverne.modules.catalog.ProductService;
+import com.devikapps.caverne.modules.catalog.StockMovement;
+import com.devikapps.caverne.modules.catalog.StockMovementService;
 import com.devikapps.caverne.modules.payment.PaymentProvider;
 import com.devikapps.caverne.modules.payment.PaymentResponse;
 import com.devikapps.caverne.modules.user.UserAccount;
@@ -34,11 +37,13 @@ public class OrderService {
 
   private final OrderRepository orderRepository;
   private final ProductService productService;
+  private final ProductRepository productRepository;
   private final ProductApiMapper productApiMapper;
   private final DeliveryCostService deliveryCostService;
   private final List<PaymentProvider> paymentProviders;
   private final ObjectMapper objectMapper;
   private final OrderApiMapper orderApiMapper;
+  private final StockMovementService stockMovementService;
 
   @Transactional(readOnly = true)
   public Page<org.openapitools.client.model.Order> findAll(
@@ -91,7 +96,15 @@ public class OrderService {
                   BigDecimal unitPrice = price.getValue();
                   org.openapitools.client.model.Product productSnapshot =
                       productApiMapper.toOrderSnapshot(product, price);
-                  product.setStockQuantity(product.getStockQuantity().subtract(quantity));
+                  BigDecimal newBalance = product.getStockQuantity().subtract(quantity);
+                  product.setStockQuantity(newBalance);
+                  stockMovementService.record(
+                      product.getId(),
+                      newBalance,
+                      quantity.negate(),
+                      StockMovement.Reason.ORDER_PLACED,
+                      owner == null ? null : owner.getId(),
+                      "Order " + order.getReference());
                   return OrderItem.builder()
                       .order(order)
                       .productId(product.getId())
@@ -137,7 +150,7 @@ public class OrderService {
 
     PaymentResponse response =
         provider.initiatePayment(
-            resolvePaymentAmount(order, input), input.getCurrencyCode(), order.getReference());
+            order, resolvePaymentAmount(order, input), input.getCurrencyCode());
 
     order
         .getPayments()
@@ -176,8 +189,38 @@ public class OrderService {
   @Transactional
   public org.openapitools.client.model.Order cancelOrder(UUID id, UserAccount actor) {
     Order order = requireOrderAccess(findOrder(id), actor);
+    if (order.getStatus() != OrderStatus.CANCELLED) {
+      restoreStockForOrder(order, actor);
+    }
     order.setStatus(OrderStatus.CANCELLED);
     return orderApiMapper.toOrderModel(orderRepository.save(order));
+  }
+
+  private void restoreStockForOrder(Order order, UserAccount actor) {
+    if (order.getItems() == null) {
+      return;
+    }
+    for (OrderItem item : order.getItems()) {
+      if (item.getProductId() == null || item.getQuantity() == null) {
+        continue;
+      }
+      Product product = productRepository.findById(item.getProductId()).orElse(null);
+      if (product == null) {
+        continue;
+      }
+      BigDecimal current =
+          product.getStockQuantity() == null ? BigDecimal.ZERO : product.getStockQuantity();
+      BigDecimal newBalance = current.add(item.getQuantity());
+      product.setStockQuantity(newBalance);
+      productRepository.save(product);
+      stockMovementService.record(
+          product.getId(),
+          newBalance,
+          item.getQuantity(),
+          StockMovement.Reason.ORDER_CANCELLED,
+          actor == null ? null : actor.getId(),
+          "Order " + order.getReference() + " cancelled");
+    }
   }
 
   private Order findOrder(UUID id) {

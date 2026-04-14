@@ -9,6 +9,7 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import java.util.UUID;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -45,4 +46,19 @@ public class OrderPayment {
 
   @Column(columnDefinition = "TEXT")
   private String providerResponse;
+
+  @Column(name = "refund_id")
+  private String refundId;
+
+  @Column(name = "refunded_amount")
+  private BigDecimal refundedAmount;
+
+  @Column(name = "refunded_at")
+  private OffsetDateTime refundedAt;
+
+  @Column(name = "refund_reason", columnDefinition = "TEXT")
+  private String refundReason;
+
+  @Column(name = "stripe_payment_intent_id")
+  private String stripePaymentIntentId;
 }

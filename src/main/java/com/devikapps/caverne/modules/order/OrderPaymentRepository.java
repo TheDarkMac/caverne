@@ -6,4 +6,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface OrderPaymentRepository extends JpaRepository<OrderPayment, UUID> {
   Optional<OrderPayment> findByInternalReference(String internalReference);
+
+  Optional<OrderPayment> findByStripePaymentIntentId(String stripePaymentIntentId);
 }

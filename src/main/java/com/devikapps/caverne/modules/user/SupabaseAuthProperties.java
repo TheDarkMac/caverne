@@ -14,4 +14,5 @@ public class SupabaseAuthProperties {
   private String jwtSecret;
   private String issuer;
   private String audience = "authenticated";
+  private String webhookSecret;
 }
