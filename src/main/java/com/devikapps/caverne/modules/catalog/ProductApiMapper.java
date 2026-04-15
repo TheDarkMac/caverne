@@ -15,11 +15,31 @@ import org.springframework.stereotype.Component;
 public class ProductApiMapper {
 
   public org.openapitools.client.model.Product toResponse(Product product, String currency) {
-    List<org.openapitools.client.model.Price> prices =
-        selectCurrentPrices(product.getPrices(), currency).stream()
-            .map(price -> toPriceModel(product, price))
-            .toList();
+    return toResponse(product, currency, null, null, null);
+  }
 
+  /**
+   * Returns the product with its effective prices.
+   *
+   * <p>When {@code priceFrom} or {@code priceTo} are provided, all price records within that range
+   * are returned (history view). Otherwise, the single most-recent price per (currency, unit) pair
+   * that is not after {@code asOf} (defaults to today) is returned.
+   */
+  public org.openapitools.client.model.Product toResponse(
+      Product product, String currency, LocalDate asOf, LocalDate priceFrom, LocalDate priceTo) {
+    List<org.openapitools.client.model.Price> prices;
+    if (priceFrom != null || priceTo != null) {
+      prices =
+          selectPricesInRange(product.getPrices(), currency, priceFrom, priceTo).stream()
+              .map(price -> toPriceModel(product, price))
+              .toList();
+    } else {
+      prices =
+          selectCurrentPrices(product.getPrices(), currency, asOf != null ? asOf : LocalDate.now())
+              .stream()
+              .map(price -> toPriceModel(product, price))
+              .toList();
+    }
     return baseProductModel(product).prices(prices);
   }
 
@@ -132,8 +152,7 @@ public class ProductApiMapper {
     return product;
   }
 
-  private List<Price> selectCurrentPrices(List<Price> prices, String currency) {
-    LocalDate today = LocalDate.now();
+  private List<Price> selectCurrentPrices(List<Price> prices, String currency, LocalDate asOf) {
     Map<String, Price> currentByKey =
         prices.stream()
             .filter(
@@ -145,7 +164,7 @@ public class ProductApiMapper {
                 Collectors.toMap(
                     price -> currentPriceKey(price.getCurrencyCode(), price.getUnit()),
                     Function.identity(),
-                    (left, right) -> newerApplicablePrice(left, right, today)));
+                    (left, right) -> newerApplicablePrice(left, right, asOf)));
 
     return currentByKey.values().stream()
         .sorted(
@@ -154,21 +173,44 @@ public class ProductApiMapper {
         .toList();
   }
 
-  private Price newerApplicablePrice(Price left, Price right, LocalDate today) {
-    return comparePriceRecency(left, right, today) >= 0 ? left : right;
+  private List<Price> selectPricesInRange(
+      List<Price> prices, String currency, LocalDate from, LocalDate to) {
+    return prices.stream()
+        .filter(
+            price ->
+                currency == null
+                    || currency.isBlank()
+                    || currency.equalsIgnoreCase(price.getCurrencyCode()))
+        .filter(
+            price -> {
+              LocalDate d = price.getValidFrom();
+              if (d == null) return false;
+              if (from != null && d.isBefore(from)) return false;
+              if (to != null && d.isAfter(to)) return false;
+              return true;
+            })
+        .sorted(
+            Comparator.comparing(Price::getValidFrom, Comparator.nullsFirst(LocalDate::compareTo))
+                .thenComparing(Price::getCurrencyCode, Comparator.nullsLast(String::compareTo))
+                .thenComparing(Price::getUnit, Comparator.nullsLast(String::compareTo)))
+        .toList();
   }
 
-  private int comparePriceRecency(Price left, Price right, LocalDate today) {
-    LocalDate leftDate = normalizeApplicableDate(left.getValidFrom(), today);
-    LocalDate rightDate = normalizeApplicableDate(right.getValidFrom(), today);
+  private Price newerApplicablePrice(Price left, Price right, LocalDate asOf) {
+    return comparePriceRecency(left, right, asOf) >= 0 ? left : right;
+  }
+
+  private int comparePriceRecency(Price left, Price right, LocalDate asOf) {
+    LocalDate leftDate = normalizeApplicableDate(left.getValidFrom(), asOf);
+    LocalDate rightDate = normalizeApplicableDate(right.getValidFrom(), asOf);
     return leftDate.compareTo(rightDate);
   }
 
-  private LocalDate normalizeApplicableDate(LocalDate validFrom, LocalDate today) {
+  private LocalDate normalizeApplicableDate(LocalDate validFrom, LocalDate asOf) {
     if (validFrom == null) {
       return LocalDate.MIN;
     }
-    return validFrom.isAfter(today) ? LocalDate.MIN : validFrom;
+    return validFrom.isAfter(asOf) ? LocalDate.MIN : validFrom;
   }
 
   private String currentPriceKey(String currencyCode, String unit) {

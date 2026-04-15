@@ -1109,6 +1109,33 @@ paths:
           schema:
             type: string
             example: MGA
+        - name: price_date
+          in: query
+          description: >
+            Effective price date (ISO 8601). Returns the most recent price whose `validFrom`
+            is on or before this date, per (currency, unit) pair. Defaults to today.
+          schema:
+            type: string
+            format: date
+            example: '2025-06-01'
+        - name: price_from
+          in: query
+          description: >
+            Range start for price history view (ISO 8601). When set, all price records
+            with `validFrom >= price_from` are returned. Takes precedence over `price_date`.
+          schema:
+            type: string
+            format: date
+            example: '2025-01-01'
+        - name: price_to
+          in: query
+          description: >
+            Range end for price history view (ISO 8601). When set, all price records
+            with `validFrom <= price_to` are returned. Takes precedence over `price_date`.
+          schema:
+            type: string
+            format: date
+            example: '2025-12-31'
       responses:
         '200':
           description: Liste paginée
@@ -1161,6 +1188,34 @@ paths:
       tags: [Products]
       summary: Détail d'un produit
       security: []
+      parameters:
+        - name: price_date
+          in: query
+          description: >
+            Effective price date (ISO 8601). Returns the most recent price whose `validFrom`
+            is on or before this date, per (currency, unit) pair. Defaults to today.
+          schema:
+            type: string
+            format: date
+            example: '2025-06-01'
+        - name: price_from
+          in: query
+          description: >
+            Range start for price history view (ISO 8601). When set, all price records
+            with `validFrom >= price_from` are returned. Takes precedence over `price_date`.
+          schema:
+            type: string
+            format: date
+            example: '2025-01-01'
+        - name: price_to
+          in: query
+          description: >
+            Range end for price history view (ISO 8601). When set, all price records
+            with `validFrom <= price_to` are returned. Takes precedence over `price_date`.
+          schema:
+            type: string
+            format: date
+            example: '2025-12-31'
       responses:
         '200':
           description: OK
