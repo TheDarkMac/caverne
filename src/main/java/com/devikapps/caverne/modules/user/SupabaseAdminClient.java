@@ -66,8 +66,7 @@ public class SupabaseAdminClient {
       JsonNode json = objectMapper.readTree(responseBody);
       String id = json.path("id").asText(null);
       if (id == null || id.isBlank()) {
-        throw new ResponseStatusException(
-            UNPROCESSABLE_ENTITY, "Supabase returned no user id");
+        throw new ResponseStatusException(UNPROCESSABLE_ENTITY, "Supabase returned no user id");
       }
       return id;
     } catch (ResponseStatusException e) {
