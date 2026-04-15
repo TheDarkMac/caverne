@@ -1,10 +1,12 @@
 package com.devikapps.caverne.modules.catalog;
 
 import com.devikapps.caverne.modules.user.SecurityActorResolver;
+import java.time.LocalDate;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.openapitools.client.JSON;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
@@ -24,12 +26,25 @@ public class ProductController {
       @RequestParam(required = false) Boolean is_active,
       @RequestParam(required = false) String search,
       @RequestParam(required = false) String currency,
+      @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
+          LocalDate price_date,
+      @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
+          LocalDate price_from,
+      @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
+          LocalDate price_to,
       @RequestParam(defaultValue = "1") int page,
       @RequestParam(defaultValue = "20") int per_page) {
 
     var p =
         productService.findAll(
-            category_id, is_active, search, currency, PageRequest.of(page - 1, per_page));
+            category_id,
+            is_active,
+            search,
+            currency,
+            price_date,
+            price_from,
+            price_to,
+            PageRequest.of(page - 1, per_page));
     org.openapitools.client.model.ProductsGet200Response response =
         new org.openapitools.client.model.ProductsGet200Response()
             .data(p.getContent())
@@ -53,8 +68,16 @@ public class ProductController {
   }
 
   @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-  public String getProduct(@PathVariable UUID id) {
-    return JSON.getGson().toJson(productService.findResponseById(id));
+  public String getProduct(
+      @PathVariable UUID id,
+      @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
+          LocalDate price_date,
+      @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
+          LocalDate price_from,
+      @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
+          LocalDate price_to) {
+    return JSON.getGson()
+        .toJson(productService.findResponseById(id, price_date, price_from, price_to));
   }
 
   @GetMapping(value = "/{id}/stock", produces = MediaType.APPLICATION_JSON_VALUE)

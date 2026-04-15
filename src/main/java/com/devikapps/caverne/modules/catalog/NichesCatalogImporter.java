@@ -2,6 +2,7 @@ package com.devikapps.caverne.modules.catalog;
 
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -141,24 +142,31 @@ public class NichesCatalogImporter implements ApplicationRunner {
   }
 
   private List<Price> buildBootstrapPriceHistory(Product product, NicheProduct nicheProduct) {
+    // Generate one price entry per year from 2020-01-01 up to (but not after) today.
+    // Each year applies a 5 % annual increase relative to the imported amount,
+    // simulating realistic price evolution. The imported amount is treated as the
+    // 2025 reference price; earlier years are back-calculated.
+    LocalDate start = LocalDate.of(2020, 1, 1);
     LocalDate today = LocalDate.now();
-    BigDecimal currentAmount = nicheProduct.amount();
-    return List.of(
-        buildBootstrapPrice(
-            product,
-            nicheProduct,
-            currentAmount
-                .multiply(BigDecimal.valueOf(0.85))
-                .setScale(2, java.math.RoundingMode.HALF_UP),
-            today.minusMonths(12)),
-        buildBootstrapPrice(
-            product,
-            nicheProduct,
-            currentAmount
-                .multiply(BigDecimal.valueOf(0.93))
-                .setScale(2, java.math.RoundingMode.HALF_UP),
-            today.minusMonths(6)),
-        buildBootstrapPrice(product, nicheProduct, currentAmount, today));
+    int referenceYear = 2025;
+    BigDecimal rate = new BigDecimal("1.05"); // 5 % per year
+
+    List<Price> prices = new ArrayList<>();
+    LocalDate date = start;
+    while (!date.isAfter(today)) {
+      int yearDiff = date.getYear() - referenceYear; // negative for past years
+      BigDecimal factor = rate.pow(Math.abs(yearDiff)).setScale(6, RoundingMode.HALF_UP);
+      BigDecimal amount;
+      if (yearDiff >= 0) {
+        amount = nicheProduct.amount().multiply(factor).setScale(2, RoundingMode.HALF_UP);
+      } else {
+        // divide to go back in time
+        amount = nicheProduct.amount().divide(factor, 2, RoundingMode.HALF_UP);
+      }
+      prices.add(buildBootstrapPrice(product, nicheProduct, amount, date));
+      date = date.plusYears(1);
+    }
+    return prices;
   }
 
   private Price buildBootstrapPrice(

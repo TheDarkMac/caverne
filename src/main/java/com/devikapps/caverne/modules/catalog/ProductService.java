@@ -6,6 +6,7 @@ import static org.springframework.http.HttpStatus.UNPROCESSABLE_ENTITY;
 import com.devikapps.caverne.modules.user.SecurityActorResolver;
 import com.devikapps.caverne.modules.user.UserAccount;
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -26,7 +27,14 @@ public class ProductService {
   private final SecurityActorResolver securityActorResolver;
 
   public Page<org.openapitools.client.model.Product> findAll(
-      UUID categoryId, Boolean isActive, String search, String currency, Pageable pageable) {
+      UUID categoryId,
+      Boolean isActive,
+      String search,
+      String currency,
+      LocalDate priceDate,
+      LocalDate priceFrom,
+      LocalDate priceTo,
+      Pageable pageable) {
     Page<Product> page =
         productRepository.findAll(
             Specification.where(withCategory(categoryId))
@@ -35,7 +43,8 @@ public class ProductService {
                 .and(withCurrency(currency)),
             pageable);
 
-    return page.map(product -> productApiMapper.toResponse(product, currency));
+    return page.map(
+        product -> productApiMapper.toResponse(product, currency, priceDate, priceFrom, priceTo));
   }
 
   @Transactional
@@ -73,7 +82,12 @@ public class ProductService {
   }
 
   public org.openapitools.client.model.Product findResponseById(UUID id) {
-    return productApiMapper.toResponse(findById(id), null);
+    return productApiMapper.toResponse(findById(id), null, null, null, null);
+  }
+
+  public org.openapitools.client.model.Product findResponseById(
+      UUID id, LocalDate priceDate, LocalDate priceFrom, LocalDate priceTo) {
+    return productApiMapper.toResponse(findById(id), null, priceDate, priceFrom, priceTo);
   }
 
   public org.openapitools.client.model.ProductStock findStockById(UUID id) {
