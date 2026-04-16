@@ -956,6 +956,42 @@
             "type" : "string"
           },
           "style" : "form"
+        }, {
+          "description" : "Effective price date (ISO 8601). Returns the most recent price whose `validFrom` is on or before this date, per (currency, unit) pair. Defaults to today.\n",
+          "explode" : true,
+          "in" : "query",
+          "name" : "price_date",
+          "required" : false,
+          "schema" : {
+            "example" : "2025-06-01",
+            "format" : "date",
+            "type" : "string"
+          },
+          "style" : "form"
+        }, {
+          "description" : "Range start for price history view (ISO 8601). When set, all price records with `validFrom >= price_from` are returned. Takes precedence over `price_date`.\n",
+          "explode" : true,
+          "in" : "query",
+          "name" : "price_from",
+          "required" : false,
+          "schema" : {
+            "example" : "2025-01-01",
+            "format" : "date",
+            "type" : "string"
+          },
+          "style" : "form"
+        }, {
+          "description" : "Range end for price history view (ISO 8601). When set, all price records with `validFrom <= price_to` are returned. Takes precedence over `price_date`.\n",
+          "explode" : true,
+          "in" : "query",
+          "name" : "price_to",
+          "required" : false,
+          "schema" : {
+            "example" : "2025-12-31",
+            "format" : "date",
+            "type" : "string"
+          },
+          "style" : "form"
         } ],
         "responses" : {
           "200" : {
@@ -1083,6 +1119,42 @@
             "type" : "string"
           },
           "style" : "simple"
+        }, {
+          "description" : "Effective price date (ISO 8601). Returns the most recent price whose `validFrom` is on or before this date, per (currency, unit) pair. Defaults to today.\n",
+          "explode" : true,
+          "in" : "query",
+          "name" : "price_date",
+          "required" : false,
+          "schema" : {
+            "example" : "2025-06-01",
+            "format" : "date",
+            "type" : "string"
+          },
+          "style" : "form"
+        }, {
+          "description" : "Range start for price history view (ISO 8601). When set, all price records with `validFrom >= price_from` are returned. Takes precedence over `price_date`.\n",
+          "explode" : true,
+          "in" : "query",
+          "name" : "price_from",
+          "required" : false,
+          "schema" : {
+            "example" : "2025-01-01",
+            "format" : "date",
+            "type" : "string"
+          },
+          "style" : "form"
+        }, {
+          "description" : "Range end for price history view (ISO 8601). When set, all price records with `validFrom <= price_to` are returned. Takes precedence over `price_date`.\n",
+          "explode" : true,
+          "in" : "query",
+          "name" : "price_to",
+          "required" : false,
+          "schema" : {
+            "example" : "2025-12-31",
+            "format" : "date",
+            "type" : "string"
+          },
+          "style" : "form"
         } ],
         "responses" : {
           "200" : {
@@ -1870,12 +1942,23 @@
     },
     "/payments/webhooks/stripe" : {
       "post" : {
+        "description" : "Endpoint invoqué par Stripe. Le corps est un objet Event Stripe brut\n(https://stripe.com/docs/api/events/object). Les requêtes doivent porter\nl'en-tête `Stripe-Signature` ; il est vérifié contre `stripe.webhook-secret`.\n",
+        "parameters" : [ {
+          "description" : "Signature Stripe au format `t=<timestamp>,v1=<hmac_sha256>`.\nGénérée par Stripe à partir du secret de webhook configuré.\n",
+          "explode" : false,
+          "in" : "header",
+          "name" : "Stripe-Signature",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          },
+          "style" : "simple"
+        } ],
         "requestBody" : {
           "content" : {
             "application/json" : {
               "schema" : {
-                "additionalProperties" : true,
-                "type" : "object"
+                "$ref" : "#/components/schemas/StripeEvent"
               }
             }
           },
@@ -1884,6 +1967,16 @@
         "responses" : {
           "204" : {
             "description" : "Webhook traité"
+          },
+          "404" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Error"
+                }
+              }
+            },
+            "description" : "Ressource introuvable"
           },
           "422" : {
             "content" : {
@@ -1894,6 +1987,26 @@
               }
             },
             "description" : "Données invalides"
+          },
+          "500" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Error"
+                }
+              }
+            },
+            "description" : "Erreur interne lors du traitement"
+          },
+          "503" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Error"
+                }
+              }
+            },
+            "description" : "Webhook Stripe non configuré"
           }
         },
         "security" : [ ],
@@ -2840,6 +2953,91 @@
         },
         "type" : "object"
       },
+      "StripeEvent" : {
+        "additionalProperties" : true,
+        "description" : "Event Stripe (https://stripe.com/docs/api/events/object).\nSeuls les champs exploités par le serveur sont listés ; les autres\npropriétés transmises par Stripe sont conservées.\n",
+        "properties" : {
+          "id" : {
+            "description" : "Identifiant d'event Stripe (utilisé pour l'idempotence).",
+            "example" : "evt_1NmVHx2eZvKYlo2CqZ3a1b2c",
+            "type" : "string"
+          },
+          "type" : {
+            "description" : "Type d'event. Traités comme `confirmed` :\n`checkout.session.completed`, `checkout.session.async_payment_succeeded`,\n`payment_intent.succeeded`. Traités comme `failed` :\n`checkout.session.async_payment_failed`, `checkout.session.expired`,\n`payment_intent.payment_failed`. Les autres restent en `pending`.\n",
+            "example" : "checkout.session.completed",
+            "type" : "string"
+          },
+          "api_version" : {
+            "example" : "2024-06-20",
+            "type" : "string"
+          },
+          "created" : {
+            "description" : "Timestamp Unix de création de l'event.",
+            "format" : "int64",
+            "type" : "integer"
+          },
+          "livemode" : {
+            "type" : "boolean"
+          },
+          "data" : {
+            "$ref" : "#/components/schemas/StripeEvent_data"
+          },
+          "request" : {
+            "$ref" : "#/components/schemas/StripeEvent_request"
+          }
+        },
+        "required" : [ "data", "id", "type" ],
+        "type" : "object"
+      },
+      "StripeEventObject" : {
+        "additionalProperties" : true,
+        "description" : "Ressource Stripe imbriquée dans `data.object`. Selon `type` de l'event,\nil s'agit d'une `checkout.session` (id préfixé `cs_`) ou d'un\n`payment_intent` (id préfixé `pi_`). Le serveur utilise `id` pour\nretrouver l'`OrderPayment` (via `stripe_payment_intent_id` pour les\nevents `payment_intent.*`, sinon via `internal_reference` pour les\nevents `checkout.session.*`).\n",
+        "properties" : {
+          "id" : {
+            "example" : "cs_test_a1B2c3D4e5F6g7H8i9J0",
+            "type" : "string"
+          },
+          "object" : {
+            "enum" : [ "checkout.session", "payment_intent" ],
+            "type" : "string"
+          },
+          "status" : {
+            "description" : "Statut Stripe. Pour `checkout.session` : `open`, `complete`, `expired`.\nPour `payment_intent` : `succeeded`, `processing`, `requires_payment_method`, etc.\n",
+            "type" : "string"
+          },
+          "payment_status" : {
+            "description" : "Présent sur `checkout.session` (ex. `paid`, `unpaid`, `no_payment_required`).",
+            "type" : "string"
+          },
+          "payment_intent" : {
+            "description" : "Présent sur `checkout.session` (id du PaymentIntent associé).",
+            "example" : "pi_3NmVHx2eZvKYlo2C0abc1234",
+            "type" : "string"
+          },
+          "amount_total" : {
+            "description" : "Montant total en plus petite unité (centimes pour EUR).",
+            "type" : "integer"
+          },
+          "amount" : {
+            "description" : "Montant sur `payment_intent`, en plus petite unité.",
+            "type" : "integer"
+          },
+          "currency" : {
+            "example" : "eur",
+            "type" : "string"
+          },
+          "customer" : {
+            "nullable" : true,
+            "type" : "string"
+          },
+          "mode" : {
+            "enum" : [ "payment", "setup", "subscription" ],
+            "type" : "string"
+          }
+        },
+        "required" : [ "id" ],
+        "type" : "object"
+      },
       "_users_get_200_response" : {
         "properties" : {
           "data" : {
@@ -2894,6 +3092,29 @@
           }
         },
         "required" : [ "product_id", "quantity" ],
+        "type" : "object"
+      },
+      "StripeEvent_data" : {
+        "properties" : {
+          "object" : {
+            "$ref" : "#/components/schemas/StripeEventObject"
+          }
+        },
+        "required" : [ "object" ],
+        "type" : "object"
+      },
+      "StripeEvent_request" : {
+        "additionalProperties" : true,
+        "properties" : {
+          "id" : {
+            "nullable" : true,
+            "type" : "string"
+          },
+          "idempotency_key" : {
+            "nullable" : true,
+            "type" : "string"
+          }
+        },
         "type" : "object"
       }
     },

@@ -15,6 +15,7 @@ package org.openapitools.client.api;
 
 import org.openapitools.client.ApiException;
 import org.openapitools.client.model.Error;
+import java.time.LocalDate;
 import org.openapitools.client.model.Product;
 import org.openapitools.client.model.ProductInput;
 import org.openapitools.client.model.ProductStock;
@@ -50,7 +51,10 @@ public class ProductsApiTest {
         Boolean isActive = null;
         String search = null;
         String currency = null;
-        ProductsGet200Response response = api.productsGet(page, perPage, categoryId, isActive, search, currency);
+        LocalDate priceDate = null;
+        LocalDate priceFrom = null;
+        LocalDate priceTo = null;
+        ProductsGet200Response response = api.productsGet(page, perPage, categoryId, isActive, search, currency, priceDate, priceFrom, priceTo);
         // TODO: test validations
     }
 
@@ -74,7 +78,10 @@ public class ProductsApiTest {
     @Test
     public void productsIdGetTest() throws ApiException {
         UUID id = null;
-        Product response = api.productsIdGet(id);
+        LocalDate priceDate = null;
+        LocalDate priceFrom = null;
+        LocalDate priceTo = null;
+        Product response = api.productsIdGet(id, priceDate, priceFrom, priceTo);
         // TODO: test validations
     }
 

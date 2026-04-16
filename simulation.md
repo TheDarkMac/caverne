@@ -307,6 +307,15 @@ This is why the webhook route is separate from `/orders/{id}/payments`:
 - Stripe sends provider-level events for all sessions to one backend endpoint
 - your backend matches the Stripe session id back to the stored order payment
 
+What the webhook request from Stripe actually looks like (contract published in `docs/api.yaml`):
+
+- method and path: `POST /payments/webhooks/stripe`
+- required header: `Stripe-Signature: t=<timestamp>,v1=<hmac_sha256>` — verified against `STRIPE_WEBHOOK_SECRET`
+- body: a raw Stripe Event (JSON), with `id`, `type`, and `data.object` — the backend reads `data.object.id` (either a `cs_...` Checkout Session id or a `pi_...` PaymentIntent id) plus `status`, `payment_status`, `payment_intent`
+- the frontend never sees this request, it only sees the redirect back from Stripe's hosted checkout page to the `success_url` / `cancel_url` configured at payment creation time
+- duplicate deliveries are safe: the backend records each Stripe `event.id` and short-circuits repeat calls with `204`
+- possible responses Stripe may observe: `204` processed, `404` Stripe disabled or unknown payment, `422` bad signature/payload, `500` internal failure, `503` webhook secret missing
+
 ### 2.14 What a simple user cannot do
 
 A `simple_user` cannot:

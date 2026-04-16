@@ -191,9 +191,11 @@ No authorization required
 
 <a id="paymentsWebhooksStripePost"></a>
 # **paymentsWebhooksStripePost**
-> paymentsWebhooksStripePost(requestBody)
+> paymentsWebhooksStripePost(stripeSignature, stripeEvent)
 
 Webhook Stripe Checkout
+
+Endpoint invoqué par Stripe. Le corps est un objet Event Stripe brut (https://stripe.com/docs/api/events/object). Les requêtes doivent porter l&#39;en-tête &#x60;Stripe-Signature&#x60; ; il est vérifié contre &#x60;stripe.webhook-secret&#x60;. 
 
 ### Example
 ```java
@@ -210,9 +212,10 @@ public class Example {
     defaultClient.setBasePath("http://localhost:8080/api/v1");
 
     PaymentsApi apiInstance = new PaymentsApi(defaultClient);
-    Map<String, Object> requestBody = null; // Map<String, Object> | 
+    String stripeSignature = "stripeSignature_example"; // String | Signature Stripe au format `t=<timestamp>,v1=<hmac_sha256>`. Générée par Stripe à partir du secret de webhook configuré. 
+    StripeEvent stripeEvent = new StripeEvent(); // StripeEvent | 
     try {
-      apiInstance.paymentsWebhooksStripePost(requestBody);
+      apiInstance.paymentsWebhooksStripePost(stripeSignature, stripeEvent);
     } catch (ApiException e) {
       System.err.println("Exception when calling PaymentsApi#paymentsWebhooksStripePost");
       System.err.println("Status code: " + e.getCode());
@@ -228,7 +231,8 @@ public class Example {
 
 | Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
-| **requestBody** | [**Map&lt;String, Object&gt;**](Object.md)|  | |
+| **stripeSignature** | **String**| Signature Stripe au format &#x60;t&#x3D;&lt;timestamp&gt;,v1&#x3D;&lt;hmac_sha256&gt;&#x60;. Générée par Stripe à partir du secret de webhook configuré.  | |
+| **stripeEvent** | [**StripeEvent**](StripeEvent.md)|  | |
 
 ### Return type
 
@@ -247,5 +251,8 @@ No authorization required
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
 | **204** | Webhook traité |  -  |
+| **404** | Ressource introuvable |  -  |
 | **422** | Données invalides |  -  |
+| **500** | Erreur interne lors du traitement |  -  |
+| **503** | Webhook Stripe non configuré |  -  |
 

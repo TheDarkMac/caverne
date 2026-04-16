@@ -15,7 +15,7 @@ All URIs are relative to *http://localhost:8080/api/v1*
 
 <a id="productsGet"></a>
 # **productsGet**
-> ProductsGet200Response productsGet(page, perPage, categoryId, isActive, search, currency)
+> ProductsGet200Response productsGet(page, perPage, categoryId, isActive, search, currency, priceDate, priceFrom, priceTo)
 
 Catalogue produits
 
@@ -40,8 +40,11 @@ public class Example {
     Boolean isActive = true; // Boolean | 
     String search = "search_example"; // String | 
     String currency = "MGA"; // String | 
+    LocalDate priceDate = LocalDate.parse("Sun Jun 01 03:00:00 EAT 2025"); // LocalDate | Effective price date (ISO 8601). Returns the most recent price whose `validFrom` is on or before this date, per (currency, unit) pair. Defaults to today. 
+    LocalDate priceFrom = LocalDate.parse("Wed Jan 01 03:00:00 EAT 2025"); // LocalDate | Range start for price history view (ISO 8601). When set, all price records with `validFrom >= price_from` are returned. Takes precedence over `price_date`. 
+    LocalDate priceTo = LocalDate.parse("Wed Dec 31 03:00:00 EAT 2025"); // LocalDate | Range end for price history view (ISO 8601). When set, all price records with `validFrom <= price_to` are returned. Takes precedence over `price_date`. 
     try {
-      ProductsGet200Response result = apiInstance.productsGet(page, perPage, categoryId, isActive, search, currency);
+      ProductsGet200Response result = apiInstance.productsGet(page, perPage, categoryId, isActive, search, currency, priceDate, priceFrom, priceTo);
       System.out.println(result);
     } catch (ApiException e) {
       System.err.println("Exception when calling ProductsApi#productsGet");
@@ -64,6 +67,9 @@ public class Example {
 | **isActive** | **Boolean**|  | [optional] |
 | **search** | **String**|  | [optional] |
 | **currency** | **String**|  | [optional] |
+| **priceDate** | **LocalDate**| Effective price date (ISO 8601). Returns the most recent price whose &#x60;validFrom&#x60; is on or before this date, per (currency, unit) pair. Defaults to today.  | [optional] |
+| **priceFrom** | **LocalDate**| Range start for price history view (ISO 8601). When set, all price records with &#x60;validFrom &gt;&#x3D; price_from&#x60; are returned. Takes precedence over &#x60;price_date&#x60;.  | [optional] |
+| **priceTo** | **LocalDate**| Range end for price history view (ISO 8601). When set, all price records with &#x60;validFrom &lt;&#x3D; price_to&#x60; are returned. Takes precedence over &#x60;price_date&#x60;.  | [optional] |
 
 ### Return type
 
@@ -151,7 +157,7 @@ null (empty response body)
 
 <a id="productsIdGet"></a>
 # **productsIdGet**
-> Product productsIdGet(id)
+> Product productsIdGet(id, priceDate, priceFrom, priceTo)
 
 Détail d&#39;un produit
 
@@ -171,8 +177,11 @@ public class Example {
 
     ProductsApi apiInstance = new ProductsApi(defaultClient);
     UUID id = UUID.randomUUID(); // UUID | 
+    LocalDate priceDate = LocalDate.parse("Sun Jun 01 03:00:00 EAT 2025"); // LocalDate | Effective price date (ISO 8601). Returns the most recent price whose `validFrom` is on or before this date, per (currency, unit) pair. Defaults to today. 
+    LocalDate priceFrom = LocalDate.parse("Wed Jan 01 03:00:00 EAT 2025"); // LocalDate | Range start for price history view (ISO 8601). When set, all price records with `validFrom >= price_from` are returned. Takes precedence over `price_date`. 
+    LocalDate priceTo = LocalDate.parse("Wed Dec 31 03:00:00 EAT 2025"); // LocalDate | Range end for price history view (ISO 8601). When set, all price records with `validFrom <= price_to` are returned. Takes precedence over `price_date`. 
     try {
-      Product result = apiInstance.productsIdGet(id);
+      Product result = apiInstance.productsIdGet(id, priceDate, priceFrom, priceTo);
       System.out.println(result);
     } catch (ApiException e) {
       System.err.println("Exception when calling ProductsApi#productsIdGet");
@@ -190,6 +199,9 @@ public class Example {
 | Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
 | **id** | **UUID**|  | |
+| **priceDate** | **LocalDate**| Effective price date (ISO 8601). Returns the most recent price whose &#x60;validFrom&#x60; is on or before this date, per (currency, unit) pair. Defaults to today.  | [optional] |
+| **priceFrom** | **LocalDate**| Range start for price history view (ISO 8601). When set, all price records with &#x60;validFrom &gt;&#x3D; price_from&#x60; are returned. Takes precedence over &#x60;price_date&#x60;.  | [optional] |
+| **priceTo** | **LocalDate**| Range end for price history view (ISO 8601). When set, all price records with &#x60;validFrom &lt;&#x3D; price_to&#x60; are returned. Takes precedence over &#x60;price_date&#x60;.  | [optional] |
 
 ### Return type
 

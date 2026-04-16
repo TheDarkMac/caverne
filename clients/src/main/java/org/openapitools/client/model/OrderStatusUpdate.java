@@ -48,7 +48,7 @@ import org.openapitools.client.JSON;
 /**
  * OrderStatusUpdate
  */
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2026-04-13T14:49:59.292048843+03:00[Indian/Antananarivo]", comments = "Generator version: 7.21.0")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2026-04-16T22:56:02.061304953+03:00[Indian/Antananarivo]", comments = "Generator version: 7.21.0")
 public class OrderStatusUpdate {
   /**
    * Gets or Sets status
