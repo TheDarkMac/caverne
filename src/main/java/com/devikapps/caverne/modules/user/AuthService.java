@@ -81,17 +81,8 @@ public class AuthService {
     }
 
     UserAccount user = resolveLoginUser(input);
-    System.out.println("-----USER-----");
-    System.out.println(user);
-    System.out.println("--------------");
-
 
     if (!passwordEncoder.matches(input.getPassword(), user.getPasswordHash())) {
-      System.out.println("fako le iz");
-      System.out.println("-----password------");
-      System.out.println(input.getPassword());
-      System.out.println("------hashed-------");
-      System.out.println(user.getPasswordHash());
       throw new ResponseStatusException(UNAUTHORIZED, "Invalid credentials");
     }
 

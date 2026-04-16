@@ -18,6 +18,7 @@ import org.openapitools.client.model.Error;
 import org.openapitools.client.model.Payment;
 import org.openapitools.client.model.PaymentInput;
 import org.openapitools.client.model.PaymentMethod;
+import org.openapitools.client.model.StripeEvent;
 import java.util.UUID;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
@@ -74,12 +75,15 @@ public class PaymentsApiTest {
     /**
      * Webhook Stripe Checkout
      *
+     * Endpoint invoqué par Stripe. Le corps est un objet Event Stripe brut (https://stripe.com/docs/api/events/object). Les requêtes doivent porter l&#39;en-tête &#x60;Stripe-Signature&#x60; ; il est vérifié contre &#x60;stripe.webhook-secret&#x60;. 
+     *
      * @throws ApiException if the Api call fails
      */
     @Test
     public void paymentsWebhooksStripePostTest() throws ApiException {
-        Map<String, Object> requestBody = null;
-        api.paymentsWebhooksStripePost(requestBody);
+        String stripeSignature = null;
+        StripeEvent stripeEvent = null;
+        api.paymentsWebhooksStripePost(stripeSignature, stripeEvent);
         // TODO: test validations
     }
 

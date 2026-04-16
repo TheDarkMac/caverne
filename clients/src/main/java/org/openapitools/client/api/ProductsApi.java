@@ -28,6 +28,7 @@ import java.io.IOException;
 
 
 import org.openapitools.client.model.Error;
+import java.time.LocalDate;
 import org.openapitools.client.model.Product;
 import org.openapitools.client.model.ProductInput;
 import org.openapitools.client.model.ProductStock;
@@ -86,6 +87,9 @@ public class ProductsApi {
      * @param isActive  (optional)
      * @param search  (optional)
      * @param currency  (optional)
+     * @param priceDate Effective price date (ISO 8601). Returns the most recent price whose &#x60;validFrom&#x60; is on or before this date, per (currency, unit) pair. Defaults to today.  (optional)
+     * @param priceFrom Range start for price history view (ISO 8601). When set, all price records with &#x60;validFrom &gt;&#x3D; price_from&#x60; are returned. Takes precedence over &#x60;price_date&#x60;.  (optional)
+     * @param priceTo Range end for price history view (ISO 8601). When set, all price records with &#x60;validFrom &lt;&#x3D; price_to&#x60; are returned. Takes precedence over &#x60;price_date&#x60;.  (optional)
      * @param _callback Callback for upload/download progress
      * @return Call to execute
      * @throws ApiException If fail to serialize the request body object
@@ -96,7 +100,7 @@ public class ProductsApi {
         <tr><td> 200 </td><td> Liste paginée </td><td>  -  </td></tr>
      </table>
      */
-    public okhttp3.Call productsGetCall(@javax.annotation.Nullable Integer page, @javax.annotation.Nullable Integer perPage, @javax.annotation.Nullable UUID categoryId, @javax.annotation.Nullable Boolean isActive, @javax.annotation.Nullable String search, @javax.annotation.Nullable String currency, final ApiCallback _callback) throws ApiException {
+    public okhttp3.Call productsGetCall(@javax.annotation.Nullable Integer page, @javax.annotation.Nullable Integer perPage, @javax.annotation.Nullable UUID categoryId, @javax.annotation.Nullable Boolean isActive, @javax.annotation.Nullable String search, @javax.annotation.Nullable String currency, @javax.annotation.Nullable LocalDate priceDate, @javax.annotation.Nullable LocalDate priceFrom, @javax.annotation.Nullable LocalDate priceTo, final ApiCallback _callback) throws ApiException {
         String basePath = null;
         // Operation Servers
         String[] localBasePaths = new String[] {  };
@@ -145,6 +149,18 @@ public class ProductsApi {
             localVarQueryParams.addAll(localVarApiClient.parameterToPair("currency", currency));
         }
 
+        if (priceDate != null) {
+            localVarQueryParams.addAll(localVarApiClient.parameterToPair("price_date", priceDate));
+        }
+
+        if (priceFrom != null) {
+            localVarQueryParams.addAll(localVarApiClient.parameterToPair("price_from", priceFrom));
+        }
+
+        if (priceTo != null) {
+            localVarQueryParams.addAll(localVarApiClient.parameterToPair("price_to", priceTo));
+        }
+
         final String[] localVarAccepts = {
             "application/json"
         };
@@ -165,8 +181,8 @@ public class ProductsApi {
     }
 
     @SuppressWarnings("rawtypes")
-    private okhttp3.Call productsGetValidateBeforeCall(@javax.annotation.Nullable Integer page, @javax.annotation.Nullable Integer perPage, @javax.annotation.Nullable UUID categoryId, @javax.annotation.Nullable Boolean isActive, @javax.annotation.Nullable String search, @javax.annotation.Nullable String currency, final ApiCallback _callback) throws ApiException {
-        return productsGetCall(page, perPage, categoryId, isActive, search, currency, _callback);
+    private okhttp3.Call productsGetValidateBeforeCall(@javax.annotation.Nullable Integer page, @javax.annotation.Nullable Integer perPage, @javax.annotation.Nullable UUID categoryId, @javax.annotation.Nullable Boolean isActive, @javax.annotation.Nullable String search, @javax.annotation.Nullable String currency, @javax.annotation.Nullable LocalDate priceDate, @javax.annotation.Nullable LocalDate priceFrom, @javax.annotation.Nullable LocalDate priceTo, final ApiCallback _callback) throws ApiException {
+        return productsGetCall(page, perPage, categoryId, isActive, search, currency, priceDate, priceFrom, priceTo, _callback);
 
     }
 
@@ -179,6 +195,9 @@ public class ProductsApi {
      * @param isActive  (optional)
      * @param search  (optional)
      * @param currency  (optional)
+     * @param priceDate Effective price date (ISO 8601). Returns the most recent price whose &#x60;validFrom&#x60; is on or before this date, per (currency, unit) pair. Defaults to today.  (optional)
+     * @param priceFrom Range start for price history view (ISO 8601). When set, all price records with &#x60;validFrom &gt;&#x3D; price_from&#x60; are returned. Takes precedence over &#x60;price_date&#x60;.  (optional)
+     * @param priceTo Range end for price history view (ISO 8601). When set, all price records with &#x60;validFrom &lt;&#x3D; price_to&#x60; are returned. Takes precedence over &#x60;price_date&#x60;.  (optional)
      * @return ProductsGet200Response
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      * @http.response.details
@@ -188,8 +207,8 @@ public class ProductsApi {
         <tr><td> 200 </td><td> Liste paginée </td><td>  -  </td></tr>
      </table>
      */
-    public ProductsGet200Response productsGet(@javax.annotation.Nullable Integer page, @javax.annotation.Nullable Integer perPage, @javax.annotation.Nullable UUID categoryId, @javax.annotation.Nullable Boolean isActive, @javax.annotation.Nullable String search, @javax.annotation.Nullable String currency) throws ApiException {
-        ApiResponse<ProductsGet200Response> localVarResp = productsGetWithHttpInfo(page, perPage, categoryId, isActive, search, currency);
+    public ProductsGet200Response productsGet(@javax.annotation.Nullable Integer page, @javax.annotation.Nullable Integer perPage, @javax.annotation.Nullable UUID categoryId, @javax.annotation.Nullable Boolean isActive, @javax.annotation.Nullable String search, @javax.annotation.Nullable String currency, @javax.annotation.Nullable LocalDate priceDate, @javax.annotation.Nullable LocalDate priceFrom, @javax.annotation.Nullable LocalDate priceTo) throws ApiException {
+        ApiResponse<ProductsGet200Response> localVarResp = productsGetWithHttpInfo(page, perPage, categoryId, isActive, search, currency, priceDate, priceFrom, priceTo);
         return localVarResp.getData();
     }
 
@@ -202,6 +221,9 @@ public class ProductsApi {
      * @param isActive  (optional)
      * @param search  (optional)
      * @param currency  (optional)
+     * @param priceDate Effective price date (ISO 8601). Returns the most recent price whose &#x60;validFrom&#x60; is on or before this date, per (currency, unit) pair. Defaults to today.  (optional)
+     * @param priceFrom Range start for price history view (ISO 8601). When set, all price records with &#x60;validFrom &gt;&#x3D; price_from&#x60; are returned. Takes precedence over &#x60;price_date&#x60;.  (optional)
+     * @param priceTo Range end for price history view (ISO 8601). When set, all price records with &#x60;validFrom &lt;&#x3D; price_to&#x60; are returned. Takes precedence over &#x60;price_date&#x60;.  (optional)
      * @return ApiResponse&lt;ProductsGet200Response&gt;
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      * @http.response.details
@@ -211,8 +233,8 @@ public class ProductsApi {
         <tr><td> 200 </td><td> Liste paginée </td><td>  -  </td></tr>
      </table>
      */
-    public ApiResponse<ProductsGet200Response> productsGetWithHttpInfo(@javax.annotation.Nullable Integer page, @javax.annotation.Nullable Integer perPage, @javax.annotation.Nullable UUID categoryId, @javax.annotation.Nullable Boolean isActive, @javax.annotation.Nullable String search, @javax.annotation.Nullable String currency) throws ApiException {
-        okhttp3.Call localVarCall = productsGetValidateBeforeCall(page, perPage, categoryId, isActive, search, currency, null);
+    public ApiResponse<ProductsGet200Response> productsGetWithHttpInfo(@javax.annotation.Nullable Integer page, @javax.annotation.Nullable Integer perPage, @javax.annotation.Nullable UUID categoryId, @javax.annotation.Nullable Boolean isActive, @javax.annotation.Nullable String search, @javax.annotation.Nullable String currency, @javax.annotation.Nullable LocalDate priceDate, @javax.annotation.Nullable LocalDate priceFrom, @javax.annotation.Nullable LocalDate priceTo) throws ApiException {
+        okhttp3.Call localVarCall = productsGetValidateBeforeCall(page, perPage, categoryId, isActive, search, currency, priceDate, priceFrom, priceTo, null);
         Type localVarReturnType = new TypeToken<ProductsGet200Response>(){}.getType();
         return localVarApiClient.execute(localVarCall, localVarReturnType);
     }
@@ -226,6 +248,9 @@ public class ProductsApi {
      * @param isActive  (optional)
      * @param search  (optional)
      * @param currency  (optional)
+     * @param priceDate Effective price date (ISO 8601). Returns the most recent price whose &#x60;validFrom&#x60; is on or before this date, per (currency, unit) pair. Defaults to today.  (optional)
+     * @param priceFrom Range start for price history view (ISO 8601). When set, all price records with &#x60;validFrom &gt;&#x3D; price_from&#x60; are returned. Takes precedence over &#x60;price_date&#x60;.  (optional)
+     * @param priceTo Range end for price history view (ISO 8601). When set, all price records with &#x60;validFrom &lt;&#x3D; price_to&#x60; are returned. Takes precedence over &#x60;price_date&#x60;.  (optional)
      * @param _callback The callback to be executed when the API call finishes
      * @return The request call
      * @throws ApiException If fail to process the API call, e.g. serializing the request body object
@@ -236,9 +261,9 @@ public class ProductsApi {
         <tr><td> 200 </td><td> Liste paginée </td><td>  -  </td></tr>
      </table>
      */
-    public okhttp3.Call productsGetAsync(@javax.annotation.Nullable Integer page, @javax.annotation.Nullable Integer perPage, @javax.annotation.Nullable UUID categoryId, @javax.annotation.Nullable Boolean isActive, @javax.annotation.Nullable String search, @javax.annotation.Nullable String currency, final ApiCallback<ProductsGet200Response> _callback) throws ApiException {
+    public okhttp3.Call productsGetAsync(@javax.annotation.Nullable Integer page, @javax.annotation.Nullable Integer perPage, @javax.annotation.Nullable UUID categoryId, @javax.annotation.Nullable Boolean isActive, @javax.annotation.Nullable String search, @javax.annotation.Nullable String currency, @javax.annotation.Nullable LocalDate priceDate, @javax.annotation.Nullable LocalDate priceFrom, @javax.annotation.Nullable LocalDate priceTo, final ApiCallback<ProductsGet200Response> _callback) throws ApiException {
 
-        okhttp3.Call localVarCall = productsGetValidateBeforeCall(page, perPage, categoryId, isActive, search, currency, _callback);
+        okhttp3.Call localVarCall = productsGetValidateBeforeCall(page, perPage, categoryId, isActive, search, currency, priceDate, priceFrom, priceTo, _callback);
         Type localVarReturnType = new TypeToken<ProductsGet200Response>(){}.getType();
         localVarApiClient.executeAsync(localVarCall, localVarReturnType, _callback);
         return localVarCall;
@@ -377,6 +402,9 @@ public class ProductsApi {
     /**
      * Build call for productsIdGet
      * @param id  (required)
+     * @param priceDate Effective price date (ISO 8601). Returns the most recent price whose &#x60;validFrom&#x60; is on or before this date, per (currency, unit) pair. Defaults to today.  (optional)
+     * @param priceFrom Range start for price history view (ISO 8601). When set, all price records with &#x60;validFrom &gt;&#x3D; price_from&#x60; are returned. Takes precedence over &#x60;price_date&#x60;.  (optional)
+     * @param priceTo Range end for price history view (ISO 8601). When set, all price records with &#x60;validFrom &lt;&#x3D; price_to&#x60; are returned. Takes precedence over &#x60;price_date&#x60;.  (optional)
      * @param _callback Callback for upload/download progress
      * @return Call to execute
      * @throws ApiException If fail to serialize the request body object
@@ -388,7 +416,7 @@ public class ProductsApi {
         <tr><td> 404 </td><td> Ressource introuvable </td><td>  -  </td></tr>
      </table>
      */
-    public okhttp3.Call productsIdGetCall(@javax.annotation.Nonnull UUID id, final ApiCallback _callback) throws ApiException {
+    public okhttp3.Call productsIdGetCall(@javax.annotation.Nonnull UUID id, @javax.annotation.Nullable LocalDate priceDate, @javax.annotation.Nullable LocalDate priceFrom, @javax.annotation.Nullable LocalDate priceTo, final ApiCallback _callback) throws ApiException {
         String basePath = null;
         // Operation Servers
         String[] localBasePaths = new String[] {  };
@@ -414,6 +442,18 @@ public class ProductsApi {
         Map<String, String> localVarCookieParams = new HashMap<String, String>();
         Map<String, Object> localVarFormParams = new HashMap<String, Object>();
 
+        if (priceDate != null) {
+            localVarQueryParams.addAll(localVarApiClient.parameterToPair("price_date", priceDate));
+        }
+
+        if (priceFrom != null) {
+            localVarQueryParams.addAll(localVarApiClient.parameterToPair("price_from", priceFrom));
+        }
+
+        if (priceTo != null) {
+            localVarQueryParams.addAll(localVarApiClient.parameterToPair("price_to", priceTo));
+        }
+
         final String[] localVarAccepts = {
             "application/json"
         };
@@ -434,13 +474,13 @@ public class ProductsApi {
     }
 
     @SuppressWarnings("rawtypes")
-    private okhttp3.Call productsIdGetValidateBeforeCall(@javax.annotation.Nonnull UUID id, final ApiCallback _callback) throws ApiException {
+    private okhttp3.Call productsIdGetValidateBeforeCall(@javax.annotation.Nonnull UUID id, @javax.annotation.Nullable LocalDate priceDate, @javax.annotation.Nullable LocalDate priceFrom, @javax.annotation.Nullable LocalDate priceTo, final ApiCallback _callback) throws ApiException {
         // verify the required parameter 'id' is set
         if (id == null) {
             throw new ApiException("Missing the required parameter 'id' when calling productsIdGet(Async)");
         }
 
-        return productsIdGetCall(id, _callback);
+        return productsIdGetCall(id, priceDate, priceFrom, priceTo, _callback);
 
     }
 
@@ -448,6 +488,9 @@ public class ProductsApi {
      * Détail d&#39;un produit
      * 
      * @param id  (required)
+     * @param priceDate Effective price date (ISO 8601). Returns the most recent price whose &#x60;validFrom&#x60; is on or before this date, per (currency, unit) pair. Defaults to today.  (optional)
+     * @param priceFrom Range start for price history view (ISO 8601). When set, all price records with &#x60;validFrom &gt;&#x3D; price_from&#x60; are returned. Takes precedence over &#x60;price_date&#x60;.  (optional)
+     * @param priceTo Range end for price history view (ISO 8601). When set, all price records with &#x60;validFrom &lt;&#x3D; price_to&#x60; are returned. Takes precedence over &#x60;price_date&#x60;.  (optional)
      * @return Product
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      * @http.response.details
@@ -458,8 +501,8 @@ public class ProductsApi {
         <tr><td> 404 </td><td> Ressource introuvable </td><td>  -  </td></tr>
      </table>
      */
-    public Product productsIdGet(@javax.annotation.Nonnull UUID id) throws ApiException {
-        ApiResponse<Product> localVarResp = productsIdGetWithHttpInfo(id);
+    public Product productsIdGet(@javax.annotation.Nonnull UUID id, @javax.annotation.Nullable LocalDate priceDate, @javax.annotation.Nullable LocalDate priceFrom, @javax.annotation.Nullable LocalDate priceTo) throws ApiException {
+        ApiResponse<Product> localVarResp = productsIdGetWithHttpInfo(id, priceDate, priceFrom, priceTo);
         return localVarResp.getData();
     }
 
@@ -467,6 +510,9 @@ public class ProductsApi {
      * Détail d&#39;un produit
      * 
      * @param id  (required)
+     * @param priceDate Effective price date (ISO 8601). Returns the most recent price whose &#x60;validFrom&#x60; is on or before this date, per (currency, unit) pair. Defaults to today.  (optional)
+     * @param priceFrom Range start for price history view (ISO 8601). When set, all price records with &#x60;validFrom &gt;&#x3D; price_from&#x60; are returned. Takes precedence over &#x60;price_date&#x60;.  (optional)
+     * @param priceTo Range end for price history view (ISO 8601). When set, all price records with &#x60;validFrom &lt;&#x3D; price_to&#x60; are returned. Takes precedence over &#x60;price_date&#x60;.  (optional)
      * @return ApiResponse&lt;Product&gt;
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      * @http.response.details
@@ -477,8 +523,8 @@ public class ProductsApi {
         <tr><td> 404 </td><td> Ressource introuvable </td><td>  -  </td></tr>
      </table>
      */
-    public ApiResponse<Product> productsIdGetWithHttpInfo(@javax.annotation.Nonnull UUID id) throws ApiException {
-        okhttp3.Call localVarCall = productsIdGetValidateBeforeCall(id, null);
+    public ApiResponse<Product> productsIdGetWithHttpInfo(@javax.annotation.Nonnull UUID id, @javax.annotation.Nullable LocalDate priceDate, @javax.annotation.Nullable LocalDate priceFrom, @javax.annotation.Nullable LocalDate priceTo) throws ApiException {
+        okhttp3.Call localVarCall = productsIdGetValidateBeforeCall(id, priceDate, priceFrom, priceTo, null);
         Type localVarReturnType = new TypeToken<Product>(){}.getType();
         return localVarApiClient.execute(localVarCall, localVarReturnType);
     }
@@ -487,6 +533,9 @@ public class ProductsApi {
      * Détail d&#39;un produit (asynchronously)
      * 
      * @param id  (required)
+     * @param priceDate Effective price date (ISO 8601). Returns the most recent price whose &#x60;validFrom&#x60; is on or before this date, per (currency, unit) pair. Defaults to today.  (optional)
+     * @param priceFrom Range start for price history view (ISO 8601). When set, all price records with &#x60;validFrom &gt;&#x3D; price_from&#x60; are returned. Takes precedence over &#x60;price_date&#x60;.  (optional)
+     * @param priceTo Range end for price history view (ISO 8601). When set, all price records with &#x60;validFrom &lt;&#x3D; price_to&#x60; are returned. Takes precedence over &#x60;price_date&#x60;.  (optional)
      * @param _callback The callback to be executed when the API call finishes
      * @return The request call
      * @throws ApiException If fail to process the API call, e.g. serializing the request body object
@@ -498,9 +547,9 @@ public class ProductsApi {
         <tr><td> 404 </td><td> Ressource introuvable </td><td>  -  </td></tr>
      </table>
      */
-    public okhttp3.Call productsIdGetAsync(@javax.annotation.Nonnull UUID id, final ApiCallback<Product> _callback) throws ApiException {
+    public okhttp3.Call productsIdGetAsync(@javax.annotation.Nonnull UUID id, @javax.annotation.Nullable LocalDate priceDate, @javax.annotation.Nullable LocalDate priceFrom, @javax.annotation.Nullable LocalDate priceTo, final ApiCallback<Product> _callback) throws ApiException {
 
-        okhttp3.Call localVarCall = productsIdGetValidateBeforeCall(id, _callback);
+        okhttp3.Call localVarCall = productsIdGetValidateBeforeCall(id, priceDate, priceFrom, priceTo, _callback);
         Type localVarReturnType = new TypeToken<Product>(){}.getType();
         localVarApiClient.executeAsync(localVarCall, localVarReturnType, _callback);
         return localVarCall;

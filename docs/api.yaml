@@ -637,6 +637,101 @@ components:
         message:
           type: string
 
+    # ── STRIPE WEBHOOK ──
+    StripeEvent:
+      type: object
+      description: |
+        Event Stripe (https://stripe.com/docs/api/events/object).
+        Seuls les champs exploités par le serveur sont listés ; les autres
+        propriétés transmises par Stripe sont conservées.
+      additionalProperties: true
+      required: [id, type, data]
+      properties:
+        id:
+          type: string
+          description: Identifiant d'event Stripe (utilisé pour l'idempotence).
+          example: evt_1NmVHx2eZvKYlo2CqZ3a1b2c
+        type:
+          type: string
+          description: |
+            Type d'event. Traités comme `confirmed` :
+            `checkout.session.completed`, `checkout.session.async_payment_succeeded`,
+            `payment_intent.succeeded`. Traités comme `failed` :
+            `checkout.session.async_payment_failed`, `checkout.session.expired`,
+            `payment_intent.payment_failed`. Les autres restent en `pending`.
+          example: checkout.session.completed
+        api_version:
+          type: string
+          example: '2024-06-20'
+        created:
+          type: integer
+          format: int64
+          description: Timestamp Unix de création de l'event.
+        livemode:
+          type: boolean
+        data:
+          type: object
+          required: [object]
+          properties:
+            object:
+              $ref: '#/components/schemas/StripeEventObject'
+        request:
+          type: object
+          additionalProperties: true
+          properties:
+            id:
+              type: string
+              nullable: true
+            idempotency_key:
+              type: string
+              nullable: true
+
+    StripeEventObject:
+      type: object
+      description: |
+        Ressource Stripe imbriquée dans `data.object`. Selon `type` de l'event,
+        il s'agit d'une `checkout.session` (id préfixé `cs_`) ou d'un
+        `payment_intent` (id préfixé `pi_`). Le serveur utilise `id` pour
+        retrouver l'`OrderPayment` (via `stripe_payment_intent_id` pour les
+        events `payment_intent.*`, sinon via `internal_reference` pour les
+        events `checkout.session.*`).
+      additionalProperties: true
+      required: [id]
+      properties:
+        id:
+          type: string
+          example: cs_test_a1B2c3D4e5F6g7H8i9J0
+        object:
+          type: string
+          enum: [checkout.session, payment_intent]
+        status:
+          type: string
+          description: |
+            Statut Stripe. Pour `checkout.session` : `open`, `complete`, `expired`.
+            Pour `payment_intent` : `succeeded`, `processing`, `requires_payment_method`, etc.
+        payment_status:
+          type: string
+          description: Présent sur `checkout.session` (ex. `paid`, `unpaid`, `no_payment_required`).
+        payment_intent:
+          type: string
+          description: Présent sur `checkout.session` (id du PaymentIntent associé).
+          example: pi_3NmVHx2eZvKYlo2C0abc1234
+        amount_total:
+          type: integer
+          description: Montant total en plus petite unité (centimes pour EUR).
+        amount:
+          type: integer
+          description: Montant sur `payment_intent`, en plus petite unité.
+        currency:
+          type: string
+          example: eur
+        customer:
+          type: string
+          nullable: true
+        mode:
+          type: string
+          enum: [payment, setup, subscription]
+
   # ─── RESPONSES ────────────────────────────
   responses:
     Unauthorized:
@@ -1569,19 +1664,45 @@ paths:
     post:
       tags: [Payments]
       summary: Webhook Stripe Checkout
+      description: |
+        Endpoint invoqué par Stripe. Le corps est un objet Event Stripe brut
+        (https://stripe.com/docs/api/events/object). Les requêtes doivent porter
+        l'en-tête `Stripe-Signature` ; il est vérifié contre `stripe.webhook-secret`.
       security: []
+      parameters:
+        - in: header
+          name: Stripe-Signature
+          required: true
+          schema:
+            type: string
+          description: |
+            Signature Stripe au format `t=<timestamp>,v1=<hmac_sha256>`.
+            Générée par Stripe à partir du secret de webhook configuré.
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              type: object
-              additionalProperties: true
+              $ref: '#/components/schemas/StripeEvent'
       responses:
         '204':
           description: Webhook traité
+        '404':
+          $ref: '#/components/responses/NotFound'
         '422':
           $ref: '#/components/responses/UnprocessableEntity'
+        '500':
+          description: Erreur interne lors du traitement
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '503':
+          description: Webhook Stripe non configuré
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
 
   # ═══════════════════════════
   # PAYMENTS

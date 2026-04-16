@@ -31,6 +31,7 @@ import org.openapitools.client.model.Error;
 import org.openapitools.client.model.Payment;
 import org.openapitools.client.model.PaymentInput;
 import org.openapitools.client.model.PaymentMethod;
+import org.openapitools.client.model.StripeEvent;
 import java.util.UUID;
 
 import java.lang.reflect.Type;
@@ -463,7 +464,8 @@ public class PaymentsApi {
     }
     /**
      * Build call for paymentsWebhooksStripePost
-     * @param requestBody  (required)
+     * @param stripeSignature Signature Stripe au format &#x60;t&#x3D;&lt;timestamp&gt;,v1&#x3D;&lt;hmac_sha256&gt;&#x60;. Générée par Stripe à partir du secret de webhook configuré.  (required)
+     * @param stripeEvent  (required)
      * @param _callback Callback for upload/download progress
      * @return Call to execute
      * @throws ApiException If fail to serialize the request body object
@@ -472,10 +474,13 @@ public class PaymentsApi {
        <caption>Response Details</caption>
         <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
         <tr><td> 204 </td><td> Webhook traité </td><td>  -  </td></tr>
+        <tr><td> 404 </td><td> Ressource introuvable </td><td>  -  </td></tr>
         <tr><td> 422 </td><td> Données invalides </td><td>  -  </td></tr>
+        <tr><td> 500 </td><td> Erreur interne lors du traitement </td><td>  -  </td></tr>
+        <tr><td> 503 </td><td> Webhook Stripe non configuré </td><td>  -  </td></tr>
      </table>
      */
-    public okhttp3.Call paymentsWebhooksStripePostCall(@javax.annotation.Nonnull Map<String, Object> requestBody, final ApiCallback _callback) throws ApiException {
+    public okhttp3.Call paymentsWebhooksStripePostCall(@javax.annotation.Nonnull String stripeSignature, @javax.annotation.Nonnull StripeEvent stripeEvent, final ApiCallback _callback) throws ApiException {
         String basePath = null;
         // Operation Servers
         String[] localBasePaths = new String[] {  };
@@ -489,7 +494,7 @@ public class PaymentsApi {
             basePath = null;
         }
 
-        Object localVarPostBody = requestBody;
+        Object localVarPostBody = stripeEvent;
 
         // create path and map variables
         String localVarPath = "/payments/webhooks/stripe";
@@ -516,42 +521,57 @@ public class PaymentsApi {
             localVarHeaderParams.put("Content-Type", localVarContentType);
         }
 
+        if (stripeSignature != null) {
+            localVarHeaderParams.put("Stripe-Signature", localVarApiClient.parameterToString(stripeSignature));
+        }
+
+
         String[] localVarAuthNames = new String[] {  };
         return localVarApiClient.buildCall(basePath, localVarPath, "POST", localVarQueryParams, localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams, localVarCookieParams, localVarFormParams, localVarAuthNames, _callback);
     }
 
     @SuppressWarnings("rawtypes")
-    private okhttp3.Call paymentsWebhooksStripePostValidateBeforeCall(@javax.annotation.Nonnull Map<String, Object> requestBody, final ApiCallback _callback) throws ApiException {
-        // verify the required parameter 'requestBody' is set
-        if (requestBody == null) {
-            throw new ApiException("Missing the required parameter 'requestBody' when calling paymentsWebhooksStripePost(Async)");
+    private okhttp3.Call paymentsWebhooksStripePostValidateBeforeCall(@javax.annotation.Nonnull String stripeSignature, @javax.annotation.Nonnull StripeEvent stripeEvent, final ApiCallback _callback) throws ApiException {
+        // verify the required parameter 'stripeSignature' is set
+        if (stripeSignature == null) {
+            throw new ApiException("Missing the required parameter 'stripeSignature' when calling paymentsWebhooksStripePost(Async)");
         }
 
-        return paymentsWebhooksStripePostCall(requestBody, _callback);
+        // verify the required parameter 'stripeEvent' is set
+        if (stripeEvent == null) {
+            throw new ApiException("Missing the required parameter 'stripeEvent' when calling paymentsWebhooksStripePost(Async)");
+        }
+
+        return paymentsWebhooksStripePostCall(stripeSignature, stripeEvent, _callback);
 
     }
 
     /**
      * Webhook Stripe Checkout
-     * 
-     * @param requestBody  (required)
+     * Endpoint invoqué par Stripe. Le corps est un objet Event Stripe brut (https://stripe.com/docs/api/events/object). Les requêtes doivent porter l&#39;en-tête &#x60;Stripe-Signature&#x60; ; il est vérifié contre &#x60;stripe.webhook-secret&#x60;. 
+     * @param stripeSignature Signature Stripe au format &#x60;t&#x3D;&lt;timestamp&gt;,v1&#x3D;&lt;hmac_sha256&gt;&#x60;. Générée par Stripe à partir du secret de webhook configuré.  (required)
+     * @param stripeEvent  (required)
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      * @http.response.details
      <table border="1">
        <caption>Response Details</caption>
         <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
         <tr><td> 204 </td><td> Webhook traité </td><td>  -  </td></tr>
+        <tr><td> 404 </td><td> Ressource introuvable </td><td>  -  </td></tr>
         <tr><td> 422 </td><td> Données invalides </td><td>  -  </td></tr>
+        <tr><td> 500 </td><td> Erreur interne lors du traitement </td><td>  -  </td></tr>
+        <tr><td> 503 </td><td> Webhook Stripe non configuré </td><td>  -  </td></tr>
      </table>
      */
-    public void paymentsWebhooksStripePost(@javax.annotation.Nonnull Map<String, Object> requestBody) throws ApiException {
-        paymentsWebhooksStripePostWithHttpInfo(requestBody);
+    public void paymentsWebhooksStripePost(@javax.annotation.Nonnull String stripeSignature, @javax.annotation.Nonnull StripeEvent stripeEvent) throws ApiException {
+        paymentsWebhooksStripePostWithHttpInfo(stripeSignature, stripeEvent);
     }
 
     /**
      * Webhook Stripe Checkout
-     * 
-     * @param requestBody  (required)
+     * Endpoint invoqué par Stripe. Le corps est un objet Event Stripe brut (https://stripe.com/docs/api/events/object). Les requêtes doivent porter l&#39;en-tête &#x60;Stripe-Signature&#x60; ; il est vérifié contre &#x60;stripe.webhook-secret&#x60;. 
+     * @param stripeSignature Signature Stripe au format &#x60;t&#x3D;&lt;timestamp&gt;,v1&#x3D;&lt;hmac_sha256&gt;&#x60;. Générée par Stripe à partir du secret de webhook configuré.  (required)
+     * @param stripeEvent  (required)
      * @return ApiResponse&lt;Void&gt;
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      * @http.response.details
@@ -559,18 +579,22 @@ public class PaymentsApi {
        <caption>Response Details</caption>
         <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
         <tr><td> 204 </td><td> Webhook traité </td><td>  -  </td></tr>
+        <tr><td> 404 </td><td> Ressource introuvable </td><td>  -  </td></tr>
         <tr><td> 422 </td><td> Données invalides </td><td>  -  </td></tr>
+        <tr><td> 500 </td><td> Erreur interne lors du traitement </td><td>  -  </td></tr>
+        <tr><td> 503 </td><td> Webhook Stripe non configuré </td><td>  -  </td></tr>
      </table>
      */
-    public ApiResponse<Void> paymentsWebhooksStripePostWithHttpInfo(@javax.annotation.Nonnull Map<String, Object> requestBody) throws ApiException {
-        okhttp3.Call localVarCall = paymentsWebhooksStripePostValidateBeforeCall(requestBody, null);
+    public ApiResponse<Void> paymentsWebhooksStripePostWithHttpInfo(@javax.annotation.Nonnull String stripeSignature, @javax.annotation.Nonnull StripeEvent stripeEvent) throws ApiException {
+        okhttp3.Call localVarCall = paymentsWebhooksStripePostValidateBeforeCall(stripeSignature, stripeEvent, null);
         return localVarApiClient.execute(localVarCall);
     }
 
     /**
      * Webhook Stripe Checkout (asynchronously)
-     * 
-     * @param requestBody  (required)
+     * Endpoint invoqué par Stripe. Le corps est un objet Event Stripe brut (https://stripe.com/docs/api/events/object). Les requêtes doivent porter l&#39;en-tête &#x60;Stripe-Signature&#x60; ; il est vérifié contre &#x60;stripe.webhook-secret&#x60;. 
+     * @param stripeSignature Signature Stripe au format &#x60;t&#x3D;&lt;timestamp&gt;,v1&#x3D;&lt;hmac_sha256&gt;&#x60;. Générée par Stripe à partir du secret de webhook configuré.  (required)
+     * @param stripeEvent  (required)
      * @param _callback The callback to be executed when the API call finishes
      * @return The request call
      * @throws ApiException If fail to process the API call, e.g. serializing the request body object
@@ -579,12 +603,15 @@ public class PaymentsApi {
        <caption>Response Details</caption>
         <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
         <tr><td> 204 </td><td> Webhook traité </td><td>  -  </td></tr>
+        <tr><td> 404 </td><td> Ressource introuvable </td><td>  -  </td></tr>
         <tr><td> 422 </td><td> Données invalides </td><td>  -  </td></tr>
+        <tr><td> 500 </td><td> Erreur interne lors du traitement </td><td>  -  </td></tr>
+        <tr><td> 503 </td><td> Webhook Stripe non configuré </td><td>  -  </td></tr>
      </table>
      */
-    public okhttp3.Call paymentsWebhooksStripePostAsync(@javax.annotation.Nonnull Map<String, Object> requestBody, final ApiCallback<Void> _callback) throws ApiException {
+    public okhttp3.Call paymentsWebhooksStripePostAsync(@javax.annotation.Nonnull String stripeSignature, @javax.annotation.Nonnull StripeEvent stripeEvent, final ApiCallback<Void> _callback) throws ApiException {
 
-        okhttp3.Call localVarCall = paymentsWebhooksStripePostValidateBeforeCall(requestBody, _callback);
+        okhttp3.Call localVarCall = paymentsWebhooksStripePostValidateBeforeCall(stripeSignature, stripeEvent, _callback);
         localVarApiClient.executeAsync(localVarCall, _callback);
         return localVarCall;
     }
