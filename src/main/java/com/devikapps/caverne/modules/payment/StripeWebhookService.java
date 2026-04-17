@@ -1,13 +1,12 @@
 package com.devikapps.caverne.modules.payment;
 
+import static org.springframework.http.HttpStatus.BAD_REQUEST;
 import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
 import static org.springframework.http.HttpStatus.SERVICE_UNAVAILABLE;
-import static org.springframework.http.HttpStatus.UNPROCESSABLE_ENTITY;
 
 import com.devikapps.caverne.modules.order.Order;
 import com.devikapps.caverne.modules.order.OrderPayment;
 import com.devikapps.caverne.modules.order.OrderPaymentRepository;
-import com.devikapps.caverne.modules.order.OrderRepository;
 import com.devikapps.caverne.modules.order.OrderStatus;
 import com.devikapps.caverne.payment.StripeProperties;
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -15,16 +14,18 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.stripe.exception.SignatureVerificationException;
 import com.stripe.net.Webhook;
+import java.time.Clock;
 import java.time.OffsetDateTime;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.support.TransactionTemplate;
 import org.springframework.web.server.ResponseStatusException;
 
 @Slf4j
@@ -33,55 +34,95 @@ import org.springframework.web.server.ResponseStatusException;
 @RequiredArgsConstructor
 public class StripeWebhookService {
 
+  private static final Set<String> HANDLED_EVENTS =
+      Set.of(
+          "checkout.session.completed",
+          "checkout.session.async_payment_succeeded",
+          "checkout.session.async_payment_failed",
+          "checkout.session.expired",
+          "payment_intent.succeeded",
+          "payment_intent.payment_failed",
+          "payment_intent.canceled",
+          "charge.refunded",
+          "charge.dispute.created");
+
+  private static final Map<String, Integer> STATUS_PRECEDENCE =
+      Map.of(
+          "pending", 0,
+          "failed", 1,
+          "cancelled", 1,
+          "confirmed", 2,
+          "refunded", 3,
+          "disputed", 3);
+
   private final StripeProperties stripeProperties;
-  private final OrderRepository orderRepository;
   private final OrderPaymentRepository orderPaymentRepository;
   private final StripeWebhookEventRepository stripeWebhookEventRepository;
   private final ObjectMapper objectMapper;
+  private final TransactionTemplate transactionTemplate;
+  private final Clock clock;
 
-  @Transactional
   public void handleWebhook(String payload, String signatureHeader) {
-    if (stripeProperties.getWebhookSecret() == null
-        || stripeProperties.getWebhookSecret().isBlank()) {
+    String secret = stripeProperties.getWebhookSecret();
+    if (secret == null || secret.isBlank()) {
       throw new ResponseStatusException(
           SERVICE_UNAVAILABLE, "Stripe webhook secret is not configured");
     }
+    if (signatureHeader == null || signatureHeader.isBlank()) {
+      throw new ResponseStatusException(BAD_REQUEST, "Missing Stripe-Signature header");
+    }
 
-    JsonNode root;
-    String eventType;
-    String eventId;
-    JsonNode objectNode;
     try {
-      Webhook.constructEvent(payload, signatureHeader, stripeProperties.getWebhookSecret());
-      root = objectMapper.readTree(payload);
-      eventType = requiredText(root.path("type"), "Stripe event type is missing");
-      eventId = requiredText(root.path("id"), "Stripe event id is missing");
-      objectNode = root.path("data").path("object");
+      Webhook.constructEvent(payload, signatureHeader, secret);
     } catch (SignatureVerificationException exception) {
       log.warn("Invalid Stripe webhook signature: {}", exception.getMessage());
-      throw new ResponseStatusException(UNPROCESSABLE_ENTITY, "Invalid Stripe signature");
+      throw new ResponseStatusException(BAD_REQUEST, "Invalid Stripe signature");
+    }
+
+    JsonNode root;
+    String eventId;
+    String eventType;
+    JsonNode objectNode;
+    try {
+      root = objectMapper.readTree(payload);
+      eventId = requiredText(root.path("id"), "Stripe event id is missing");
+      eventType = requiredText(root.path("type"), "Stripe event type is missing");
+      objectNode = root.path("data").path("object");
     } catch (ResponseStatusException exception) {
       throw exception;
     } catch (Exception exception) {
       log.warn("Invalid Stripe webhook payload: {}", exception.getMessage());
-      throw new ResponseStatusException(UNPROCESSABLE_ENTITY, "Invalid Stripe webhook payload");
+      throw new ResponseStatusException(BAD_REQUEST, "Invalid Stripe webhook payload");
     }
 
-    // Idempotency guard
+    log.info("Received Stripe webhook event {} ({})", eventId, eventType);
+
+    if (!HANDLED_EVENTS.contains(eventType)) {
+      log.debug("Ignoring unhandled Stripe event type {}", eventType);
+      return;
+    }
+
+    final String finalEventId = eventId;
+    final String finalEventType = eventType;
+    final JsonNode finalObject = objectNode;
+    transactionTemplate.executeWithoutResult(
+        status -> handleVerifiedEvent(finalEventId, finalEventType, finalObject));
+  }
+
+  private void handleVerifiedEvent(String eventId, String eventType, JsonNode objectNode) {
+    if (stripeWebhookEventRepository.existsById(eventId)) {
+      log.info("Skipping duplicate Stripe webhook event {}", eventId);
+      return;
+    }
     try {
-      if (stripeWebhookEventRepository.existsById(eventId)) {
-        log.info("Skipping duplicate Stripe webhook event {}", eventId);
-        return;
-      }
       stripeWebhookEventRepository.saveAndFlush(
-          StripeWebhookEvent.builder().eventId(eventId).receivedAt(OffsetDateTime.now()).build());
+          StripeWebhookEvent.builder()
+              .eventId(eventId)
+              .receivedAt(OffsetDateTime.now(clock))
+              .build());
     } catch (DataIntegrityViolationException duplicate) {
       log.info("Duplicate Stripe webhook event {} detected on insert", eventId);
       return;
-    } catch (RuntimeException exception) {
-      log.error("Failed to record Stripe webhook event {}", eventId, exception);
-      throw new ResponseStatusException(
-          INTERNAL_SERVER_ERROR, "Failed to record Stripe webhook event");
     }
 
     try {
@@ -98,8 +139,7 @@ public class StripeWebhookService {
     Optional<OrderPayment> paymentOpt = lookupPayment(eventType, objectNode);
     if (paymentOpt.isEmpty()) {
       log.warn("No matching OrderPayment for Stripe event {}", eventType);
-      throw new ResponseStatusException(
-          org.springframework.http.HttpStatus.NOT_FOUND, "Stripe payment not found");
+      return;
     }
     OrderPayment payment = paymentOpt.get();
     Order order = payment.getOrder();
@@ -108,22 +148,31 @@ public class StripeWebhookService {
     } catch (Exception exception) {
       throw new RuntimeException(exception);
     }
-    orderPaymentRepository.save(payment);
     updateOrderFromPayment(order, payment);
-    orderRepository.save(order);
   }
 
   private Optional<OrderPayment> lookupPayment(String eventType, JsonNode objectNode) {
     if (eventType.startsWith("payment_intent.")) {
       String paymentIntentId =
           requiredText(objectNode.path("id"), "Stripe payment intent id is missing");
-      Optional<OrderPayment> byIntent =
-          orderPaymentRepository.findByStripePaymentIntentId(paymentIntentId);
-      if (byIntent.isPresent()) {
-        return byIntent;
+      return orderPaymentRepository
+          .findByStripePaymentIntentId(paymentIntentId)
+          .or(() -> orderPaymentRepository.findByInternalReference(paymentIntentId));
+    }
+    if (eventType.startsWith("charge.")) {
+      String paymentIntentId = textOrNull(objectNode.path("payment_intent"));
+      if (paymentIntentId != null) {
+        Optional<OrderPayment> byIntent =
+            orderPaymentRepository.findByStripePaymentIntentId(paymentIntentId);
+        if (byIntent.isPresent()) {
+          return byIntent;
+        }
       }
-      // Fallback to internal_reference if it happens to store PI id directly.
-      return orderPaymentRepository.findByInternalReference(paymentIntentId);
+      String chargeId = textOrNull(objectNode.path("id"));
+      if (chargeId != null) {
+        return orderPaymentRepository.findByInternalReference(chargeId);
+      }
+      return Optional.empty();
     }
     String sessionId = requiredText(objectNode.path("id"), "Stripe checkout session id is missing");
     return orderPaymentRepository.findByInternalReference(sessionId);
@@ -131,10 +180,18 @@ public class StripeWebhookService {
 
   private void updatePaymentFromEvent(OrderPayment payment, String eventType, JsonNode objectNode)
       throws Exception {
-    String normalizedStatus = normalizeEventType(eventType);
-    payment.setStatus(normalizedStatus);
+    String targetStatus = normalizeEventType(eventType);
+    if (shouldApplyStatus(payment.getStatus(), targetStatus)) {
+      payment.setStatus(targetStatus);
+    } else {
+      log.info(
+          "Keeping payment {} status {} (received event {} → {})",
+          payment.getPaymentId(),
+          payment.getStatus(),
+          eventType,
+          targetStatus);
+    }
 
-    // Persist the payment_intent id when the session includes it.
     JsonNode piNode = objectNode.path("payment_intent");
     if (piNode.isTextual()
         && !piNode.asText().isBlank()
@@ -152,14 +209,32 @@ public class StripeWebhookService {
       }
     }
 
+    if ("charge.refunded".equals(eventType)) {
+      applyRefundDetails(payment, objectNode);
+    }
+
     Map<String, Object> providerResponse = readProviderResponse(payment.getProviderResponse());
     putIfText(providerResponse, "checkout_session_id", objectNode.path("id"));
     putIfText(providerResponse, "checkout_status", objectNode.path("status"));
     putIfText(providerResponse, "payment_status", objectNode.path("payment_status"));
     putIfText(providerResponse, "payment_intent_id", objectNode.path("payment_intent"));
     providerResponse.put("last_webhook_event", eventType);
-    providerResponse.put("webhook_processed_at", OffsetDateTime.now().toString());
+    providerResponse.put("webhook_processed_at", OffsetDateTime.now(clock).toString());
     payment.setProviderResponse(objectMapper.writeValueAsString(providerResponse));
+  }
+
+  private void applyRefundDetails(OrderPayment payment, JsonNode objectNode) {
+    String chargeId = textOrNull(objectNode.path("id"));
+    if (chargeId != null && (payment.getRefundId() == null || payment.getRefundId().isBlank())) {
+      payment.setRefundId(chargeId);
+    }
+    JsonNode refundedAmount = objectNode.path("amount_refunded");
+    if (refundedAmount.isNumber()) {
+      payment.setRefundedAmount(refundedAmount.decimalValue());
+    }
+    if (payment.getRefundedAt() == null) {
+      payment.setRefundedAt(OffsetDateTime.now(clock));
+    }
   }
 
   private void updateOrderFromPayment(Order order, OrderPayment payment) {
@@ -167,6 +242,24 @@ public class StripeWebhookService {
         && order.getStatus() == OrderStatus.PENDING) {
       order.setStatus(OrderStatus.CONFIRMED);
     }
+  }
+
+  private boolean shouldApplyStatus(String current, String target) {
+    if (target == null) {
+      return false;
+    }
+    if (current == null || current.isBlank()) {
+      return true;
+    }
+    Integer currentP = STATUS_PRECEDENCE.get(current.toLowerCase());
+    Integer targetP = STATUS_PRECEDENCE.get(target.toLowerCase());
+    if (currentP == null) {
+      return true;
+    }
+    if (targetP == null) {
+      return false;
+    }
+    return targetP >= currentP;
   }
 
   private String normalizeEventType(String eventType) {
@@ -179,7 +272,10 @@ public class StripeWebhookService {
               "checkout.session.expired",
               "payment_intent.payment_failed" ->
           "failed";
-      default -> "pending";
+      case "payment_intent.canceled" -> "cancelled";
+      case "charge.refunded" -> "refunded";
+      case "charge.dispute.created" -> "disputed";
+      default -> null;
     };
   }
 
@@ -196,9 +292,16 @@ public class StripeWebhookService {
     }
   }
 
+  private String textOrNull(JsonNode node) {
+    if (node == null || !node.isTextual() || node.asText().isBlank()) {
+      return null;
+    }
+    return node.asText();
+  }
+
   private String requiredText(JsonNode node, String message) {
     if (node == null || !node.isTextual() || node.asText().isBlank()) {
-      throw new ResponseStatusException(UNPROCESSABLE_ENTITY, message);
+      throw new ResponseStatusException(BAD_REQUEST, message);
     }
     return node.asText();
   }
