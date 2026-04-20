@@ -1,5 +1,6 @@
 package com.devikapps.caverne.modules.catalog;
 
+import static org.springframework.http.HttpStatus.CONFLICT;
 import static org.springframework.http.HttpStatus.NOT_FOUND;
 import static org.springframework.http.HttpStatus.UNPROCESSABLE_ENTITY;
 
@@ -42,11 +43,13 @@ public class CategoryService {
           categoryRepository
               .findById(input.getId())
               .orElseThrow(() -> new ResponseStatusException(NOT_FOUND, "Category not found"));
+      requireUniqueLabel(input.getLabel(), existing.getId());
       Category category = categoryApiMapper.fromInput(input, existing);
       return new UpsertCategoryResult(
           categoryApiMapper.toTreeResponse(categoryRepository.save(category)), false);
     }
 
+    requireUniqueLabel(input.getLabel(), null);
     Category category = categoryApiMapper.fromInput(input, null);
     return new UpsertCategoryResult(
         categoryApiMapper.toTreeResponse(categoryRepository.save(category)), true);
@@ -61,10 +64,24 @@ public class CategoryService {
     }
 
     Category existing = categoryRepository.findById(id).orElse(null);
+    requireUniqueLabel(input.getLabel(), existing == null ? id : existing.getId());
     Category category = categoryApiMapper.fromInput(input, existing);
 
     return new UpsertCategoryResult(
         categoryApiMapper.toTreeResponse(categoryRepository.save(category)), existing == null);
+  }
+
+  private void requireUniqueLabel(String label, UUID currentId) {
+    if (label == null || label.isBlank()) {
+      return;
+    }
+    categoryRepository
+        .findByLabelIgnoreCase(label)
+        .filter(other -> !other.getId().equals(currentId))
+        .ifPresent(
+            other -> {
+              throw new ResponseStatusException(CONFLICT, "Category label already exists");
+            });
   }
 
   @Transactional
