@@ -478,6 +478,8 @@ public class CategoriesApi {
         <tr><td> 401 </td><td> Token JWT manquant ou invalide </td><td>  -  </td></tr>
         <tr><td> 403 </td><td> Accès refusé (rôle insuffisant) </td><td>  -  </td></tr>
         <tr><td> 404 </td><td> Ressource introuvable </td><td>  -  </td></tr>
+        <tr><td> 409 </td><td> Conflit — la ressource viole une contrainte d&#39;unicité </td><td>  -  </td></tr>
+        <tr><td> 422 </td><td> Données invalides </td><td>  -  </td></tr>
      </table>
      */
     public okhttp3.Call categoriesIdPutCall(@javax.annotation.Nonnull UUID id, @javax.annotation.Nonnull CategoryInput categoryInput, final ApiCallback _callback) throws ApiException {
@@ -544,7 +546,7 @@ public class CategoriesApi {
 
     /**
      * Créer ou mettre à jour une catégorie par identifiant (admin)
-     * Si la catégorie existe, elle est mise à jour. Sinon, une nouvelle catégorie est créée et l&#39;identifiant retourné fait foi. Si &#x60;id&#x60; est aussi fourni dans le payload, il doit correspondre à l&#39;identifiant du path. 
+     * Si la catégorie existe, elle est mise à jour. Sinon, une nouvelle catégorie est créée et l&#39;identifiant retourné fait foi. Si &#x60;id&#x60; est aussi fourni dans le payload, il doit correspondre à l&#39;identifiant du path. Le champ &#x60;label&#x60; doit être unique (insensible à la casse) parmi toutes les catégories. 
      * @param id  (required)
      * @param categoryInput  (required)
      * @return Category
@@ -558,6 +560,8 @@ public class CategoriesApi {
         <tr><td> 401 </td><td> Token JWT manquant ou invalide </td><td>  -  </td></tr>
         <tr><td> 403 </td><td> Accès refusé (rôle insuffisant) </td><td>  -  </td></tr>
         <tr><td> 404 </td><td> Ressource introuvable </td><td>  -  </td></tr>
+        <tr><td> 409 </td><td> Conflit — la ressource viole une contrainte d&#39;unicité </td><td>  -  </td></tr>
+        <tr><td> 422 </td><td> Données invalides </td><td>  -  </td></tr>
      </table>
      */
     public Category categoriesIdPut(@javax.annotation.Nonnull UUID id, @javax.annotation.Nonnull CategoryInput categoryInput) throws ApiException {
@@ -567,7 +571,7 @@ public class CategoriesApi {
 
     /**
      * Créer ou mettre à jour une catégorie par identifiant (admin)
-     * Si la catégorie existe, elle est mise à jour. Sinon, une nouvelle catégorie est créée et l&#39;identifiant retourné fait foi. Si &#x60;id&#x60; est aussi fourni dans le payload, il doit correspondre à l&#39;identifiant du path. 
+     * Si la catégorie existe, elle est mise à jour. Sinon, une nouvelle catégorie est créée et l&#39;identifiant retourné fait foi. Si &#x60;id&#x60; est aussi fourni dans le payload, il doit correspondre à l&#39;identifiant du path. Le champ &#x60;label&#x60; doit être unique (insensible à la casse) parmi toutes les catégories. 
      * @param id  (required)
      * @param categoryInput  (required)
      * @return ApiResponse&lt;Category&gt;
@@ -581,6 +585,8 @@ public class CategoriesApi {
         <tr><td> 401 </td><td> Token JWT manquant ou invalide </td><td>  -  </td></tr>
         <tr><td> 403 </td><td> Accès refusé (rôle insuffisant) </td><td>  -  </td></tr>
         <tr><td> 404 </td><td> Ressource introuvable </td><td>  -  </td></tr>
+        <tr><td> 409 </td><td> Conflit — la ressource viole une contrainte d&#39;unicité </td><td>  -  </td></tr>
+        <tr><td> 422 </td><td> Données invalides </td><td>  -  </td></tr>
      </table>
      */
     public ApiResponse<Category> categoriesIdPutWithHttpInfo(@javax.annotation.Nonnull UUID id, @javax.annotation.Nonnull CategoryInput categoryInput) throws ApiException {
@@ -591,7 +597,7 @@ public class CategoriesApi {
 
     /**
      * Créer ou mettre à jour une catégorie par identifiant (admin) (asynchronously)
-     * Si la catégorie existe, elle est mise à jour. Sinon, une nouvelle catégorie est créée et l&#39;identifiant retourné fait foi. Si &#x60;id&#x60; est aussi fourni dans le payload, il doit correspondre à l&#39;identifiant du path. 
+     * Si la catégorie existe, elle est mise à jour. Sinon, une nouvelle catégorie est créée et l&#39;identifiant retourné fait foi. Si &#x60;id&#x60; est aussi fourni dans le payload, il doit correspondre à l&#39;identifiant du path. Le champ &#x60;label&#x60; doit être unique (insensible à la casse) parmi toutes les catégories. 
      * @param id  (required)
      * @param categoryInput  (required)
      * @param _callback The callback to be executed when the API call finishes
@@ -606,6 +612,8 @@ public class CategoriesApi {
         <tr><td> 401 </td><td> Token JWT manquant ou invalide </td><td>  -  </td></tr>
         <tr><td> 403 </td><td> Accès refusé (rôle insuffisant) </td><td>  -  </td></tr>
         <tr><td> 404 </td><td> Ressource introuvable </td><td>  -  </td></tr>
+        <tr><td> 409 </td><td> Conflit — la ressource viole une contrainte d&#39;unicité </td><td>  -  </td></tr>
+        <tr><td> 422 </td><td> Données invalides </td><td>  -  </td></tr>
      </table>
      */
     public okhttp3.Call categoriesIdPutAsync(@javax.annotation.Nonnull UUID id, @javax.annotation.Nonnull CategoryInput categoryInput, final ApiCallback<Category> _callback) throws ApiException {
@@ -629,6 +637,7 @@ public class CategoriesApi {
         <tr><td> 200 </td><td> Mise à jour quand &#x60;id&#x60; est fourni </td><td>  -  </td></tr>
         <tr><td> 401 </td><td> Token JWT manquant ou invalide </td><td>  -  </td></tr>
         <tr><td> 403 </td><td> Accès refusé (rôle insuffisant) </td><td>  -  </td></tr>
+        <tr><td> 409 </td><td> Conflit — la ressource viole une contrainte d&#39;unicité </td><td>  -  </td></tr>
      </table>
      */
     public okhttp3.Call categoriesPostCall(@javax.annotation.Nonnull CategoryInput categoryInput, final ApiCallback _callback) throws ApiException {
@@ -689,7 +698,7 @@ public class CategoriesApi {
 
     /**
      * Créer ou mettre à jour une catégorie (admin)
-     * Endpoint d&#39;upsert. Si &#x60;id&#x60; est absent ou null dans le payload, une nouvelle catégorie est créée. Si &#x60;id&#x60; est fourni, la catégorie existante correspondante doit être mise à jour. 
+     * Endpoint d&#39;upsert. Si &#x60;id&#x60; est absent ou null dans le payload, une nouvelle catégorie est créée. Si &#x60;id&#x60; est fourni, la catégorie existante correspondante doit être mise à jour. Le champ &#x60;label&#x60; doit être unique (insensible à la casse) parmi toutes les catégories. 
      * @param categoryInput  (required)
      * @return Category
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
@@ -701,6 +710,7 @@ public class CategoriesApi {
         <tr><td> 200 </td><td> Mise à jour quand &#x60;id&#x60; est fourni </td><td>  -  </td></tr>
         <tr><td> 401 </td><td> Token JWT manquant ou invalide </td><td>  -  </td></tr>
         <tr><td> 403 </td><td> Accès refusé (rôle insuffisant) </td><td>  -  </td></tr>
+        <tr><td> 409 </td><td> Conflit — la ressource viole une contrainte d&#39;unicité </td><td>  -  </td></tr>
      </table>
      */
     public Category categoriesPost(@javax.annotation.Nonnull CategoryInput categoryInput) throws ApiException {
@@ -710,7 +720,7 @@ public class CategoriesApi {
 
     /**
      * Créer ou mettre à jour une catégorie (admin)
-     * Endpoint d&#39;upsert. Si &#x60;id&#x60; est absent ou null dans le payload, une nouvelle catégorie est créée. Si &#x60;id&#x60; est fourni, la catégorie existante correspondante doit être mise à jour. 
+     * Endpoint d&#39;upsert. Si &#x60;id&#x60; est absent ou null dans le payload, une nouvelle catégorie est créée. Si &#x60;id&#x60; est fourni, la catégorie existante correspondante doit être mise à jour. Le champ &#x60;label&#x60; doit être unique (insensible à la casse) parmi toutes les catégories. 
      * @param categoryInput  (required)
      * @return ApiResponse&lt;Category&gt;
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
@@ -722,6 +732,7 @@ public class CategoriesApi {
         <tr><td> 200 </td><td> Mise à jour quand &#x60;id&#x60; est fourni </td><td>  -  </td></tr>
         <tr><td> 401 </td><td> Token JWT manquant ou invalide </td><td>  -  </td></tr>
         <tr><td> 403 </td><td> Accès refusé (rôle insuffisant) </td><td>  -  </td></tr>
+        <tr><td> 409 </td><td> Conflit — la ressource viole une contrainte d&#39;unicité </td><td>  -  </td></tr>
      </table>
      */
     public ApiResponse<Category> categoriesPostWithHttpInfo(@javax.annotation.Nonnull CategoryInput categoryInput) throws ApiException {
@@ -732,7 +743,7 @@ public class CategoriesApi {
 
     /**
      * Créer ou mettre à jour une catégorie (admin) (asynchronously)
-     * Endpoint d&#39;upsert. Si &#x60;id&#x60; est absent ou null dans le payload, une nouvelle catégorie est créée. Si &#x60;id&#x60; est fourni, la catégorie existante correspondante doit être mise à jour. 
+     * Endpoint d&#39;upsert. Si &#x60;id&#x60; est absent ou null dans le payload, une nouvelle catégorie est créée. Si &#x60;id&#x60; est fourni, la catégorie existante correspondante doit être mise à jour. Le champ &#x60;label&#x60; doit être unique (insensible à la casse) parmi toutes les catégories. 
      * @param categoryInput  (required)
      * @param _callback The callback to be executed when the API call finishes
      * @return The request call
@@ -745,6 +756,7 @@ public class CategoriesApi {
         <tr><td> 200 </td><td> Mise à jour quand &#x60;id&#x60; est fourni </td><td>  -  </td></tr>
         <tr><td> 401 </td><td> Token JWT manquant ou invalide </td><td>  -  </td></tr>
         <tr><td> 403 </td><td> Accès refusé (rôle insuffisant) </td><td>  -  </td></tr>
+        <tr><td> 409 </td><td> Conflit — la ressource viole une contrainte d&#39;unicité </td><td>  -  </td></tr>
      </table>
      */
     public okhttp3.Call categoriesPostAsync(@javax.annotation.Nonnull CategoryInput categoryInput, final ApiCallback<Category> _callback) throws ApiException {

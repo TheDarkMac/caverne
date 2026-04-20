@@ -8,7 +8,6 @@ import com.devikapps.caverne.modules.catalog.Price;
 import com.devikapps.caverne.modules.catalog.Product;
 import com.devikapps.caverne.modules.catalog.ProductApiMapper;
 import com.devikapps.caverne.modules.catalog.ProductRepository;
-import com.devikapps.caverne.modules.catalog.ProductService;
 import com.devikapps.caverne.modules.catalog.StockMovement;
 import com.devikapps.caverne.modules.catalog.StockMovementService;
 import com.devikapps.caverne.modules.payment.PaymentProvider;
@@ -36,7 +35,6 @@ import org.springframework.web.server.ResponseStatusException;
 public class OrderService {
 
   private final OrderRepository orderRepository;
-  private final ProductService productService;
   private final ProductRepository productRepository;
   private final ProductApiMapper productApiMapper;
   private final DeliveryCostService deliveryCostService;
@@ -88,7 +86,11 @@ public class OrderService {
         input.getItems().stream()
             .map(
                 itemReq -> {
-                  Product product = productService.findById(itemReq.getProductId());
+                  Product product =
+                      productRepository
+                          .findByIdForUpdate(itemReq.getProductId())
+                          .orElseThrow(
+                              () -> new ResponseStatusException(NOT_FOUND, "Product not found"));
                   BigDecimal quantity = BigDecimal.valueOf(itemReq.getQuantity());
                   ensureSufficientStock(product, quantity);
                   Price price =
@@ -204,7 +206,7 @@ public class OrderService {
       if (item.getProductId() == null || item.getQuantity() == null) {
         continue;
       }
-      Product product = productRepository.findById(item.getProductId()).orElse(null);
+      Product product = productRepository.findByIdForUpdate(item.getProductId()).orElse(null);
       if (product == null) {
         continue;
       }

@@ -499,7 +499,7 @@ paths:
       - application/json
     post:
       description: |
-        Endpoint d'upsert. Si `id` est absent ou null dans le payload, une nouvelle catégorie est créée. Si `id` est fourni, la catégorie existante correspondante doit être mise à jour.
+        Endpoint d'upsert. Si `id` est absent ou null dans le payload, une nouvelle catégorie est créée. Si `id` est fourni, la catégorie existante correspondante doit être mise à jour. Le champ `label` doit être unique (insensible à la casse) parmi toutes les catégories.
       requestBody:
         content:
           application/json:
@@ -531,6 +531,12 @@ paths:
               schema:
                 $ref: "#/components/schemas/Error"
           description: Accès refusé (rôle insuffisant)
+        "409":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+          description: Conflit — la ressource viole une contrainte d'unicité
       summary: Créer ou mettre à jour une catégorie (admin)
       tags:
       - Categories
@@ -599,7 +605,7 @@ paths:
       - application/json
     put:
       description: |
-        Si la catégorie existe, elle est mise à jour. Sinon, une nouvelle catégorie est créée et l'identifiant retourné fait foi. Si `id` est aussi fourni dans le payload, il doit correspondre à l'identifiant du path.
+        Si la catégorie existe, elle est mise à jour. Sinon, une nouvelle catégorie est créée et l'identifiant retourné fait foi. Si `id` est aussi fourni dans le payload, il doit correspondre à l'identifiant du path. Le champ `label` doit être unique (insensible à la casse) parmi toutes les catégories.
       parameters:
       - explode: false
         in: path
@@ -646,6 +652,18 @@ paths:
               schema:
                 $ref: "#/components/schemas/Error"
           description: Ressource introuvable
+        "409":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+          description: Conflit — la ressource viole une contrainte d'unicité
+        "422":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+          description: Données invalides
       summary: Créer ou mettre à jour une catégorie par identifiant (admin)
       tags:
       - Categories
@@ -749,7 +767,7 @@ paths:
       - application/json
     post:
       description: |
-        Endpoint d'upsert. Si `id` est absent ou null dans le payload, un nouveau produit est créé. Si `id` est fourni et qu'un produit existe, il est mis à jour. Sinon, un nouveau produit est créé.
+        Endpoint d'upsert. Si `id` est absent ou null dans le payload, un nouveau produit est créé. Si `id` est fourni et qu'un produit existe, il est mis à jour. Sinon, un nouveau produit est créé. Les champs `label` et `reference` doivent être uniques (insensibles à la casse) parmi tous les produits.
       requestBody:
         content:
           application/json:
@@ -781,6 +799,12 @@ paths:
               schema:
                 $ref: "#/components/schemas/Error"
           description: Accès refusé (rôle insuffisant)
+        "409":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+          description: Conflit — la ressource viole une contrainte d'unicité
       summary: Créer ou mettre à jour un produit (admin)
       tags:
       - Products
@@ -882,7 +906,7 @@ paths:
       - application/json
     put:
       description: |
-        Si le produit existe, il est mis à jour. Sinon, un nouveau produit est créé et l'identifiant retourné fait foi. Si `id` est aussi fourni dans le payload, il doit correspondre à l'identifiant du path.
+        Si le produit existe, il est mis à jour. Sinon, un nouveau produit est créé et l'identifiant retourné fait foi. Si `id` est aussi fourni dans le payload, il doit correspondre à l'identifiant du path. Les champs `label` et `reference` doivent être uniques (insensibles à la casse) parmi tous les produits.
       parameters:
       - explode: false
         in: path
@@ -923,6 +947,18 @@ paths:
               schema:
                 $ref: "#/components/schemas/Error"
           description: Accès refusé (rôle insuffisant)
+        "409":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+          description: Conflit — la ressource viole une contrainte d'unicité
+        "422":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+          description: Données invalides
       summary: Créer ou mettre à jour un produit par identifiant (admin)
       tags:
       - Products
@@ -1222,6 +1258,8 @@ paths:
       x-accepts:
       - application/json
     post:
+      description: |
+        Crée une commande et décrémente le stock de chaque produit demandé. Le stock est verrouillé en écriture (SELECT FOR UPDATE) pendant la transaction, de sorte que deux commandes concurrentes sur le même produit sont sérialisées : la seconde relit le stock à jour et reçoit `422` si la quantité est insuffisante.
       requestBody:
         content:
           application/json:
@@ -1240,7 +1278,7 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Error"
-          description: Données invalides
+          description: Payload invalide ou stock insuffisant pour un produit demandé
       security: []
       summary: Passer une commande
       tags:
@@ -1611,6 +1649,12 @@ components:
           schema:
             $ref: "#/components/schemas/Error"
       description: Données invalides
+    Conflict:
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Error"
+      description: Conflit — la ressource viole une contrainte d'unicité
   schemas:
     LoginRequest:
       description: "Fournir `email` ou `phone`, ou les deux."

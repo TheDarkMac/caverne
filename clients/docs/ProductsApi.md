@@ -228,7 +228,7 @@ No authorization required
 
 Créer ou mettre à jour un produit par identifiant (admin)
 
-Si le produit existe, il est mis à jour. Sinon, un nouveau produit est créé et l&#39;identifiant retourné fait foi. Si &#x60;id&#x60; est aussi fourni dans le payload, il doit correspondre à l&#39;identifiant du path. 
+Si le produit existe, il est mis à jour. Sinon, un nouveau produit est créé et l&#39;identifiant retourné fait foi. Si &#x60;id&#x60; est aussi fourni dans le payload, il doit correspondre à l&#39;identifiant du path. Les champs &#x60;label&#x60; et &#x60;reference&#x60; doivent être uniques (insensibles à la casse) parmi tous les produits. 
 
 ### Example
 ```java
@@ -293,6 +293,8 @@ public class Example {
 | **201** | Produit créé |  -  |
 | **401** | Token JWT manquant ou invalide |  -  |
 | **403** | Accès refusé (rôle insuffisant) |  -  |
+| **409** | Conflit — la ressource viole une contrainte d&#39;unicité |  -  |
+| **422** | Données invalides |  -  |
 
 <a id="productsIdStockGet"></a>
 # **productsIdStockGet**
@@ -439,7 +441,7 @@ public class Example {
 
 Créer ou mettre à jour un produit (admin)
 
-Endpoint d&#39;upsert. Si &#x60;id&#x60; est absent ou null dans le payload, un nouveau produit est créé. Si &#x60;id&#x60; est fourni et qu&#39;un produit existe, il est mis à jour. Sinon, un nouveau produit est créé. 
+Endpoint d&#39;upsert. Si &#x60;id&#x60; est absent ou null dans le payload, un nouveau produit est créé. Si &#x60;id&#x60; est fourni et qu&#39;un produit existe, il est mis à jour. Sinon, un nouveau produit est créé. Les champs &#x60;label&#x60; et &#x60;reference&#x60; doivent être uniques (insensibles à la casse) parmi tous les produits. 
 
 ### Example
 ```java
@@ -502,4 +504,5 @@ public class Example {
 | **200** | Produit mis à jour |  -  |
 | **401** | Token JWT manquant ou invalide |  -  |
 | **403** | Accès refusé (rôle insuffisant) |  -  |
+| **409** | Conflit — la ressource viole une contrainte d&#39;unicité |  -  |
 

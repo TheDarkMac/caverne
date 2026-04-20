@@ -73,7 +73,7 @@ public class CategoriesApiTest {
     /**
      * Créer ou mettre à jour une catégorie par identifiant (admin)
      *
-     * Si la catégorie existe, elle est mise à jour. Sinon, une nouvelle catégorie est créée et l&#39;identifiant retourné fait foi. Si &#x60;id&#x60; est aussi fourni dans le payload, il doit correspondre à l&#39;identifiant du path. 
+     * Si la catégorie existe, elle est mise à jour. Sinon, une nouvelle catégorie est créée et l&#39;identifiant retourné fait foi. Si &#x60;id&#x60; est aussi fourni dans le payload, il doit correspondre à l&#39;identifiant du path. Le champ &#x60;label&#x60; doit être unique (insensible à la casse) parmi toutes les catégories. 
      *
      * @throws ApiException if the Api call fails
      */
@@ -88,7 +88,7 @@ public class CategoriesApiTest {
     /**
      * Créer ou mettre à jour une catégorie (admin)
      *
-     * Endpoint d&#39;upsert. Si &#x60;id&#x60; est absent ou null dans le payload, une nouvelle catégorie est créée. Si &#x60;id&#x60; est fourni, la catégorie existante correspondante doit être mise à jour. 
+     * Endpoint d&#39;upsert. Si &#x60;id&#x60; est absent ou null dans le payload, une nouvelle catégorie est créée. Si &#x60;id&#x60; est fourni, la catégorie existante correspondante doit être mise à jour. Le champ &#x60;label&#x60; doit être unique (insensible à la casse) parmi toutes les catégories. 
      *
      * @throws ApiException if the Api call fails
      */

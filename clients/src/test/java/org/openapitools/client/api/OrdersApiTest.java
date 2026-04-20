@@ -106,6 +106,8 @@ public class OrdersApiTest {
     /**
      * Passer une commande
      *
+     * Crée une commande et décrémente le stock de chaque produit demandé. Le stock est verrouillé en écriture (SELECT FOR UPDATE) pendant la transaction, de sorte que deux commandes concurrentes sur le même produit sont sérialisées : la seconde relit le stock à jour et reçoit &#x60;422&#x60; si la quantité est insuffisante. 
+     *
      * @throws ApiException if the Api call fails
      */
     @Test

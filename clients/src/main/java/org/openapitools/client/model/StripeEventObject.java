@@ -49,7 +49,7 @@ import org.openapitools.client.JSON;
 /**
  * Ressource Stripe imbriquée dans &#x60;data.object&#x60;. Selon &#x60;type&#x60; de l&#39;event, il s&#39;agit d&#39;une &#x60;checkout.session&#x60; (id préfixé &#x60;cs_&#x60;) ou d&#39;un &#x60;payment_intent&#x60; (id préfixé &#x60;pi_&#x60;). Le serveur utilise &#x60;id&#x60; pour retrouver l&#39;&#x60;OrderPayment&#x60; (via &#x60;stripe_payment_intent_id&#x60; pour les events &#x60;payment_intent.*&#x60;, sinon via &#x60;internal_reference&#x60; pour les events &#x60;checkout.session.*&#x60;). 
  */
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2026-04-16T22:56:02.061304953+03:00[Indian/Antananarivo]", comments = "Generator version: 7.21.0")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2026-04-20T18:08:24.124440502+03:00[Indian/Antananarivo]", comments = "Generator version: 7.21.0")
 public class StripeEventObject {
   public static final String SERIALIZED_NAME_ID = "id";
   @SerializedName(SERIALIZED_NAME_ID)
