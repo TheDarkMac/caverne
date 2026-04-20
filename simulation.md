@@ -539,8 +539,8 @@ Can:
 
 - do everything a simple user can
 - manage users
-- manage catalog writes (categories, products, product images with main toggle)
-- manage stock and read stock movement audit log
+- manage catalog writes (categories, products, product images with main toggle). Category `label` and product `label`/`reference` are globally unique (case-insensitive); attempting to reuse one returns `409 Conflict`.
+- manage stock and read stock movement audit log. Stock decrements during checkout use row-level `SELECT … FOR UPDATE`, so concurrent buyers cannot race past the sufficient-stock check.
 - manage delivery-cost catalog (`PUT`/`DELETE` on `/delivery-costs/{id}`)
 - list all orders
 - filter orders by user/status

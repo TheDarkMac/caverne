@@ -57,7 +57,7 @@ import org.openapitools.client.JSON;
 /**
  * ProductInput
  */
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2026-04-16T22:56:02.061304953+03:00[Indian/Antananarivo]", comments = "Generator version: 7.21.0")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2026-04-20T18:08:24.124440502+03:00[Indian/Antananarivo]", comments = "Generator version: 7.21.0")
 public class ProductInput {
   public static final String SERIALIZED_NAME_ID = "id";
   @SerializedName(SERIALIZED_NAME_ID)

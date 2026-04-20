@@ -124,7 +124,10 @@ public class ProductService {
       throw new ResponseStatusException(UNPROCESSABLE_ENTITY, "Stock quantity cannot be negative");
     }
 
-    Product product = findById(id);
+    Product product =
+        productRepository
+            .findByIdForUpdate(id)
+            .orElseThrow(() -> new ResponseStatusException(NOT_FOUND, "Product not found"));
     BigDecimal previous =
         product.getStockQuantity() == null ? BigDecimal.ZERO : product.getStockQuantity();
     BigDecimal newBalance = BigDecimal.valueOf(input.getQuantity());

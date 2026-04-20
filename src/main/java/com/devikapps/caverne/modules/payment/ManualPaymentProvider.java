@@ -3,9 +3,11 @@ package com.devikapps.caverne.modules.payment;
 import java.math.BigDecimal;
 import java.util.Map;
 import java.util.UUID;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Service;
 
 @Service
+@ConditionalOnProperty(name = "manual.enabled", havingValue = "true")
 public class ManualPaymentProvider implements PaymentProvider {
 
   @Override

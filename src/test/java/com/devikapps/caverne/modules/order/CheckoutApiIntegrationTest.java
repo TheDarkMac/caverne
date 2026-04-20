@@ -41,7 +41,7 @@ import org.springframework.test.web.servlet.MockMvc;
 @SpringBootTest
 @AutoConfigureMockMvc
 @Import({TestcontainersConfiguration.class, CheckoutApiIntegrationTest.StripeTestConfig.class})
-@TestPropertySource(properties = "stripe.enabled=false")
+@TestPropertySource(properties = {"stripe.enabled=false", "manual.enabled=true"})
 class CheckoutApiIntegrationTest {
 
   @Autowired private MockMvc mockMvc;

@@ -789,7 +789,7 @@ public class OrdersApi {
        <caption>Response Details</caption>
         <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
         <tr><td> 201 </td><td> Commande créée </td><td>  -  </td></tr>
-        <tr><td> 422 </td><td> Données invalides </td><td>  -  </td></tr>
+        <tr><td> 422 </td><td> Payload invalide ou stock insuffisant pour un produit demandé </td><td>  -  </td></tr>
      </table>
      */
     public okhttp3.Call ordersPostCall(@javax.annotation.Nonnull OrderInput orderInput, final ApiCallback _callback) throws ApiException {
@@ -850,7 +850,7 @@ public class OrdersApi {
 
     /**
      * Passer une commande
-     * 
+     * Crée une commande et décrémente le stock de chaque produit demandé. Le stock est verrouillé en écriture (SELECT FOR UPDATE) pendant la transaction, de sorte que deux commandes concurrentes sur le même produit sont sérialisées : la seconde relit le stock à jour et reçoit &#x60;422&#x60; si la quantité est insuffisante. 
      * @param orderInput  (required)
      * @return Order
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
@@ -859,7 +859,7 @@ public class OrdersApi {
        <caption>Response Details</caption>
         <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
         <tr><td> 201 </td><td> Commande créée </td><td>  -  </td></tr>
-        <tr><td> 422 </td><td> Données invalides </td><td>  -  </td></tr>
+        <tr><td> 422 </td><td> Payload invalide ou stock insuffisant pour un produit demandé </td><td>  -  </td></tr>
      </table>
      */
     public Order ordersPost(@javax.annotation.Nonnull OrderInput orderInput) throws ApiException {
@@ -869,7 +869,7 @@ public class OrdersApi {
 
     /**
      * Passer une commande
-     * 
+     * Crée une commande et décrémente le stock de chaque produit demandé. Le stock est verrouillé en écriture (SELECT FOR UPDATE) pendant la transaction, de sorte que deux commandes concurrentes sur le même produit sont sérialisées : la seconde relit le stock à jour et reçoit &#x60;422&#x60; si la quantité est insuffisante. 
      * @param orderInput  (required)
      * @return ApiResponse&lt;Order&gt;
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
@@ -878,7 +878,7 @@ public class OrdersApi {
        <caption>Response Details</caption>
         <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
         <tr><td> 201 </td><td> Commande créée </td><td>  -  </td></tr>
-        <tr><td> 422 </td><td> Données invalides </td><td>  -  </td></tr>
+        <tr><td> 422 </td><td> Payload invalide ou stock insuffisant pour un produit demandé </td><td>  -  </td></tr>
      </table>
      */
     public ApiResponse<Order> ordersPostWithHttpInfo(@javax.annotation.Nonnull OrderInput orderInput) throws ApiException {
@@ -889,7 +889,7 @@ public class OrdersApi {
 
     /**
      * Passer une commande (asynchronously)
-     * 
+     * Crée une commande et décrémente le stock de chaque produit demandé. Le stock est verrouillé en écriture (SELECT FOR UPDATE) pendant la transaction, de sorte que deux commandes concurrentes sur le même produit sont sérialisées : la seconde relit le stock à jour et reçoit &#x60;422&#x60; si la quantité est insuffisante. 
      * @param orderInput  (required)
      * @param _callback The callback to be executed when the API call finishes
      * @return The request call
@@ -899,7 +899,7 @@ public class OrdersApi {
        <caption>Response Details</caption>
         <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
         <tr><td> 201 </td><td> Commande créée </td><td>  -  </td></tr>
-        <tr><td> 422 </td><td> Données invalides </td><td>  -  </td></tr>
+        <tr><td> 422 </td><td> Payload invalide ou stock insuffisant pour un produit demandé </td><td>  -  </td></tr>
      </table>
      */
     public okhttp3.Call ordersPostAsync(@javax.annotation.Nonnull OrderInput orderInput, final ApiCallback<Order> _callback) throws ApiException {

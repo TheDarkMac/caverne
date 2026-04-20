@@ -110,7 +110,7 @@ public class NichesCatalogImporter implements ApplicationRunner {
   private Product findOrCreateProduct(Category category, NicheProduct nicheProduct) {
     Product product =
         productRepository
-            .findByCategoryIdAndLabelIgnoreCase(category.getId(), nicheProduct.label())
+            .findByLabelIgnoreCase(nicheProduct.label())
             .orElseGet(() -> buildProduct(category, nicheProduct));
     if (nicheProduct.amount() != null
         && product.getPrices().stream()
