@@ -10,4 +10,6 @@ public interface ProductRepository
   boolean existsByReferenceIgnoreCase(String reference);
 
   Optional<Product> findByCategoryIdAndLabelIgnoreCase(UUID categoryId, String label);
+
+  Optional<Product> findByLabelIgnoreCase(String label);
 }

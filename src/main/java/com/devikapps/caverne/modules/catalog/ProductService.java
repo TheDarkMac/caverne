@@ -1,5 +1,6 @@
 package com.devikapps.caverne.modules.catalog;
 
+import static org.springframework.http.HttpStatus.CONFLICT;
 import static org.springframework.http.HttpStatus.NOT_FOUND;
 import static org.springframework.http.HttpStatus.UNPROCESSABLE_ENTITY;
 
@@ -51,11 +52,13 @@ public class ProductService {
   public UpsertProductResult createProduct(org.openapitools.client.model.ProductInput input) {
     if (input.getId() != null) {
       Product existing = productRepository.findById(input.getId()).orElse(null);
+      requireUniqueLabel(input.getLabel(), existing == null ? input.getId() : existing.getId());
       Product product = productApiMapper.fromInput(input, existing);
       return new UpsertProductResult(
           productApiMapper.toResponse(productRepository.save(product), null), existing == null);
     }
 
+    requireUniqueLabel(input.getLabel(), null);
     Product product = productApiMapper.fromInput(input, null);
     return new UpsertProductResult(
         productApiMapper.toResponse(productRepository.save(product), null), true);
@@ -70,9 +73,23 @@ public class ProductService {
     }
 
     Product existing = productRepository.findById(id).orElse(null);
+    requireUniqueLabel(input.getLabel(), existing == null ? id : existing.getId());
     Product product = productApiMapper.fromInput(input, existing);
     return new UpsertProductResult(
         productApiMapper.toResponse(productRepository.save(product), null), existing == null);
+  }
+
+  private void requireUniqueLabel(String label, UUID currentId) {
+    if (label == null || label.isBlank()) {
+      return;
+    }
+    productRepository
+        .findByLabelIgnoreCase(label)
+        .filter(other -> !other.getId().equals(currentId))
+        .ifPresent(
+            other -> {
+              throw new ResponseStatusException(CONFLICT, "Product label already exists");
+            });
   }
 
   public Product findById(UUID id) {
