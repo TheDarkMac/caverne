@@ -13,7 +13,10 @@
 |**reference** | **String** |  |  |
 |**limitDate** | **LocalDate** |  |  [optional] |
 |**description** | **String** |  |  [optional] |
-|**size** | **BigDecimal** |  |  [optional] |
+|**weight** | **Double** |  |  [optional] |
+|**length** | **Double** |  |  [optional] |
+|**width** | **Double** |  |  [optional] |
+|**height** | **Double** |  |  [optional] |
 |**isActive** | **Boolean** |  |  [optional] |
 |**stockQuantity** | **Double** |  |  [optional] |
 |**images** | [**List&lt;ProductImageInput&gt;**](ProductImageInput.md) |  |  [optional] |
