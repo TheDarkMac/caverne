@@ -2,7 +2,7 @@ package com.devikapps.caverne.modules.catalog;
 
 import static org.springframework.http.HttpStatus.CONFLICT;
 import static org.springframework.http.HttpStatus.NOT_FOUND;
-import static org.springframework.http.HttpStatus.UNPROCESSABLE_ENTITY;
+import static org.springframework.http.HttpStatus.UNPROCESSABLE_CONTENT;
 
 import com.devikapps.caverne.modules.user.SecurityActorResolver;
 import com.devikapps.caverne.modules.user.UserAccount;
@@ -69,7 +69,7 @@ public class ProductService {
       UUID id, org.openapitools.client.model.ProductInput input) {
     if (input.getId() != null && !id.equals(input.getId())) {
       throw new ResponseStatusException(
-          UNPROCESSABLE_ENTITY, "Product payload id does not match path id");
+          UNPROCESSABLE_CONTENT, "Product payload id does not match path id");
     }
 
     Product existing = productRepository.findById(id).orElse(null);
@@ -118,10 +118,10 @@ public class ProductService {
   public org.openapitools.client.model.ProductStock updateStock(
       UUID id, org.openapitools.client.model.ProductStockInput input) {
     if (input.getQuantity() == null) {
-      throw new ResponseStatusException(UNPROCESSABLE_ENTITY, "Stock quantity is required");
+      throw new ResponseStatusException(UNPROCESSABLE_CONTENT, "Stock quantity is required");
     }
     if (input.getQuantity() < 0) {
-      throw new ResponseStatusException(UNPROCESSABLE_ENTITY, "Stock quantity cannot be negative");
+      throw new ResponseStatusException(UNPROCESSABLE_CONTENT, "Stock quantity cannot be negative");
     }
 
     Product product =

@@ -1,6 +1,6 @@
 package com.devikapps.caverne.modules.user;
 
-import static org.springframework.http.HttpStatus.UNPROCESSABLE_ENTITY;
+import static org.springframework.http.HttpStatus.UNPROCESSABLE_CONTENT;
 
 import java.io.IOException;
 import java.util.UUID;
@@ -117,7 +117,7 @@ public class UserController {
     try {
       return org.openapitools.client.model.UserUpdate.fromJson(rawBody);
     } catch (IOException | IllegalArgumentException exception) {
-      throw new ResponseStatusException(UNPROCESSABLE_ENTITY, "Invalid user update payload");
+      throw new ResponseStatusException(UNPROCESSABLE_CONTENT, "Invalid user update payload");
     }
   }
 
@@ -125,7 +125,7 @@ public class UserController {
     try {
       return org.openapitools.client.model.AddressInput.fromJson(rawBody);
     } catch (IOException | IllegalArgumentException exception) {
-      throw new ResponseStatusException(UNPROCESSABLE_ENTITY, "Invalid address payload");
+      throw new ResponseStatusException(UNPROCESSABLE_CONTENT, "Invalid address payload");
     }
   }
 
@@ -133,7 +133,7 @@ public class UserController {
     try {
       return org.openapitools.client.model.UserCreateInput.fromJson(rawBody);
     } catch (IOException | IllegalArgumentException exception) {
-      throw new ResponseStatusException(UNPROCESSABLE_ENTITY, "Invalid user create payload");
+      throw new ResponseStatusException(UNPROCESSABLE_CONTENT, "Invalid user create payload");
     }
   }
 }

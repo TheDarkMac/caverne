@@ -1,7 +1,7 @@
 package com.devikapps.caverne.modules.user;
 
 import static org.springframework.http.HttpStatus.NOT_FOUND;
-import static org.springframework.http.HttpStatus.UNPROCESSABLE_ENTITY;
+import static org.springframework.http.HttpStatus.UNPROCESSABLE_CONTENT;
 
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
@@ -48,10 +48,10 @@ public class UserService {
 
     if (normalizedEmail != null
         && userRepository.findByEmailIgnoreCase(normalizedEmail).isPresent()) {
-      throw new ResponseStatusException(UNPROCESSABLE_ENTITY, "email is already registered");
+      throw new ResponseStatusException(UNPROCESSABLE_CONTENT, "email is already registered");
     }
     if (normalizedPhone != null && userRepository.findByPhone(normalizedPhone).isPresent()) {
-      throw new ResponseStatusException(UNPROCESSABLE_ENTITY, "phone is already registered");
+      throw new ResponseStatusException(UNPROCESSABLE_CONTENT, "phone is already registered");
     }
 
     UserRole role =
@@ -105,7 +105,7 @@ public class UserService {
         || isBlank(input.getPassword())
         || (isBlank(input.getEmail()) && isBlank(input.getPhone()))) {
       throw new ResponseStatusException(
-          UNPROCESSABLE_ENTITY,
+          UNPROCESSABLE_CONTENT,
           "firstname, lastname, password, and either email or phone are required");
     }
   }

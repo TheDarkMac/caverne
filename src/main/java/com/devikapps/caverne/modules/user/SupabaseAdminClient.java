@@ -1,6 +1,6 @@
 package com.devikapps.caverne.modules.user;
 
-import static org.springframework.http.HttpStatus.UNPROCESSABLE_ENTITY;
+import static org.springframework.http.HttpStatus.UNPROCESSABLE_CONTENT;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -53,7 +53,7 @@ public class SupabaseAdminClient {
               .post(RequestBody.create(objectMapper.writeValueAsString(body), JSON))
               .build();
     } catch (IOException e) {
-      throw new ResponseStatusException(UNPROCESSABLE_ENTITY, "Failed to build Supabase request");
+      throw new ResponseStatusException(UNPROCESSABLE_CONTENT, "Failed to build Supabase request");
     }
 
     try (Response response = httpClient.newCall(request).execute()) {
@@ -61,18 +61,18 @@ public class SupabaseAdminClient {
       if (!response.isSuccessful()) {
         String message = extractMessage(responseBody);
         throw new ResponseStatusException(
-            UNPROCESSABLE_ENTITY, "Supabase registration failed: " + message);
+            UNPROCESSABLE_CONTENT, "Supabase registration failed: " + message);
       }
       JsonNode json = objectMapper.readTree(responseBody);
       String id = json.path("id").asText(null);
       if (id == null || id.isBlank()) {
-        throw new ResponseStatusException(UNPROCESSABLE_ENTITY, "Supabase returned no user id");
+        throw new ResponseStatusException(UNPROCESSABLE_CONTENT, "Supabase returned no user id");
       }
       return id;
     } catch (ResponseStatusException e) {
       throw e;
     } catch (IOException e) {
-      throw new ResponseStatusException(UNPROCESSABLE_ENTITY, "Supabase is unreachable");
+      throw new ResponseStatusException(UNPROCESSABLE_CONTENT, "Supabase is unreachable");
     }
   }
 

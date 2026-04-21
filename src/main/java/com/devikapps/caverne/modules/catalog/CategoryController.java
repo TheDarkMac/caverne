@@ -58,7 +58,7 @@ public class CategoryController {
       return org.openapitools.client.model.CategoryInput.fromJson(rawBody);
     } catch (Exception exception) {
       throw new org.springframework.web.server.ResponseStatusException(
-          org.springframework.http.HttpStatus.UNPROCESSABLE_ENTITY, "Invalid category payload");
+          org.springframework.http.HttpStatus.UNPROCESSABLE_CONTENT, "Invalid category payload");
     }
   }
 }

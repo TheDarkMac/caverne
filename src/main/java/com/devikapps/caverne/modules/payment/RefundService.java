@@ -2,7 +2,7 @@ package com.devikapps.caverne.modules.payment;
 
 import static org.springframework.http.HttpStatus.NOT_FOUND;
 import static org.springframework.http.HttpStatus.SERVICE_UNAVAILABLE;
-import static org.springframework.http.HttpStatus.UNPROCESSABLE_ENTITY;
+import static org.springframework.http.HttpStatus.UNPROCESSABLE_CONTENT;
 
 import com.devikapps.caverne.modules.order.Order;
 import com.devikapps.caverne.modules.order.OrderPayment;
@@ -61,16 +61,16 @@ public class RefundService {
     BigDecimal remaining = captured.subtract(alreadyRefunded);
 
     if (remaining.signum() <= 0) {
-      throw new ResponseStatusException(UNPROCESSABLE_ENTITY, "Payment is already fully refunded");
+      throw new ResponseStatusException(UNPROCESSABLE_CONTENT, "Payment is already fully refunded");
     }
 
     BigDecimal amount = requestedAmount == null ? remaining : requestedAmount;
     if (amount.signum() <= 0) {
-      throw new ResponseStatusException(UNPROCESSABLE_ENTITY, "Refund amount must be positive");
+      throw new ResponseStatusException(UNPROCESSABLE_CONTENT, "Refund amount must be positive");
     }
     if (amount.compareTo(remaining) > 0) {
       throw new ResponseStatusException(
-          UNPROCESSABLE_ENTITY, "Refund amount exceeds captured amount");
+          UNPROCESSABLE_CONTENT, "Refund amount exceeds captured amount");
     }
 
     StripeRefundClient.RefundResult result;
@@ -145,7 +145,7 @@ public class RefundService {
             .toList();
     if (refundable.isEmpty()) {
       throw new ResponseStatusException(
-          UNPROCESSABLE_ENTITY, "No refundable Stripe payment for this order");
+          UNPROCESSABLE_CONTENT, "No refundable Stripe payment for this order");
     }
     return refundable.get(0);
   }

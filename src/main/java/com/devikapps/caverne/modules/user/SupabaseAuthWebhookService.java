@@ -2,10 +2,12 @@ package com.devikapps.caverne.modules.user;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+@Slf4j
 @Service
 @ConditionalOnProperty(name = "auth.providers.supabase.enabled", havingValue = "true")
 @RequiredArgsConstructor
@@ -17,6 +19,7 @@ public class SupabaseAuthWebhookService {
   @Transactional
   public void handle(JsonNode payload) {
     if (payload == null) {
+      log.debug("Supabase webhook ignored: null payload");
       return;
     }
     String type = textOrNull(payload.get("type"));
@@ -24,14 +27,19 @@ public class SupabaseAuthWebhookService {
     String schema = textOrNull(payload.get("schema"));
 
     if (table != null && !"users".equalsIgnoreCase(table)) {
+      log.debug("Supabase webhook ignored: table={}", table);
       return;
     }
     if (schema != null && !"auth".equalsIgnoreCase(schema)) {
+      log.debug("Supabase webhook ignored: schema={}", schema);
       return;
     }
     if (type == null) {
+      log.debug("Supabase webhook ignored: missing type");
       return;
     }
+
+    log.info("Supabase webhook received type={} table={} schema={}", type, table, schema);
 
     JsonNode record = payload.get("record");
     JsonNode oldRecord = payload.get("old_record");
@@ -40,7 +48,7 @@ public class SupabaseAuthWebhookService {
       case "INSERT" -> upsertFromRecord(record);
       case "UPDATE" -> updateFromRecord(record);
       case "DELETE" -> deleteFromRecord(oldRecord != null ? oldRecord : record);
-      default -> {}
+      default -> log.debug("Supabase webhook: unhandled event type {}", type);
     }
   }
 
@@ -90,7 +98,9 @@ public class SupabaseAuthWebhookService {
         user.setStatus("active");
       }
     }
-    userRepository.save(user);
+    UserAccount saved = userRepository.save(user);
+    log.info(
+        "Supabase user upserted userId={} externalId={}", saved.getId(), saved.getExternalAuthId());
   }
 
   private void updateFromRecord(JsonNode record) {
@@ -139,6 +149,10 @@ public class SupabaseAuthWebhookService {
             user -> {
               authSessionRepository.deleteByUser(user);
               userRepository.delete(user);
+              log.info(
+                  "Supabase user deleted userId={} externalId={}",
+                  user.getId(),
+                  user.getExternalAuthId());
             });
   }
 
