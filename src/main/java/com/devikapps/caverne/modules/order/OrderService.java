@@ -2,7 +2,7 @@ package com.devikapps.caverne.modules.order;
 
 import static org.springframework.http.HttpStatus.FORBIDDEN;
 import static org.springframework.http.HttpStatus.NOT_FOUND;
-import static org.springframework.http.HttpStatus.UNPROCESSABLE_ENTITY;
+import static org.springframework.http.HttpStatus.UNPROCESSABLE_CONTENT;
 
 import com.devikapps.caverne.modules.catalog.Price;
 import com.devikapps.caverne.modules.catalog.Product;
@@ -22,6 +22,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
@@ -33,6 +35,8 @@ import org.springframework.web.server.ResponseStatusException;
 @RequiredArgsConstructor
 @Transactional
 public class OrderService {
+
+  private static final Logger log = LoggerFactory.getLogger(OrderService.class);
 
   private final OrderRepository orderRepository;
   private final ProductRepository productRepository;
@@ -126,7 +130,16 @@ public class OrderService {
             .reduce(BigDecimal.ZERO, BigDecimal::add)
             .add(deliveryAmount));
 
-    return orderApiMapper.toOrderModel(orderRepository.save(order));
+    Order saved = orderRepository.save(order);
+    log.info(
+        "Order created reference={} id={} totalAmount={} currency={} itemCount={} userId={}",
+        saved.getReference(),
+        saved.getId(),
+        saved.getTotalAmount(),
+        saved.getCurrencyCode(),
+        items.size(),
+        owner == null ? null : owner.getId());
+    return orderApiMapper.toOrderModel(saved);
   }
 
   public List<org.openapitools.client.model.Payment> listPayments(UUID orderId, UserAccount actor) {
@@ -148,7 +161,7 @@ public class OrderService {
             .orElseThrow(
                 () ->
                     new ResponseStatusException(
-                        UNPROCESSABLE_ENTITY, "Payment provider not found"));
+                        UNPROCESSABLE_CONTENT, "Payment provider not found"));
 
     PaymentResponse response =
         provider.initiatePayment(
@@ -169,7 +182,15 @@ public class OrderService {
                 .providerResponse(writeProviderResponse(response.providerData()))
                 .build());
     orderRepository.save(order);
-    return orderApiMapper.toPaymentModel(order, order.getPayments().getLast());
+    OrderPayment persisted = order.getPayments().getLast();
+    log.info(
+        "Payment initiated orderId={} paymentId={} provider={} status={} amount={}",
+        order.getId(),
+        persisted.getPaymentId(),
+        persisted.getMethodCode(),
+        persisted.getStatus(),
+        persisted.getAmount());
+    return orderApiMapper.toPaymentModel(order, persisted);
   }
 
   public org.openapitools.client.model.Order getOrder(UUID id) {
@@ -184,7 +205,14 @@ public class OrderService {
   @Transactional
   public org.openapitools.client.model.Order updateStatus(UUID id, OrderStatus status) {
     Order order = findOrder(id);
+    OrderStatus previous = order.getStatus();
     order.setStatus(status);
+    log.info(
+        "Order status updated orderId={} reference={} from={} to={}",
+        order.getId(),
+        order.getReference(),
+        previous,
+        status);
     return orderApiMapper.toOrderModel(orderRepository.save(order));
   }
 
@@ -195,6 +223,11 @@ public class OrderService {
       restoreStockForOrder(order, actor);
     }
     order.setStatus(OrderStatus.CANCELLED);
+    log.info(
+        "Order cancelled orderId={} reference={} actorId={}",
+        order.getId(),
+        order.getReference(),
+        actor == null ? null : actor.getId());
     return orderApiMapper.toOrderModel(orderRepository.save(order));
   }
 
@@ -266,13 +299,13 @@ public class OrderService {
 
   private void validateOrderInput(org.openapitools.client.model.OrderInput input) {
     if (input == null || input.getCurrencyCode() == null || input.getCurrencyCode().isBlank()) {
-      throw new ResponseStatusException(UNPROCESSABLE_ENTITY, "currency_code is required");
+      throw new ResponseStatusException(UNPROCESSABLE_CONTENT, "currency_code is required");
     }
     if (input.getItems() == null || input.getItems().isEmpty()) {
-      throw new ResponseStatusException(UNPROCESSABLE_ENTITY, "items is required");
+      throw new ResponseStatusException(UNPROCESSABLE_CONTENT, "items is required");
     }
     if (input.getRecipient() == null) {
-      throw new ResponseStatusException(UNPROCESSABLE_ENTITY, "recipient is required");
+      throw new ResponseStatusException(UNPROCESSABLE_CONTENT, "recipient is required");
     }
     if (isBlank(input.getRecipient().getLocation())
         || isBlank(input.getRecipient().getPostalCode())
@@ -280,7 +313,7 @@ public class OrderService {
         || isBlank(input.getRecipient().getRecipientName())
         || isBlank(input.getRecipient().getRecipientEmail())
         || isBlank(input.getRecipient().getRecipientPhone())) {
-      throw new ResponseStatusException(UNPROCESSABLE_ENTITY, "recipient is incomplete");
+      throw new ResponseStatusException(UNPROCESSABLE_CONTENT, "recipient is incomplete");
     }
     boolean invalidItem =
         input.getItems().stream()
@@ -290,7 +323,7 @@ public class OrderService {
                         || item.getQuantity() == null
                         || item.getQuantity() <= 0);
     if (invalidItem) {
-      throw new ResponseStatusException(UNPROCESSABLE_ENTITY, "items contain invalid values");
+      throw new ResponseStatusException(UNPROCESSABLE_CONTENT, "items contain invalid values");
     }
   }
 
@@ -308,7 +341,7 @@ public class OrderService {
         || isBlank(input.getCurrencyCode())
         || input.getAmount() == null
         || input.getAmount() <= 0) {
-      throw new ResponseStatusException(UNPROCESSABLE_ENTITY, "payment input is invalid");
+      throw new ResponseStatusException(UNPROCESSABLE_CONTENT, "payment input is invalid");
     }
   }
 
@@ -319,7 +352,7 @@ public class OrderService {
     BigDecimal requestedAmount = BigDecimal.valueOf(input.getAmount());
     if (requestedAmount.compareTo(totalAmount) != 0) {
       throw new ResponseStatusException(
-          UNPROCESSABLE_ENTITY, "payment amount must match the order total amount");
+          UNPROCESSABLE_CONTENT, "payment amount must match the order total amount");
     }
     return totalAmount;
   }
@@ -335,7 +368,7 @@ public class OrderService {
         .orElseThrow(
             () ->
                 new ResponseStatusException(
-                    UNPROCESSABLE_ENTITY,
+                    UNPROCESSABLE_CONTENT,
                     "No price available for product "
                         + product.getId()
                         + " in currency "
@@ -361,7 +394,7 @@ public class OrderService {
         product.getStockQuantity() == null ? BigDecimal.ZERO : product.getStockQuantity();
     if (requestedQuantity.compareTo(stockQuantity) > 0) {
       throw new ResponseStatusException(
-          UNPROCESSABLE_ENTITY,
+          UNPROCESSABLE_CONTENT,
           "Requested quantity exceeds available stock for product " + product.getId());
     }
   }

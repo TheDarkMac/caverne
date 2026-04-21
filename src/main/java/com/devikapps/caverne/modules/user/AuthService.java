@@ -1,12 +1,14 @@
 package com.devikapps.caverne.modules.user;
 
 import static org.springframework.http.HttpStatus.UNAUTHORIZED;
-import static org.springframework.http.HttpStatus.UNPROCESSABLE_ENTITY;
+import static org.springframework.http.HttpStatus.UNPROCESSABLE_CONTENT;
 
 import java.time.LocalDateTime;
 import java.util.Optional;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,6 +19,7 @@ import org.springframework.web.server.ResponseStatusException;
 @Transactional
 public class AuthService {
 
+  private static final Logger log = LoggerFactory.getLogger(AuthService.class);
   private static final int TOKEN_EXPIRATION_SECONDS = 3600;
 
   private final UserRepository userRepository;
@@ -35,10 +38,10 @@ public class AuthService {
 
     if (normalizedEmail != null
         && userRepository.findByEmailIgnoreCase(normalizedEmail).isPresent()) {
-      throw new ResponseStatusException(UNPROCESSABLE_ENTITY, "email is already registered");
+      throw new ResponseStatusException(UNPROCESSABLE_CONTENT, "email is already registered");
     }
     if (normalizedPhone != null && userRepository.findByPhone(normalizedPhone).isPresent()) {
-      throw new ResponseStatusException(UNPROCESSABLE_ENTITY, "phone is already registered");
+      throw new ResponseStatusException(UNPROCESSABLE_CONTENT, "phone is already registered");
     }
 
     UserAccount user =
@@ -68,6 +71,11 @@ public class AuthService {
           user.setAuthProvider(AuthProviderCode.SUPABASE);
         });
 
+    log.info(
+        "User registered id={} provider={} role={}",
+        user.getId(),
+        user.getAuthProvider(),
+        user.getRole());
     return userApiMapper.toResponse(user);
   }
 
@@ -77,12 +85,13 @@ public class AuthService {
         || isBlank(input.getPassword())
         || (isBlank(input.getEmail()) && isBlank(input.getPhone()))) {
       throw new ResponseStatusException(
-          UNPROCESSABLE_ENTITY, "password and either email or phone are required");
+          UNPROCESSABLE_CONTENT, "password and either email or phone are required");
     }
 
     UserAccount user = resolveLoginUser(input);
 
     if (!passwordEncoder.matches(input.getPassword(), user.getPasswordHash())) {
+      log.warn("Login failed: invalid credentials for userId={}", user.getId());
       throw new ResponseStatusException(UNAUTHORIZED, "Invalid credentials");
     }
 
@@ -94,6 +103,7 @@ public class AuthService {
             .expiresAt(LocalDateTime.now().plusSeconds(TOKEN_EXPIRATION_SECONDS))
             .build());
 
+    log.info("Login successful userId={} role={}", user.getId(), user.getRole());
     return new org.openapitools.client.model.LoginResponse()
         .accessToken(token)
         .tokenType("Bearer")
@@ -102,6 +112,7 @@ public class AuthService {
 
   public void logout(String token) {
     authSessionResolver.logout(token);
+    log.info("Logout processed");
   }
 
   private void validateRegistration(org.openapitools.client.model.RegisterRequest input) {
@@ -111,7 +122,7 @@ public class AuthService {
         || isBlank(input.getPassword())
         || (isBlank(input.getEmail()) && isBlank(input.getPhone()))) {
       throw new ResponseStatusException(
-          UNPROCESSABLE_ENTITY,
+          UNPROCESSABLE_CONTENT,
           "firstname, lastname, password, and either email or phone are required");
     }
   }

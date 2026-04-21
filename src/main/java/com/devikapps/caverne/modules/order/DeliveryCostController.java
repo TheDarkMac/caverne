@@ -1,6 +1,6 @@
 package com.devikapps.caverne.modules.order;
 
-import static org.springframework.http.HttpStatus.UNPROCESSABLE_ENTITY;
+import static org.springframework.http.HttpStatus.UNPROCESSABLE_CONTENT;
 
 import com.devikapps.caverne.modules.user.SecurityActorResolver;
 import java.io.IOException;
@@ -61,7 +61,7 @@ public class DeliveryCostController {
     try {
       return org.openapitools.client.model.DeliverCostInput.fromJson(rawBody);
     } catch (IOException | IllegalArgumentException exception) {
-      throw new ResponseStatusException(UNPROCESSABLE_ENTITY, "Invalid delivery cost payload");
+      throw new ResponseStatusException(UNPROCESSABLE_CONTENT, "Invalid delivery cost payload");
     }
   }
 }

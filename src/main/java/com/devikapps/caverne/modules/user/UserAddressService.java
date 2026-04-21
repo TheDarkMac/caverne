@@ -1,7 +1,7 @@
 package com.devikapps.caverne.modules.user;
 
 import static org.springframework.http.HttpStatus.NOT_FOUND;
-import static org.springframework.http.HttpStatus.UNPROCESSABLE_ENTITY;
+import static org.springframework.http.HttpStatus.UNPROCESSABLE_CONTENT;
 
 import java.util.List;
 import java.util.UUID;
@@ -61,7 +61,7 @@ public class UserAddressService {
       UserAccount user, UUID id, org.openapitools.client.model.AddressInput input) {
     if (input.getId() != null && !id.equals(input.getId())) {
       throw new ResponseStatusException(
-          UNPROCESSABLE_ENTITY, "Address payload id does not match path id");
+          UNPROCESSABLE_CONTENT, "Address payload id does not match path id");
     }
     return createOrUpdateForUser(user, input, id);
   }
@@ -104,7 +104,7 @@ public class UserAddressService {
         || isBlank(input.getPostalCode())
         || isBlank(input.getCountryCode())) {
       throw new ResponseStatusException(
-          UNPROCESSABLE_ENTITY, "location, postal_code, and country_code are required");
+          UNPROCESSABLE_CONTENT, "location, postal_code, and country_code are required");
     }
   }
 

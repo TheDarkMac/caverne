@@ -90,6 +90,11 @@ public class StripePaymentProvider implements PaymentProvider {
 
     try {
       Session session = Session.create(params, requestOptions);
+      log.info(
+          "Stripe checkout session created orderReference={} sessionId={} status={}",
+          orderReference,
+          session.getId(),
+          coalesceStatus(session.getPaymentStatus(), session.getStatus()));
       Map<String, Object> providerData = buildProviderData(session);
       return new PaymentResponse(
           session.getId(),

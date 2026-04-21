@@ -1,9 +1,12 @@
 package com.devikapps.caverne.config;
 
+import com.devikapps.caverne.modules.common.logging.RequestTraceFilter;
 import com.devikapps.caverne.modules.user.AuthBearerFilter;
 import com.devikapps.caverne.modules.user.UserRole;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import java.time.Instant;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.MDC;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -154,7 +157,10 @@ public class SecurityConfiguration {
       objectMapper.writeValue(
           response.getWriter(),
           new com.devikapps.caverne.modules.common.ApiError(
-              HttpStatus.FORBIDDEN.value(), "Access is forbidden"));
+              HttpStatus.FORBIDDEN.value(),
+              "Access is forbidden",
+              MDC.get(RequestTraceFilter.MDC_TRACE_ID),
+              Instant.now()));
     };
   }
 
