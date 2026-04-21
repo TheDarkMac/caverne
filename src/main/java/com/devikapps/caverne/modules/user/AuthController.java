@@ -1,6 +1,6 @@
 package com.devikapps.caverne.modules.user;
 
-import static org.springframework.http.HttpStatus.UNPROCESSABLE_ENTITY;
+import static org.springframework.http.HttpStatus.UNPROCESSABLE_CONTENT;
 
 import java.io.IOException;
 import lombok.RequiredArgsConstructor;
@@ -39,7 +39,7 @@ public class AuthController {
     try {
       return org.openapitools.client.model.RegisterRequest.fromJson(rawBody);
     } catch (IOException | IllegalArgumentException exception) {
-      throw new ResponseStatusException(UNPROCESSABLE_ENTITY, "Invalid registration payload");
+      throw new ResponseStatusException(UNPROCESSABLE_CONTENT, "Invalid registration payload");
     }
   }
 
@@ -47,7 +47,7 @@ public class AuthController {
     try {
       return org.openapitools.client.model.LoginRequest.fromJson(rawBody);
     } catch (IOException | IllegalArgumentException exception) {
-      throw new ResponseStatusException(UNPROCESSABLE_ENTITY, "Invalid login payload");
+      throw new ResponseStatusException(UNPROCESSABLE_CONTENT, "Invalid login payload");
     }
   }
 }

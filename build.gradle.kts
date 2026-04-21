@@ -56,6 +56,9 @@ dependencies {
 	implementation("io.github.cdimascio:dotenv-java:3.0.0")
 	implementation("com.stripe:stripe-java:32.0.0")
 	implementation("org.flywaydb:flyway-database-postgresql")
+	implementation("net.logstash.logback:logstash-logback-encoder:8.0")
+	implementation("io.micrometer:micrometer-tracing-bridge-brave")
+	implementation("com.github.loki4j:loki-logback-appender:1.5.2")
 	compileOnly("org.projectlombok:lombok")
 	compileOnly("javax.annotation:javax.annotation-api:1.3.2")
 	developmentOnly("org.springframework.boot:spring-boot-devtools")
@@ -80,4 +83,8 @@ dependencies {
 tasks.withType<Test> {
 	useJUnitPlatform()
 	jvmArgs("-javaagent:${configurations["mockitoAgent"].singleFile}")
+}
+
+tasks.withType<JavaCompile> {
+	options.compilerArgs.addAll(listOf("-Xlint:deprecation"))
 }

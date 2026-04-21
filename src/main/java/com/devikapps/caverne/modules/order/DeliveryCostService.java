@@ -1,7 +1,7 @@
 package com.devikapps.caverne.modules.order;
 
 import static org.springframework.http.HttpStatus.NOT_FOUND;
-import static org.springframework.http.HttpStatus.UNPROCESSABLE_ENTITY;
+import static org.springframework.http.HttpStatus.UNPROCESSABLE_CONTENT;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -62,7 +62,7 @@ public class DeliveryCostService {
         || input.getAmount() == null
         || input.getAmount() <= 0
         || isBlank(input.getProvider())) {
-      throw new ResponseStatusException(UNPROCESSABLE_ENTITY, "delivery cost input is invalid");
+      throw new ResponseStatusException(UNPROCESSABLE_CONTENT, "delivery cost input is invalid");
     }
 
     DeliveryCost deliveryCost = existing == null ? new DeliveryCost() : existing;

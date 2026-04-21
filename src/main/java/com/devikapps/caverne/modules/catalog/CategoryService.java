@@ -2,7 +2,7 @@ package com.devikapps.caverne.modules.catalog;
 
 import static org.springframework.http.HttpStatus.CONFLICT;
 import static org.springframework.http.HttpStatus.NOT_FOUND;
-import static org.springframework.http.HttpStatus.UNPROCESSABLE_ENTITY;
+import static org.springframework.http.HttpStatus.UNPROCESSABLE_CONTENT;
 
 import java.util.List;
 import java.util.UUID;
@@ -60,7 +60,7 @@ public class CategoryService {
       UUID id, org.openapitools.client.model.CategoryInput input) {
     if (input.getId() != null && !id.equals(input.getId())) {
       throw new ResponseStatusException(
-          UNPROCESSABLE_ENTITY, "Category payload id does not match path id");
+          UNPROCESSABLE_CONTENT, "Category payload id does not match path id");
     }
 
     Category existing = categoryRepository.findById(id).orElse(null);

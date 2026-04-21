@@ -1,6 +1,6 @@
 package com.devikapps.caverne.modules.order;
 
-import static org.springframework.http.HttpStatus.UNPROCESSABLE_ENTITY;
+import static org.springframework.http.HttpStatus.UNPROCESSABLE_CONTENT;
 
 import com.devikapps.caverne.modules.user.SecurityActorResolver;
 import com.devikapps.caverne.modules.user.UserAccount;
@@ -115,7 +115,7 @@ public class OrderController {
     try {
       return org.openapitools.client.model.OrderInput.fromJson(rawBody);
     } catch (IOException | IllegalArgumentException exception) {
-      throw new ResponseStatusException(UNPROCESSABLE_ENTITY, "Invalid order payload");
+      throw new ResponseStatusException(UNPROCESSABLE_CONTENT, "Invalid order payload");
     }
   }
 
@@ -123,7 +123,7 @@ public class OrderController {
     try {
       return org.openapitools.client.model.PaymentInput.fromJson(rawBody);
     } catch (IOException | IllegalArgumentException exception) {
-      throw new ResponseStatusException(UNPROCESSABLE_ENTITY, "Invalid payment payload");
+      throw new ResponseStatusException(UNPROCESSABLE_CONTENT, "Invalid payment payload");
     }
   }
 
@@ -131,7 +131,7 @@ public class OrderController {
     try {
       return org.openapitools.client.model.OrderStatusUpdate.fromJson(rawBody);
     } catch (IOException | IllegalArgumentException exception) {
-      throw new ResponseStatusException(UNPROCESSABLE_ENTITY, "Invalid order status payload");
+      throw new ResponseStatusException(UNPROCESSABLE_CONTENT, "Invalid order status payload");
     }
   }
 
@@ -143,7 +143,7 @@ public class OrderController {
     try {
       return OrderStatus.valueOf(rawValue.trim().toUpperCase());
     } catch (IllegalArgumentException exception) {
-      throw new ResponseStatusException(UNPROCESSABLE_ENTITY, "Invalid order status filter");
+      throw new ResponseStatusException(UNPROCESSABLE_CONTENT, "Invalid order status filter");
     }
   }
 }

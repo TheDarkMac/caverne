@@ -182,6 +182,12 @@ public class StripeWebhookService {
       throws Exception {
     String targetStatus = normalizeEventType(eventType);
     if (shouldApplyStatus(payment.getStatus(), targetStatus)) {
+      log.info(
+          "Payment {} status transition {} -> {} (event {})",
+          payment.getPaymentId(),
+          payment.getStatus(),
+          targetStatus,
+          eventType);
       payment.setStatus(targetStatus);
     } else {
       log.info(

@@ -1,7 +1,7 @@
 package com.devikapps.caverne.modules.catalog;
 
 import static org.springframework.http.HttpStatus.NOT_FOUND;
-import static org.springframework.http.HttpStatus.UNPROCESSABLE_ENTITY;
+import static org.springframework.http.HttpStatus.UNPROCESSABLE_CONTENT;
 
 import java.util.List;
 import java.util.UUID;
@@ -26,7 +26,7 @@ public class ProductImageService {
   @Transactional
   public ProductImage create(UUID productId, String url, boolean main) {
     if (url == null || url.isBlank()) {
-      throw new ResponseStatusException(UNPROCESSABLE_ENTITY, "url is required");
+      throw new ResponseStatusException(UNPROCESSABLE_CONTENT, "url is required");
     }
     Product product = requireProduct(productId);
     ProductImage image =
