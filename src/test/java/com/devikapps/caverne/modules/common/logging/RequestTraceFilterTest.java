@@ -42,7 +42,8 @@ class RequestTraceFilterTest {
     assertThat(header).isNotBlank();
     assertThat(observedTraceId[0]).isEqualTo(header);
     // Fallback-generated traceId is a UUID
-    assertThat(header).matches("[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}");
+    assertThat(header)
+        .matches("[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}");
   }
 
   @Test
@@ -55,7 +56,8 @@ class RequestTraceFilterTest {
 
     filter.doFilter(request, response, chain);
 
-    assertThat(response.getHeader(RequestTraceFilter.TRACE_ID_HEADER)).isEqualTo("abc123-micrometer");
+    assertThat(response.getHeader(RequestTraceFilter.TRACE_ID_HEADER))
+        .isEqualTo("abc123-micrometer");
     // Existing traceId is not removed from MDC by the filter
     assertThat(MDC.get(RequestTraceFilter.MDC_TRACE_ID)).isEqualTo("abc123-micrometer");
   }

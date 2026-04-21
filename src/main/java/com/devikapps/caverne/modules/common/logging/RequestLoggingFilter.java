@@ -17,9 +17,9 @@ import org.springframework.web.filter.OncePerRequestFilter;
  * Emits one access-log line per HTTP request with method, URI, status, duration, client IP,
  * user-agent, and the authenticated userId (if any). Health endpoints are skipped to avoid noise.
  *
- * <p>Level is mapped from the response status: 2xx/3xx → INFO, 4xx → WARN, 5xx → ERROR. The
- * userId is also pushed into the MDC for the duration of the request so that any log emitted by
- * downstream handlers is tagged with it.
+ * <p>Level is mapped from the response status: 2xx/3xx → INFO, 4xx → WARN, 5xx → ERROR. The userId
+ * is also pushed into the MDC for the duration of the request so that any log emitted by downstream
+ * handlers is tagged with it.
  */
 public class RequestLoggingFilter extends OncePerRequestFilter {
 
@@ -47,8 +47,7 @@ public class RequestLoggingFilter extends OncePerRequestFilter {
       }
       try {
         int status = response.getStatus();
-        String line =
-            "{} {} -> {} in {}ms ip={} ua=\"{}\" user={}";
+        String line = "{} {} -> {} in {}ms ip={} ua=\"{}\" user={}";
         Object[] args = {
           request.getMethod(),
           request.getRequestURI(),

@@ -10,10 +10,10 @@ import org.springframework.core.Ordered;
 /**
  * Registers {@link RequestTraceFilter} and {@link RequestLoggingFilter}.
  *
- * <p>Order matters. Spring's {@code ServerHttpObservationFilter} (registered by Micrometer
- * Tracing) runs near the beginning of the chain and opens a span whose traceId is pushed into
- * the MDC. Our filters must run AFTER it so they observe the MDC populated by Micrometer. We
- * use {@code HIGHEST_PRECEDENCE + 20_000_000} — earlier than security, later than observation.
+ * <p>Order matters. Spring's {@code ServerHttpObservationFilter} (registered by Micrometer Tracing)
+ * runs near the beginning of the chain and opens a span whose traceId is pushed into the MDC. Our
+ * filters must run AFTER it so they observe the MDC populated by Micrometer. We use {@code
+ * HIGHEST_PRECEDENCE + 20_000_000} — earlier than security, later than observation.
  */
 @Configuration
 public class LoggingFilterConfiguration {
