@@ -19,7 +19,6 @@ import com.google.gson.annotations.SerializedName;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
 import java.io.IOException;
-import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -95,11 +94,35 @@ public class ProductInputTest {
     }
 
     /**
-     * Test the property 'size'
+     * Test the property 'weight'
      */
     @Test
-    public void sizeTest() {
-        // TODO: test size
+    public void weightTest() {
+        // TODO: test weight
+    }
+
+    /**
+     * Test the property 'length'
+     */
+    @Test
+    public void lengthTest() {
+        // TODO: test length
+    }
+
+    /**
+     * Test the property 'width'
+     */
+    @Test
+    public void widthTest() {
+        // TODO: test width
+    }
+
+    /**
+     * Test the property 'height'
+     */
+    @Test
+    public void heightTest() {
+        // TODO: test height
     }
 
     /**

@@ -299,30 +299,26 @@ class CatalogApiIntegrationTest {
 
     String payload =
         objectMapper.writeValueAsString(
-            Map.of(
-                "category",
-                Map.of("id", category.getId()),
-                "label",
-                "Wild Pepper",
-                "reference",
-                "PEP-NEW",
-                "limit_date",
-                "2026-12-31",
-                "description",
-                "Fresh pepper",
-                "size",
-                1,
-                "is_active",
-                true,
-                "stock_quantity",
-                12,
-                "images",
-                List.of(
-                    Map.of(
-                        "url",
-                        "https://cdn.caverne.test/products/pepper-main.jpg",
-                        "main",
-                        true))));
+            Map.ofEntries(
+                Map.entry("category", Map.of("id", category.getId())),
+                Map.entry("label", "Wild Pepper"),
+                Map.entry("reference", "PEP-NEW"),
+                Map.entry("limit_date", "2026-12-31"),
+                Map.entry("description", "Fresh pepper"),
+                Map.entry("weight", 1),
+                Map.entry("length", 1),
+                Map.entry("width", 1),
+                Map.entry("height", 1),
+                Map.entry("is_active", true),
+                Map.entry("stock_quantity", 12),
+                Map.entry(
+                    "images",
+                    List.of(
+                        Map.of(
+                            "url",
+                            "https://cdn.caverne.test/products/pepper-main.jpg",
+                            "main",
+                            true)))));
 
     mockMvc
         .perform(
@@ -364,27 +360,26 @@ class CatalogApiIntegrationTest {
 
     String payload =
         objectMapper.writeValueAsString(
-            Map.of(
-                "category",
-                Map.of("id", updatedCategory.getId()),
-                "label",
-                "Smoked Tea",
-                "reference",
-                "TEA-001",
-                "limit_date",
-                "2027-01-31",
-                "description",
-                "Updated description",
-                "size",
-                2,
-                "is_active",
-                false,
-                "stock_quantity",
-                5,
-                "images",
-                List.of(
-                    Map.of(
-                        "url", "https://cdn.caverne.test/products/tea-main.jpg", "main", true))));
+            Map.ofEntries(
+                Map.entry("category", Map.of("id", updatedCategory.getId())),
+                Map.entry("label", "Smoked Tea"),
+                Map.entry("reference", "TEA-001"),
+                Map.entry("limit_date", "2027-01-31"),
+                Map.entry("description", "Updated description"),
+                Map.entry("weight", 2),
+                Map.entry("length", 2),
+                Map.entry("width", 2),
+                Map.entry("height", 2),
+                Map.entry("is_active", false),
+                Map.entry("stock_quantity", 5),
+                Map.entry(
+                    "images",
+                    List.of(
+                        Map.of(
+                            "url",
+                            "https://cdn.caverne.test/products/tea-main.jpg",
+                            "main",
+                            true)))));
 
     mockMvc
         .perform(
@@ -423,32 +418,27 @@ class CatalogApiIntegrationTest {
 
     String payload =
         objectMapper.writeValueAsString(
-            Map.of(
-                "id",
-                product.getId(),
-                "category",
-                Map.of("id", category.getId()),
-                "label",
-                "Updated Pepper",
-                "reference",
-                "PEP-002",
-                "limit_date",
-                "2026-12-31",
-                "description",
-                "Updated",
-                "size",
-                1,
-                "is_active",
-                true,
-                "stock_quantity",
-                3,
-                "images",
-                List.of(
-                    Map.of(
-                        "url",
-                        "https://cdn.caverne.test/products/updated-pepper.jpg",
-                        "main",
-                        true))));
+            Map.ofEntries(
+                Map.entry("id", product.getId()),
+                Map.entry("category", Map.of("id", category.getId())),
+                Map.entry("label", "Updated Pepper"),
+                Map.entry("reference", "PEP-002"),
+                Map.entry("limit_date", "2026-12-31"),
+                Map.entry("description", "Updated"),
+                Map.entry("weight", 1),
+                Map.entry("length", 1),
+                Map.entry("width", 1),
+                Map.entry("height", 1),
+                Map.entry("is_active", true),
+                Map.entry("stock_quantity", 3),
+                Map.entry(
+                    "images",
+                    List.of(
+                        Map.of(
+                            "url",
+                            "https://cdn.caverne.test/products/updated-pepper.jpg",
+                            "main",
+                            true)))));
 
     mockMvc
         .perform(
@@ -477,32 +467,27 @@ class CatalogApiIntegrationTest {
     UUID newProductId = UUID.randomUUID();
     String payload =
         objectMapper.writeValueAsString(
-            Map.of(
-                "id",
-                newProductId,
-                "category",
-                Map.of("id", category.getId()),
-                "label",
-                "New Product",
-                "reference",
-                "NEW-001",
-                "limit_date",
-                "2027-01-31",
-                "description",
-                "Created by put",
-                "size",
-                2,
-                "is_active",
-                true,
-                "stock_quantity",
-                7,
-                "images",
-                List.of(
-                    Map.of(
-                        "url",
-                        "https://cdn.caverne.test/products/new-product.jpg",
-                        "main",
-                        true))));
+            Map.ofEntries(
+                Map.entry("id", newProductId),
+                Map.entry("category", Map.of("id", category.getId())),
+                Map.entry("label", "New Product"),
+                Map.entry("reference", "NEW-001"),
+                Map.entry("limit_date", "2027-01-31"),
+                Map.entry("description", "Created by put"),
+                Map.entry("weight", 2),
+                Map.entry("length", 2),
+                Map.entry("width", 2),
+                Map.entry("height", 2),
+                Map.entry("is_active", true),
+                Map.entry("stock_quantity", 7),
+                Map.entry(
+                    "images",
+                    List.of(
+                        Map.of(
+                            "url",
+                            "https://cdn.caverne.test/products/new-product.jpg",
+                            "main",
+                            true)))));
 
     mockMvc
         .perform(
@@ -529,14 +514,17 @@ class CatalogApiIntegrationTest {
         objectMapper.writeValueAsString(Map.of("label", "Tea", "slug", "tea", "map", "TEA"));
     String productPayload =
         objectMapper.writeValueAsString(
-            Map.of(
-                "category", Map.of("id", category.getId()),
-                "label", "Wild Pepper",
-                "reference", "PEP-NEW",
-                "limit_date", "2026-12-31",
-                "description", "Fresh pepper",
-                "size", 1,
-                "is_active", true));
+            Map.ofEntries(
+                Map.entry("category", Map.of("id", category.getId())),
+                Map.entry("label", "Wild Pepper"),
+                Map.entry("reference", "PEP-NEW"),
+                Map.entry("limit_date", "2026-12-31"),
+                Map.entry("description", "Fresh pepper"),
+                Map.entry("weight", 1),
+                Map.entry("length", 1),
+                Map.entry("width", 1),
+                Map.entry("height", 1),
+                Map.entry("is_active", true)));
 
     mockMvc
         .perform(
@@ -667,14 +655,17 @@ class CatalogApiIntegrationTest {
         objectMapper.writeValueAsString(Map.of("label", "Tea", "slug", "tea", "map", "TEA"));
     String productPayload =
         objectMapper.writeValueAsString(
-            Map.of(
-                "category", Map.of("id", category.getId()),
-                "label", "Wild Pepper",
-                "reference", "PEP-NEW",
-                "limit_date", "2026-12-31",
-                "description", "Fresh pepper",
-                "size", 1,
-                "is_active", true));
+            Map.ofEntries(
+                Map.entry("category", Map.of("id", category.getId())),
+                Map.entry("label", "Wild Pepper"),
+                Map.entry("reference", "PEP-NEW"),
+                Map.entry("limit_date", "2026-12-31"),
+                Map.entry("description", "Fresh pepper"),
+                Map.entry("weight", 1),
+                Map.entry("length", 1),
+                Map.entry("width", 1),
+                Map.entry("height", 1),
+                Map.entry("is_active", true)));
 
     mockMvc
         .perform(
@@ -759,7 +750,10 @@ class CatalogApiIntegrationTest {
             .label(label)
             .reference(reference)
             .description(description)
-            .size("1")
+            .weight(BigDecimal.ONE)
+            .length(BigDecimal.ONE)
+            .width(BigDecimal.ONE)
+            .height(BigDecimal.ONE)
             .stockQuantity(BigDecimal.valueOf(stockQuantity))
             .isActive(isActive)
             .limitDate(LocalDate.of(2026, 12, 31))

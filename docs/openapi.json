@@ -2564,7 +2564,20 @@
           "description" : {
             "type" : "string"
           },
-          "size" : {
+          "weight" : {
+            "format" : "double",
+            "type" : "number"
+          },
+          "length" : {
+            "format" : "double",
+            "type" : "number"
+          },
+          "width" : {
+            "format" : "double",
+            "type" : "number"
+          },
+          "height" : {
+            "format" : "double",
             "type" : "number"
           },
           "stock_quantity" : {
@@ -2613,7 +2626,20 @@
           "description" : {
             "type" : "string"
           },
-          "size" : {
+          "weight" : {
+            "format" : "double",
+            "type" : "number"
+          },
+          "length" : {
+            "format" : "double",
+            "type" : "number"
+          },
+          "width" : {
+            "format" : "double",
+            "type" : "number"
+          },
+          "height" : {
+            "format" : "double",
             "type" : "number"
           },
           "is_active" : {

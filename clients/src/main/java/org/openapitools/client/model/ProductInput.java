@@ -20,7 +20,6 @@ import com.google.gson.annotations.SerializedName;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
 import java.io.IOException;
-import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -57,7 +56,7 @@ import org.openapitools.client.JSON;
 /**
  * ProductInput
  */
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2026-04-20T18:08:24.124440502+03:00[Indian/Antananarivo]", comments = "Generator version: 7.21.0")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2026-04-21T22:19:18.676086932+03:00[Indian/Antananarivo]", comments = "Generator version: 7.21.0")
 public class ProductInput {
   public static final String SERIALIZED_NAME_ID = "id";
   @SerializedName(SERIALIZED_NAME_ID)
@@ -89,10 +88,25 @@ public class ProductInput {
   @javax.annotation.Nullable
   private String description;
 
-  public static final String SERIALIZED_NAME_SIZE = "size";
-  @SerializedName(SERIALIZED_NAME_SIZE)
+  public static final String SERIALIZED_NAME_WEIGHT = "weight";
+  @SerializedName(SERIALIZED_NAME_WEIGHT)
   @javax.annotation.Nullable
-  private BigDecimal size;
+  private Double weight;
+
+  public static final String SERIALIZED_NAME_LENGTH = "length";
+  @SerializedName(SERIALIZED_NAME_LENGTH)
+  @javax.annotation.Nullable
+  private Double length;
+
+  public static final String SERIALIZED_NAME_WIDTH = "width";
+  @SerializedName(SERIALIZED_NAME_WIDTH)
+  @javax.annotation.Nullable
+  private Double width;
+
+  public static final String SERIALIZED_NAME_HEIGHT = "height";
+  @SerializedName(SERIALIZED_NAME_HEIGHT)
+  @javax.annotation.Nullable
+  private Double height;
 
   public static final String SERIALIZED_NAME_IS_ACTIVE = "is_active";
   @SerializedName(SERIALIZED_NAME_IS_ACTIVE)
@@ -231,22 +245,79 @@ public class ProductInput {
   }
 
 
-  public ProductInput size(@javax.annotation.Nullable BigDecimal size) {
-    this.size = size;
+  public ProductInput weight(@javax.annotation.Nullable Double weight) {
+    this.weight = weight;
     return this;
   }
 
   /**
-   * Get size
-   * @return size
+   * Get weight
+   * @return weight
    */
   @javax.annotation.Nullable
-  public BigDecimal getSize() {
-    return size;
+  public Double getWeight() {
+    return weight;
   }
 
-  public void setSize(@javax.annotation.Nullable BigDecimal size) {
-    this.size = size;
+  public void setWeight(@javax.annotation.Nullable Double weight) {
+    this.weight = weight;
+  }
+
+
+  public ProductInput length(@javax.annotation.Nullable Double length) {
+    this.length = length;
+    return this;
+  }
+
+  /**
+   * Get length
+   * @return length
+   */
+  @javax.annotation.Nullable
+  public Double getLength() {
+    return length;
+  }
+
+  public void setLength(@javax.annotation.Nullable Double length) {
+    this.length = length;
+  }
+
+
+  public ProductInput width(@javax.annotation.Nullable Double width) {
+    this.width = width;
+    return this;
+  }
+
+  /**
+   * Get width
+   * @return width
+   */
+  @javax.annotation.Nullable
+  public Double getWidth() {
+    return width;
+  }
+
+  public void setWidth(@javax.annotation.Nullable Double width) {
+    this.width = width;
+  }
+
+
+  public ProductInput height(@javax.annotation.Nullable Double height) {
+    this.height = height;
+    return this;
+  }
+
+  /**
+   * Get height
+   * @return height
+   */
+  @javax.annotation.Nullable
+  public Double getHeight() {
+    return height;
+  }
+
+  public void setHeight(@javax.annotation.Nullable Double height) {
+    this.height = height;
   }
 
 
@@ -358,7 +429,10 @@ public class ProductInput {
         Objects.equals(this.reference, productInput.reference) &&
         Objects.equals(this.limitDate, productInput.limitDate) &&
         Objects.equals(this.description, productInput.description) &&
-        Objects.equals(this.size, productInput.size) &&
+        Objects.equals(this.weight, productInput.weight) &&
+        Objects.equals(this.length, productInput.length) &&
+        Objects.equals(this.width, productInput.width) &&
+        Objects.equals(this.height, productInput.height) &&
         Objects.equals(this.isActive, productInput.isActive) &&
         Objects.equals(this.stockQuantity, productInput.stockQuantity) &&
         Objects.equals(this.images, productInput.images) &&
@@ -371,7 +445,7 @@ public class ProductInput {
 
   @Override
   public int hashCode() {
-    return Objects.hash(id, category, label, reference, limitDate, description, size, isActive, stockQuantity, images, prices);
+    return Objects.hash(id, category, label, reference, limitDate, description, weight, length, width, height, isActive, stockQuantity, images, prices);
   }
 
   private static <T> int hashCodeNullable(JsonNullable<T> a) {
@@ -391,7 +465,10 @@ public class ProductInput {
     sb.append("    reference: ").append(toIndentedString(reference)).append("\n");
     sb.append("    limitDate: ").append(toIndentedString(limitDate)).append("\n");
     sb.append("    description: ").append(toIndentedString(description)).append("\n");
-    sb.append("    size: ").append(toIndentedString(size)).append("\n");
+    sb.append("    weight: ").append(toIndentedString(weight)).append("\n");
+    sb.append("    length: ").append(toIndentedString(length)).append("\n");
+    sb.append("    width: ").append(toIndentedString(width)).append("\n");
+    sb.append("    height: ").append(toIndentedString(height)).append("\n");
     sb.append("    isActive: ").append(toIndentedString(isActive)).append("\n");
     sb.append("    stockQuantity: ").append(toIndentedString(stockQuantity)).append("\n");
     sb.append("    images: ").append(toIndentedString(images)).append("\n");
@@ -414,7 +491,7 @@ public class ProductInput {
 
   static {
     // a set of all properties/fields (JSON key names)
-    openapiFields = new HashSet<String>(Arrays.asList("id", "category", "label", "reference", "limit_date", "description", "size", "is_active", "stock_quantity", "images", "prices"));
+    openapiFields = new HashSet<String>(Arrays.asList("id", "category", "label", "reference", "limit_date", "description", "weight", "length", "width", "height", "is_active", "stock_quantity", "images", "prices"));
 
     // a set of required properties/fields (JSON key names)
     openapiRequiredFields = new HashSet<String>(Arrays.asList("category", "label", "reference"));

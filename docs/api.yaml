@@ -277,8 +277,18 @@ components:
           nullable: true
         description:
           type: string
-        size:
+        weight:
           type: number
+          format: double
+        length:
+          type: number
+          format: double
+        width:
+          type: number
+          format: double
+        height:
+          type: number
+          format: double
         stock_quantity:
           type: number
           format: double
@@ -313,8 +323,18 @@ components:
           format: date
         description:
           type: string
-        size:
+        weight:
           type: number
+          format: double
+        length:
+          type: number
+          format: double
+        width:
+          type: number
+          format: double
+        height:
+          type: number
+          format: double
         is_active:
           type: boolean
         stock_quantity:

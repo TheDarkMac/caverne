@@ -68,7 +68,10 @@ public class ProductApiMapper {
         .reference(product.getReference())
         .limitDate(product.getLimitDate())
         .description(product.getDescription())
-        .size(parseSize(product.getSize()))
+        .weight(toDouble(product.getWeight()))
+        .length(toDouble(product.getLength()))
+        .width(toDouble(product.getWidth()))
+        .height(toDouble(product.getHeight()))
         .stockQuantity(
             product.getStockQuantity() == null ? null : product.getStockQuantity().doubleValue())
         .isActive(product.isActive())
@@ -90,7 +93,10 @@ public class ProductApiMapper {
     product.setReference(input.getReference());
     product.setLimitDate(input.getLimitDate());
     product.setDescription(input.getDescription());
-    product.setSize(input.getSize() == null ? null : input.getSize().toPlainString());
+    product.setWeight(toBigDecimal(input.getWeight()));
+    product.setLength(toBigDecimal(input.getLength()));
+    product.setWidth(toBigDecimal(input.getWidth()));
+    product.setHeight(toBigDecimal(input.getHeight()));
     product.setStockQuantity(
         input.getStockQuantity() == null
             ? existing == null ? BigDecimal.ZERO : product.getStockQuantity()
@@ -229,15 +235,12 @@ public class ProductApiMapper {
         .unit(price.getUnit());
   }
 
-  private BigDecimal parseSize(String size) {
-    if (size == null || size.isBlank()) {
-      return null;
-    }
-    try {
-      return new BigDecimal(size);
-    } catch (NumberFormatException exception) {
-      return null;
-    }
+  private Double toDouble(BigDecimal value) {
+    return value == null ? null : value.doubleValue();
+  }
+
+  private BigDecimal toBigDecimal(Double value) {
+    return value == null ? null : BigDecimal.valueOf(value);
   }
 
   private URI parseUri(String value) {
