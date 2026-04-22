@@ -84,13 +84,18 @@ public class NichesCatalogImporter implements ApplicationRunner {
     String[] parts = rawValue.split("\\|");
     String label = normalizeLabel(parts[0]);
     if (parts.length == 1) {
-      return new NicheProduct(label, null, null, null);
+      return new NicheProduct(
+          label, null, null, null, BigDecimal.ONE, BigDecimal.ONE, BigDecimal.ONE, BigDecimal.ONE);
     }
 
     BigDecimal amount = new BigDecimal(parts[1].trim());
-    String currency = parts.length >= 3 ? normalizeLabel(parts[2]).toUpperCase(Locale.ROOT) : "MGA";
-    String unit = parts.length >= 4 ? normalizeLabel(parts[3]) : "unit";
-    return new NicheProduct(label, amount, currency, unit);
+    String currency = parts.length >= 3 ? normalizeLabel(parts[2]).toUpperCase(Locale.ROOT) : "EUR";
+    String unit = parts.length >= 4 ? normalizeLabel(parts[3]) : "U";
+    BigDecimal weight = parts.length >= 5 ? new BigDecimal(parts[4].trim()) : BigDecimal.ONE;
+    BigDecimal length = parts.length >= 6 ? new BigDecimal(parts[5].trim()) : BigDecimal.ONE;
+    BigDecimal width = parts.length >= 7 ? new BigDecimal(parts[6].trim()) : BigDecimal.ONE;
+    BigDecimal height = parts.length >= 8 ? new BigDecimal(parts[7].trim()) : BigDecimal.ONE;
+    return new NicheProduct(label, amount, currency, unit, weight, length, width, height);
   }
 
   private Category findOrCreateCategory(String label) {
@@ -130,10 +135,10 @@ public class NichesCatalogImporter implements ApplicationRunner {
             .label(nicheProduct.label())
             .reference(buildReference(category, nicheProduct.label()))
             .description("Imported from niches.md")
-            .weight(BigDecimal.ONE)
-            .length(BigDecimal.ONE)
-            .width(BigDecimal.ONE)
-            .height(BigDecimal.ONE)
+            .weight(nicheProduct.weight())
+            .length(nicheProduct.length())
+            .width(nicheProduct.width())
+            .height(nicheProduct.height())
             .stockQuantity(BigDecimal.valueOf(100))
             .isActive(true)
             .limitDate(LocalDate.now().plusYears(2))
@@ -218,5 +223,13 @@ public class NichesCatalogImporter implements ApplicationRunner {
 
   private record NicheCategory(String name, List<NicheProduct> products) {}
 
-  private record NicheProduct(String label, BigDecimal amount, String currency, String unit) {}
+  private record NicheProduct(
+      String label,
+      BigDecimal amount,
+      String currency,
+      String unit,
+      BigDecimal weight,
+      BigDecimal length,
+      BigDecimal width,
+      BigDecimal height) {}
 }
