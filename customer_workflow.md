@@ -22,9 +22,15 @@ If the client wants their order history tracked:
 
 POST /auth/register   → creates local user + Supabase user (if Supabase enabled)
 POST /auth/login      → returns { access_token, token_type, expires_in }
+                        access_token is a signed HS256 JWT (claims: iss, sub, jti, iat,
+                        exp, role, email, phone). It can be decoded client-side for
+                        display, but only the backend's signature check is authoritative.
 
 From this point, every authenticated call includes:                                                                                   
 Authorization: Bearer <access_token>
+
+POST /auth/logout     → revokes the current JWT by deleting its jti server-side
+                        (works before the token's exp).
                                                                                                                                         
 ---                                                                                                                                   
 Phase 3 — Create Order
