@@ -20,7 +20,6 @@ import org.springframework.web.server.ResponseStatusException;
 public class AuthService {
 
   private static final Logger log = LoggerFactory.getLogger(AuthService.class);
-  private static final int TOKEN_EXPIRATION_SECONDS = 3600;
 
   private final UserRepository userRepository;
   private final AuthSessionRepository authSessionRepository;
@@ -28,6 +27,8 @@ public class AuthService {
   private final AuthSessionResolver authSessionResolver;
   private final PasswordEncoder passwordEncoder;
   private final Optional<SupabaseAdminClient> supabaseAdminClient;
+  private final LocalJwtService localJwtService;
+  private final LocalJwtProperties localJwtProperties;
 
   public org.openapitools.client.model.User register(
       org.openapitools.client.model.RegisterRequest input) {
@@ -95,19 +96,21 @@ public class AuthService {
       throw new ResponseStatusException(UNAUTHORIZED, "Invalid credentials");
     }
 
-    String token = UUID.randomUUID() + "." + UUID.randomUUID();
+    long expiresInSeconds = localJwtProperties.getExpiresInSeconds();
+    String jti = UUID.randomUUID().toString();
+    String token = localJwtService.issue(user, jti, expiresInSeconds);
     authSessionRepository.save(
         AuthSession.builder()
             .user(user)
-            .token(token)
-            .expiresAt(LocalDateTime.now().plusSeconds(TOKEN_EXPIRATION_SECONDS))
+            .token(jti)
+            .expiresAt(LocalDateTime.now().plusSeconds(expiresInSeconds))
             .build());
 
-    log.info("Login successful userId={} role={}", user.getId(), user.getRole());
+    log.info("Login successful userId={} role={} jti={}", user.getId(), user.getRole(), jti);
     return new org.openapitools.client.model.LoginResponse()
         .accessToken(token)
         .tokenType("Bearer")
-        .expiresIn(TOKEN_EXPIRATION_SECONDS);
+        .expiresIn((int) expiresInSeconds);
   }
 
   public void logout(String token) {
