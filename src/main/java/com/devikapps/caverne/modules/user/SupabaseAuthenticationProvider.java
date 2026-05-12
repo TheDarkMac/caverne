@@ -12,10 +12,12 @@ import java.util.List;
 import java.util.Map;
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
+import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 import org.springframework.web.server.ResponseStatusException;
 
 @Component
+@Order(10)
 public class SupabaseAuthenticationProvider extends AbstractExternalAuthenticationProvider {
 
   private static final TypeReference<Map<String, Object>> MAP_TYPE = new TypeReference<>() {};
@@ -39,9 +41,22 @@ public class SupabaseAuthenticationProvider extends AbstractExternalAuthenticati
 
   @Override
   public boolean supportsToken(String token) {
-    return properties.isEnabled()
-        && token != null
-        && token.chars().filter(ch -> ch == '.').count() == 2;
+    if (!properties.isEnabled()
+        || token == null
+        || token.chars().filter(ch -> ch == '.').count() != 2) {
+      return false;
+    }
+    if (properties.getIssuer() == null || properties.getIssuer().isBlank()) {
+      // No configured issuer to disambiguate — fall back to permissive behaviour.
+      return true;
+    }
+    try {
+      String[] parts = token.split("\\.");
+      Map<String, Object> claims = decodePart(parts[1]);
+      return properties.getIssuer().equals(stringClaim(claims, "iss"));
+    } catch (Exception exception) {
+      return false;
+    }
   }
 
   @Override

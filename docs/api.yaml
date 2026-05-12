@@ -50,14 +50,21 @@ components:
 
     LoginResponse:
       type: object
+      description: |
+        Issued by `POST /auth/login`. `access_token` is a signed HS256 JWT with claims
+        `iss`, `sub`, `jti`, `iat`, `exp`, `role`, `email`, `phone`. The `jti` is
+        persisted server-side so `POST /auth/logout` can revoke the token before `exp`.
       properties:
         access_token:
           type: string
+          description: Signed HS256 JWT. Send back as `Authorization: Bearer <access_token>`.
+          example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.<payload>.<signature>
         token_type:
           type: string
           example: Bearer
         expires_in:
           type: integer
+          description: Token lifetime in seconds (matches the `exp` claim minus `iat`).
           example: 3600
 
     RegisterRequest:
