@@ -8,7 +8,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.devikapps.caverne.TestcontainersConfiguration;
-import com.devikapps.caverne.modules.user.AuthSessionRepository;
+import com.devikapps.caverne.modules.user.RefreshTokenRepository;
 import com.devikapps.caverne.modules.user.UserAccount;
 import com.devikapps.caverne.modules.user.UserRepository;
 import com.devikapps.caverne.modules.user.UserRole;
@@ -38,7 +38,7 @@ class ProductImageApiIntegrationTest {
   @Autowired private MockMvc mockMvc;
   @Autowired private ObjectMapper objectMapper;
   @Autowired private UserRepository userRepository;
-  @Autowired private AuthSessionRepository authSessionRepository;
+  @Autowired private RefreshTokenRepository refreshTokenRepository;
   @Autowired private CategoryRepository categoryRepository;
   @Autowired private ProductRepository productRepository;
   @Autowired private ProductImageRepository productImageRepository;
@@ -47,7 +47,7 @@ class ProductImageApiIntegrationTest {
 
   @BeforeEach
   void setUp() {
-    authSessionRepository.deleteAll();
+    refreshTokenRepository.deleteAll();
     productImageRepository.deleteAll();
     productRepository.deleteAll();
     categoryRepository.deleteAll();

@@ -19,7 +19,6 @@ import org.springframework.web.server.ResponseStatusException;
 public class UserService {
 
   private final UserRepository userRepository;
-  private final AuthSessionRepository authSessionRepository;
   private final UserApiMapper userApiMapper;
   private final PasswordEncoder passwordEncoder;
 
@@ -84,7 +83,6 @@ public class UserService {
 
   public void deleteById(UUID id) {
     UserAccount user = findEntityById(id);
-    authSessionRepository.deleteByUser(user);
     userRepository.delete(user);
   }
 

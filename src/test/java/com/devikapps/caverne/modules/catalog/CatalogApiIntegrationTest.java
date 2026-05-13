@@ -7,7 +7,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.devikapps.caverne.TestcontainersConfiguration;
-import com.devikapps.caverne.modules.user.AuthSessionRepository;
+import com.devikapps.caverne.modules.user.RefreshTokenRepository;
 import com.devikapps.caverne.modules.user.UserAccount;
 import com.devikapps.caverne.modules.user.UserRepository;
 import com.devikapps.caverne.modules.user.UserRole;
@@ -42,13 +42,13 @@ class CatalogApiIntegrationTest {
 
   @Autowired private UserRepository userRepository;
 
-  @Autowired private AuthSessionRepository authSessionRepository;
+  @Autowired private RefreshTokenRepository refreshTokenRepository;
 
   private final BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
   @BeforeEach
   void setUp() {
-    authSessionRepository.deleteAll();
+    refreshTokenRepository.deleteAll();
     userRepository.deleteAll();
     productRepository.deleteAll();
     categoryRepository.deleteAll();

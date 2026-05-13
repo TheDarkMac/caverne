@@ -14,7 +14,7 @@ import com.devikapps.caverne.modules.catalog.Product;
 import com.devikapps.caverne.modules.catalog.ProductRepository;
 import com.devikapps.caverne.modules.payment.MockStripePaymentProvider;
 import com.devikapps.caverne.modules.payment.PaymentProvider;
-import com.devikapps.caverne.modules.user.AuthSessionRepository;
+import com.devikapps.caverne.modules.user.RefreshTokenRepository;
 import com.devikapps.caverne.modules.user.UserAccount;
 import com.devikapps.caverne.modules.user.UserRepository;
 import com.devikapps.caverne.modules.user.UserRole;
@@ -58,13 +58,13 @@ class CheckoutApiIntegrationTest {
 
   @Autowired private UserRepository userRepository;
 
-  @Autowired private AuthSessionRepository authSessionRepository;
+  @Autowired private RefreshTokenRepository refreshTokenRepository;
 
   private final BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
   @BeforeEach
   void setUp() {
-    authSessionRepository.deleteAll();
+    refreshTokenRepository.deleteAll();
     orderRepository.deleteAll();
     deliveryCostRepository.deleteAll();
     userRepository.deleteAll();

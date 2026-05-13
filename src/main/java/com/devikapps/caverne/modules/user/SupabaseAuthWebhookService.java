@@ -14,7 +14,6 @@ import org.springframework.transaction.annotation.Transactional;
 public class SupabaseAuthWebhookService {
 
   private final UserRepository userRepository;
-  private final AuthSessionRepository authSessionRepository;
 
   @Transactional
   public void handle(JsonNode payload) {
@@ -147,7 +146,6 @@ public class SupabaseAuthWebhookService {
         .findByAuthProviderAndExternalAuthId(AuthProviderCode.SUPABASE, externalId)
         .ifPresent(
             user -> {
-              authSessionRepository.deleteByUser(user);
               userRepository.delete(user);
               log.info(
                   "Supabase user deleted userId={} externalId={}",
