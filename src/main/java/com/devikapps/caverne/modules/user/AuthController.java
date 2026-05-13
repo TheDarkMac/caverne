@@ -91,7 +91,8 @@ public class AuthController {
         buildCookie(refreshTokenProperties.getCsrf().getCookieName(), "", 0, false).toString());
   }
 
-  private ResponseCookie buildCookie(String name, String value, long maxAgeSeconds, boolean httpOnly) {
+  private ResponseCookie buildCookie(
+      String name, String value, long maxAgeSeconds, boolean httpOnly) {
     RefreshTokenProperties.Cookie cfg = refreshTokenProperties.getCookie();
     ResponseCookie.ResponseCookieBuilder builder =
         ResponseCookie.from(name, value)
@@ -134,5 +135,4 @@ public class AuthController {
       throw new ResponseStatusException(UNPROCESSABLE_CONTENT, "Invalid login payload");
     }
   }
-
 }

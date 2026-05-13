@@ -61,9 +61,7 @@ class RefreshTokenIntegrationTest {
     MvcResult refreshed =
         mockMvc
             .perform(
-                post("/auth/refresh")
-                    .header("X-CSRF-Token", csrf.getValue())
-                    .cookie(refresh, csrf))
+                post("/auth/refresh").header("X-CSRF-Token", csrf.getValue()).cookie(refresh, csrf))
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.access_token").isString())
             .andReturn();
@@ -81,9 +79,7 @@ class RefreshTokenIntegrationTest {
     Cookie refresh = login.getResponse().getCookie("refresh_token");
     Cookie csrf = login.getResponse().getCookie("csrf_token");
 
-    mockMvc
-        .perform(post("/auth/refresh").cookie(refresh, csrf))
-        .andExpect(status().isForbidden());
+    mockMvc.perform(post("/auth/refresh").cookie(refresh, csrf)).andExpect(status().isForbidden());
   }
 
   @Test
@@ -93,10 +89,7 @@ class RefreshTokenIntegrationTest {
     Cookie csrf = login.getResponse().getCookie("csrf_token");
 
     mockMvc
-        .perform(
-            post("/auth/refresh")
-                .header("X-CSRF-Token", "wrong-value")
-                .cookie(refresh, csrf))
+        .perform(post("/auth/refresh").header("X-CSRF-Token", "wrong-value").cookie(refresh, csrf))
         .andExpect(status().isForbidden());
   }
 
@@ -109,23 +102,17 @@ class RefreshTokenIntegrationTest {
     // First rotation succeeds.
     mockMvc
         .perform(
-            post("/auth/refresh")
-                .header("X-CSRF-Token", csrf.getValue())
-                .cookie(refresh, csrf))
+            post("/auth/refresh").header("X-CSRF-Token", csrf.getValue()).cookie(refresh, csrf))
         .andExpect(status().isOk());
 
     // Replaying the now-revoked refresh must fail AND revoke the whole family.
     mockMvc
         .perform(
-            post("/auth/refresh")
-                .header("X-CSRF-Token", csrf.getValue())
-                .cookie(refresh, csrf))
+            post("/auth/refresh").header("X-CSRF-Token", csrf.getValue()).cookie(refresh, csrf))
         .andExpect(status().isUnauthorized());
 
     long activeForUser =
-        refreshTokenRepository.findAll().stream()
-            .filter(t -> t.getRevokedAt() == null)
-            .count();
+        refreshTokenRepository.findAll().stream().filter(t -> t.getRevokedAt() == null).count();
     assertEquals(0, activeForUser, "every refresh in the family must be revoked after reuse");
   }
 

@@ -27,8 +27,7 @@ public class RefreshTokenService {
   private final RefreshTokenRepository repository;
   private final RefreshTokenProperties properties;
 
-  public RefreshTokenService(
-      RefreshTokenRepository repository, RefreshTokenProperties properties) {
+  public RefreshTokenService(RefreshTokenRepository repository, RefreshTokenProperties properties) {
     this.repository = repository;
     this.properties = properties;
   }
@@ -41,9 +40,7 @@ public class RefreshTokenService {
   public Issued rotate(String rawToken) {
     String hash = hash(rawToken);
     RefreshToken existing =
-        repository
-            .findByTokenHash(hash)
-            .orElseThrow(() -> unauthorized("Invalid refresh token"));
+        repository.findByTokenHash(hash).orElseThrow(() -> unauthorized("Invalid refresh token"));
 
     if (existing.getRevokedAt() != null) {
       log.warn(
@@ -115,6 +112,5 @@ public class RefreshTokenService {
     return new ResponseStatusException(UNAUTHORIZED, message);
   }
 
-  public record Issued(
-      UserAccount user, String rawToken, UUID familyId, LocalDateTime expiresAt) {}
+  public record Issued(UserAccount user, String rawToken, UUID familyId, LocalDateTime expiresAt) {}
 }

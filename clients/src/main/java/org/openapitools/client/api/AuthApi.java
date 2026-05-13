@@ -86,7 +86,7 @@ public class AuthApi {
      <table border="1">
        <caption>Response Details</caption>
         <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Token JWT retourné </td><td>  -  </td></tr>
+        <tr><td> 200 </td><td> Access JWT retourné dans le corps. Les cookies &#x60;refresh_token&#x60; (HttpOnly) et &#x60;csrf_token&#x60; sont posés via &#x60;Set-Cookie&#x60;.  </td><td>  * Set-Cookie - Deux cookies sont émis : &#x60;refresh_token&#x3D;&lt;opaque&gt;; HttpOnly; Secure; SameSite&#x3D;None; Path&#x3D;/api/v1/auth; Max-Age&#x3D;2592000&#x60; et &#x60;csrf_token&#x3D;&lt;value&gt;; Secure; SameSite&#x3D;None; Path&#x3D;/api/v1/auth; Max-Age&#x3D;2592000&#x60;.  <br>  </td></tr>
         <tr><td> 401 </td><td> Token JWT manquant ou invalide </td><td>  -  </td></tr>
      </table>
      */
@@ -147,7 +147,7 @@ public class AuthApi {
     }
 
     /**
-     * Connexion — obtenir un JWT
+     * Connexion — obtenir un JWT et poser les cookies refresh/csrf
      * 
      * @param loginRequest  (required)
      * @return LoginResponse
@@ -156,7 +156,7 @@ public class AuthApi {
      <table border="1">
        <caption>Response Details</caption>
         <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Token JWT retourné </td><td>  -  </td></tr>
+        <tr><td> 200 </td><td> Access JWT retourné dans le corps. Les cookies &#x60;refresh_token&#x60; (HttpOnly) et &#x60;csrf_token&#x60; sont posés via &#x60;Set-Cookie&#x60;.  </td><td>  * Set-Cookie - Deux cookies sont émis : &#x60;refresh_token&#x3D;&lt;opaque&gt;; HttpOnly; Secure; SameSite&#x3D;None; Path&#x3D;/api/v1/auth; Max-Age&#x3D;2592000&#x60; et &#x60;csrf_token&#x3D;&lt;value&gt;; Secure; SameSite&#x3D;None; Path&#x3D;/api/v1/auth; Max-Age&#x3D;2592000&#x60;.  <br>  </td></tr>
         <tr><td> 401 </td><td> Token JWT manquant ou invalide </td><td>  -  </td></tr>
      </table>
      */
@@ -166,7 +166,7 @@ public class AuthApi {
     }
 
     /**
-     * Connexion — obtenir un JWT
+     * Connexion — obtenir un JWT et poser les cookies refresh/csrf
      * 
      * @param loginRequest  (required)
      * @return ApiResponse&lt;LoginResponse&gt;
@@ -175,7 +175,7 @@ public class AuthApi {
      <table border="1">
        <caption>Response Details</caption>
         <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Token JWT retourné </td><td>  -  </td></tr>
+        <tr><td> 200 </td><td> Access JWT retourné dans le corps. Les cookies &#x60;refresh_token&#x60; (HttpOnly) et &#x60;csrf_token&#x60; sont posés via &#x60;Set-Cookie&#x60;.  </td><td>  * Set-Cookie - Deux cookies sont émis : &#x60;refresh_token&#x3D;&lt;opaque&gt;; HttpOnly; Secure; SameSite&#x3D;None; Path&#x3D;/api/v1/auth; Max-Age&#x3D;2592000&#x60; et &#x60;csrf_token&#x3D;&lt;value&gt;; Secure; SameSite&#x3D;None; Path&#x3D;/api/v1/auth; Max-Age&#x3D;2592000&#x60;.  <br>  </td></tr>
         <tr><td> 401 </td><td> Token JWT manquant ou invalide </td><td>  -  </td></tr>
      </table>
      */
@@ -186,7 +186,7 @@ public class AuthApi {
     }
 
     /**
-     * Connexion — obtenir un JWT (asynchronously)
+     * Connexion — obtenir un JWT et poser les cookies refresh/csrf (asynchronously)
      * 
      * @param loginRequest  (required)
      * @param _callback The callback to be executed when the API call finishes
@@ -196,7 +196,7 @@ public class AuthApi {
      <table border="1">
        <caption>Response Details</caption>
         <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Token JWT retourné </td><td>  -  </td></tr>
+        <tr><td> 200 </td><td> Access JWT retourné dans le corps. Les cookies &#x60;refresh_token&#x60; (HttpOnly) et &#x60;csrf_token&#x60; sont posés via &#x60;Set-Cookie&#x60;.  </td><td>  * Set-Cookie - Deux cookies sont émis : &#x60;refresh_token&#x3D;&lt;opaque&gt;; HttpOnly; Secure; SameSite&#x3D;None; Path&#x3D;/api/v1/auth; Max-Age&#x3D;2592000&#x60; et &#x60;csrf_token&#x3D;&lt;value&gt;; Secure; SameSite&#x3D;None; Path&#x3D;/api/v1/auth; Max-Age&#x3D;2592000&#x60;.  <br>  </td></tr>
         <tr><td> 401 </td><td> Token JWT manquant ou invalide </td><td>  -  </td></tr>
      </table>
      */
@@ -209,6 +209,7 @@ public class AuthApi {
     }
     /**
      * Build call for authLogoutPost
+     * @param xCSRFToken  (required)
      * @param _callback Callback for upload/download progress
      * @return Call to execute
      * @throws ApiException If fail to serialize the request body object
@@ -218,9 +219,10 @@ public class AuthApi {
         <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
         <tr><td> 204 </td><td> Déconnexion réussie </td><td>  -  </td></tr>
         <tr><td> 401 </td><td> Token JWT manquant ou invalide </td><td>  -  </td></tr>
+        <tr><td> 403 </td><td> CSRF token manquant ou invalide. </td><td>  -  </td></tr>
      </table>
      */
-    public okhttp3.Call authLogoutPostCall(final ApiCallback _callback) throws ApiException {
+    public okhttp3.Call authLogoutPostCall(@javax.annotation.Nonnull String xCSRFToken, final ApiCallback _callback) throws ApiException {
         String basePath = null;
         // Operation Servers
         String[] localBasePaths = new String[] {  };
@@ -260,19 +262,30 @@ public class AuthApi {
             localVarHeaderParams.put("Content-Type", localVarContentType);
         }
 
+        if (xCSRFToken != null) {
+            localVarHeaderParams.put("X-CSRF-Token", localVarApiClient.parameterToString(xCSRFToken));
+        }
+
+
         String[] localVarAuthNames = new String[] { "BearerAuth" };
         return localVarApiClient.buildCall(basePath, localVarPath, "POST", localVarQueryParams, localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams, localVarCookieParams, localVarFormParams, localVarAuthNames, _callback);
     }
 
     @SuppressWarnings("rawtypes")
-    private okhttp3.Call authLogoutPostValidateBeforeCall(final ApiCallback _callback) throws ApiException {
-        return authLogoutPostCall(_callback);
+    private okhttp3.Call authLogoutPostValidateBeforeCall(@javax.annotation.Nonnull String xCSRFToken, final ApiCallback _callback) throws ApiException {
+        // verify the required parameter 'xCSRFToken' is set
+        if (xCSRFToken == null) {
+            throw new ApiException("Missing the required parameter 'xCSRFToken' when calling authLogoutPost(Async)");
+        }
+
+        return authLogoutPostCall(xCSRFToken, _callback);
 
     }
 
     /**
-     * Invalidation du token JWT courant
-     * 
+     * Révocation du refresh token courant et nettoyage des cookies
+     * Révoque le refresh token courant côté serveur et efface les cookies &#x60;refresh_token&#x60; et &#x60;csrf_token&#x60; (Max-Age&#x3D;0). Le header &#x60;X-CSRF-Token&#x60; est requis. 
+     * @param xCSRFToken  (required)
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      * @http.response.details
      <table border="1">
@@ -280,15 +293,17 @@ public class AuthApi {
         <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
         <tr><td> 204 </td><td> Déconnexion réussie </td><td>  -  </td></tr>
         <tr><td> 401 </td><td> Token JWT manquant ou invalide </td><td>  -  </td></tr>
+        <tr><td> 403 </td><td> CSRF token manquant ou invalide. </td><td>  -  </td></tr>
      </table>
      */
-    public void authLogoutPost() throws ApiException {
-        authLogoutPostWithHttpInfo();
+    public void authLogoutPost(@javax.annotation.Nonnull String xCSRFToken) throws ApiException {
+        authLogoutPostWithHttpInfo(xCSRFToken);
     }
 
     /**
-     * Invalidation du token JWT courant
-     * 
+     * Révocation du refresh token courant et nettoyage des cookies
+     * Révoque le refresh token courant côté serveur et efface les cookies &#x60;refresh_token&#x60; et &#x60;csrf_token&#x60; (Max-Age&#x3D;0). Le header &#x60;X-CSRF-Token&#x60; est requis. 
+     * @param xCSRFToken  (required)
      * @return ApiResponse&lt;Void&gt;
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      * @http.response.details
@@ -297,16 +312,18 @@ public class AuthApi {
         <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
         <tr><td> 204 </td><td> Déconnexion réussie </td><td>  -  </td></tr>
         <tr><td> 401 </td><td> Token JWT manquant ou invalide </td><td>  -  </td></tr>
+        <tr><td> 403 </td><td> CSRF token manquant ou invalide. </td><td>  -  </td></tr>
      </table>
      */
-    public ApiResponse<Void> authLogoutPostWithHttpInfo() throws ApiException {
-        okhttp3.Call localVarCall = authLogoutPostValidateBeforeCall(null);
+    public ApiResponse<Void> authLogoutPostWithHttpInfo(@javax.annotation.Nonnull String xCSRFToken) throws ApiException {
+        okhttp3.Call localVarCall = authLogoutPostValidateBeforeCall(xCSRFToken, null);
         return localVarApiClient.execute(localVarCall);
     }
 
     /**
-     * Invalidation du token JWT courant (asynchronously)
-     * 
+     * Révocation du refresh token courant et nettoyage des cookies (asynchronously)
+     * Révoque le refresh token courant côté serveur et efface les cookies &#x60;refresh_token&#x60; et &#x60;csrf_token&#x60; (Max-Age&#x3D;0). Le header &#x60;X-CSRF-Token&#x60; est requis. 
+     * @param xCSRFToken  (required)
      * @param _callback The callback to be executed when the API call finishes
      * @return The request call
      * @throws ApiException If fail to process the API call, e.g. serializing the request body object
@@ -316,12 +333,152 @@ public class AuthApi {
         <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
         <tr><td> 204 </td><td> Déconnexion réussie </td><td>  -  </td></tr>
         <tr><td> 401 </td><td> Token JWT manquant ou invalide </td><td>  -  </td></tr>
+        <tr><td> 403 </td><td> CSRF token manquant ou invalide. </td><td>  -  </td></tr>
      </table>
      */
-    public okhttp3.Call authLogoutPostAsync(final ApiCallback<Void> _callback) throws ApiException {
+    public okhttp3.Call authLogoutPostAsync(@javax.annotation.Nonnull String xCSRFToken, final ApiCallback<Void> _callback) throws ApiException {
 
-        okhttp3.Call localVarCall = authLogoutPostValidateBeforeCall(_callback);
+        okhttp3.Call localVarCall = authLogoutPostValidateBeforeCall(xCSRFToken, _callback);
         localVarApiClient.executeAsync(localVarCall, _callback);
+        return localVarCall;
+    }
+    /**
+     * Build call for authRefreshPost
+     * @param xCSRFToken Doit être égal au cookie &#x60;csrf_token&#x60;. (required)
+     * @param _callback Callback for upload/download progress
+     * @return Call to execute
+     * @throws ApiException If fail to serialize the request body object
+     * @http.response.details
+     <table border="1">
+       <caption>Response Details</caption>
+        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+        <tr><td> 200 </td><td> Nouvel access JWT + cookies refresh/csrf rotés. </td><td>  -  </td></tr>
+        <tr><td> 401 </td><td> Token JWT manquant ou invalide </td><td>  -  </td></tr>
+        <tr><td> 403 </td><td> CSRF token manquant ou invalide. </td><td>  -  </td></tr>
+     </table>
+     */
+    public okhttp3.Call authRefreshPostCall(@javax.annotation.Nonnull String xCSRFToken, final ApiCallback _callback) throws ApiException {
+        String basePath = null;
+        // Operation Servers
+        String[] localBasePaths = new String[] {  };
+
+        // Determine Base Path to Use
+        if (localCustomBaseUrl != null){
+            basePath = localCustomBaseUrl;
+        } else if ( localBasePaths.length > 0 ) {
+            basePath = localBasePaths[localHostIndex];
+        } else {
+            basePath = null;
+        }
+
+        Object localVarPostBody = null;
+
+        // create path and map variables
+        String localVarPath = "/auth/refresh";
+
+        List<Pair> localVarQueryParams = new ArrayList<Pair>();
+        List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
+        Map<String, String> localVarHeaderParams = new HashMap<String, String>();
+        Map<String, String> localVarCookieParams = new HashMap<String, String>();
+        Map<String, Object> localVarFormParams = new HashMap<String, Object>();
+
+        final String[] localVarAccepts = {
+            "application/json"
+        };
+        final String localVarAccept = localVarApiClient.selectHeaderAccept(localVarAccepts);
+        if (localVarAccept != null) {
+            localVarHeaderParams.put("Accept", localVarAccept);
+        }
+
+        final String[] localVarContentTypes = {
+        };
+        final String localVarContentType = localVarApiClient.selectHeaderContentType(localVarContentTypes);
+        if (localVarContentType != null) {
+            localVarHeaderParams.put("Content-Type", localVarContentType);
+        }
+
+        if (xCSRFToken != null) {
+            localVarHeaderParams.put("X-CSRF-Token", localVarApiClient.parameterToString(xCSRFToken));
+        }
+
+
+        String[] localVarAuthNames = new String[] {  };
+        return localVarApiClient.buildCall(basePath, localVarPath, "POST", localVarQueryParams, localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams, localVarCookieParams, localVarFormParams, localVarAuthNames, _callback);
+    }
+
+    @SuppressWarnings("rawtypes")
+    private okhttp3.Call authRefreshPostValidateBeforeCall(@javax.annotation.Nonnull String xCSRFToken, final ApiCallback _callback) throws ApiException {
+        // verify the required parameter 'xCSRFToken' is set
+        if (xCSRFToken == null) {
+            throw new ApiException("Missing the required parameter 'xCSRFToken' when calling authRefreshPost(Async)");
+        }
+
+        return authRefreshPostCall(xCSRFToken, _callback);
+
+    }
+
+    /**
+     * Rotation du refresh token et émission d&#39;un nouvel access JWT
+     * Lit le cookie &#x60;refresh_token&#x60; (envoyé automatiquement par le navigateur avec &#x60;credentials: &#39;include&#39;&#x60;). Vérifie la signature CSRF via header &#x60;X-CSRF-Token&#x60; (doit valoir la même chose que le cookie &#x60;csrf_token&#x60;). Révoque le refresh précédent et en émet un nouveau (rotation). Si un refresh déjà révoqué est présenté → 401 et toute la famille de tokens est invalidée (reuse detection). 
+     * @param xCSRFToken Doit être égal au cookie &#x60;csrf_token&#x60;. (required)
+     * @return LoginResponse
+     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
+     * @http.response.details
+     <table border="1">
+       <caption>Response Details</caption>
+        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+        <tr><td> 200 </td><td> Nouvel access JWT + cookies refresh/csrf rotés. </td><td>  -  </td></tr>
+        <tr><td> 401 </td><td> Token JWT manquant ou invalide </td><td>  -  </td></tr>
+        <tr><td> 403 </td><td> CSRF token manquant ou invalide. </td><td>  -  </td></tr>
+     </table>
+     */
+    public LoginResponse authRefreshPost(@javax.annotation.Nonnull String xCSRFToken) throws ApiException {
+        ApiResponse<LoginResponse> localVarResp = authRefreshPostWithHttpInfo(xCSRFToken);
+        return localVarResp.getData();
+    }
+
+    /**
+     * Rotation du refresh token et émission d&#39;un nouvel access JWT
+     * Lit le cookie &#x60;refresh_token&#x60; (envoyé automatiquement par le navigateur avec &#x60;credentials: &#39;include&#39;&#x60;). Vérifie la signature CSRF via header &#x60;X-CSRF-Token&#x60; (doit valoir la même chose que le cookie &#x60;csrf_token&#x60;). Révoque le refresh précédent et en émet un nouveau (rotation). Si un refresh déjà révoqué est présenté → 401 et toute la famille de tokens est invalidée (reuse detection). 
+     * @param xCSRFToken Doit être égal au cookie &#x60;csrf_token&#x60;. (required)
+     * @return ApiResponse&lt;LoginResponse&gt;
+     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
+     * @http.response.details
+     <table border="1">
+       <caption>Response Details</caption>
+        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+        <tr><td> 200 </td><td> Nouvel access JWT + cookies refresh/csrf rotés. </td><td>  -  </td></tr>
+        <tr><td> 401 </td><td> Token JWT manquant ou invalide </td><td>  -  </td></tr>
+        <tr><td> 403 </td><td> CSRF token manquant ou invalide. </td><td>  -  </td></tr>
+     </table>
+     */
+    public ApiResponse<LoginResponse> authRefreshPostWithHttpInfo(@javax.annotation.Nonnull String xCSRFToken) throws ApiException {
+        okhttp3.Call localVarCall = authRefreshPostValidateBeforeCall(xCSRFToken, null);
+        Type localVarReturnType = new TypeToken<LoginResponse>(){}.getType();
+        return localVarApiClient.execute(localVarCall, localVarReturnType);
+    }
+
+    /**
+     * Rotation du refresh token et émission d&#39;un nouvel access JWT (asynchronously)
+     * Lit le cookie &#x60;refresh_token&#x60; (envoyé automatiquement par le navigateur avec &#x60;credentials: &#39;include&#39;&#x60;). Vérifie la signature CSRF via header &#x60;X-CSRF-Token&#x60; (doit valoir la même chose que le cookie &#x60;csrf_token&#x60;). Révoque le refresh précédent et en émet un nouveau (rotation). Si un refresh déjà révoqué est présenté → 401 et toute la famille de tokens est invalidée (reuse detection). 
+     * @param xCSRFToken Doit être égal au cookie &#x60;csrf_token&#x60;. (required)
+     * @param _callback The callback to be executed when the API call finishes
+     * @return The request call
+     * @throws ApiException If fail to process the API call, e.g. serializing the request body object
+     * @http.response.details
+     <table border="1">
+       <caption>Response Details</caption>
+        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+        <tr><td> 200 </td><td> Nouvel access JWT + cookies refresh/csrf rotés. </td><td>  -  </td></tr>
+        <tr><td> 401 </td><td> Token JWT manquant ou invalide </td><td>  -  </td></tr>
+        <tr><td> 403 </td><td> CSRF token manquant ou invalide. </td><td>  -  </td></tr>
+     </table>
+     */
+    public okhttp3.Call authRefreshPostAsync(@javax.annotation.Nonnull String xCSRFToken, final ApiCallback<LoginResponse> _callback) throws ApiException {
+
+        okhttp3.Call localVarCall = authRefreshPostValidateBeforeCall(xCSRFToken, _callback);
+        Type localVarReturnType = new TypeToken<LoginResponse>(){}.getType();
+        localVarApiClient.executeAsync(localVarCall, localVarReturnType, _callback);
         return localVarCall;
     }
     /**
