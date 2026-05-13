@@ -21,16 +21,25 @@ Phase 2 — Optional: Authenticate
 If the client wants their order history tracked:
 
 POST /auth/register   → creates local user + Supabase user (if Supabase enabled)
-POST /auth/login      → returns { access_token, token_type, expires_in }
-                        access_token is a signed HS256 JWT (claims: iss, sub, jti, iat,
-                        exp, role, email, phone). It can be decoded client-side for
-                        display, but only the backend's signature check is authoritative.
+POST /auth/login      → returns { access_token, token_type, expires_in: 900 }
+                      + Set-Cookie: refresh_token (HttpOnly, 30 days)
+                      + Set-Cookie: csrf_token   (JS-readable, 30 days)
+                        access_token is a signed HS256 JWT, short-lived (15 min).
+                        Front must use fetch(..., { credentials: 'include' }).
 
 From this point, every authenticated call includes:                                                                                   
 Authorization: Bearer <access_token>
 
-POST /auth/logout     → revokes the current JWT by deleting its jti server-side
-                        (works before the token's exp).
+When the access JWT nears expiration (or a 401 hits a protected route):
+
+POST /auth/refresh    → rotates the refresh cookie, returns a fresh { access_token, ... }
+                        Required header: X-CSRF-Token (echo the csrf_token cookie value).
+                        Cookies are sent/received automatically by the browser.
+
+POST /auth/logout     → revokes the current refresh server-side and clears both cookies.
+                        Required header: X-CSRF-Token (same double-submit pattern).
+                        Note: the access JWT itself is stateless — it stays valid up
+                        to its 15-min exp but cannot be refreshed once logged out.
                                                                                                                                         
 ---                                                                                                                                   
 Phase 3 — Create Order
