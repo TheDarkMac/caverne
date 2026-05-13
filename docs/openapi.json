@@ -104,7 +104,17 @@
                 }
               }
             },
-            "description" : "Token JWT retourné"
+            "description" : "Access JWT retourné dans le corps. Les cookies `refresh_token` (HttpOnly)\net `csrf_token` sont posés via `Set-Cookie`.\n",
+            "headers" : {
+              "Set-Cookie" : {
+                "description" : "Deux cookies sont émis :\n`refresh_token=<opaque>; HttpOnly; Secure; SameSite=None; Path=/api/v1/auth; Max-Age=2592000`\net `csrf_token=<value>; Secure; SameSite=None; Path=/api/v1/auth; Max-Age=2592000`.\n",
+                "explode" : false,
+                "schema" : {
+                  "type" : "string"
+                },
+                "style" : "simple"
+              }
+            }
           },
           "401" : {
             "content" : {
@@ -118,12 +128,67 @@
           }
         },
         "security" : [ ],
-        "summary" : "Connexion — obtenir un JWT",
+        "summary" : "Connexion — obtenir un JWT et poser les cookies refresh/csrf",
+        "tags" : [ "Auth" ]
+      }
+    },
+    "/auth/refresh" : {
+      "post" : {
+        "description" : "Lit le cookie `refresh_token` (envoyé automatiquement par le navigateur avec\n`credentials: 'include'`). Vérifie la signature CSRF via header `X-CSRF-Token`\n(doit valoir la même chose que le cookie `csrf_token`). Révoque le refresh\nprécédent et en émet un nouveau (rotation). Si un refresh déjà révoqué est\nprésenté → 401 et toute la famille de tokens est invalidée (reuse detection).\n",
+        "parameters" : [ {
+          "description" : "Doit être égal au cookie `csrf_token`.",
+          "explode" : false,
+          "in" : "header",
+          "name" : "X-CSRF-Token",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          },
+          "style" : "simple"
+        } ],
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/LoginResponse"
+                }
+              }
+            },
+            "description" : "Nouvel access JWT + cookies refresh/csrf rotés."
+          },
+          "401" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Error"
+                }
+              }
+            },
+            "description" : "Token JWT manquant ou invalide"
+          },
+          "403" : {
+            "description" : "CSRF token manquant ou invalide."
+          }
+        },
+        "security" : [ ],
+        "summary" : "Rotation du refresh token et émission d'un nouvel access JWT",
         "tags" : [ "Auth" ]
       }
     },
     "/auth/logout" : {
       "post" : {
+        "description" : "Révoque le refresh token courant côté serveur et efface les cookies\n`refresh_token` et `csrf_token` (Max-Age=0). Le header `X-CSRF-Token` est requis.\n",
+        "parameters" : [ {
+          "explode" : false,
+          "in" : "header",
+          "name" : "X-CSRF-Token",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          },
+          "style" : "simple"
+        } ],
         "responses" : {
           "204" : {
             "description" : "Déconnexion réussie"
@@ -137,9 +202,12 @@
               }
             },
             "description" : "Token JWT manquant ou invalide"
+          },
+          "403" : {
+            "description" : "CSRF token manquant ou invalide."
           }
         },
-        "summary" : "Invalidation du token JWT courant",
+        "summary" : "Révocation du refresh token courant et nettoyage des cookies",
         "tags" : [ "Auth" ]
       }
     },
@@ -2267,7 +2335,7 @@
         "type" : "object"
       },
       "LoginResponse" : {
-        "description" : "Issued by `POST /auth/login`. `access_token` is a signed HS256 JWT with claims\n`iss`, `sub`, `jti`, `iat`, `exp`, `role`, `email`, `phone`. The `jti` is\npersisted server-side so `POST /auth/logout` can revoke the token before `exp`.\n",
+        "description" : "Issued by `POST /auth/login` and `POST /auth/refresh`. The `access_token` is a\nshort-lived (15 min) HS256 JWT with claims `iss`, `sub`, `jti`, `iat`, `exp`,\n`role`, `email`, `phone`. Send it back as `Authorization: Bearer <access_token>`.\n\nThe response also sets two cookies that the client never reads or forwards\nexplicitly — the browser handles them:\n\n- `refresh_token` (HttpOnly, Secure, SameSite=None, Path=/api/v1/auth) — 30 days,\n  rotated on every `/auth/refresh`. Stored as a SHA-256 hash server-side; reuse\n  of a revoked refresh triggers revocation of the entire token family.\n- `csrf_token` (Secure, SameSite=None, Path=/api/v1/auth, **not** HttpOnly so JS\n  can read it) — must be echoed in the `X-CSRF-Token` header on `/auth/refresh`\n  and `/auth/logout`.\n\nThe client must call `fetch(..., { credentials: 'include' })` so the cookies are\nsent/received.\n",
         "properties" : {
           "access_token" : {
             "description" : "Signed HS256 JWT. Send back as `Authorization: Bearer <access_token>`.",
@@ -2279,8 +2347,8 @@
             "type" : "string"
           },
           "expires_in" : {
-            "description" : "Token lifetime in seconds (matches the `exp` claim minus `iat`).",
-            "example" : 3600,
+            "description" : "Access token lifetime in seconds (matches the `exp` claim minus `iat`).",
+            "example" : 900,
             "type" : "integer"
           }
         },

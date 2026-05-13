@@ -50,7 +50,7 @@ import org.openapitools.client.JSON;
 /**
  * Event Stripe (https://stripe.com/docs/api/events/object). Seuls les champs exploités par le serveur sont listés ; les autres propriétés transmises par Stripe sont conservées. 
  */
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2026-05-13T06:51:32.284765115+03:00[Indian/Antananarivo]", comments = "Generator version: 7.21.0")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2026-05-13T14:35:19.240502886+03:00[Indian/Antananarivo]", comments = "Generator version: 7.21.0")
 public class StripeEvent {
   public static final String SERIALIZED_NAME_ID = "id";
   @SerializedName(SERIALIZED_NAME_ID)

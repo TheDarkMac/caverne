@@ -4,8 +4,9 @@ All URIs are relative to *http://localhost:8080/api/v1*
 
 | Method | HTTP request | Description |
 |------------- | ------------- | -------------|
-| [**authLoginPost**](AuthApi.md#authLoginPost) | **POST** /auth/login | Connexion — obtenir un JWT |
-| [**authLogoutPost**](AuthApi.md#authLogoutPost) | **POST** /auth/logout | Invalidation du token JWT courant |
+| [**authLoginPost**](AuthApi.md#authLoginPost) | **POST** /auth/login | Connexion — obtenir un JWT et poser les cookies refresh/csrf |
+| [**authLogoutPost**](AuthApi.md#authLogoutPost) | **POST** /auth/logout | Révocation du refresh token courant et nettoyage des cookies |
+| [**authRefreshPost**](AuthApi.md#authRefreshPost) | **POST** /auth/refresh | Rotation du refresh token et émission d&#39;un nouvel access JWT |
 | [**authRegisterPost**](AuthApi.md#authRegisterPost) | **POST** /auth/register | Inscription d&#39;un nouvel utilisateur |
 
 
@@ -13,7 +14,7 @@ All URIs are relative to *http://localhost:8080/api/v1*
 # **authLoginPost**
 > LoginResponse authLoginPost(loginRequest)
 
-Connexion — obtenir un JWT
+Connexion — obtenir un JWT et poser les cookies refresh/csrf
 
 ### Example
 ```java
@@ -67,14 +68,16 @@ No authorization required
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
-| **200** | Token JWT retourné |  -  |
+| **200** | Access JWT retourné dans le corps. Les cookies &#x60;refresh_token&#x60; (HttpOnly) et &#x60;csrf_token&#x60; sont posés via &#x60;Set-Cookie&#x60;.  |  * Set-Cookie - Deux cookies sont émis : &#x60;refresh_token&#x3D;&lt;opaque&gt;; HttpOnly; Secure; SameSite&#x3D;None; Path&#x3D;/api/v1/auth; Max-Age&#x3D;2592000&#x60; et &#x60;csrf_token&#x3D;&lt;value&gt;; Secure; SameSite&#x3D;None; Path&#x3D;/api/v1/auth; Max-Age&#x3D;2592000&#x60;.  <br>  |
 | **401** | Token JWT manquant ou invalide |  -  |
 
 <a id="authLogoutPost"></a>
 # **authLogoutPost**
-> authLogoutPost()
+> authLogoutPost(xCSRFToken)
 
-Invalidation du token JWT courant
+Révocation du refresh token courant et nettoyage des cookies
+
+Révoque le refresh token courant côté serveur et efface les cookies &#x60;refresh_token&#x60; et &#x60;csrf_token&#x60; (Max-Age&#x3D;0). Le header &#x60;X-CSRF-Token&#x60; est requis. 
 
 ### Example
 ```java
@@ -96,8 +99,9 @@ public class Example {
     BearerAuth.setBearerToken("BEARER TOKEN");
 
     AuthApi apiInstance = new AuthApi(defaultClient);
+    String xCSRFToken = "xCSRFToken_example"; // String | 
     try {
-      apiInstance.authLogoutPost();
+      apiInstance.authLogoutPost(xCSRFToken);
     } catch (ApiException e) {
       System.err.println("Exception when calling AuthApi#authLogoutPost");
       System.err.println("Status code: " + e.getCode());
@@ -110,7 +114,10 @@ public class Example {
 ```
 
 ### Parameters
-This endpoint does not need any parameter.
+
+| Name | Type | Description  | Notes |
+|------------- | ------------- | ------------- | -------------|
+| **xCSRFToken** | **String**|  | |
 
 ### Return type
 
@@ -130,6 +137,71 @@ null (empty response body)
 |-------------|-------------|------------------|
 | **204** | Déconnexion réussie |  -  |
 | **401** | Token JWT manquant ou invalide |  -  |
+| **403** | CSRF token manquant ou invalide. |  -  |
+
+<a id="authRefreshPost"></a>
+# **authRefreshPost**
+> LoginResponse authRefreshPost(xCSRFToken)
+
+Rotation du refresh token et émission d&#39;un nouvel access JWT
+
+Lit le cookie &#x60;refresh_token&#x60; (envoyé automatiquement par le navigateur avec &#x60;credentials: &#39;include&#39;&#x60;). Vérifie la signature CSRF via header &#x60;X-CSRF-Token&#x60; (doit valoir la même chose que le cookie &#x60;csrf_token&#x60;). Révoque le refresh précédent et en émet un nouveau (rotation). Si un refresh déjà révoqué est présenté → 401 et toute la famille de tokens est invalidée (reuse detection). 
+
+### Example
+```java
+// Import classes:
+import org.openapitools.client.ApiClient;
+import org.openapitools.client.ApiException;
+import org.openapitools.client.Configuration;
+import org.openapitools.client.models.*;
+import org.openapitools.client.api.AuthApi;
+
+public class Example {
+  public static void main(String[] args) {
+    ApiClient defaultClient = Configuration.getDefaultApiClient();
+    defaultClient.setBasePath("http://localhost:8080/api/v1");
+
+    AuthApi apiInstance = new AuthApi(defaultClient);
+    String xCSRFToken = "xCSRFToken_example"; // String | Doit être égal au cookie `csrf_token`.
+    try {
+      LoginResponse result = apiInstance.authRefreshPost(xCSRFToken);
+      System.out.println(result);
+    } catch (ApiException e) {
+      System.err.println("Exception when calling AuthApi#authRefreshPost");
+      System.err.println("Status code: " + e.getCode());
+      System.err.println("Reason: " + e.getResponseBody());
+      System.err.println("Response headers: " + e.getResponseHeaders());
+      e.printStackTrace();
+    }
+  }
+}
+```
+
+### Parameters
+
+| Name | Type | Description  | Notes |
+|------------- | ------------- | ------------- | -------------|
+| **xCSRFToken** | **String**| Doit être égal au cookie &#x60;csrf_token&#x60;. | |
+
+### Return type
+
+[**LoginResponse**](LoginResponse.md)
+
+### Authorization
+
+No authorization required
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **200** | Nouvel access JWT + cookies refresh/csrf rotés. |  -  |
+| **401** | Token JWT manquant ou invalide |  -  |
+| **403** | CSRF token manquant ou invalide. |  -  |
 
 <a id="authRegisterPost"></a>
 # **authRegisterPost**

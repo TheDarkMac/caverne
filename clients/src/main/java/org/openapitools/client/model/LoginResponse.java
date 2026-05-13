@@ -46,9 +46,9 @@ import java.util.Set;
 import org.openapitools.client.JSON;
 
 /**
- * Issued by &#x60;POST /auth/login&#x60;. &#x60;access_token&#x60; is a signed HS256 JWT with claims &#x60;iss&#x60;, &#x60;sub&#x60;, &#x60;jti&#x60;, &#x60;iat&#x60;, &#x60;exp&#x60;, &#x60;role&#x60;, &#x60;email&#x60;, &#x60;phone&#x60;. The &#x60;jti&#x60; is persisted server-side so &#x60;POST /auth/logout&#x60; can revoke the token before &#x60;exp&#x60;. 
+ * Issued by &#x60;POST /auth/login&#x60; and &#x60;POST /auth/refresh&#x60;. The &#x60;access_token&#x60; is a short-lived (15 min) HS256 JWT with claims &#x60;iss&#x60;, &#x60;sub&#x60;, &#x60;jti&#x60;, &#x60;iat&#x60;, &#x60;exp&#x60;, &#x60;role&#x60;, &#x60;email&#x60;, &#x60;phone&#x60;. Send it back as &#x60;Authorization: Bearer &lt;access_token&gt;&#x60;.  The response also sets two cookies that the client never reads or forwards explicitly — the browser handles them:  - &#x60;refresh_token&#x60; (HttpOnly, Secure, SameSite&#x3D;None, Path&#x3D;/api/v1/auth) — 30 days,   rotated on every &#x60;/auth/refresh&#x60;. Stored as a SHA-256 hash server-side; reuse   of a revoked refresh triggers revocation of the entire token family. - &#x60;csrf_token&#x60; (Secure, SameSite&#x3D;None, Path&#x3D;/api/v1/auth, **not** HttpOnly so JS   can read it) — must be echoed in the &#x60;X-CSRF-Token&#x60; header on &#x60;/auth/refresh&#x60;   and &#x60;/auth/logout&#x60;.  The client must call &#x60;fetch(..., { credentials: &#39;include&#39; })&#x60; so the cookies are sent/received. 
  */
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2026-05-13T06:51:32.284765115+03:00[Indian/Antananarivo]", comments = "Generator version: 7.21.0")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2026-05-13T14:35:19.240502886+03:00[Indian/Antananarivo]", comments = "Generator version: 7.21.0")
 public class LoginResponse {
   public static final String SERIALIZED_NAME_ACCESS_TOKEN = "access_token";
   @SerializedName(SERIALIZED_NAME_ACCESS_TOKEN)
@@ -112,7 +112,7 @@ public class LoginResponse {
   }
 
   /**
-   * Token lifetime in seconds (matches the &#x60;exp&#x60; claim minus &#x60;iat&#x60;).
+   * Access token lifetime in seconds (matches the &#x60;exp&#x60; claim minus &#x60;iat&#x60;).
    * @return expiresIn
    */
   @javax.annotation.Nullable
