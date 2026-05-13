@@ -52,6 +52,7 @@ dependencies {
 	implementation("io.gsonfire:gson-fire:1.9.0")
 	implementation("jakarta.ws.rs:jakarta.ws.rs-api:2.1.6")
 	implementation("org.openapitools:jackson-databind-nullable:0.2.9")
+	implementation("com.fasterxml.jackson.datatype:jackson-datatype-jsr310")
 	implementation("org.apache.commons:commons-lang3:3.18.0")
 	implementation("io.github.cdimascio:dotenv-java:3.0.0")
 	implementation("com.stripe:stripe-java:32.0.0")
