@@ -41,8 +41,19 @@ public class CsrfDoubleSubmitFilter extends OncePerRequestFilter {
   protected void doFilterInternal(
       HttpServletRequest request, HttpServletResponse response, FilterChain chain)
       throws ServletException, IOException {
-    String path = request.getServletPath();
-    if (!"POST".equalsIgnoreCase(request.getMethod()) || !PROTECTED_PATHS.contains(path)) {
+    if (!"POST".equalsIgnoreCase(request.getMethod()) || !matchesProtectedPath(request)) {
+      chain.doFilter(request, response);
+      return;
+    }
+
+    // /auth/logout: CSRF is only meaningful when there is a refresh token to revoke. Supabase
+    // users (or any token-only callers) never set the refresh cookie, so requiring CSRF there
+    // would lock them out for no security benefit.
+    boolean hasRefreshCookie =
+        readCookie(request, properties.getCookie().getName()) != null;
+    if (request.getRequestURI() != null
+        && request.getRequestURI().endsWith("/auth/logout")
+        && !hasRefreshCookie) {
       chain.doFilter(request, response);
       return;
     }
@@ -58,6 +69,19 @@ public class CsrfDoubleSubmitFilter extends OncePerRequestFilter {
     }
 
     chain.doFilter(request, response);
+  }
+
+  private boolean matchesProtectedPath(HttpServletRequest request) {
+    String uri = request.getRequestURI();
+    if (uri == null) {
+      return false;
+    }
+    for (String protectedPath : PROTECTED_PATHS) {
+      if (uri.endsWith(protectedPath)) {
+        return true;
+      }
+    }
+    return false;
   }
 
   private String readCookie(HttpServletRequest request, String name) {
