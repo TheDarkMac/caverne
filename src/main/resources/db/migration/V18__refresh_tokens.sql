@@ -5,7 +5,7 @@ create table refresh_tokens (
   user_id uuid not null references app_users (id) on delete cascade,
   token_hash varchar(64) not null unique,
   family_id uuid not null,
-  parent_id uuid references refresh_tokens (id),
+  parent_id uuid references refresh_tokens (id) on delete set null,
   expires_at timestamp(6) not null,
   revoked_at timestamp(6),
   created_at timestamp(6) not null default now()

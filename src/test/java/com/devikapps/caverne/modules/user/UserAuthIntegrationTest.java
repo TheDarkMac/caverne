@@ -188,17 +188,40 @@ class UserAuthIntegrationTest {
   }
 
   @Test
-  void shouldLogoutInvalidateCurrentToken() throws Exception {
+  void shouldLogoutClearCookies() throws Exception {
     registerSimpleUser("logout@example.com", "Log", "Out", "secret123");
-    String token = login("logout@example.com", "secret123");
+    org.springframework.test.web.servlet.MvcResult loginResult =
+        mockMvc
+            .perform(
+                post("/auth/login")
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(
+                        objectMapper.writeValueAsString(
+                            Map.of("email", "logout@example.com", "password", "secret123"))))
+            .andExpect(status().isOk())
+            .andReturn();
+
+    jakarta.servlet.http.Cookie refreshCookie =
+        loginResult.getResponse().getCookie("refresh_token");
+    jakarta.servlet.http.Cookie csrfCookie = loginResult.getResponse().getCookie("csrf_token");
+    org.junit.jupiter.api.Assertions.assertNotNull(refreshCookie);
+    org.junit.jupiter.api.Assertions.assertNotNull(csrfCookie);
+
+    String token =
+        org.openapitools.client.model.LoginResponse.fromJson(
+                loginResult.getResponse().getContentAsString())
+            .getAccessToken();
 
     mockMvc
-        .perform(post("/auth/logout").header("Authorization", bearer(token)))
-        .andExpect(status().isNoContent());
-
-    mockMvc
-        .perform(get("/users/me").header("Authorization", bearer(token)))
-        .andExpect(status().isUnauthorized());
+        .perform(
+            post("/auth/logout")
+                .header("Authorization", bearer(token))
+                .header("X-CSRF-Token", csrfCookie.getValue())
+                .cookie(refreshCookie, csrfCookie))
+        .andExpect(status().isNoContent())
+        .andExpect(
+            org.springframework.test.web.servlet.result.MockMvcResultMatchers.cookie()
+                .maxAge("refresh_token", 0));
   }
 
   @Test
