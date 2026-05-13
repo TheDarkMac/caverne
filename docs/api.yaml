@@ -57,7 +57,7 @@ components:
       properties:
         access_token:
           type: string
-          description: Signed HS256 JWT. Send back as `Authorization: Bearer <access_token>`.
+          description: 'Signed HS256 JWT. Send back as `Authorization: Bearer <access_token>`.'
           example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.<payload>.<signature>
         token_type:
           type: string
