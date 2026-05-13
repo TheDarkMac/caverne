@@ -2,6 +2,7 @@ package com.devikapps.caverne.config;
 
 import com.devikapps.caverne.modules.common.logging.RequestTraceFilter;
 import com.devikapps.caverne.modules.user.AuthBearerFilter;
+import com.devikapps.caverne.modules.user.CsrfDoubleSubmitFilter;
 import com.devikapps.caverne.modules.user.UserRole;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.time.Instant;
@@ -32,7 +33,10 @@ public class SecurityConfiguration {
   private final CorsProperties corsProperties;
 
   @Bean
-  SecurityFilterChain securityFilterChain(HttpSecurity http, AuthBearerFilter authBearerFilter)
+  SecurityFilterChain securityFilterChain(
+      HttpSecurity http,
+      AuthBearerFilter authBearerFilter,
+      CsrfDoubleSubmitFilter csrfDoubleSubmitFilter)
       throws Exception {
     return http.csrf(AbstractHttpConfigurer::disable)
         .cors(Customizer.withDefaults())
@@ -45,7 +49,8 @@ public class SecurityConfiguration {
                     .accessDeniedHandler(accessDeniedHandler()))
         .authorizeHttpRequests(
             auth ->
-                auth.requestMatchers(HttpMethod.POST, "/auth/register", "/auth/login")
+                auth.requestMatchers(
+                        HttpMethod.POST, "/auth/register", "/auth/login", "/auth/refresh")
                     .permitAll()
                     .requestMatchers(HttpMethod.OPTIONS, "/**")
                     .permitAll()
@@ -132,6 +137,7 @@ public class SecurityConfiguration {
                     .anyRequest()
                     .permitAll())
         .addFilterBefore(authBearerFilter, UsernamePasswordAuthenticationFilter.class)
+        .addFilterAfter(csrfDoubleSubmitFilter, AuthBearerFilter.class)
         .build();
   }
 
