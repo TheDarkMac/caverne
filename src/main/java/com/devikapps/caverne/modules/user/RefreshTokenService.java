@@ -92,7 +92,7 @@ public class RefreshTokenService {
                 .expiresAt(expiresAt)
                 .build());
 
-    return new Issued(rawToken, stored.getFamilyId(), expiresAt);
+    return new Issued(user, rawToken, stored.getFamilyId(), expiresAt);
   }
 
   private String randomToken() {
@@ -115,5 +115,6 @@ public class RefreshTokenService {
     return new ResponseStatusException(UNAUTHORIZED, message);
   }
 
-  public record Issued(String rawToken, UUID familyId, LocalDateTime expiresAt) {}
+  public record Issued(
+      UserAccount user, String rawToken, UUID familyId, LocalDateTime expiresAt) {}
 }
