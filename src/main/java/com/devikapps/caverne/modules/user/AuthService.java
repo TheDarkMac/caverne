@@ -3,6 +3,9 @@ package com.devikapps.caverne.modules.user;
 import static org.springframework.http.HttpStatus.UNAUTHORIZED;
 import static org.springframework.http.HttpStatus.UNPROCESSABLE_CONTENT;
 
+import java.security.SecureRandom;
+import java.time.LocalDateTime;
+import java.util.Base64;
 import java.util.Optional;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
@@ -19,6 +22,8 @@ import org.springframework.web.server.ResponseStatusException;
 public class AuthService {
 
   private static final Logger log = LoggerFactory.getLogger(AuthService.class);
+  private static final int CSRF_TOKEN_BYTES = 24;
+  private static final SecureRandom RNG = new SecureRandom();
 
   private final UserRepository userRepository;
   private final UserApiMapper userApiMapper;
@@ -26,6 +31,7 @@ public class AuthService {
   private final Optional<SupabaseAdminClient> supabaseAdminClient;
   private final LocalJwtService localJwtService;
   private final LocalJwtProperties localJwtProperties;
+  private final RefreshTokenService refreshTokenService;
 
   public org.openapitools.client.model.User register(
       org.openapitools.client.model.RegisterRequest input) {
@@ -77,8 +83,7 @@ public class AuthService {
     return userApiMapper.toResponse(user);
   }
 
-  public org.openapitools.client.model.LoginResponse login(
-      org.openapitools.client.model.LoginRequest input) {
+  public AuthIssued login(org.openapitools.client.model.LoginRequest input) {
     if (input == null
         || isBlank(input.getPassword())
         || (isBlank(input.getEmail()) && isBlank(input.getPhone()))) {
@@ -93,19 +98,48 @@ public class AuthService {
       throw new ResponseStatusException(UNAUTHORIZED, "Invalid credentials");
     }
 
-    long expiresInSeconds = localJwtProperties.getExpiresInSeconds();
-    String jti = UUID.randomUUID().toString();
-    String token = localJwtService.issue(user, jti, expiresInSeconds);
-
-    log.info("Login successful userId={} role={} jti={}", user.getId(), user.getRole(), jti);
-    return new org.openapitools.client.model.LoginResponse()
-        .accessToken(token)
-        .tokenType("Bearer")
-        .expiresIn((int) expiresInSeconds);
+    RefreshTokenService.Issued refresh = refreshTokenService.issueForLogin(user);
+    log.info("Login successful userId={} role={}", user.getId(), user.getRole());
+    return issueAuthResponse(user, refresh);
   }
 
-  public void logout(String token) {
-    log.info("Logout processed (access JWT is stateless; refresh revocation happens elsewhere)");
+  public AuthIssued refresh(String rawRefreshToken) {
+    if (isBlank(rawRefreshToken)) {
+      throw new ResponseStatusException(UNAUTHORIZED, "Refresh token missing");
+    }
+    RefreshTokenService.Issued rotated = refreshTokenService.rotate(rawRefreshToken);
+    log.info("Refresh rotated userId={} familyId={}", rotated.user().getId(), rotated.familyId());
+    return issueAuthResponse(rotated.user(), rotated);
+  }
+
+  public void logout(String rawRefreshToken) {
+    if (isBlank(rawRefreshToken)) {
+      log.info("Logout called without refresh token — nothing to revoke");
+      return;
+    }
+    refreshTokenService.revoke(rawRefreshToken);
+    log.info("Logout processed");
+  }
+
+  private AuthIssued issueAuthResponse(UserAccount user, RefreshTokenService.Issued refresh) {
+    long expiresInSeconds = localJwtProperties.getExpiresInSeconds();
+    String jti = UUID.randomUUID().toString();
+    String accessToken = localJwtService.issue(user, jti, expiresInSeconds);
+
+    org.openapitools.client.model.LoginResponse body =
+        new org.openapitools.client.model.LoginResponse()
+            .accessToken(accessToken)
+            .tokenType("Bearer")
+            .expiresIn((int) expiresInSeconds);
+
+    return new AuthIssued(
+        body, refresh.rawToken(), refresh.expiresAt(), randomCsrfToken());
+  }
+
+  private String randomCsrfToken() {
+    byte[] bytes = new byte[CSRF_TOKEN_BYTES];
+    RNG.nextBytes(bytes);
+    return Base64.getUrlEncoder().withoutPadding().encodeToString(bytes);
   }
 
   private void validateRegistration(org.openapitools.client.model.RegisterRequest input) {
@@ -160,4 +194,10 @@ public class AuthService {
   private boolean isBlank(String value) {
     return value == null || value.isBlank();
   }
+
+  public record AuthIssued(
+      org.openapitools.client.model.LoginResponse body,
+      String rawRefreshToken,
+      LocalDateTime refreshExpiresAt,
+      String csrfToken) {}
 }
