@@ -3,7 +3,6 @@ package com.devikapps.caverne.modules.user;
 import static org.springframework.http.HttpStatus.UNAUTHORIZED;
 import static org.springframework.http.HttpStatus.UNPROCESSABLE_CONTENT;
 
-import java.time.LocalDateTime;
 import java.util.Optional;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
@@ -22,9 +21,7 @@ public class AuthService {
   private static final Logger log = LoggerFactory.getLogger(AuthService.class);
 
   private final UserRepository userRepository;
-  private final AuthSessionRepository authSessionRepository;
   private final UserApiMapper userApiMapper;
-  private final AuthSessionResolver authSessionResolver;
   private final PasswordEncoder passwordEncoder;
   private final Optional<SupabaseAdminClient> supabaseAdminClient;
   private final LocalJwtService localJwtService;
@@ -99,12 +96,6 @@ public class AuthService {
     long expiresInSeconds = localJwtProperties.getExpiresInSeconds();
     String jti = UUID.randomUUID().toString();
     String token = localJwtService.issue(user, jti, expiresInSeconds);
-    authSessionRepository.save(
-        AuthSession.builder()
-            .user(user)
-            .token(jti)
-            .expiresAt(LocalDateTime.now().plusSeconds(expiresInSeconds))
-            .build());
 
     log.info("Login successful userId={} role={} jti={}", user.getId(), user.getRole(), jti);
     return new org.openapitools.client.model.LoginResponse()
@@ -114,8 +105,7 @@ public class AuthService {
   }
 
   public void logout(String token) {
-    authSessionResolver.logout(token);
-    log.info("Logout processed");
+    log.info("Logout processed (access JWT is stateless; refresh revocation happens elsewhere)");
   }
 
   private void validateRegistration(org.openapitools.client.model.RegisterRequest input) {

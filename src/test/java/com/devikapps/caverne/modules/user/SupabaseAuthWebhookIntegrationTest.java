@@ -32,13 +32,13 @@ class SupabaseAuthWebhookIntegrationTest {
   @Autowired private MockMvc mockMvc;
   @Autowired private ObjectMapper objectMapper;
   @Autowired private UserRepository userRepository;
-  @Autowired private AuthSessionRepository authSessionRepository;
+  @Autowired private RefreshTokenRepository refreshTokenRepository;
 
   private final BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
   @BeforeEach
   void setUp() {
-    authSessionRepository.deleteAll();
+    refreshTokenRepository.deleteAll();
     userRepository.deleteAll();
   }
 
