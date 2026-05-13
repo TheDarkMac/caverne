@@ -1,4 +1,7 @@
-.PHONY: ci-format ci-semgrep gatling
+.PHONY: ci-format ci-semgrep gatling perf-local
+
+# Port the locally-running app is listening on (override: make perf-local PORT=8081)
+PORT ?= 8080
 
 ci-format:
 	find src -name "*.java" -print0 | xargs -0 -n 500 java -jar google-java-format-1.23.0-all-deps.jar --dry-run --set-exit-if-changed
@@ -31,3 +34,14 @@ gatling:
 	  if [ $$i -eq 60 ]; then echo "ERROR: app did not start"; cat app.log; kill $$(cat app.pid) || true; exit 1; fi; \
 	done
 	./gradlew --no-daemon gatlingRun; EXIT=$$?; kill $$(cat app.pid) || true; exit $$EXIT
+
+# Run Gatling against an app you've already started (any port).
+# Fails fast if /actuator/health is not reachable, so you don't burn a 1m30 run on Connection refused.
+perf-local:
+	@echo "Probing http://localhost:$(PORT)/api/v1/actuator/health ..."
+	@if ! curl --silent --fail "http://localhost:$(PORT)/api/v1/actuator/health" >/dev/null 2>&1; then \
+	  echo "ERROR: nothing healthy on port $(PORT). Start the app first or pass PORT=<port>."; \
+	  exit 1; \
+	fi
+	@echo "App is up. Launching Gatling against port $(PORT)."
+	GATLING_BASE_URL=http://localhost:$(PORT)/api/v1 ./gradlew gatlingRun
