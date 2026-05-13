@@ -2,9 +2,9 @@ package com.devikapps.caverne.modules.user;
 
 import static org.springframework.http.HttpStatus.UNAUTHORIZED;
 
-import java.time.LocalDateTime;
 import java.util.Map;
 import java.util.Objects;
+import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
@@ -16,7 +16,7 @@ import org.springframework.web.server.ResponseStatusException;
 @RequiredArgsConstructor
 public class LocalSessionAuthenticationProvider implements AuthenticationProvider {
 
-  private final AuthSessionRepository authSessionRepository;
+  private final UserRepository userRepository;
   private final LocalJwtService localJwtService;
 
   @Override
@@ -34,38 +34,29 @@ public class LocalSessionAuthenticationProvider implements AuthenticationProvide
   }
 
   @Override
-  @Transactional
+  @Transactional(readOnly = true)
   public UserAccount authenticate(String token) {
     Map<String, Object> claims = localJwtService.verify(token);
 
-    Object jti = claims.get("jti");
-    if (!(jti instanceof String jtiValue) || jtiValue.isBlank()) {
-      throw new ResponseStatusException(UNAUTHORIZED, "Token is missing jti");
+    Object sub = claims.get("sub");
+    if (!(sub instanceof String subValue) || subValue.isBlank()) {
+      throw new ResponseStatusException(UNAUTHORIZED, "Token is missing sub");
     }
 
-    AuthSession session =
-        authSessionRepository
-            .findWithUserByToken(jtiValue)
-            .orElseThrow(
-                () -> new ResponseStatusException(UNAUTHORIZED, "Authentication required"));
-
-    if (session.getExpiresAt().isBefore(LocalDateTime.now())) {
-      authSessionRepository.delete(session);
-      throw new ResponseStatusException(UNAUTHORIZED, "Authentication token expired");
+    UUID userId;
+    try {
+      userId = UUID.fromString(subValue);
+    } catch (IllegalArgumentException exception) {
+      throw new ResponseStatusException(UNAUTHORIZED, "Invalid token subject");
     }
 
-    UserAccount user = session.getUser();
-    user.getRole();
-    return user;
+    return userRepository
+        .findById(userId)
+        .orElseThrow(() -> new ResponseStatusException(UNAUTHORIZED, "Authentication required"));
   }
 
   @Override
-  @Transactional
   public void logout(String token) {
-    Map<String, Object> claims = localJwtService.peekClaims(token);
-    Object jti = claims.get("jti");
-    if (jti instanceof String jtiValue && !jtiValue.isBlank()) {
-      authSessionRepository.deleteByToken(jtiValue);
-    }
+    // Access JWT is stateless — revocation happens on the refresh token (see RefreshTokenService).
   }
 }

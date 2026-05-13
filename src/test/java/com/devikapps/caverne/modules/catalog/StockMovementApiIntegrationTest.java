@@ -8,7 +8,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import com.devikapps.caverne.TestcontainersConfiguration;
 import com.devikapps.caverne.modules.order.OrderRepository;
-import com.devikapps.caverne.modules.user.AuthSessionRepository;
+import com.devikapps.caverne.modules.user.RefreshTokenRepository;
 import com.devikapps.caverne.modules.user.UserAccount;
 import com.devikapps.caverne.modules.user.UserRepository;
 import com.devikapps.caverne.modules.user.UserRole;
@@ -38,7 +38,7 @@ class StockMovementApiIntegrationTest {
   @Autowired private MockMvc mockMvc;
   @Autowired private ObjectMapper objectMapper;
   @Autowired private UserRepository userRepository;
-  @Autowired private AuthSessionRepository authSessionRepository;
+  @Autowired private RefreshTokenRepository refreshTokenRepository;
   @Autowired private CategoryRepository categoryRepository;
   @Autowired private ProductRepository productRepository;
   @Autowired private StockMovementRepository stockMovementRepository;
@@ -48,7 +48,7 @@ class StockMovementApiIntegrationTest {
 
   @BeforeEach
   void setUp() {
-    authSessionRepository.deleteAll();
+    refreshTokenRepository.deleteAll();
     orderRepository.deleteAll();
     stockMovementRepository.deleteAll();
     productRepository.deleteAll();

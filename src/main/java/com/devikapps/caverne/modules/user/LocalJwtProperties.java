@@ -12,5 +12,5 @@ import org.springframework.stereotype.Component;
 public class LocalJwtProperties {
   private String secret;
   private String issuer = "caverne";
-  private long expiresInSeconds = 3600;
+  private long expiresInSeconds = 900;
 }

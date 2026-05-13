@@ -14,7 +14,7 @@ import com.devikapps.caverne.modules.order.Order;
 import com.devikapps.caverne.modules.order.OrderPayment;
 import com.devikapps.caverne.modules.order.OrderRepository;
 import com.devikapps.caverne.modules.order.OrderStatus;
-import com.devikapps.caverne.modules.user.AuthSessionRepository;
+import com.devikapps.caverne.modules.user.RefreshTokenRepository;
 import com.devikapps.caverne.modules.user.UserAccount;
 import com.devikapps.caverne.modules.user.UserRepository;
 import com.devikapps.caverne.modules.user.UserRole;
@@ -53,7 +53,7 @@ class RefundApiIntegrationTest {
   @Autowired private MockMvc mockMvc;
   @Autowired private ObjectMapper objectMapper;
   @Autowired private UserRepository userRepository;
-  @Autowired private AuthSessionRepository authSessionRepository;
+  @Autowired private RefreshTokenRepository refreshTokenRepository;
   @Autowired private CategoryRepository categoryRepository;
   @Autowired private ProductRepository productRepository;
   @Autowired private OrderRepository orderRepository;
@@ -62,7 +62,7 @@ class RefundApiIntegrationTest {
 
   @BeforeEach
   void setUp() {
-    authSessionRepository.deleteAll();
+    refreshTokenRepository.deleteAll();
     orderRepository.deleteAll();
     productRepository.deleteAll();
     categoryRepository.deleteAll();
