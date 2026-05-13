@@ -19,8 +19,8 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 /**
- * Double-submit cookie protection for the refresh / logout endpoints. The browser-readable
- * {@code csrf_token} cookie value must equal the {@code X-CSRF-Token} request header. Cross-origin
+ * Double-submit cookie protection for the refresh / logout endpoints. The browser-readable {@code
+ * csrf_token} cookie value must equal the {@code X-CSRF-Token} request header. Cross-origin
  * attackers cannot read the cookie, so they cannot forge a matching header.
  */
 @Component
@@ -31,8 +31,7 @@ public class CsrfDoubleSubmitFilter extends OncePerRequestFilter {
   private final RefreshTokenProperties properties;
   private final ObjectMapper objectMapper;
 
-  public CsrfDoubleSubmitFilter(
-      RefreshTokenProperties properties, ObjectMapper objectMapper) {
+  public CsrfDoubleSubmitFilter(RefreshTokenProperties properties, ObjectMapper objectMapper) {
     this.properties = properties;
     this.objectMapper = objectMapper;
   }
@@ -49,8 +48,7 @@ public class CsrfDoubleSubmitFilter extends OncePerRequestFilter {
     // /auth/logout: CSRF is only meaningful when there is a refresh token to revoke. Supabase
     // users (or any token-only callers) never set the refresh cookie, so requiring CSRF there
     // would lock them out for no security benefit.
-    boolean hasRefreshCookie =
-        readCookie(request, properties.getCookie().getName()) != null;
+    boolean hasRefreshCookie = readCookie(request, properties.getCookie().getName()) != null;
     if (request.getRequestURI() != null
         && request.getRequestURI().endsWith("/auth/logout")
         && !hasRefreshCookie) {

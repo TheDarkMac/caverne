@@ -36,7 +36,7 @@ public class AuthApiTest {
     private final AuthApi api = new AuthApi();
 
     /**
-     * Connexion — obtenir un JWT
+     * Connexion — obtenir un JWT et poser les cookies refresh/csrf
      *
      * @throws ApiException if the Api call fails
      */
@@ -48,13 +48,30 @@ public class AuthApiTest {
     }
 
     /**
-     * Invalidation du token JWT courant
+     * Révocation du refresh token courant et nettoyage des cookies
+     *
+     * Révoque le refresh token courant côté serveur et efface les cookies &#x60;refresh_token&#x60; et &#x60;csrf_token&#x60; (Max-Age&#x3D;0). Le header &#x60;X-CSRF-Token&#x60; est requis. 
      *
      * @throws ApiException if the Api call fails
      */
     @Test
     public void authLogoutPostTest() throws ApiException {
-        api.authLogoutPost();
+        String xCSRFToken = null;
+        api.authLogoutPost(xCSRFToken);
+        // TODO: test validations
+    }
+
+    /**
+     * Rotation du refresh token et émission d&#39;un nouvel access JWT
+     *
+     * Lit le cookie &#x60;refresh_token&#x60; (envoyé automatiquement par le navigateur avec &#x60;credentials: &#39;include&#39;&#x60;). Vérifie la signature CSRF via header &#x60;X-CSRF-Token&#x60; (doit valoir la même chose que le cookie &#x60;csrf_token&#x60;). Révoque le refresh précédent et en émet un nouveau (rotation). Si un refresh déjà révoqué est présenté → 401 et toute la famille de tokens est invalidée (reuse detection). 
+     *
+     * @throws ApiException if the Api call fails
+     */
+    @Test
+    public void authRefreshPostTest() throws ApiException {
+        String xCSRFToken = null;
+        LoginResponse response = api.authRefreshPost(xCSRFToken);
         // TODO: test validations
     }
 

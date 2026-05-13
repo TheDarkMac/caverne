@@ -132,8 +132,7 @@ public class AuthService {
             .tokenType("Bearer")
             .expiresIn((int) expiresInSeconds);
 
-    return new AuthIssued(
-        body, refresh.rawToken(), refresh.expiresAt(), randomCsrfToken());
+    return new AuthIssued(body, refresh.rawToken(), refresh.expiresAt(), randomCsrfToken());
   }
 
   private String randomCsrfToken() {

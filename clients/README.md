@@ -2,7 +2,7 @@
 
 La Caverne Malgache API
 - API version: 1.0.0
-  - Build date: 2026-05-13T06:51:32.284765115+03:00[Indian/Antananarivo]
+  - Build date: 2026-05-13T14:35:19.240502886+03:00[Indian/Antananarivo]
   - Generator version: 7.21.0
 
 Documentation OpenAPI de La Caverne Malagasy.
@@ -126,8 +126,9 @@ Class | Method | HTTP request | Description
 *AddressesApi* | [**usersMeAddressesIdDelete**](docs/AddressesApi.md#usersMeAddressesIdDelete) | **DELETE** /users/me/addresses/{id} | Supprimer une adresse
 *AddressesApi* | [**usersMeAddressesIdPut**](docs/AddressesApi.md#usersMeAddressesIdPut) | **PUT** /users/me/addresses/{id} | Créer ou mettre à jour une adresse par identifiant
 *AddressesApi* | [**usersMeAddressesPost**](docs/AddressesApi.md#usersMeAddressesPost) | **POST** /users/me/addresses | Créer ou mettre à jour une adresse
-*AuthApi* | [**authLoginPost**](docs/AuthApi.md#authLoginPost) | **POST** /auth/login | Connexion — obtenir un JWT
-*AuthApi* | [**authLogoutPost**](docs/AuthApi.md#authLogoutPost) | **POST** /auth/logout | Invalidation du token JWT courant
+*AuthApi* | [**authLoginPost**](docs/AuthApi.md#authLoginPost) | **POST** /auth/login | Connexion — obtenir un JWT et poser les cookies refresh/csrf
+*AuthApi* | [**authLogoutPost**](docs/AuthApi.md#authLogoutPost) | **POST** /auth/logout | Révocation du refresh token courant et nettoyage des cookies
+*AuthApi* | [**authRefreshPost**](docs/AuthApi.md#authRefreshPost) | **POST** /auth/refresh | Rotation du refresh token et émission d&#39;un nouvel access JWT
 *AuthApi* | [**authRegisterPost**](docs/AuthApi.md#authRegisterPost) | **POST** /auth/register | Inscription d&#39;un nouvel utilisateur
 *CategoriesApi* | [**categoriesGet**](docs/CategoriesApi.md#categoriesGet) | **GET** /categories | Liste des catégories (arbre)
 *CategoriesApi* | [**categoriesIdDelete**](docs/CategoriesApi.md#categoriesIdDelete) | **DELETE** /categories/{id} | Supprimer une catégorie (admin)
